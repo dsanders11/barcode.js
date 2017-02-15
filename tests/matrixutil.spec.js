@@ -26,8 +26,8 @@ define(['chai'], function(chai) {
   var assert = chai.assert;
   var MatrixUtil = w69b.qr.encoder.MatrixUtil;
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
-  var ErrorCorrectionLevel = w69b.qr.ErrorCorrectionLevel;
-  var BitArray = w69b.qr.BitArray;
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  var BitArray = w69b.common.BitArray;
 
   describe('MatrixUtilTestCase', function() {
 

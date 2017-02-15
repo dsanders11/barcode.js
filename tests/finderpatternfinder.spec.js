@@ -1,8 +1,8 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 define(['chai'], function(chai) {
   var expect = chai.expect;
-  var FinderPatternFinder = w69b.qr.FinderPatternFinder;
-  var ResultPoint = w69b.qr.ResultPoint;
+  var FinderPatternFinder = w69b.qr.detector.FinderPatternFinder;
+  var ResultPoint = w69b.ResultPoint;
   var EPSILON = 0.001;
   describe('compute skew', function() {
 

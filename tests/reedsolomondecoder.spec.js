@@ -16,15 +16,15 @@
  */
 
 goog.require('goog.array');
+goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
+goog.require('w69b.common.reedsolomon.ReedSolomonError');
 goog.require('w69b.qr.GF256');
-goog.require('w69b.qr.ReedSolomonDecoder');
-goog.require('w69b.qr.ReedSolomonError');
 
 
 define(['chai', 'corrupt'], function(chai, corrupt) {
   var assert = chai.assert;
   describe('ReedSolomonDecoder tests', function() {
-    var ReedSolomonDecoder = w69b.qr.ReedSolomonDecoder;
+    var ReedSolomonDecoder = w69b.common.reedsolomon.ReedSolomonDecoder;
 
     /** See ISO 18004, Appendix I, from which this example is taken. */
     var QR_CODE_TEST = [0x10, 0x20, 0x0C, 0x56, 0x61, 0x80, 0xEC, 0x11, 0xEC,
@@ -75,7 +75,7 @@ define(['chai', 'corrupt'], function(chai, corrupt) {
       corrupt(received, QR_CODE_CORRECTABLE + 1);
       expect(function() {
         checkQRRSDecode(received);
-      }).to.throw(w69b.qr.ReedSolomonError);
+      }).to.throw(w69b.common.reedsolomon.ReedSolomonError);
     });
   });
 });

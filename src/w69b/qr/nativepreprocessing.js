@@ -1,7 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
 goog.provide('w69b.qr.nativepreprocessing');
-goog.require('w69b.qr.HybridBinarizer');
+goog.require('w69b.common.HybridBinarizer');
 goog.require('w69b.qr.QRImage');
 
 goog.scope(function() {
@@ -10,11 +10,11 @@ goog.scope(function() {
 
   /**
    * @param {(!ImageData|!w69b.qr.QRImage)} imageData from canvas.
-   * @return {!w69b.qr.BitMatrix} binary data.
+   * @return {!w69b.common.BitMatrix} binary data.
    */
   _.binarizeImageData = function(imageData) {
     var gray = _.grayscale(imageData);
-    var binarizer = new w69b.qr.HybridBinarizer(gray);
+    var binarizer = new w69b.common.HybridBinarizer(gray);
     return binarizer.getBlackMatrix();
   };
 

@@ -16,12 +16,12 @@
  */
 
 define(['chai'], function(chai) {
-  goog.require('w69b.qr.Mode');
-  goog.require('w69b.qr.ModeEnum');
+  goog.require('w69b.qr.decoder.Mode');
+  goog.require('w69b.qr.decoder.ModeEnum');
   var expect = chai.expect;
 
-  var Mode = w69b.qr.Mode;
-  var ModeEnum = w69b.qr.ModeEnum;
+  var Mode = w69b.qr.decoder.Mode;
+  var ModeEnum = w69b.qr.decoder.ModeEnum;
 
 
   describe('Mode', function() {

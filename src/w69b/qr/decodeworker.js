@@ -58,7 +58,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {(w69b.qr.AlignmentPattern|w69b.qr.FinderPattern)} pattern found.
+   * @param {(w69b.qr.detector.AlignmentPattern|w69b.qr.detector.FinderPattern)} pattern found.
    */
   _.onPatternFound = function(pattern) {
     // Build plain json object.

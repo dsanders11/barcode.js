@@ -18,7 +18,7 @@
 define(['chai'], function(chai) {
   var assert = chai.assert;
   describe('BitSource', function() {
-    var BitSource = w69b.qr.BitSource;
+    var BitSource = w69b.BitSource;
 
     it('testSources', function() {
       var bytes = [1, 2, 3, 4, 5];

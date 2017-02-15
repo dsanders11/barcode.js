@@ -23,7 +23,7 @@
 
 define(['chai'], function(chai) {
   var assert = chai.assert;
-  var PerspectiveTransform = w69b.qr.PerspectiveTransform;
+  var PerspectiveTransform = w69b.common.PerspectiveTransform;
 
   describe('PerspectiveTransform', function() {
     var EPSILON = 0.0001;

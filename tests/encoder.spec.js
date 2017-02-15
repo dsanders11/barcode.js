@@ -24,12 +24,12 @@
 define(['chai'], function(chai) {
   var assert = chai.assert;
   var Encoder = w69b.qr.encoder.Encoder;
-  var ModeEnum = w69b.qr.ModeEnum;
-  var ErrorCorrectionLevel = w69b.qr.ErrorCorrectionLevel;
-  var EncodeHintType = w69b.qr.EncodeHintType;
-  var BitArray = w69b.qr.BitArray;
+  var ModeEnum = w69b.qr.decoder.ModeEnum;
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  var EncodeHintType = w69b.EncodeHintType;
+  var BitArray = w69b.common.BitArray;
   var WriterError = w69b.qr.WriterError;
-  var stringutils = w69b.qr.stringutils;
+  var stringutils = w69b.common.stringutils;
   describe('EncoderTestCase', function() {
 
     it('testGetAlphanumericCode', function() {

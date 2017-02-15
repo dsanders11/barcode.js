@@ -4,10 +4,10 @@ goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.imgtools');
 goog.require('w69b.qr.DecodeResult');
-goog.require('w69b.qr.Detector');
 goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.ReaderError');
-goog.require('w69b.qr.decoder');
+goog.require('w69b.qr.decoder.decoder');
+goog.require('w69b.qr.detector.Detector');
 goog.require('w69b.qr.encoder.Encoder');
 goog.require('w69b.qr.nativepreprocessing');
 
@@ -16,7 +16,7 @@ goog.require('w69b.qr.nativepreprocessing');
  * @author mb@w69b.com (Manuel Braun)
  */
 goog.scope(function() {
-  var Detector = w69b.qr.Detector;
+  var Detector = w69b.qr.detector.Detector;
   var RGBABitMatrix = w69b.img.RGBABitMatrix;
   var DecodeResult = w69b.qr.DecodeResult;
   var WebGLBinarizer = w69b.img.WebGLBinarizer;
@@ -88,7 +88,7 @@ goog.scope(function() {
     var detector = new Detector(bitmap, opt_callback);
 
     var detectorResult = detector.detect();
-    var text = w69b.qr.decoder.decode(detectorResult.bits);
+    var text = w69b.qr.decoder.decoder.decode(detectorResult.bits);
 
     return new DecodeResult(text, detectorResult.points);
   };

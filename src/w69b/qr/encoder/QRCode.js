@@ -16,16 +16,16 @@
  */
 
 goog.provide('w69b.qr.encoder.QRCode');
-goog.require('w69b.qr.ErrorCorrectionLevel');
-goog.require('w69b.qr.Mode');
-goog.require('w69b.qr.Version');
+goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
+goog.require('w69b.qr.decoder.Mode');
+goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.ByteMatrix');
 
 goog.scope(function() {
 
-  var ErrorCorrectionLevel = w69b.qr.ErrorCorrectionLevel;
-  var Mode = w69b.qr.Mode;
-  var Version = w69b.qr.Version;
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  var Mode = w69b.qr.decoder.Mode;
+  var Version = w69b.qr.decoder.Version;
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
 
   /**

@@ -23,7 +23,7 @@
 
 define(['chai'], function(chai) {
   var assert = chai.assert;
-  var BitArray = w69b.qr.BitArray;
+  var BitArray = w69b.common.BitArray;
 
   describe('BitArray', function() {
     it('testGetSet', function() {

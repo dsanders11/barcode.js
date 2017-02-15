@@ -16,19 +16,19 @@
  */
 
 goog.provide('w69b.qr.encoder.MatrixUtil');
-goog.require('w69b.qr.BitArray');
-goog.require('w69b.qr.ErrorCorrectionLevel');
-goog.require('w69b.qr.Version');
+goog.require('w69b.common.BitArray');
 goog.require('w69b.qr.WriterError');
+goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
+goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.ByteMatrix');
 goog.require('w69b.qr.encoder.MaskUtil');
 goog.require('w69b.qr.encoder.QRCode');
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.ErrorCorrectionLevel;
-  var BitArray = w69b.qr.BitArray;
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  var BitArray = w69b.common.BitArray;
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
-  var Version = w69b.qr.Version;
+  var Version = w69b.qr.decoder.Version;
   var WriterError = w69b.qr.WriterError;
   var QRCode = w69b.qr.encoder.QRCode;
   var MaskUtil = w69b.qr.encoder.MaskUtil;

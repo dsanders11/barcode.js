@@ -1,7 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 define(['chai'], function(chai) {
   var expect = chai.expect;
-  var CharacterSetECI = w69b.qr.CharacterSetECI;
+  var CharacterSetECI = w69b.common.CharacterSetECI;
 
   describe('CharacterSetECI', function() {
 

@@ -22,7 +22,7 @@ goog.scope(function() {
   /**
    * Encapsulates decoded result reader error.
    * @param {(string|w69b.qr.ReaderError)} text decoded text or error.
-   * @param {Array.<w69b.qr.ResultPoint>=} opt_patterns sed for decoding.
+   * @param {Array.<w69b.ResultPoint>=} opt_patterns sed for decoding.
    * @constructor
    */
   w69b.qr.DecodeResult = function(text, opt_patterns) {
@@ -64,7 +64,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Array.<w69b.qr.ResultPoint>} decoded string.
+   * @return {Array.<w69b.ResultPoint>} decoded string.
    */
   pro.getPatterns = function() {
     return this.patterns_;

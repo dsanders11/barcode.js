@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-goog.require('w69b.qr.DecodedBitStreamParser');
-goog.require('w69b.qr.Version');
+goog.require('w69b.qr.decoder.DecodedBitStreamParser');
+goog.require('w69b.qr.decoder.Version');
 
-var DecodedBitStreamParser = w69b.qr.DecodedBitStreamParser;
-var Version = w69b.qr.Version;
+var DecodedBitStreamParser = w69b.qr.decoder.DecodedBitStreamParser;
+var Version = w69b.qr.decoder.Version;
 
 
 define(['chai'], function(chai) {

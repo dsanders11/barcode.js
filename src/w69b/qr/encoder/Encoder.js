@@ -16,37 +16,37 @@
  */
 
 goog.provide('w69b.qr.encoder.Encoder');
-goog.require('w69b.qr.BitArray');
-goog.require('w69b.qr.CharacterSetECI');
-goog.require('w69b.qr.EncodeHintType');
-goog.require('w69b.qr.ErrorCorrectionLevel');
+goog.require('w69b.EncodeHintType');
+goog.require('w69b.common.BitArray');
+goog.require('w69b.common.CharacterSetECI');
+goog.require('w69b.common.reedsolomon.ReedSolomonEncoder');
+goog.require('w69b.common.stringutils');
 goog.require('w69b.qr.GF256');
-goog.require('w69b.qr.Mode');
-goog.require('w69b.qr.ModeEnum');
-goog.require('w69b.qr.ReedSolomonEncoder');
-goog.require('w69b.qr.Version');
+goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
+goog.require('w69b.qr.decoder.Mode');
+goog.require('w69b.qr.decoder.ModeEnum');
+goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.BlockPair');
 goog.require('w69b.qr.encoder.MaskUtil');
 goog.require('w69b.qr.encoder.MatrixUtil');
 goog.require('w69b.qr.encoder.QRCode');
-goog.require('w69b.qr.stringutils');
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.ErrorCorrectionLevel;
-  var BitArray = w69b.qr.BitArray;
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  var BitArray = w69b.common.BitArray;
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
   var MatrixUtil = w69b.qr.encoder.MatrixUtil;
-  var Version = w69b.qr.Version;
+  var Version = w69b.qr.decoder.Version;
   var WriterError = w69b.qr.WriterError;
   var BlockPair = w69b.qr.encoder.BlockPair;
   var QRCode = w69b.qr.encoder.QRCode;
   var MaskUtil = w69b.qr.encoder.MaskUtil;
-  var Mode = w69b.qr.Mode;
-  var ModeEnum = w69b.qr.ModeEnum;
-  var EncodeHintType = w69b.qr.EncodeHintType;
-  var CharacterSetECI = w69b.qr.CharacterSetECI;
-  var ReedSolomonEncoder = w69b.qr.ReedSolomonEncoder;
-  var stringutils = w69b.qr.stringutils;
+  var Mode = w69b.qr.decoder.Mode;
+  var ModeEnum = w69b.qr.decoder.ModeEnum;
+  var EncodeHintType = w69b.EncodeHintType;
+  var CharacterSetECI = w69b.common.CharacterSetECI;
+  var ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;
+  var stringutils = w69b.common.stringutils;
 
 
   /**
