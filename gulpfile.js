@@ -5,7 +5,6 @@ var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var del = require('del');
 var debug = require('gulp-debug');
-var gjslint = require('gulp-gjslint');
 var karma = require('karma');
 var concat = require('gulp-concat');
 var size = require('gulp-size');
@@ -50,12 +49,6 @@ var PATHS = {
 
 gulp.task('clean', function() {
   return del(['dist']);
-});
-
-gulp.task('gjslint', function() {
-  return gulp.src(PATHS.src.lintable)
-    .pipe(gjslint({flags: ['--nojsdoc', '--max_line_length 100']}))
-    .pipe(gjslint.reporter('console'));
 });
 
 gulp.task('test', ['buildDebug'], function(done) {

@@ -21,5 +21,8 @@
     // These options degrades performance significantly, so disable them.
     "inlineFunctions": false,
     "collapseProperties": false // Flattens multi-level property names (e.g. a$b = x)
+  },
+  "checks": {
+    "lintChecks": "WARNING"
   }
 }
