@@ -156,7 +156,7 @@ gulp.task('compile', function() {
 });
 
 gulp.task('all', function(cb) {
-  runSequence('check-format', 'compile', 'test', cb);
+  runSequence('compile', 'test', cb);
 });
 
 gulp.task('default', function(cb) {
