@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.qr.decoder.decoder');
+goog.provide('w69b.qr.decoder.Decoder');
 goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
 goog.require('w69b.qr.GF256');
 goog.require('w69b.qr.decoder.BitMatrixParser');
@@ -34,7 +34,7 @@ goog.scope(function() {
   var GF256 = w69b.qr.GF256;
   var DataBlock = w69b.qr.decoder.DataBlock;
 
-  var _ = w69b.qr.decoder.decoder;
+  var _ = w69b.qr.decoder.Decoder;
   _.rsDecoder = new w69b.common.reedsolomon.ReedSolomonDecoder(GF256.QR_CODE_FIELD);
 
   _.correctErrors = function(codewordBytes, numDataCodewords) {

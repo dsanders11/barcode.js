@@ -6,7 +6,7 @@ goog.require('w69b.imgtools');
 goog.require('w69b.qr.DecodeResult');
 goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.ReaderError');
-goog.require('w69b.qr.decoder.decoder');
+goog.require('w69b.qr.decoder.Decoder');
 goog.require('w69b.qr.detector.Detector');
 goog.require('w69b.qr.encoder.Encoder');
 goog.require('w69b.qr.nativepreprocessing');
@@ -88,7 +88,7 @@ goog.scope(function() {
     var detector = new Detector(bitmap, opt_callback);
 
     var detectorResult = detector.detect();
-    var text = w69b.qr.decoder.decoder.decode(detectorResult.bits);
+    var text = w69b.qr.decoder.Decoder.decode(detectorResult.bits);
 
     return new DecodeResult(text, detectorResult.points);
   };
