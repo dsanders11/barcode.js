@@ -17,11 +17,11 @@
  */
 
 goog.provide('w69b.qr.detector.Detector');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.DefaultGridSampler');
 goog.require('w69b.common.detector.MathUtils');
 goog.require('w69b.img.BitMatrixLike');
-goog.require('w69b.qr.NotFoundError');
 goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.detector.AlignmentPattern');
 goog.require('w69b.qr.detector.AlignmentPatternFinder');
@@ -31,7 +31,7 @@ goog.require('w69b.qr.detector.FinderPatternFinder');
 goog.scope(function() {
   var Version = w69b.qr.decoder.Version;
   var PerspectiveTransform = w69b.common.PerspectiveTransform;
-  var NotFoundError = w69b.qr.NotFoundError;
+  var NotFoundException = w69b.NotFoundException;
   var MathUtils = w69b.common.detector.MathUtils;
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
 
@@ -249,7 +249,7 @@ goog.scope(function() {
 
       case 3:
         // would it be better to do something like dimension += 2; ?
-        // throw new NotFoundError();
+        // throw new NotFoundException();
         dimension += 2;
     }
     // Sometimes dimension is 17 - which is invalid. Why?
@@ -268,6 +268,7 @@ goog.scope(function() {
    * @param {number} allowanceFactor number of pixels in all directions to
    * search from the center.
    * @return {AlignmentPattern} if found, or null otherwise.
+   * @throws {NotFoundException} if an unexpected error occurs during detection
    */
   pro.findAlignmentInRegion = function(overallEstModuleSize, estAlignmentX,
                                        estAlignmentY, allowanceFactor) {
@@ -279,7 +280,7 @@ goog.scope(function() {
       estAlignmentX + allowance);
     if (alignmentAreaRightX - alignmentAreaLeftX <
       overallEstModuleSize * 3) {
-      throw new NotFoundError();
+      throw new NotFoundException();
     }
 
     var alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
@@ -331,6 +332,7 @@ goog.scope(function() {
    * TODO.
    * @param {w69b.qr.detector.FinderPatternInfo} info info.
    * @return {!w69b.qr.detector.DetectorResult} result.
+   * @throws {NotFoundException}
    */
   pro.processFinderPatternInfo = function(info) {
 
@@ -340,7 +342,7 @@ goog.scope(function() {
 
     var moduleSize = this.calculateModuleSize(topLeft, topRight, bottomLeft);
     if (moduleSize < 1.0) {
-      throw new NotFoundError();
+      throw new NotFoundException();
     }
     var dimension = this.computeDimension(topLeft, topRight, bottomLeft,
       moduleSize);
@@ -374,7 +376,7 @@ goog.scope(function() {
           break;
         }
         catch (err) {
-          if (!(err instanceof NotFoundError))
+          if (!(err instanceof NotFoundException))
             throw err;
           // try next round
         }

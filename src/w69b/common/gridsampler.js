@@ -16,7 +16,7 @@
  */
 goog.provide('w69b.common.GridSampler');
 goog.provide('w69b.common.GridSamplerInterface');
-goog.require('w69b.qr.NotFoundError');
+goog.require('w69b.NotFoundException');
 
 goog.scope(function() {
 
@@ -131,7 +131,7 @@ goog.scope(function() {
       x = points[offset] >> 0;
       y = points[offset + 1] >> 0;
       if (x < -1 || x > width || y < -1 || y > height) {
-        throw new w69b.qr.NotFoundError();
+        throw new w69b.NotFoundException();
       }
       nudged = false;
       if (x == -1) {
@@ -155,7 +155,7 @@ goog.scope(function() {
       x = points[offset] >> 0;
       y = points[offset + 1] >> 0;
       if (x < -1 || x > width || y < -1 || y > height) {
-        throw new w69b.qr.NotFoundError();
+        throw new w69b.NotFoundException();
       }
       nudged = false;
       if (x == -1) {

@@ -1,10 +1,10 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.DecodeWorker');
 goog.require('goog.userAgent.product');
+goog.require('w69b.InvalidCharsetException');
+goog.require('w69b.ReaderException');
 goog.require('w69b.img.RGBABitMatrix');
-goog.require('w69b.qr.InvalidCharsetError');
 goog.require('w69b.qr.QRImage');
-goog.require('w69b.qr.ReaderError');
 goog.require('w69b.qr.WorkerMessageType');
 goog.require('w69b.qr.imagedecoding');
 
@@ -13,7 +13,7 @@ var host = self;
 
 goog.scope(function() {
   var qrcode = w69b.qr.imagedecoding;
-  var ReaderError = w69b.qr.ReaderError;
+  var ReaderException = w69b.ReaderException;
   var WorkerMessageType = w69b.qr.WorkerMessageType;
 
   var _ = w69b.qr.DecodeWorker;
@@ -38,7 +38,7 @@ goog.scope(function() {
     try {
       result = qrcode.decodeFromImageData(imgdata, _.onPatternFound);
     } catch (err) {
-      if (err instanceof w69b.qr.InvalidCharsetError && !self.iconv &&
+      if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         _.iconvPath && !failOnCharset) {
         // load iconv.
         importScripts(_.iconvPath);

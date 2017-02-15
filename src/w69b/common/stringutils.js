@@ -1,8 +1,8 @@
 // javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.common.stringutils');
 goog.require('w69b.DecodeHintType');
+goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.iconvlite');
-goog.require('w69b.qr.InvalidCharsetError');
 goog.require('w69b.utf8');
 
 goog.scope(function() {
@@ -10,7 +10,7 @@ goog.scope(function() {
   var utf8 = w69b.utf8;
   var iconv = self.iconv;
   var iconvlite = w69b.iconvlite;
-  var InvalidCharsetError = w69b.qr.InvalidCharsetError;
+  var InvalidCharsetException = w69b.InvalidCharsetException;
 
   _.SHIFT_JIS = 'SHIFT_JIS';
   _.GB2312 = 'GB18030';
@@ -48,17 +48,17 @@ goog.scope(function() {
       str = iconvlite.toString(bytes, charset);
     } else {
       if (!iconv)
-        throw new InvalidCharsetError(
+        throw new InvalidCharsetException(
           'iconv not loaded, cannot handle ' + charset);
       var utf8Bytes = iconv.convert(bytes, charset, 'UTF-8');
       if (utf8Bytes === null)
-        throw new InvalidCharsetError(
+        throw new InvalidCharsetException(
           'toStr ' + charset + ' to UTF-8 ' + bytes);
       bytes = utf8Bytes;
       str = utf8.UTF8BytesToString(bytes);
     }
     if (str === null)
-      throw new InvalidCharsetError();
+      throw new InvalidCharsetException();
     return str;
   };
 
@@ -75,17 +75,17 @@ goog.scope(function() {
     if (charset == 'UTF-8') {
       bytes = utf8.stringToUTF8Bytes(str);
       if (bytes === null)
-        throw new InvalidCharsetError();
+        throw new InvalidCharsetException();
     } else if (iconvlite.isSupported(charset)) {
       bytes = iconvlite.toBytes(str, charset);
     } else {
       bytes = utf8.stringToUTF8Bytes(str);
       if (!iconv)
-        throw new InvalidCharsetError('iconv not loaded');
+        throw new InvalidCharsetException('iconv not loaded');
       bytes = iconv.convert(bytes, 'UTF-8', charset);
     }
     if (bytes === null)
-      throw new InvalidCharsetError(charset + ' to bytes: ' + str);
+      throw new InvalidCharsetException(charset + ' to bytes: ' + str);
     return bytes;
   };
 

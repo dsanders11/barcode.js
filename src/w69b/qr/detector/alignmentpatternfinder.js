@@ -22,14 +22,14 @@
 
 
 goog.provide('w69b.qr.detector.AlignmentPatternFinder');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.img.BitMatrixLike');
-goog.require('w69b.qr.NotFoundError');
 goog.require('w69b.qr.detector.AlignmentPattern');
 
 
 goog.scope(function() {
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
-  var NotFoundError = w69b.qr.NotFoundError;
+  var NotFoundException = w69b.NotFoundException;
   /**
    * This class attempts to find alignment patterns in a QR Code.
    * Alignment patterns look like finder
@@ -157,8 +157,8 @@ goog.scope(function() {
    * image. It is a bit messy since it's pretty performance-critical and so is
    * written to be fast foremost.</p>
    *
-   * @return {AlignmentPattern} if found throws NotFoundError if not
-   * found.
+   * @return {AlignmentPattern} if found
+   * @throws {NotFoundException} if not found
    */
   pro.handlePossibleCenter = function(stateCount, i, j) {
     var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
@@ -190,8 +190,8 @@ goog.scope(function() {
    * image. It is a bit messy since it's pretty performance-critical and so is
    * written to be fast foremost.</p>
    *
-   * @return {AlignmentPattern} if found NotFoundException if not
-   * found.
+   * @return {AlignmentPattern} if found
+   * @throws {NotFoundException} if not found
    */
 
   pro.find = function() {
@@ -268,7 +268,7 @@ goog.scope(function() {
       return this.possibleCenters[0];
     }
 
-    throw new NotFoundError();
+    throw new NotFoundException();
   };
 });
 

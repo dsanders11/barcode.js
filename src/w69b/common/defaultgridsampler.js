@@ -51,7 +51,7 @@ goog.scope(function() {
   pro.sampleGridTransform = function(image, dimensionX, dimensionY,
                                      transform) {
     if (dimensionX <= 0 || dimensionY <= 0) {
-      throw new w69b.qr.NotFoundError();
+      throw new w69b.NotFoundException();
     }
     var bits = new BitMatrix(dimensionX, dimensionY);
     var points = new Array(dimensionX << 1);
@@ -84,7 +84,7 @@ goog.scope(function() {
         // our clever checks above -- can't have that. We could check each
         // point's coordinates but that feels duplicative. We settle for
         // catching and wrapping ArrayIndexOutOfBoundsException.
-        throw new w69b.qr.NotFoundError();
+        throw new w69b.NotFoundException();
       }
     }
     return bits;

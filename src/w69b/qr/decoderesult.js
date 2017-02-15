@@ -16,18 +16,18 @@
  */
 goog.provide('w69b.qr.DecodeResult');
 goog.require('goog.asserts');
-goog.require('w69b.qr.ReaderError');
+goog.require('w69b.ReaderException');
 
 goog.scope(function() {
   /**
    * Encapsulates decoded result reader error.
-   * @param {(string|w69b.qr.ReaderError)} text decoded text or error.
+   * @param {(string|w69b.ReaderException)} text decoded text or error.
    * @param {Array.<w69b.ResultPoint>=} opt_patterns sed for decoding.
    * @constructor
    */
   w69b.qr.DecodeResult = function(text, opt_patterns) {
     /**
-     * @type {(string|w69b.qr.ReaderError)}
+     * @type {(string|w69b.ReaderException)}
      * @private
      */
     this.result_ = text;
@@ -50,15 +50,15 @@ goog.scope(function() {
    * @return {boolean} if result was an error.
    */
   pro.isError = function() {
-    return (this.result_ instanceof w69b.qr.ReaderError);
+    return (this.result_ instanceof w69b.ReaderException);
   };
 
   /**
-   * @return {?w69b.qr.ReaderError} error.
+   * @return {?w69b.ReaderException} error.
    */
   pro.getError = function() {
     if (this.isError())
-      return /** @type {w69b.qr.ReaderError} */ (this.result_);
+      return /** @type {w69b.ReaderException} */ (this.result_);
     else
       return null;
   };

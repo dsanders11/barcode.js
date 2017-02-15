@@ -17,9 +17,9 @@
 
 goog.provide('w69b.GlobalHistogramBinarizer');
 goog.require('w69b.Binarizer');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.BitMatrix');
-goog.require('w69b.qr.NotFoundError');
 
 
 goog.scope(function() {
@@ -211,7 +211,7 @@ goog.scope(function() {
       // black point, throw rather than waste time trying to decode the image,
       // and risk false positives.
       if (secondPeak - firstPeak <= numBuckets >> 4) {
-        throw new w69b.qr.NotFoundError();
+        throw new w69b.NotFoundException();
       }
 
       // Find a valley between them that is low and closer to the white peak.

@@ -1,11 +1,11 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.imagedecoding');
+goog.require('w69b.ReaderException');
 goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.imgtools');
 goog.require('w69b.qr.DecodeResult');
 goog.require('w69b.qr.QRImage');
-goog.require('w69b.qr.ReaderError');
 goog.require('w69b.qr.decoder.Decoder');
 goog.require('w69b.qr.detector.Detector');
 goog.require('w69b.qr.encoder.Encoder');
@@ -66,14 +66,14 @@ goog.scope(function() {
       result = _.decodeFromImageDataThrowing(imgdata, opt_callback);
     } catch (err) {
       result = new DecodeResult(err);
-      if (!(err instanceof w69b.qr.ReaderError))
+      if (!(err instanceof w69b.ReaderException))
         throw err;
     }
     return result;
   };
 
   /**
-   * Throws ReaderError if detection fails.
+   * Throws ReaderException if detection fails.
    * @param {(!ImageData|!w69b.qr.QRImage|!RGBABitMatrix)} imgdata from canvas.
    * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.

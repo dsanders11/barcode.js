@@ -18,8 +18,8 @@
 goog.provide('w69b.qr.detector.FinderPatternFinder');
 goog.require('goog.array');
 goog.require('w69b.DecodeHintType');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.img.BitMatrixLike');
-goog.require('w69b.qr.NotFoundError');
 goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.detector.FinderPattern');
 goog.require('w69b.qr.detector.FinderPatternInfo');
@@ -604,7 +604,7 @@ goog.scope(function() {
     var startSize = this.possibleCenters_.length;
     if (startSize < 3) {
       // Couldn't find enough finder patterns
-      throw new w69b.qr.NotFoundError();
+      throw new w69b.NotFoundException();
     }
     var average;
     var centers = goog.array.clone(this.possibleCenters_);

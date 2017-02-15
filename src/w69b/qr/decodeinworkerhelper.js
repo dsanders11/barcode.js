@@ -5,10 +5,10 @@ goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
 goog.require('goog.userAgent');
+goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.imgtools');
-goog.require('w69b.qr.InvalidCharsetError');
 goog.require('w69b.qr.WorkerMessageType');
 goog.require('w69b.qr.imagedecoding');
 
@@ -229,7 +229,7 @@ goog.scope(function() {
         callback(WorkerMessageType.PATTERN, pattern['toJSON']());
       }.bind(this));
     } catch (err) {
-      if (err instanceof w69b.qr.InvalidCharsetError && !self.iconv &&
+      if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         DecodeInWorkerHelper.iconvUrl_) {
         // load iconv. importScripts(_.iconvPath);
         var url = DecodeInWorkerHelper.iconvUrl_;

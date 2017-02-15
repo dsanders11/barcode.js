@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 goog.provide('w69b.qr.decoder.BitMatrixParser');
-goog.require('w69b.qr.FormatError');
+goog.require('w69b.FormatException');
 goog.require('w69b.qr.decoder.DataMask');
 goog.require('w69b.qr.decoder.FormatInformation');
 goog.require('w69b.qr.decoder.Version');
@@ -32,7 +32,7 @@ goog.scope(function() {
   var FormatInformation = w69b.qr.decoder.FormatInformation;
   var Version = w69b.qr.decoder.Version;
   var DataMask = w69b.qr.decoder.DataMask;
-  var FormatError = w69b.qr.FormatError;
+  var FormatException = w69b.FormatException;
 
   /**
    * @param {w69b.common.BitMatrix} bitMatrix matrix.
@@ -41,7 +41,7 @@ goog.scope(function() {
   w69b.qr.decoder.BitMatrixParser = function(bitMatrix) {
     var dimension = bitMatrix.getHeight();
     if (dimension < 21 || (dimension & 0x03) != 1) {
-      throw new FormatError();
+      throw new FormatException();
     }
     this.bitMatrix = bitMatrix;
     /**
@@ -105,7 +105,7 @@ goog.scope(function() {
     if (this.parsedFormatInfo != null) {
       return this.parsedFormatInfo;
     }
-    throw new FormatError();
+    throw new FormatException();
   };
 
   /**
@@ -151,7 +151,7 @@ goog.scope(function() {
       this.parsedVersion.getDimensionForVersion() == dimension) {
       return this.parsedVersion;
     }
-    throw new FormatError();
+    throw new FormatException();
   };
 
   pro.readCodewords = function() {
@@ -203,7 +203,7 @@ goog.scope(function() {
       readingUp ^= true; // readingUp = !readingUp; // switch directions
     }
     if (resultOffset != version.totalCodewords) {
-      throw new FormatError();
+      throw new FormatException();
     }
     return result;
   };

@@ -24,11 +24,11 @@
  */
 
 goog.provide('w69b.qr.decoder.Version');
+goog.require('w69b.FormatException');
 goog.require('w69b.common.BitMatrix');
-goog.require('w69b.qr.FormatError');
 
 goog.scope(function() {
-  var FormatError = w69b.qr.FormatError;
+  var FormatException = w69b.FormatException;
   /**
    * @constructor
    */
@@ -354,14 +354,14 @@ goog.scope(function() {
 
   Version.getVersionForNumber = function(versionNumber) {
     if (versionNumber < 1 || versionNumber > 40) {
-      throw new FormatError();
+      throw new FormatException();
     }
     return Version.VERSIONS[versionNumber - 1];
   };
 
   Version.getProvisionalVersionForDimension = function(dimension) {
     if (dimension % 4 != 1) {
-      throw new FormatError();
+      throw new FormatException();
     }
     return Version.getVersionForNumber((dimension - 17) >> 2);
   };

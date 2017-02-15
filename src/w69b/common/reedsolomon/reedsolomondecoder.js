@@ -23,9 +23,9 @@
  * limitations under the License.
  */
 
+goog.require('w69b.ReaderException');
 goog.provide('w69b.common.reedsolomon.ReedSolomonDecoder');
 goog.require('w69b.qr.GF256Poly');
-goog.require('w69b.qr.ReaderError');
 
 /**
  * <p>Implements Reed-Solomon decoding, as the name implies.</p>
@@ -59,12 +59,12 @@ goog.scope(function() {
   /**
    * @constructor
    * @param {string=} opt_msg message.
-   * @extends {w69b.qr.ReaderError}
+   * @extends {w69b.ReaderException}
    */
   w69b.common.reedsolomon.ReedSolomonError = function(opt_msg) {
     goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.common.reedsolomon.ReedSolomonError, w69b.qr.ReaderError);
+  goog.inherits(w69b.common.reedsolomon.ReedSolomonError, w69b.ReaderException);
   var ReedSolomonError = w69b.common.reedsolomon.ReedSolomonError;
   /**
    * @constructor
