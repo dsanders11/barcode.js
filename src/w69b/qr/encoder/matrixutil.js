@@ -16,8 +16,8 @@
  */
 
 goog.provide('w69b.qr.encoder.MatrixUtil');
+goog.require('w69b.WriterException');
 goog.require('w69b.common.BitArray');
-goog.require('w69b.qr.WriterError');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.ByteMatrix');
@@ -29,7 +29,7 @@ goog.scope(function() {
   var BitArray = w69b.common.BitArray;
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
   var Version = w69b.qr.decoder.Version;
-  var WriterError = w69b.qr.WriterError;
+  var WriterException = w69b.WriterException;
   var QRCode = w69b.qr.encoder.QRCode;
   var MaskUtil = w69b.qr.encoder.MaskUtil;
 
@@ -298,7 +298,7 @@ goog.scope(function() {
     }
     // All bits should be consumed.
     if (bitIndex != dataBits.getSize()) {
-      throw new WriterError('Not all bits consumed: ' +
+      throw new WriterException('Not all bits consumed: ' +
         bitIndex + '/' + dataBits.getSize());
     }
   };
@@ -377,7 +377,7 @@ goog.scope(function() {
    */
   _.makeTypeInfoBits = function(ecLevel, maskPattern, bits) {
     if (!QRCode.isValidMaskPattern(maskPattern)) {
-      throw new WriterError('Invalid mask pattern');
+      throw new WriterException('Invalid mask pattern');
     }
     var typeInfo = (ecLevel.getBits() << 3) | maskPattern;
     bits.appendBits(typeInfo, 5);
@@ -390,7 +390,7 @@ goog.scope(function() {
     bits.xor(maskBits);
 
     if (bits.getSize() != 15) {  // Just in case.
-      throw new WriterError('should not happen but we got: ' +
+      throw new WriterException('should not happen but we got: ' +
         bits.getSize());
     }
   };
@@ -408,7 +408,7 @@ goog.scope(function() {
     bits.appendBits(bchCode, 12);
 
     if (bits.getSize() != 18) {  // Just in case.
-      throw new WriterError('should not happen but we got: ' +
+      throw new WriterException('should not happen but we got: ' +
         bits.getSize());
     }
   };
@@ -445,7 +445,7 @@ goog.scope(function() {
    */
   _.embedDarkDotAtLeftBottomCorner = function(matrix) {
     if (matrix.get(8, matrix.getHeight() - 8) == 0) {
-      throw new WriterError();
+      throw new WriterException();
     }
     matrix.set(8, matrix.getHeight() - 8, 1);
   };
@@ -453,7 +453,7 @@ goog.scope(function() {
   _.embedHorizontalSeparationPattern = function(xStart, yStart, matrix) {
     for (var x = 0; x < 8; ++x) {
       if (!_.isEmpty(matrix.get(xStart + x, yStart))) {
-        throw new WriterError();
+        throw new WriterException();
       }
       matrix.set(xStart + x, yStart, 0);
     }
@@ -462,7 +462,7 @@ goog.scope(function() {
   _.embedVerticalSeparationPattern = function(xStart, yStart, matrix) {
     for (var y = 0; y < 7; ++y) {
       if (!_.isEmpty(matrix.get(xStart, yStart + y))) {
-        throw new WriterError();
+        throw new WriterException();
       }
       matrix.set(xStart, yStart + y, 0);
     }

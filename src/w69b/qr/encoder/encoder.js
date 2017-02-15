@@ -37,7 +37,7 @@ goog.scope(function() {
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
   var MatrixUtil = w69b.qr.encoder.MatrixUtil;
   var Version = w69b.qr.decoder.Version;
-  var WriterError = w69b.qr.WriterError;
+  var WriterException = w69b.WriterException;
   var BlockPair = w69b.qr.encoder.BlockPair;
   var QRCode = w69b.qr.encoder.QRCode;
   var MaskUtil = w69b.qr.encoder.MaskUtil;
@@ -302,7 +302,7 @@ goog.scope(function() {
         return version;
       }
     }
-    throw new WriterError('Data too big');
+    throw new WriterException('Data too big');
   };
 
   /**
@@ -312,7 +312,7 @@ goog.scope(function() {
     var i;
     var capacity = numDataBytes << 3;
     if (bits.getSize() > capacity) {
-      throw new WriterError('data bits cannot fit in the QR Code' +
+      throw new WriterException('data bits cannot fit in the QR Code' +
         bits.getSize() + ' > ' + capacity);
     }
     for (i = 0; i < 4 && bits.getSize() < capacity; ++i) {
@@ -333,7 +333,7 @@ goog.scope(function() {
       bits.appendBits((i & 0x01) == 0 ? 0xEC : 0x11, 8);
     }
     if (bits.getSize() != capacity) {
-      throw new WriterError('Bits size does not equal capacity');
+      throw new WriterException('Bits size does not equal capacity');
     }
   };
 
@@ -347,7 +347,7 @@ goog.scope(function() {
                                                       numDataBytesInBlock,
                                                       numECBytesInBlock) {
     if (blockID >= numRSBlocks) {
-      throw new WriterError('Block ID too large');
+      throw new WriterException('Block ID too large');
     }
     // numRsBlocksInGroup2 = 196 % 5 = 1
     var numRsBlocksInGroup2 = numTotalBytes % numRSBlocks;
@@ -368,11 +368,11 @@ goog.scope(function() {
     // Sanity checks.
     // 26 = 26
     if (numEcBytesInGroup1 != numEcBytesInGroup2) {
-      throw new WriterError('EC bytes mismatch');
+      throw new WriterException('EC bytes mismatch');
     }
     // 5 = 4 + 1.
     if (numRSBlocks != numRsBlocksInGroup1 + numRsBlocksInGroup2) {
-      throw new WriterError('RS blocks mismatch');
+      throw new WriterException('RS blocks mismatch');
     }
     // 196 = (13 + 26) * 4 + (14 + 26) * 1
     if (numTotalBytes !=
@@ -380,7 +380,7 @@ goog.scope(function() {
         numRsBlocksInGroup1) +
         ((numDataBytesInGroup2 + numEcBytesInGroup2) *
           numRsBlocksInGroup2)) {
-      throw new WriterError('Total bytes mismatch');
+      throw new WriterException('Total bytes mismatch');
     }
 
     if (blockID < numRsBlocksInGroup1) {
@@ -402,7 +402,7 @@ goog.scope(function() {
 
     // "bits" must have "getNumDataBytes" bytes of data.
     if (bits.getSizeInBytes() != numDataBytes) {
-      throw new WriterError('Number of bits and data bytes does not match');
+      throw new WriterException('Number of bits and data bytes does not match');
     }
 
     // Step 1.  Divide data bytes into blocks and generate error correction
@@ -435,7 +435,7 @@ goog.scope(function() {
       dataBytesOffset += numDataBytesInBlock[0];
     }
     if (numDataBytes != dataBytesOffset) {
-      throw new WriterError('Data bytes does not match offset');
+      throw new WriterException('Data bytes does not match offset');
     }
 
     var result = new BitArray();
@@ -459,7 +459,7 @@ goog.scope(function() {
       });
     }
     if (numTotalBytes != result.getSizeInBytes()) {  // Should be same.
-      throw new WriterError('Interleaving error: ' + numTotalBytes +
+      throw new WriterException('Interleaving error: ' + numTotalBytes +
         ' and ' + result.getSizeInBytes() + ' differ.');
     }
 
@@ -502,7 +502,7 @@ goog.scope(function() {
   _.appendLengthInfo = function(numLetters, version, mode, bits) {
     var numBits = mode.getCharacterCountBits(version);
     if (numLetters >= (1 << numBits)) {
-      throw new WriterError(numLetters + ' is bigger than ' +
+      throw new WriterException(numLetters + ' is bigger than ' +
         ((1 << numBits) - 1));
     }
     bits.appendBits(numLetters, numBits);
@@ -527,7 +527,7 @@ goog.scope(function() {
         _.appendKanjiBytes(content, bits);
         break;
       default:
-        throw new WriterError('Invalid mode: ' + mode);
+        throw new WriterException('Invalid mode: ' + mode);
     }
   };
 
@@ -563,12 +563,12 @@ goog.scope(function() {
     while (i < length) {
       var code1 = _.getAlphanumericCode(content.charCodeAt(i));
       if (code1 == -1) {
-        throw new WriterError();
+        throw new WriterException();
       }
       if (i + 1 < length) {
         var code2 = _.getAlphanumericCode(content.charCodeAt(i + 1));
         if (code2 == -1) {
-          throw new WriterError();
+          throw new WriterException();
         }
         // Encode two alphanumeric letters in 11 bits.
         bits.appendBits(code1 * 45 + code2, 11);
@@ -586,7 +586,7 @@ goog.scope(function() {
     try {
       bytes = stringutils.stringToBytes(content, encoding);
     } catch (uee) {
-      throw new WriterError(uee);
+      throw new WriterException(uee);
     }
     bytes.forEach(function(b) {
       bits.appendBits(b, 8);
@@ -598,7 +598,7 @@ goog.scope(function() {
     try {
       bytes = stringutils.stringToBytes(content, 'Shift_JIS');
     } catch (uee) {
-      throw new WriterError(uee);
+      throw new WriterException(uee);
     }
     var length = bytes.length;
     for (var i = 0; i < length; i += 2) {
@@ -612,7 +612,7 @@ goog.scope(function() {
         subtracted = code - 0xc140;
       }
       if (subtracted == -1) {
-        throw new WriterError('Invalid byte sequence');
+        throw new WriterException('Invalid byte sequence');
       }
       var encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
       bits.appendBits(encoded, 13);

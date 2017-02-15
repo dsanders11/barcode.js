@@ -28,7 +28,7 @@ define(['chai'], function(chai) {
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   var EncodeHintType = w69b.EncodeHintType;
   var BitArray = w69b.common.BitArray;
-  var WriterError = w69b.qr.WriterError;
+  var WriterException = w69b.WriterException;
   var stringutils = w69b.common.stringutils;
   describe('EncoderTestCase', function() {
 
@@ -218,7 +218,7 @@ define(['chai'], function(chai) {
       assert.throw(function() {
         Encoder.appendBytes('a', ModeEnum.ALPHANUMERIC, bits,
           Encoder.DEFAULT_BYTE_MODE_ENCODING);
-      }, WriterError);
+      }, WriterException);
 
       // Should use append8BitBytes.
       // 0x61, 0x62, 0x63
@@ -432,7 +432,7 @@ define(['chai'], function(chai) {
       bits = new BitArray();
       assert.throw(function() {
         Encoder.appendAlphanumericBytes('abc', bits);
-      }, WriterError);
+      }, WriterException);
     });
 
     it('testAppend8BitBytes', function() {
