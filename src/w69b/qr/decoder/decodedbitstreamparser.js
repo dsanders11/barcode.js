@@ -17,8 +17,8 @@
 
 goog.provide('w69b.qr.decoder.DecodedBitStreamParser');
 goog.require('goog.string.StringBuffer');
-goog.require('w69b.BitSource');
 goog.require('w69b.FormatException');
+goog.require('w69b.common.BitSource');
 goog.require('w69b.common.CharacterSetECI');
 goog.require('w69b.common.stringutils');
 goog.require('w69b.qr.decoder.Mode');
@@ -26,7 +26,7 @@ goog.require('w69b.qr.decoder.ModeEnum');
 
 goog.scope(function() {
   var _ = w69b.qr.decoder.DecodedBitStreamParser;
-  var BitSource = w69b.BitSource;
+  var BitSource = w69b.common.BitSource;
   var Mode = w69b.qr.decoder.Mode;
   var ModeEnum = w69b.qr.decoder.ModeEnum;
   var StringBuffer = goog.string.StringBuffer;

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.BitSource');
+goog.provide('w69b.common.BitSource');
 
 goog.scope(function() {
   /** <p>This provides an easy abstraction to read bits at a time from a
@@ -31,12 +31,12 @@ goog.scope(function() {
    * from most-significant to least-significant bit.  @constructor
    * @constructor
    */
-  w69b.BitSource = function(bytes) {
+  w69b.common.BitSource = function(bytes) {
     this.bytes_ = bytes;
     this.byteOffset_ = 0;
     this.bitOffset_ = 0;
   };
-  var BitSource = w69b.BitSource;
+  var BitSource = w69b.common.BitSource;
   var pro = BitSource.prototype;
 
   /**
