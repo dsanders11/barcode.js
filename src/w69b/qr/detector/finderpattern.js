@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 goog.provide('w69b.qr.detector.FinderPattern');
-goog.provide('w69b.qr.detector.FinderPatternInfo');
 goog.require('w69b.ResultPoint');
 
 goog.scope(function() {
@@ -173,18 +172,5 @@ goog.scope(function() {
       'x': this.getX(),
       'y': this.getY(),
       'size': this.getEstimatedModuleSize()};
-  };
-
-
-  /**
-   * @param {Array.<FinderPattern>} patternCenters size 3 array with
-   * bottom left, top left and top right corner.
-   * @constructor
-   */
-  w69b.qr.detector.FinderPatternInfo = function(patternCenters) {
-    // Bottom left and top right is flipped. Why?
-    this.bottomLeft = patternCenters[0];
-    this.topLeft = patternCenters[1];
-    this.topRight = patternCenters[2];
   };
 });

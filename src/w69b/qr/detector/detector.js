@@ -27,6 +27,7 @@ goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.detector.AlignmentPattern');
 goog.require('w69b.qr.detector.AlignmentPatternFinder');
 goog.require('w69b.qr.detector.FinderPatternFinder');
+goog.require('w69b.qr.detector.FinderPatternInfo');
 
 
 goog.scope(function() {
