@@ -5,6 +5,7 @@ var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var del = require('del');
 var debug = require('gulp-debug');
+var format = require('gulp-clang-format');
 var karma = require('karma');
 var concat = require('gulp-concat');
 var size = require('gulp-size');
@@ -26,12 +27,8 @@ require('gulp-release-tasks')(gulp);
 var PATHS = {
   src: {
     js: ['src/**/*.js'],
-    lintable: [
-      'src/**/*.js',
-      'tests/**/*.js',
-      '!tests/**/*.data.js',
-      '!src/w69b/iconvlite.js',
-      '!src/w69b/shaders/**'
+    checkFormat: [
+      'src/**/*.js'
     ],
     shaders: ['src/w69b/shaders/*.{vs,fs}'],
     closureBase: 'node_modules/google-closure-library/closure/goog/base.js',
@@ -49,6 +46,18 @@ var PATHS = {
 
 gulp.task('clean', function() {
   return del(['dist']);
+});
+ 
+gulp.task('check-format', function() {
+  return gulp.src(PATHS.src.checkFormat)
+     .pipe(format.checkFormat(undefined, undefined, {verbose: true}));
+});
+
+gulp.task('format', function() {
+  // The base option ensures the glob doesn't strip prefixes
+  return gulp.src(PATHS.src.checkFormat, {base: '.'})
+      .pipe(format.format())
+      .pipe(gulp.dest('.'));
 });
 
 gulp.task('test', ['buildDebug'], function(done) {
@@ -147,7 +156,7 @@ gulp.task('compile', function() {
 });
 
 gulp.task('all', function(cb) {
-  runSequence('compile', 'test', cb);
+  runSequence('check-format', 'compile', 'test', cb);
 });
 
 gulp.task('default', function(cb) {

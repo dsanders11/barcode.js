@@ -15,6 +15,7 @@
     "event-stream": "^3.3.1",
     "google-closure-library": "^20170124.0.0",
     "gulp": "^3.9.0",
+    "gulp-clang-format": "1.0.23",
     "gulp-closure-builder-list": "0.0.3",
     "gulp-closure-compiler": "^0.4.0",
     "gulp-closure-deps": "^0.4.0",
