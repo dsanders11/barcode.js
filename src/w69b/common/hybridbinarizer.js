@@ -16,9 +16,9 @@
  */
 
 goog.provide('w69b.common.HybridBinarizer');
-goog.require('w69b.GlobalHistogramBinarizer');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.BitMatrix');
+goog.require('w69b.common.GlobalHistogramBinarizer');
 goog.require('w69b.qr.IntArray2D');
 
 goog.scope(function() {
@@ -47,12 +47,12 @@ goog.scope(function() {
    *
    * @param {w69b.qr.QRImage} source gray values.
    * @constructor
-   * @extends {w69b.GlobalHistogramBinarizer}
+   * @extends {w69b.common.GlobalHistogramBinarizer}
    */
   w69b.common.HybridBinarizer = function(source) {
     goog.base(this, source);
   };
-  goog.inherits(w69b.common.HybridBinarizer, w69b.GlobalHistogramBinarizer);
+  goog.inherits(w69b.common.HybridBinarizer, w69b.common.GlobalHistogramBinarizer);
   var _ = w69b.common.HybridBinarizer;
   var pro = _.prototype;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.GlobalHistogramBinarizer');
+goog.provide('w69b.common.GlobalHistogramBinarizer');
 goog.require('w69b.Binarizer');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitArray');
@@ -43,7 +43,7 @@ goog.scope(function() {
    * @constructor
    * @extends {w69b.Binarizer}
    */
-  w69b.GlobalHistogramBinarizer = function(source) {
+  w69b.common.GlobalHistogramBinarizer = function(source) {
     goog.base(this, source);
     /**
      * @type {Uint8Array}
@@ -56,7 +56,7 @@ goog.scope(function() {
      */
     this.buckets_ = new Uint8Array(_.LUMINANCE_BUCKETS);
   };
-  var _ = w69b.GlobalHistogramBinarizer;
+  var _ = w69b.common.GlobalHistogramBinarizer;
   goog.inherits(_, w69b.Binarizer);
   var pro = _.prototype;
 
