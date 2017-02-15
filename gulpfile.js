@@ -153,7 +153,9 @@ gulp.task('compile', function() {
     }));
 });
 
-gulp.task('all', ['compile', 'gjslint', 'test']);
+gulp.task('all', function(cb) {
+  runSequence('compile', 'test', cb);
+});
 
 gulp.task('default', function(cb) {
   runSequence('clean', 'all', cb);
