@@ -20,6 +20,7 @@ goog.provide('w69b.qr.detector.Detector');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.DefaultGridSampler');
+goog.require('w69b.common.DetectorResult');
 goog.require('w69b.common.detector.MathUtils');
 goog.require('w69b.img.BitMatrixLike');
 goog.require('w69b.qr.decoder.Version');
@@ -34,15 +35,7 @@ goog.scope(function() {
   var NotFoundException = w69b.NotFoundException;
   var MathUtils = w69b.common.detector.MathUtils;
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
-
-  /**
-   * @constructor
-   */
-  w69b.qr.detector.DetectorResult = function(bits, points) {
-    this.bits = bits;
-    this.points = points;
-  };
-  var DetectorResult = w69b.qr.detector.DetectorResult;
+  var DetectorResult = w69b.common.DetectorResult;
 
   /**
    * Encapsulates logic that can detect a QR Code in an image, even if the
@@ -331,7 +324,7 @@ goog.scope(function() {
   /**
    * TODO.
    * @param {w69b.qr.detector.FinderPatternInfo} info info.
-   * @return {!w69b.qr.detector.DetectorResult} result.
+   * @return {!w69b.common.DetectorResult} result.
    * @throws {NotFoundException}
    */
   pro.processFinderPatternInfo = function(info) {
@@ -400,7 +393,7 @@ goog.scope(function() {
 
 
   /**
-   * @return {!w69b.qr.detector.DetectorResult} result.
+   * @return {!w69b.common.DetectorResult} result.
    */
   pro.detect = function() {
     var info = new w69b.qr.detector.FinderPatternFinder(this.image,
