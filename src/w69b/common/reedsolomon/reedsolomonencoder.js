@@ -16,12 +16,12 @@
  */
 
 goog.provide('w69b.common.reedsolomon.ReedSolomonEncoder');
-goog.require('w69b.qr.GF256');
-goog.require('w69b.qr.GF256Poly');
+goog.require('w69b.common.reedsolomon.GF256');
+goog.require('w69b.common.reedsolomon.GF256Poly');
 
 goog.scope(function() {
-  var GF256 = w69b.qr.GF256;
-  var GF256Poly = w69b.qr.GF256Poly;
+  var GF256 = w69b.common.reedsolomon.GF256;
+  var GF256Poly = w69b.common.reedsolomon.GF256Poly;
 
   /**
    * <p>Implements Reed-Solomon enbcoding, as the name implies.</p>

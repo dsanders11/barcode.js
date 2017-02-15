@@ -23,9 +23,10 @@
  * limitations under the License.
  */
 
-goog.require('w69b.ReaderException');
 goog.provide('w69b.common.reedsolomon.ReedSolomonDecoder');
-goog.require('w69b.qr.GF256Poly');
+goog.require('w69b.common.reedsolomon.GF256Poly');
+goog.require('w69b.common.reedsolomon.ReedSolomonException');
+
 
 /**
  * <p>Implements Reed-Solomon decoding, as the name implies.</p>
@@ -54,21 +55,11 @@ goog.require('w69b.qr.GF256Poly');
 
 
 goog.scope(function() {
-  var GF256Poly = w69b.qr.GF256Poly;
-
+  var GF256Poly = w69b.common.reedsolomon.GF256Poly;
+  var ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
   /**
    * @constructor
-   * @param {string=} opt_msg message.
-   * @extends {w69b.ReaderException}
-   */
-  w69b.common.reedsolomon.ReedSolomonError = function(opt_msg) {
-    goog.base(this, opt_msg);
-  };
-  goog.inherits(w69b.common.reedsolomon.ReedSolomonError, w69b.ReaderException);
-  var ReedSolomonError = w69b.common.reedsolomon.ReedSolomonError;
-  /**
-   * @constructor
-   * @param {!w69b.qr.GF256} field field.
+   * @param {!w69b.common.reedsolomon.GF256} field field.
    */
   w69b.common.reedsolomon.ReedSolomonDecoder = function(field) {
     this.field = field;
@@ -114,7 +105,7 @@ goog.scope(function() {
     for (var i = 0; i < errorLocations.length; i++) {
       var position = received.length - 1 - this.field.log(errorLocations[i]);
       if (position < 0) {
-        throw new ReedSolomonError('bad error location');
+        throw new ReedSolomonException('bad error location');
       }
       received[position] = GF256Poly.addOrSubtractScalar(received[position],
         errorMagnitudes[i]);
@@ -148,7 +139,7 @@ goog.scope(function() {
       // Divide rLastLast by rLast, with quotient in q and remainder in r
       if (rLast.isZero()) {
         // Oops, Euclidean algorithm already terminated?
-        throw new ReedSolomonError('r_{i-1} was zero');
+        throw new ReedSolomonException('r_{i-1} was zero');
       }
       r = rLastLast;
       var q = this.field.zero;
@@ -169,7 +160,7 @@ goog.scope(function() {
 
     var sigmaTildeAtZero = t.getCoefficient(0);
     if (sigmaTildeAtZero == 0) {
-      throw new ReedSolomonError('sigmaTilde(0) was zero');
+      throw new ReedSolomonException('sigmaTilde(0) was zero');
     }
 
     var inverse = this.field.inverse(sigmaTildeAtZero);
@@ -193,7 +184,7 @@ goog.scope(function() {
       }
     }
     if (e != numErrors) {
-      throw new ReedSolomonError('locator degree does not match ' +
+      throw new ReedSolomonException('locator degree does not match ' +
         'number of roots');
     }
     return result;

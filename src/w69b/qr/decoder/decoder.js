@@ -24,14 +24,14 @@
  */
 
 goog.provide('w69b.qr.decoder.Decoder');
+goog.require('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
-goog.require('w69b.qr.GF256');
 goog.require('w69b.qr.decoder.BitMatrixParser');
 goog.require('w69b.qr.decoder.DataBlock');
 goog.require('w69b.qr.decoder.DecodedBitStreamParser');
 
 goog.scope(function() {
-  var GF256 = w69b.qr.GF256;
+  var GF256 = w69b.common.reedsolomon.GF256;
   var DataBlock = w69b.qr.decoder.DataBlock;
 
   var _ = w69b.qr.decoder.Decoder;

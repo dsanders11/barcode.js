@@ -5,7 +5,7 @@ define(['chai', 'corrupt'], function(chai, corrupt) {
 describe('ReedSomonEncoder test', function() {
   var ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;
   var ReedSolomonDecoder = w69b.common.reedsolomon.ReedSolomonDecoder;
-  var GF256 = w69b.qr.GF256;
+  var GF256 = w69b.common.reedsolomon.GF256;
 
   function doTestQRCodeEncoding(dataBytes, expectedECBytes) {
     var toEncode = dataBytes.concat.apply(dataBytes,

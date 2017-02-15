@@ -16,9 +16,9 @@
  */
 
 goog.require('goog.array');
+goog.require('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
-goog.require('w69b.common.reedsolomon.ReedSolomonError');
-goog.require('w69b.qr.GF256');
+goog.require('w69b.common.reedsolomon.ReedSolomonException');
 
 
 define(['chai', 'corrupt'], function(chai, corrupt) {
@@ -35,7 +35,7 @@ define(['chai', 'corrupt'], function(chai, corrupt) {
     var QR_CODE_ECC_BYTES = QR_CODE_TEST_WITH_EC.length - QR_CODE_TEST.length;
     var QR_CODE_CORRECTABLE = QR_CODE_ECC_BYTES / 2;
 
-    var qrRSDecoder = new ReedSolomonDecoder(w69b.qr.GF256.QR_CODE_FIELD);
+    var qrRSDecoder = new ReedSolomonDecoder(w69b.common.reedsolomon.GF256.QR_CODE_FIELD);
 
 
     function checkQRRSDecode(received) {
@@ -75,7 +75,7 @@ define(['chai', 'corrupt'], function(chai, corrupt) {
       corrupt(received, QR_CODE_CORRECTABLE + 1);
       expect(function() {
         checkQRRSDecode(received);
-      }).to.throw(w69b.common.reedsolomon.ReedSolomonError);
+      }).to.throw(w69b.common.reedsolomon.ReedSolomonException);
     });
   });
 });

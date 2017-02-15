@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.qr.GF256Poly');
+goog.provide('w69b.common.reedsolomon.GF256Poly');
 goog.require('goog.asserts');
 
 /**
@@ -45,20 +45,20 @@ goog.scope(function() {
    * @constructor
    * @extends {Error}
    */
-  w69b.qr.WrongFieldError = function(opt_message) {
+  w69b.common.reedsolomon.WrongFieldError = function(opt_message) {
     goog.base(this, opt_message);
   };
-  goog.inherits(w69b.qr.WrongFieldError, Error);
-  var WrongFieldError = w69b.qr.WrongFieldError;
+  goog.inherits(w69b.common.reedsolomon.WrongFieldError, Error);
+  var WrongFieldError = w69b.common.reedsolomon.WrongFieldError;
 
 
 
   /**
-   * @param {!w69b.qr.GF256} field field.
+   * @param {!w69b.common.reedsolomon.GF256} field field.
    * @param {Array} coefficients coefficients.
    * @constructor
    */
-  w69b.qr.GF256Poly = function(field, coefficients) {
+  w69b.common.reedsolomon.GF256Poly = function(field, coefficients) {
     goog.asserts.assert(coefficients != null && coefficients.length != 0);
     this.field = field;
     var coefficientsLength = coefficients.length;
@@ -84,7 +84,7 @@ goog.scope(function() {
       this.coefficients = coefficients;
     }
   };
-  var GF256Poly = w69b.qr.GF256Poly;
+  var GF256Poly = w69b.common.reedsolomon.GF256Poly;
   var pro = GF256Poly.prototype;
 
 
@@ -134,8 +134,8 @@ goog.scope(function() {
 
   /**
    * Add or substract other  poly.
-   * @param {!w69b.qr.GF256Poly} other other poly.
-   * @return {!w69b.qr.GF256Poly} result.
+   * @param {!w69b.common.reedsolomon.GF256Poly} other other poly.
+   * @return {!w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.addOrSubtract = function(other) {
     if (this.field != other.field) {
@@ -173,8 +173,8 @@ goog.scope(function() {
 
   /**
    * Multiply with other poly.
-   * @param {!w69b.qr.GF256Poly} other other poly.
-   * @return {w69b.qr.GF256Poly} result.
+   * @param {!w69b.common.reedsolomon.GF256Poly} other other poly.
+   * @return {w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiply1 = function(other) {
     if (this.field != other.field) {
@@ -201,7 +201,7 @@ goog.scope(function() {
   /**
    * Multiply with scalar.
    * @param {!number} scalar other poly.
-   * @return {w69b.qr.GF256Poly} result.
+   * @return {w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiply2 = function(scalar) {
     if (scalar == 0) {
@@ -219,7 +219,7 @@ goog.scope(function() {
   };
   /**
    * TODO.
-   * @return {!w69b.qr.GF256Poly} result.
+   * @return {!w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiplyByMonomial = function(degree, coefficient) {
     goog.asserts.assert(degree >= 0);
@@ -239,8 +239,8 @@ goog.scope(function() {
 
   /**
    * Divide by other poly.
-   * @param {!w69b.qr.GF256Poly} other other poly.
-   * @return {Array.<w69b.qr.GF256Poly>} result (quotient, remainder).
+   * @param {!w69b.common.reedsolomon.GF256Poly} other other poly.
+   * @return {Array.<w69b.common.reedsolomon.GF256Poly>} result (quotient, remainder).
    */
   pro.divide = function(other) {
     if (this.field != other.field) {

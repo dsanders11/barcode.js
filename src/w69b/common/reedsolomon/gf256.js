@@ -23,17 +23,17 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.qr.GF256');
-goog.require('w69b.qr.GF256Poly');
+goog.provide('w69b.common.reedsolomon.GF256');
+goog.require('w69b.common.reedsolomon.GF256Poly');
 
 goog.scope(function() {
-  var GF256Poly = w69b.qr.GF256Poly;
+  var GF256Poly = w69b.common.reedsolomon.GF256Poly;
 
   /**
    * @param {number} primitive number.
    * @constructor
    */
-  w69b.qr.GF256 = function(primitive) {
+  w69b.common.reedsolomon.GF256 = function(primitive) {
     this.expTable = new Array(256);
     this.logTable = new Array(256);
     var x = 1;
@@ -55,7 +55,7 @@ goog.scope(function() {
     at1[0] = 1;
     this.one = new GF256Poly(this, new Array(at1));
   };
-  var GF256 = w69b.qr.GF256;
+  var GF256 = w69b.common.reedsolomon.GF256;
   var pro = GF256.prototype;
 
   /**

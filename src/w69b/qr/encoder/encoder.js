@@ -19,9 +19,9 @@ goog.provide('w69b.qr.encoder.Encoder');
 goog.require('w69b.EncodeHintType');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.CharacterSetECI');
+goog.require('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.ReedSolomonEncoder');
 goog.require('w69b.common.stringutils');
-goog.require('w69b.qr.GF256');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 goog.require('w69b.qr.decoder.Mode');
 goog.require('w69b.qr.decoder.ModeEnum');
@@ -412,7 +412,7 @@ goog.scope(function() {
     var maxNumDataBytes = 0;
     var maxNumEcBytes = 0;
 
-    // Since, we know the number of reedsolmon blocks, we can initialize the
+    // Since, we know the number of reedsolomon blocks, we can initialize the
     // vector with the number.
     var blocks = [];
     var i;
@@ -478,7 +478,7 @@ goog.scope(function() {
     for (i = 0; i < numDataBytes; i++) {
       toEncode[i] = dataBytes[i] & 0xFF;
     }
-    new ReedSolomonEncoder(w69b.qr.GF256.QR_CODE_FIELD).encode(toEncode,
+    new ReedSolomonEncoder(w69b.common.reedsolomon.GF256.QR_CODE_FIELD).encode(toEncode,
       numEcBytesInBlock);
 
     var ecBytes = new Array(numEcBytesInBlock);
