@@ -59,6 +59,8 @@ goog.scope(function() {
    * @param {number} numBits number of bits to read.  @return {number} int
    * representing the bits read. The bits will appear as the least-significant
    * bits of the int.
+   * @return {number} representing the bits read. The bits will appear as the
+   *                  least-significant bits of the int
    */
   pro.readBits = function(numBits) {
     if (numBits < 1 || numBits > 32 || numBits > this.available()) {

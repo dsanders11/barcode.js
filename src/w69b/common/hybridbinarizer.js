@@ -185,6 +185,7 @@ goog.scope(function() {
    * Calculates a single black point for each block of pixels and saves it away.
    * See the following thread for a discussion of this algorithm:
    *  http://groups.google.com/group/zxing/browse_thread/thread/d06efa2c35a7ddc0
+   * @return {IntArray2D} the black points
    */
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
                                     height) {

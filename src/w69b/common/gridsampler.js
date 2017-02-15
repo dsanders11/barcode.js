@@ -76,6 +76,22 @@ goog.scope(function() {
    * @param {number} dimensionX width of BitMatrix to sample from image.
    * @param {number} dimensionY height of BitMatrix to sample from
    * image.
+   * @param {number} p1ToX point 1 preimage X
+   * @param {number} p1ToY point 1 preimage Y
+   * @param {number} p2ToX point 2 preimage X
+   * @param {number} p2ToY point 2 preimage Y
+   * @param {number} p3ToX point 3 preimage X
+   * @param {number} p3ToY point 3 preimage Y
+   * @param {number} p4ToX point 4 preimage X
+   * @param {number} p4ToY point 4 preimage Y
+   * @param {number} p1FromX point 1 image X
+   * @param {number} p1FromY point 1 image Y
+   * @param {number} p2FromX point 2 image X
+   * @param {number} p2FromY point 2 image Y
+   * @param {number} p3FromX point 3 image X
+   * @param {number} p3FromY point 3 image Y
+   * @param {number} p4FromX point 4 image X
+   * @param {number} p4FromY point 4 image Y
    * @return {w69b.common.BitMatrix} representing a grid of points sampled from
    * the image within a region defined by the "from" parameters by the given
    * points is invalid or results in sampling outside the image boundaries.

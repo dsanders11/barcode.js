@@ -28,8 +28,8 @@
  */
 
 goog.provide('w69b.iconvlite');
-goog.require('w69b.utf8');
 goog.require('goog.object');
+goog.require('w69b.utf8');
 
 
 goog.scope(function() {

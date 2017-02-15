@@ -21,6 +21,7 @@ goog.scope(function() {
 
   /**
    * Euclidean distance.
+   * @return {number} Euclidean distance between points A and B
    */
   _.distance = function(aX, aY, bX, bY) {
     var xDiff = aX - bX;

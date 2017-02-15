@@ -18,6 +18,7 @@
 
 goog.provide('w69b.qr.detector.Detector');
 goog.require('w69b.NotFoundException');
+goog.require('w69b.ResultPoint');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.DefaultGridSampler');
 goog.require('w69b.common.DetectorResult');
@@ -37,6 +38,7 @@ goog.scope(function() {
   var MathUtils = w69b.common.detector.MathUtils;
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
   var DetectorResult = w69b.common.DetectorResult;
+  var ResultPoint = w69b.ResultPoint;
 
   /**
    * Encapsulates logic that can detect a QR Code in an image, even if the
@@ -180,10 +182,14 @@ goog.scope(function() {
   };
 
   /**
-   * <p>Estimates module size based on two finder patterns -- it uses
+   * Estimates module size based on two finder patterns -- it uses
    * {@link #sizeOfBlackWhiteBlackRunBothWays(int, int, int, int)} to
    * figure the
-   * width of each, measuring along the axis between their centers.</p>
+   * width of each, measuring along the axis between their centers.
+   * @param {ResultPoint} pattern first pattern
+   * @param {ResultPoint} otherPattern other pattern
+   * @return {number} module size
+   * @final
    */
   pro.calculateModuleSizeOneWay = function(pattern, otherPattern) {
     var moduleSizeEst1 = this.sizeOfBlackWhiteBlackRunBothWays(
@@ -207,8 +213,13 @@ goog.scope(function() {
   };
 
   /**
-   * <p>Computes an average estimated module size based on estimated derived
-   * from the positions of the three finder patterns.</p>
+   * Computes an average estimated module size based on estimated derived from
+   * the positions of the three finder patterns.
+   *
+   * @param {ResultPoint} topLeft detected top-left finder pattern center
+   * @param {ResultPoint} topRight detected top-right finder pattern center
+   * @param {ResultPoint} bottomLeft detected bottom-left finder pattern center
+   * @return {number} estimated module size
    */
   pro.calculateModuleSize = function(topLeft, topRight, bottomLeft) {
     // Take the average
