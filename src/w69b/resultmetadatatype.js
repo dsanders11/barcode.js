@@ -1,6 +1,6 @@
-// javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
+// javascript (closure) port (c) 2017 David Sanders (dsanders11@ucsbalum.com)
 /*
- * Copyright 2007 ZXing authors
+ * Copyright 2008 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-goog.provide('w69b.DecodeHintType');
+
+goog.provide('w69b.ResultMetadataType');
 
 /**
- * Decode hint key constants.
+ * Represents some type of metadata about the result of the decoding that the
+ * decoder wishes to communicate back to the caller.
  * @enum {number}
  */
-w69b.DecodeHintType = {
+w69b.ResultMetadataType = {
   OTHER: 0,
-  PURE_BARCODE: 1,
-  POSSIBLE_FORMATS: 2,
-  TRY_HARDER: 3,
-  CHARACTER_SET: 4,
-  NEED_RESULT_POINT_CALLBACK: 5
+  ORIENTATION: 1,
+  BYTE_SEGMENTS: 2,
+  ERROR_CORRECTION_LEVEL: 3,
+  STRUCTURED_APPEND_SEQUENCE: 4,
+  STRUCTURED_APPEND_PARITY: 5
 };

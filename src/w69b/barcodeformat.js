@@ -1,4 +1,4 @@
-// javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
+// javascript (closure) port (c) 2017 David Sanders (dsanders11@ucsbalum.com)
 /*
  * Copyright 2007 ZXing authors
  *
@@ -14,17 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-goog.provide('w69b.DecodeHintType');
+
+goog.provide('w69b.BarcodeFormat');
 
 /**
- * Decode hint key constants.
+ * Enumerates barcode formats known to this package. Please keep alphabetized.
  * @enum {number}
  */
-w69b.DecodeHintType = {
-  OTHER: 0,
-  PURE_BARCODE: 1,
-  POSSIBLE_FORMATS: 2,
-  TRY_HARDER: 3,
-  CHARACTER_SET: 4,
-  NEED_RESULT_POINT_CALLBACK: 5
+w69b.BarcodeFormat = {
+  CODE_128: 1,
+  QR_CODE: 2
 };

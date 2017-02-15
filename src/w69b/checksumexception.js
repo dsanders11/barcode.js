@@ -1,4 +1,4 @@
-// javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
+// javascript (closure) port (c) 2017 David Sanders (dsanders11@ucsbalum.com)
 /*
  * Copyright 2007 ZXing authors
  *
@@ -14,17 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-goog.provide('w69b.DecodeHintType');
 
-/**
- * Decode hint key constants.
- * @enum {number}
- */
-w69b.DecodeHintType = {
-  OTHER: 0,
-  PURE_BARCODE: 1,
-  POSSIBLE_FORMATS: 2,
-  TRY_HARDER: 3,
-  CHARACTER_SET: 4,
-  NEED_RESULT_POINT_CALLBACK: 5
-};
+goog.provide('w69b.ChecksumException');
+goog.require('w69b.ReaderException');
+
+goog.scope(function() {
+  /**
+   * Thrown when a barcode was successfully detected and decoded, but
+   * was not returned because its checksum feature failed.
+   * @constructor
+   * @param {string=} opt_msg message.
+   * @extends {w69b.ReaderException}
+   */
+  w69b.ChecksumException = function(opt_msg) {
+    goog.base(this, opt_msg);
+  };
+  goog.inherits(w69b.ChecksumException, w69b.ReaderException);
+});
