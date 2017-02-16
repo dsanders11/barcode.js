@@ -156,7 +156,7 @@ gulp.task('compile', function() {
 });
 
 gulp.task('all', function(cb) {
-  runSequence('compile', 'test', cb);
+  runSequence('shader2js', 'compile', 'test', cb);
 });
 
 gulp.task('default', function(cb) {
