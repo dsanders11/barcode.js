@@ -9,6 +9,7 @@ var format = require('gulp-clang-format');
 var karma = require('karma');
 var concat = require('gulp-concat');
 var size = require('gulp-size');
+var sort = require('gulp-sort');
 var through = require('through2');
 var shader2js = require('./tasks/shader2js');
 var webserver = require('gulp-webserver');
@@ -70,6 +71,7 @@ gulp.task('test', ['buildDebug'], function(done) {
 
 gulp.task('shader2js', function() {
   return gulp.src(PATHS.src.shaders, {base: 'src'})
+    .pipe(sort())
     .pipe(shader2js())
     .pipe(concat('compiled.js'))
     .pipe(gulp.dest(PATHS.dst.shaders))
