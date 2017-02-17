@@ -36,10 +36,10 @@ goog.scope(function() {
    * Get Image data of given Image object. Same origin policy applies to
    * image src. Image has to be loaded. Image is scaled down to opt_maxSize
    * if its width or height is larger.
-   * @param {Image|HTMLVideoElement} img image.
+   * @param {Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} img image.
    * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or Size object
    * that img data should cover (cropping bottom-right corners).
-   * @return {!ImageData} image data.
+   * @return {ImageData} image data.
    */
   _.getImageData = function(img, opt_maxSize) {
     var size = new Size(
@@ -47,7 +47,7 @@ goog.scope(function() {
       /** @type {number} */ (img.height || img.videoHeight));
 
     goog.asserts.assert(size.width > 0 && size.height > 0);
-    var canvas = document.createElement('canvas');
+    var canvas = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
     if (opt_maxSize) {
       if (goog.isNumber(opt_maxSize)) {
         opt_maxSize = new Size(opt_maxSize, opt_maxSize);
@@ -61,7 +61,7 @@ goog.scope(function() {
     }
     canvas.width = size.width;
     canvas.height = size.height;
-    var context = canvas.getContext('2d');
+    var context = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
     context.drawImage(img, 0, 0, size.width, size.height);
     return context.getImageData(0, 0, size.width, size.height);
   };

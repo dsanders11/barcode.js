@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +22,9 @@
  */
 
 goog.provide('w69b.common.reedsolomon.GF256Poly');
+goog.provide('w69b.common.reedsolomon.WrongFieldError');
 goog.require('goog.asserts');
+goog.require('goog.debug.Error');
 
 /**
  * <p>Represents a polynomial whose coefficients are elements of a GF.
@@ -36,27 +36,24 @@ goog.require('goog.asserts');
  * @author Sean Owen
  */
 
-
 goog.scope(function() {
-
   /**
    * GF256Polys do not have same GF256 field.
-   * @param {string=} opt_message Additional message.
    * @constructor
-   * @extends {Error}
+   * @param {string=} opt_msg Additional message.
+   * @extends {goog.debug.Error}
    */
-  w69b.common.reedsolomon.WrongFieldError = function(opt_message) {
-    goog.base(this, opt_message);
+  w69b.common.reedsolomon.WrongFieldError = function(opt_msg) {
+    goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.common.reedsolomon.WrongFieldError, Error);
+  goog.inherits(w69b.common.reedsolomon.WrongFieldError, goog.debug.Error);
   var WrongFieldError = w69b.common.reedsolomon.WrongFieldError;
 
 
-
   /**
-   * @param {!w69b.common.reedsolomon.GF256} field field.
-   * @param {Array} coefficients coefficients.
    * @constructor
+   * @param {!w69b.common.reedsolomon.GF256} field field.
+   * @param {Array.<number>} coefficients coefficients.
    */
   w69b.common.reedsolomon.GF256Poly = function(field, coefficients) {
     goog.asserts.assert(coefficients != null && coefficients.length != 0);
@@ -66,19 +63,19 @@ goog.scope(function() {
       // Leading term must be non-zero for anything except the constant
       // polynomial "0"
       var firstNonZero = 1;
-      while (firstNonZero < coefficientsLength &&
-        coefficients[firstNonZero] == 0) {
+      while (firstNonZero < coefficientsLength && coefficients[firstNonZero] == 0) {
         firstNonZero++;
       }
       if (firstNonZero == coefficientsLength) {
         this.coefficients = field.zero.coefficients;
       } else {
         this.coefficients = new Array(coefficientsLength - firstNonZero);
-        for (var i = 0; i < this.coefficients.length; i++)this.coefficients[i] =
-          0;
-        for (var ci = 0; ci <
-          this.coefficients.length; ci++)this.coefficients[ci] =
-          coefficients[firstNonZero + ci];
+        for (var i = 0; i < this.coefficients.length; i++) {
+          this.coefficients[i] = 0;
+        }
+        for (var ci = 0; ci < this.coefficients.length; ci++) {
+          this.coefficients[ci] = coefficients[firstNonZero + ci];
+        }
       }
     } else {
       this.coefficients = coefficients;
@@ -87,6 +84,8 @@ goog.scope(function() {
   var GF256Poly = w69b.common.reedsolomon.GF256Poly;
   var pro = GF256Poly.prototype;
 
+  /** @type {Array.<number>} */
+  pro.coefficients;
 
   /**
    * Calculates a ^ b.
@@ -98,18 +97,32 @@ goog.scope(function() {
     return a ^ b;
   };
 
+  /**
+   * @return {boolean}
+   */
   pro.isZero = function() {
     return this.coefficients[0] == 0;
   };
 
+  /**
+   * @return {number} degree of this polynomial
+   */
   pro.getDegree = function() {
     return this.coefficients.length - 1;
   };
 
+  /**
+   * @param {number} degree
+   * @return {number} coefficient of x^degree term in this polynomial
+   */
   pro.getCoefficient = function(degree) {
     return this.coefficients[this.coefficients.length - 1 - degree];
   };
 
+  /**
+   * @param {number} a
+   * @return {number} evaluation of this polynomial at a given point
+   */
   pro.evaluateAt = function(a) {
     if (a == 0) {
       // Just return the x^0 coefficient
@@ -155,6 +168,7 @@ goog.scope(function() {
       smallerCoefficients = largerCoefficients;
       largerCoefficients = temp;
     }
+    /** @type {Array.<number>} */
     var sumDiff = new Array(largerCoefficients.length);
     var lengthDiff = largerCoefficients.length - smallerCoefficients.length;
     // Copy high-order terms only found in higher-degree polynomial's
@@ -200,7 +214,7 @@ goog.scope(function() {
 
   /**
    * Multiply with scalar.
-   * @param {!number} scalar other poly.
+   * @param {number} scalar other poly.
    * @return {w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiply2 = function(scalar) {
@@ -217,8 +231,11 @@ goog.scope(function() {
     }
     return new GF256Poly(this.field, product);
   };
+
   /**
    * TODO.
+   * @param {number} degree
+   * @param {number} coefficient
    * @return {!w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiplyByMonomial = function(degree, coefficient) {
@@ -270,6 +287,9 @@ goog.scope(function() {
     return new Array(quotient, remainder);
   };
 
+  /**
+   * @override
+   */
   pro.toString = function() {
     var result = [];
     for (var degree = this.getDegree(); degree >= 0; degree--) {
@@ -306,7 +326,4 @@ goog.scope(function() {
     }
     return result.join('');
   };
-
-
 });
-

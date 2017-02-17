@@ -21,6 +21,10 @@ goog.scope(function() {
 
   /**
    * Euclidean distance.
+   * @param {number} aX
+   * @param {number} aY
+   * @param {number} bX
+   * @param {number} bY
    * @return {number} Euclidean distance between points A and B
    */
   _.distance = function(aX, aY, bX, bY) {
@@ -28,6 +32,4 @@ goog.scope(function() {
     var yDiff = aY - bY;
     return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
   };
-
-
 });

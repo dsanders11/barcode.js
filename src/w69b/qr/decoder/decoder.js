@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +35,13 @@ goog.scope(function() {
   var _ = w69b.qr.decoder.Decoder;
   _.rsDecoder = new w69b.common.reedsolomon.ReedSolomonDecoder(GF256.QR_CODE_FIELD);
 
+  /**
+   * Given data and error-correction codewords received, possibly corrupted by errors, attempts to
+   * correct the errors in-place using Reed-Solomon error correction.
+   *
+   * @param {Array.<number>} codewordBytes data and error correction codewords
+   * @param {number} numDataCodewords number of codewords that are data bytes
+   */
   _.correctErrors = function(codewordBytes, numDataCodewords) {
     var numCodewords = codewordBytes.length;
     // First read into an array of ints
@@ -94,5 +99,4 @@ goog.scope(function() {
       version, ecLevel.bits);
     //return DecodedBitStreamParserOld.decode(resultBytes, version, ecLevel);
   };
-
 });

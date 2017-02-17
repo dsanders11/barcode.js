@@ -32,6 +32,11 @@ goog.scope(function() {
 
   /**
    * Draws rectangle to buffer.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @param {string} color
    * @private
    */
   pro.writeRect_ = function(x, y, width, height, color) {
@@ -47,12 +52,18 @@ goog.scope(function() {
     this.buffer_.push('fill');
   };
 
+  /**
+   * @override
+   */
   pro.fillBackground = function(width, height) {
     goog.asserts.assert(this.buffer_.length == 0);
     this.writeHeader(width, height);
     this.writeRect_(0, 0, width, height, this.bgColor_);
   };
 
+  /**
+   * @override
+   */
   pro.fillBlack = function(x, y, width, height) {
     goog.asserts.assert(this.buffer_.length > 0);
     this.writeRect_(x, y, width, height, this.fgColor_);
@@ -66,5 +77,4 @@ goog.scope(function() {
     goog.asserts.assert(this.buffer_.length > 0);
     return this.buffer_.join('\n');
   };
-
 });

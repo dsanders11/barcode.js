@@ -4,7 +4,6 @@ goog.require('goog.Disposable');
 goog.require('goog.asserts');
 goog.require('goog.events');
 goog.require('goog.math.Size');
-goog.require('w69b.imgtools');
 
 goog.scope(function() {
   var Size = goog.math.Size;
@@ -48,12 +47,14 @@ goog.scope(function() {
    * @private
    */
   pro.backCanvas_ = null;
+
   /**
    * Rendering context of back canvas.
    * @type {CanvasRenderingContext2D}
    * @private
    */
   pro.backContext_ = null;
+
   /**
    * Video element used to render the getUserMedia stream.
    * @type {HTMLVideoElement}
@@ -61,6 +62,9 @@ goog.scope(function() {
    */
   pro.mediaVideo_ = null;
 
+  /**
+   * @type {MediaStream}
+   */
   pro.stream_ = null;
 
   /**
@@ -72,6 +76,7 @@ goog.scope(function() {
 
   /**
    * Start capturing video.
+   * @param {function()} ready
    */
   pro.start = function(ready) {
     goog.events.listenOnce(this.mediaVideo_, 'canplay', function() {
@@ -84,6 +89,7 @@ goog.scope(function() {
    * Calls ready when videoSize gets greater than 0.
    * Sometimes the video size is 0 in FireFox even after canplay has been
    * triggered. This works arround this by polling the video with.
+   * @param {function()} ready
    * @private
    */
   pro.waitForVideoSize_ = function(ready) {
@@ -93,7 +99,6 @@ goog.scope(function() {
       window.setTimeout(this.waitForVideoSize_.bind(this, ready), 100);
     }
   };
-
 
   /**
    * Get Image data of current frame from local video stream.
@@ -142,11 +147,11 @@ goog.scope(function() {
     // draw image cropping what does not fit on the right/bottom edges.
     context.drawImage(video, 0, 0,
       video.videoWidth * scale, video.videoHeight * scale);
-
   };
 
   /**
    * video stream.
+   * @param {!MediaStream} stream
    * @protected
    */
   pro.onGetMediaSuccess = function(stream) {
@@ -159,7 +164,7 @@ goog.scope(function() {
   };
 
   /**
-   * code error code.
+   * @param {number} code error code
    */
   pro.onGetMediaError = function(code) {
     window.console.log('error code:');
@@ -172,6 +177,10 @@ goog.scope(function() {
    */
   pro.getUserMedia = function() {
     var self = this;
+
+    /**
+     * @param {Array.<Object<string, string>>} sources
+     */
     function gotSources(sources) {
       var constraint = true;
       for (var i = 0; i < sources.length; ++i) {
@@ -193,6 +202,7 @@ goog.scope(function() {
 
   /**
    * @override
+   * @suppress {deprecated}
    */
   pro.disposeInternal = function() {
     var url = this.mediaVideo_.src;
@@ -202,12 +212,15 @@ goog.scope(function() {
       window.URL.revokeObjectURL(url);
     this.mediaVideo_ = null;
     if (this.stream_) {
-      if (this.stream_.stop)
+      if (this.stream_['stop'])
         this.stream_.stop();
       if (this.stream_['getTracks']) {
-        this.stream_['getTracks']().forEach(function(track) {
-          track.stop();
-        });
+        this.stream_['getTracks']().forEach(
+          /** @param {MediaStreamTrack} track */
+          function(track) {
+            track.stop();
+          }
+        );
       }
     }
   };

@@ -74,5 +74,4 @@ goog.scope(function() {
       }
     }
   };
-
 });

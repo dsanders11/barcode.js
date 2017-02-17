@@ -19,9 +19,8 @@ goog.provide('w69b.common.GridSamplerInterface');
 goog.require('w69b.NotFoundException');
 
 goog.scope(function() {
-
-
-  /** Implementations of this class can, given locations of finder patterns for
+  /**
+   * Implementations of this class can, given locations of finder patterns for
    * a QR code in an image, sample the right points in the image to reconstruct
    * the QR code, accounting for perspective distortion. It is abstracted since
    * it is relatively expensive and should be allowed to take advantage of
@@ -70,6 +69,8 @@ goog.scope(function() {
   w69b.common.GridSamplerInterface = function() {
   };
 
+  var GridSamplerInterface = w69b.common.GridSamplerInterface;
+
   /**
    * Samples an image for a rectangular matrix of bits of the given dimension.
    * @param {w69b.common.BitMatrix} image image to sample.
@@ -96,7 +97,7 @@ goog.scope(function() {
    * the image within a region defined by the "from" parameters by the given
    * points is invalid or results in sampling outside the image boundaries.
    */
-  w69b.common.GridSamplerInterface.prototype.sampleGrid = function(image, dimensionX, dimensionY,
+  GridSamplerInterface.prototype.sampleGrid = function(image, dimensionX, dimensionY,
                                              p1ToX, p1ToY, p2ToX, p2ToY, p3ToX,
                                              p3ToY, p4ToX, p4ToY, p1FromX,
                                              p1FromY, p2FromX, p2FromY,
@@ -116,7 +117,7 @@ goog.scope(function() {
    * the image within a region defined by the "from" parameters by the given
    * points is invalid or results in sampling outside the image boundaries.
    */
-  w69b.common.GridSamplerInterface.prototype.sampleGridTransform = function(image, dimensionX,
+  GridSamplerInterface.prototype.sampleGridTransform = function(image, dimensionX,
                                                       dimensionY, transform) {
   };
 
@@ -190,6 +191,4 @@ goog.scope(function() {
       }
     }
   };
-
-
 });

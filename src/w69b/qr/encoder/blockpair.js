@@ -20,6 +20,8 @@ goog.provide('w69b.qr.encoder.BlockPair');
 goog.scope(function() {
   /**
    * @constructor
+   * @param {Array.<number>} data
+   * @param {Array.<number>} errorCorrection
    */
   w69b.qr.encoder.BlockPair = function(data, errorCorrection) {
     this.dataBytes = data;
@@ -27,12 +29,17 @@ goog.scope(function() {
   };
   var pro = w69b.qr.encoder.BlockPair.prototype;
 
+  /**
+   * @return {Array.<number>}
+   */
   pro.getDataBytes = function() {
     return this.dataBytes;
   };
 
+  /**
+   * @return {Array.<number>}
+   */
   pro.getErrorCorrectionBytes = function() {
     return this.errorCorrectionBytes;
   };
-
 });

@@ -29,11 +29,12 @@
 
 goog.provide('w69b.iconvlite');
 goog.require('goog.object');
-goog.require('w69b.utf8');
 
 
 goog.scope(function() {
   var _ = w69b.iconvlite;
+
+  /** @type {Object<string, string>} */
   _.SINGLEBYTES = {
     'Cp1251': 'ЂЃ‚ѓ„…†‡€‰Љ‹ЊЌЋЏђ‘’“”•–—�™љ›њќћџ\xa0ЎўЈ¤Ґ¦§Ё©Є«¬­®Ї°±Ііґµ¶·ё№є»јЅѕїАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя',
     'Cp1252': '€�‚ƒ„…†‡ˆ‰Š‹Œ�Ž��‘’“”•–—˜™š›œ�žŸ\xa0¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ',
@@ -57,6 +58,7 @@ goog.scope(function() {
   _.ASCII = '\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f' +
     ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f';
 
+  /** @type {Object<string, Object<string, number>>} */
   _.REVERSE_MAPS_ = {};
 
   /**
@@ -99,7 +101,7 @@ goog.scope(function() {
 
   /**
    * @param {string} charset name.
-   * @return {Object} reverse map (mapping str to bytes).
+   * @return {Object<string, number>} reverse map (mapping str to bytes).
    * @private
    */
   _.getReverseMap_ = function(charset) {
@@ -123,5 +125,4 @@ goog.scope(function() {
   _.getSupportedCharsets = function() {
     return goog.object.getKeys(_.SINGLEBYTES);
   };
-
 });

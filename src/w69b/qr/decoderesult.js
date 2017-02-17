@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 goog.provide('w69b.qr.DecodeResult');
-goog.require('goog.asserts');
 goog.require('w69b.ReaderException');
 
 goog.scope(function() {

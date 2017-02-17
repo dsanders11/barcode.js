@@ -17,6 +17,7 @@
 
 goog.provide('w69b.qr.encoder.Encoder');
 goog.require('w69b.EncodeHintType');
+goog.require('w69b.WriterException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.CharacterSetECI');
 goog.require('w69b.common.reedsolomon.GF256');
@@ -27,6 +28,7 @@ goog.require('w69b.qr.decoder.Mode');
 goog.require('w69b.qr.decoder.ModeEnum');
 goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.BlockPair');
+goog.require('w69b.qr.encoder.ByteMatrix');
 goog.require('w69b.qr.encoder.MaskUtil');
 goog.require('w69b.qr.encoder.MatrixUtil');
 goog.require('w69b.qr.encoder.QRCode');
@@ -56,7 +58,10 @@ goog.scope(function() {
    */
   var _ = w69b.qr.encoder.Encoder;
 
-  // The original table is defined in the table 5 of JISX0510:2004 (p.19).
+  /**
+   * The original table is defined in the table 5 of JISX0510:2004 (p.19).
+   * @type {Array.<number>}
+   */
   _.ALPHANUMERIC_TABLE = [
     // 0x00-0x0f
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -74,9 +79,12 @@ goog.scope(function() {
 
   _.DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
 
-  /** The mask penalty calculation is complicated.  See Table 21 of
+  /**
+   * The mask penalty calculation is complicated.  See Table 21 of
    * JISX0510:2004 (p.45) for details.  Basically it applies four rules and
    * summate all penalties.
+   * @param {ByteMatrix} matrix matrix to calculate on
+   * @return {number} mask penalty
    */
   _.calculateMaskPenalty = function(matrix) {
     return MaskUtil.applyMaskPenaltyRule1(matrix) +
@@ -86,9 +94,9 @@ goog.scope(function() {
   };
 
   /**
-   *  Encode "bytes" with the error correction level "ecLevel". The encoding
-   *  mode will be chosen internally by chooseMode(). On success, store the
-   *  result in "qrCode".
+   * Encode "bytes" with the error correction level "ecLevel". The encoding
+   * mode will be chosen internally by chooseMode(). On success, store the
+   * result in "qrCode".
    *
    * We recommend you to use QRCode.EC_LEVEL_L (the lowest level) for
    * "getECLevel" since our primary use is to show QR code on desktop screens.
@@ -101,11 +109,9 @@ goog.scope(function() {
    * @param {string} content string.
    * @param {ErrorCorrectionLevel} ecLevel error correction level.
    * @param {Object=} opt_hints encoding hints.
-   *
+   * @return {QRCode} representing the encoded QR code
    */
-
   _.encode = function(content, ecLevel, opt_hints) {
-
     // Determine what character encoding has been specified by the caller, if
     // any
     var encoding = opt_hints ? opt_hints[EncodeHintType.CHARACTER_SET] : null;
@@ -127,7 +133,7 @@ goog.scope(function() {
     // Disabled in compat mode as some scanners seem to have problems with it.
     if (forceECI ||
       (mode == ModeEnum.BYTE && _.DEFAULT_BYTE_MODE_ENCODING != encoding)) {
-      var eci = CharacterSetECI.getValue(encoding);
+      var eci = CharacterSetECI.getCharacterSetECIByName(encoding);
       if (eci) {
         _.appendECI(eci, headerBits);
       }
@@ -219,10 +225,11 @@ goog.scope(function() {
    * if it is Shift_JIS, and the input is only double-byte Kanji, then we
    * return {@link Mode#KANJI}.
    * @param {string} content to encode.
-   * @param {string=} opt_encoding optional encoding..
+   * @param {string=} opt_encoding optional encoding.
+   * @return {Mode} best mode
    */
   _.chooseMode = function(content, opt_encoding) {
-    if ('SHIFT_JIS' == opt_encoding) {
+    if ('Shift_JIS' == opt_encoding) {
       // Choose Kanji mode if all input are double-byte characters
       return _.isOnlyDoubleByteKanji(content) ? ModeEnum.KANJI : ModeEnum.BYTE;
     }
@@ -249,10 +256,14 @@ goog.scope(function() {
     return ModeEnum.BYTE;
   };
 
+  /**
+   * @param {string} content
+   * @return {boolean}
+   */
   _.isOnlyDoubleByteKanji = function(content) {
     var bytes = [];
     try {
-      bytes = stringutils.stringToBytes(content, 'SHIFT_JIS');
+      bytes = stringutils.stringToBytes(content, 'Shift_JIS');
     } catch (uee) {
       return false;
     }
@@ -269,6 +280,13 @@ goog.scope(function() {
     return true;
   };
 
+  /**
+   * @param {BitArray} bits
+   * @param {ErrorCorrectionLevel} ecLevel
+   * @param {Version} version
+   * @param {ByteMatrix} matrix
+   * @return {number}
+   */
   _.chooseMaskPattern = function(bits, ecLevel, version, matrix) {
 
     var minPenalty = Number.MAX_VALUE;  // Lower penalty is better.
@@ -286,6 +304,11 @@ goog.scope(function() {
     return bestMaskPattern;
   };
 
+  /**
+   * @param {number} numInputBits
+   * @param {ErrorCorrectionLevel} ecLevel
+   * @return {Version}
+   */
   _.chooseVersion = function(numInputBits, ecLevel) {
     // In the following comments, we use numbers of Version 7-H.
     for (var versionNum = 1; versionNum <= 40; versionNum++) {
@@ -307,6 +330,8 @@ goog.scope(function() {
 
   /**
    * Terminate bits as described in 8.4.8 and 8.4.9 of JISX0510:2004 (p.24).
+   * @param {number} numDataBytes
+   * @param {BitArray} bits
    */
   _.terminateBits = function(numDataBytes, bits) {
     var i;
@@ -337,9 +362,17 @@ goog.scope(function() {
     }
   };
 
-  /** Get number of data bytes and number of error correction bytes for block
+  /**
+   * Get number of data bytes and number of error correction bytes for block
    * id "blockID". Store the result in "numDataBytesInBlock", and
    * "numECBytesInBlock". See table 12 in 8.5.1 of JISX0510:2004 (p.30)
+   *
+   * @param {number} numTotalBytes
+   * @param {number} numDataBytes
+   * @param {number} numRSBlocks
+   * @param {number} blockID
+   * @param {Array.<number>} numDataBytesInBlock
+   * @param {Array.<number>} numECBytesInBlock
    */
   _.getNumDataBytesAndNumECBytesForBlockID = function(numTotalBytes,
                                                       numDataBytes,
@@ -396,6 +429,12 @@ goog.scope(function() {
    * Interleave "bits" with corresponding error correction bytes. On success,
    * store the result in "result". The interleave rule is complicated. See 8.6
    * of JISX0510:2004 (p.37) for details.
+   * @param {BitArray} bits
+   * @param {number} numTotalBytes
+   * @param {number} numDataBytes
+   * @param {number} numRSBlocks
+   * @return {BitArray}
+   * @throws {WriterException}
    */
   _.interleaveWithECBytes = function(bits, numTotalBytes, numDataBytes,
                                      numRSBlocks) {
@@ -418,7 +457,9 @@ goog.scope(function() {
     var i;
 
     for (i = 0; i < numRSBlocks; ++i) {
+      /** @type {Array.<number>} */
       var numDataBytesInBlock = [0];
+      /** @type {Array.<number>} */
       var numEcBytesInBlock = [0];
       _.getNumDataBytesAndNumECBytesForBlockID(
         numTotalBytes, numDataBytes, numRSBlocks, i,
@@ -442,21 +483,27 @@ goog.scope(function() {
 
     // First, place data blocks.
     for (i = 0; i < maxNumDataBytes; ++i) {
-      blocks.forEach(function(block) {
-        var dataBytes = block.getDataBytes();
-        if (i < dataBytes.length) {
-          result.appendBits(dataBytes[i], 8);
+      blocks.forEach(
+        /** @param {BlockPair} block */
+        function(block) {
+          var dataBytes = block.getDataBytes();
+          if (i < dataBytes.length) {
+            result.appendBits(dataBytes[i], 8);
+          }
         }
-      });
+      );
     }
     // Then, place error correction blocks.
     for (i = 0; i < maxNumEcBytes; ++i) {
-      blocks.forEach(function(block) {
-        var ecBytes = block.getErrorCorrectionBytes();
-        if (i < ecBytes.length) {
-          result.appendBits(ecBytes[i], 8);
+      blocks.forEach(
+        /** @param {BlockPair} block */
+        function(block) {
+          var ecBytes = block.getErrorCorrectionBytes();
+          if (i < ecBytes.length) {
+            result.appendBits(ecBytes[i], 8);
+          }
         }
-      });
+      );
     }
     if (numTotalBytes != result.getSizeInBytes()) {  // Should be same.
       throw new WriterException('Interleaving error: ' + numTotalBytes +
@@ -490,14 +537,20 @@ goog.scope(function() {
 
   /**
    * Append mode info. On success, store the result in "bits".
+   * @param {Mode} mode
+   * @param {BitArray} bits
    */
   _.appendModeInfo = function(mode, bits) {
     bits.appendBits(mode.getBits(), 4);
   };
 
-
   /**
    * Append length info. On success, store the result in "bits".
+   * @param {number} numLetters
+   * @param {Version} version
+   * @param {Mode} mode
+   * @param {BitArray} bits
+   * @throws {WriterException}
    */
   _.appendLengthInfo = function(numLetters, version, mode, bits) {
     var numBits = mode.getCharacterCountBits(version);
@@ -511,6 +564,11 @@ goog.scope(function() {
   /**
    * Append "bytes" in "mode" mode (encoding) into "bits".
    * On success, store the result in "bits".
+   * @param {string} content
+   * @param {Mode} mode
+   * @param {BitArray} bits
+   * @param {string} encoding
+   * @throws {WriterException}
    */
   _.appendBytes = function(content, mode, bits, encoding) {
     switch (mode) {
@@ -531,6 +589,10 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {string} content
+   * @param {BitArray} bits
+   */
   _.appendNumericBytes = function(content, bits) {
     var length = content.length;
     var i = 0;
@@ -557,6 +619,10 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {string} content
+   * @param {BitArray} bits
+   */
   _.appendAlphanumericBytes = function(content, bits) {
     var length = content.length;
     var i = 0;
@@ -581,6 +647,11 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {string} content
+   * @param {BitArray} bits
+   * @param {string} encoding
+   */
   _.append8BitBytes = function(content, bits, encoding) {
     var bytes;
     try {
@@ -593,6 +664,10 @@ goog.scope(function() {
     });
   };
 
+  /**
+   * @param {string} content
+   * @param {BitArray} bits
+   */
   _.appendKanjiBytes = function(content, bits) {
     var bytes;
     try {
@@ -619,10 +694,13 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {CharacterSetECI} eci
+   * @param {BitArray} bits
+   */
   _.appendECI = function(eci, bits) {
     bits.appendBits(ModeEnum.ECI.getBits(), 4);
     // This is correct for values up to 127, which is all we need now.
-    bits.appendBits(eci, 8);
+    bits.appendBits(eci.getValue(), 8);
   };
-
 });

@@ -17,6 +17,14 @@ goog.scope(function() {
   };
   var pro = w69b.img.RGBAImageData.prototype;
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} red
+   * @param {number} green
+   * @param {number} blue
+   * @param {number=} opt_alpha
+   */
   pro.set = function(x, y, red, green, blue, opt_alpha) {
     var pos = 4 * (y * this.width + x);
     this.data[pos] = red;
@@ -25,6 +33,11 @@ goog.scope(function() {
     this.data[pos + 3] = opt_alpha || 255;
   };
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} gray
+   */
   pro.setGray = function(x, y, gray) {
     this.set(x, y, gray, gray, gray, 255);
   };
@@ -32,7 +45,7 @@ goog.scope(function() {
   /**
    * @param {number} x pos.
    * @param {number} y pos.
-   * @return {Array} [red, green, blue, alpha] values.
+   * @return {Array.<number>} [red, green, blue, alpha] values.
    */
   pro.get = function(x, y) {
     var pos = 4 * (y * this.width + x);

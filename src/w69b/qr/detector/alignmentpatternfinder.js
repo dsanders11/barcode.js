@@ -4,7 +4,6 @@
  lazarsoft@gmail.com, www.lazarsoft.info
  */
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 goog.provide('w69b.qr.detector.AlignmentPatternFinder');
 goog.require('w69b.NotFoundException');
@@ -63,25 +61,38 @@ goog.scope(function() {
   w69b.qr.detector.AlignmentPatternFinder = function(image, startX, startY, width,
                                             height, moduleSize,
                                             resultPointCallback) {
-    /**
-     * @type {!w69b.img.BitMatrixLike}
-     */
+    /** @type {!w69b.img.BitMatrixLike} */
     this.image = image;
+    /** @type {Array.<AlignmentPattern>} */
     this.possibleCenters = [];
     this.startX = startX;
     this.startY = startY;
     this.width = width;
     this.height = height;
     this.moduleSize = moduleSize;
+    /** @type {Array.<number>} */
     this.crossCheckStateCount = new Array(0, 0, 0);
     this.resultPointCallback = resultPointCallback;
   };
   var AlignmentPatternFinder = w69b.qr.detector.AlignmentPatternFinder;
   var pro = AlignmentPatternFinder.prototype;
 
+  /**
+   * Given a count of black/white/black pixels just seen and an end position,
+   * figures the location of the center of this black/white/black run.
+   * @param {Array.<number>} stateCount
+   * @param {number} end
+   * @return {number}
+   */
   pro.centerFromEnd = function(stateCount, end) {
     return (end - stateCount[2]) - stateCount[1] / 2.0;
   };
+
+  /**
+   * @param {Array.<number>} stateCount count of black/white/black pixels just read
+   * @return {boolean} true iff the proportions of the counts is close enough to the 1/1/1 ratios
+   *         used by alignment patterns to be considered a match
+   */
   pro.foundPatternCross = function(stateCount) {
     var moduleSize = this.moduleSize;
     var maxVariance = moduleSize / 2.0;
@@ -93,6 +104,18 @@ goog.scope(function() {
     return true;
   };
 
+  /**
+   * After a horizontal scan finds a potential alignment pattern, this method
+   * "cross-checks" by scanning down vertically through the center of the possible
+   * alignment pattern to see if the same proportion is detected.
+   *
+   * @param {number} startI row where an alignment pattern was detected
+   * @param {number} centerJ center of the section that appears to cross an alignment pattern
+   * @param {number} maxCount maximum reasonable number of modules that should be
+   * observed in any reading state, based on the results of the horizontal scan
+   * @param {number} originalStateCountTotal
+   * @return {number} vertical center of alignment pattern, or {@link Float#NaN} if not found
+   */
   pro.crossCheckVertical = function(startI, centerJ, maxCount,
                                     originalStateCountTotal) {
     var image = this.image;
@@ -153,10 +176,14 @@ goog.scope(function() {
         i) : NaN;
   };
 
-  /** <p>This method attempts to find the bottom-right alignment pattern in the
+  /**
+   * This method attempts to find the bottom-right alignment pattern in the
    * image. It is a bit messy since it's pretty performance-critical and so is
-   * written to be fast foremost.</p>
+   * written to be fast foremost.
    *
+   * @param {Array.<number>} stateCount reading state module counts from horizontal scan
+   * @param {number} i row where alignment pattern may be found
+   * @param {number} j end of possible alignment pattern in row
    * @return {AlignmentPattern} if found
    * @throws {NotFoundException} if not found
    */
@@ -186,14 +213,14 @@ goog.scope(function() {
     return null;
   };
 
-  /** <p>This method attempts to find the bottom-right alignment pattern in the
+  /**
+   * This method attempts to find the bottom-right alignment pattern in the
    * image. It is a bit messy since it's pretty performance-critical and so is
-   * written to be fast foremost.</p>
+   * written to be fast foremost.
    *
    * @return {AlignmentPattern} if found
    * @throws {NotFoundException} if not found
    */
-
   pro.find = function() {
     var startX = this.startX;
     var height = this.height;
@@ -271,4 +298,3 @@ goog.scope(function() {
     throw new NotFoundException();
   };
 });
-

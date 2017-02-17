@@ -39,7 +39,6 @@ goog.scope(function() {
   pro.contex_ = null;
 
 
-
   /**
    * Initialize common shader attributes.
    */
@@ -146,6 +145,4 @@ goog.scope(function() {
     }
     return shader;
   };
-
 });
-

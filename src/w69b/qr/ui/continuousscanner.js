@@ -1,26 +1,26 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.ui.ContinuousScanner');
+goog.provide('w69b.qr.ui.PatternPoint');
 goog.require('goog.math.Size');
 goog.require('goog.object');
 goog.require('goog.string');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('goog.userAgent');
-goog.require('goog.userAgent.product');
 goog.require('w69b.LocalVideoCapturer');
+goog.require('w69b.ResultPoint');
 goog.require('w69b.imgtools');
 goog.require('w69b.qr.DecodeInWorkerHelper');
 goog.require('w69b.qr.WorkerMessageType');
-goog.require('w69b.qr.imagedecoding');
 
 goog.scope(function() {
   var imgtools = w69b.imgtools;
   var Size = goog.math.Size;
   var WorkerMessageType = w69b.qr.WorkerMessageType;
+  var ResultPoint = w69b.ResultPoint;
   var object = goog.object;
 
   /**
-   *
    * @param {number} x x pos.
    * @param {number} y y pos.
    * @param {number} size pattern size.
@@ -39,14 +39,15 @@ goog.scope(function() {
    *
    * @constructor
    * @extends {goog.ui.Component}
+   * @param {Object=} opt_options
    * @export
    */
-  w69b.qr.ui.ContinuousScanner = function(options) {
+  w69b.qr.ui.ContinuousScanner = function(opt_options) {
     goog.base(this);
     var opt = {
       'webgl': true
     };
-    object.extend(opt, options || {});
+    object.extend(opt, opt_options || {});
     this.capturer_ = new w69b.LocalVideoCapturer();
     this.worker_ = new w69b.qr.DecodeInWorkerHelper();
     this.worker_.enableWebGl(opt['webgl']);
@@ -205,7 +206,7 @@ goog.scope(function() {
    * @export
    */
   pro.updateSizeFromClient = function() {
-    var ratio = window['devicePixelRatio'] || 1;
+    var ratio = self.devicePixelRatio || 1;
     // dont do this for performance reasons for now.
     ratio = 1;
     var el = this.getElement();
@@ -365,9 +366,9 @@ goog.scope(function() {
    * Decoded message from worker.
    * @private
    * @param {string} type from worker.
-   * @param {*=} value from worker.
+   * @param {*=} opt_value from worker.
    */
-  pro.onDecodeMessage_ = function(type, value) {
+  pro.onDecodeMessage_ = function(type, opt_value) {
     if (this.stopped_) {
       // don't dispatch pending decoding events when stopped.
       this.isDecoding_ = false;
@@ -377,15 +378,15 @@ goog.scope(function() {
       case WorkerMessageType.DECODED:
         // this.lastResult_ = value['text'];
         // this.foundPatterns_ = [];
-        value['patterns'].forEach(this.addPattern_, this);
-        this.onDecoded(value['text']);
+        opt_value['patterns'].forEach(this.addPattern_, this);
+        this.onDecoded(opt_value['text']);
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.NOTFOUND:
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.PATTERN:
-        this.addPattern_(value);
+        this.addPattern_(opt_value);
         break;
     }
   };
@@ -399,6 +400,7 @@ goog.scope(function() {
   };
 
   /**
+   * @param {ResultPoint} pattern
    * @private
    */
   pro.addPattern_ = function(pattern) {
@@ -445,5 +447,3 @@ goog.scope(function() {
   goog.exportSymbol('w69b.qr.ui.ContinuousScanner.prototype.render', pro.render);
   goog.exportSymbol('w69b.qr.ui.ContinuousScanner.prototype.dispose', pro.dispose);
 });
-
-

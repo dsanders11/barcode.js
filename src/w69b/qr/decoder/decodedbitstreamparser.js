@@ -46,6 +46,7 @@ goog.scope(function() {
 
   /**
    * See ISO 18004:2006, 6.4.4 Table 5
+   * @type {Array.<string>}
    */
   _.ALPHANUMERIC_CHARS = [
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B',
@@ -97,7 +98,7 @@ goog.scope(function() {
         } else if (mode == ModeEnum.ECI) {
           // Count doesn't apply to ECI
           var value = _.parseECIValue(bits);
-          currentCharacterSet = CharacterSetECI.getName(value);
+          currentCharacterSet = CharacterSetECI.getCharacterSetECIByValue(value);
           if (currentCharacterSet == null)
             throw new FormatException();
         } else {
@@ -211,16 +212,17 @@ goog.scope(function() {
    * @param {BitSource} bits bits.
    * @param {StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
-   * @param {?string} characterSetEciName character set eci name.
+   * @param {?CharacterSetECI} currentCharacterSetECI character set eci name.
    * @param {Array.<number>} byteSegments raw bytes.
    */
-  _.decodeByteSegment = function(bits, result, count,
-                                 characterSetEciName, byteSegments) {
+  _.decodeByteSegment = function(bits, result, count, currentCharacterSetECI,
+                                 byteSegments) {
     // Don't crash trying to read more bits than we have available.
     if (count << 3 > bits.available()) {
       throw new FormatException();  //FormatException.getFormatInstance();
     }
 
+    /** @type {!Array.<number>} */
     var readBytes = new Array(count);
     for (var i = 0; i < count; i++) {
       readBytes[i] = bits.readBits(8);
@@ -228,7 +230,7 @@ goog.scope(function() {
     // var encoding = stringutils.guessEncoding(readBytes);
     // TODO: We cannot decode non-unicode strings yet.
     var encoding;
-    if (!characterSetEciName) {
+    if (!currentCharacterSetECI) {
       // The spec isn't clear on this mode; see
       // section 6.4.5: t does not say which encoding to assuming
       // upon decoding. I have seen ISO-8859-1 used as well as
@@ -236,10 +238,10 @@ goog.scope(function() {
       // give a hint.
       encoding = stringutils.guessEncoding(readBytes);
     } else {
-      encoding = characterSetEciName;
+      encoding = currentCharacterSetECI.name;
     }
     result.append(stringutils.bytesToString(readBytes, encoding));
-    byteSegments.push(readBytes);
+    byteSegments.push(...readBytes);
   };
 
   /**
@@ -261,7 +263,7 @@ goog.scope(function() {
    */
   _.decodeAlphanumericSegment = function(bits, result, count, fc1InEffect) {
     // Read two characters at a time
-    var start = result.getLength();
+    // var start = result.getLength();
     while (count > 1) {
       if (bits.available() < 11) {
         throw new FormatException();  // throw FormatException.getFormatInstance();
@@ -341,6 +343,10 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {BitSource} bits
+   * @return {number}
+   */
   _.parseECIValue = function(bits) {
     var firstByte = bits.readBits(8);
     if ((firstByte & 0x80) == 0) {
@@ -359,6 +365,4 @@ goog.scope(function() {
     }
     throw new FormatException();  // FormatException.getFormatInstance();
   };
-
 });
-

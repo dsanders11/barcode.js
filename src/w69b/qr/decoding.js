@@ -51,7 +51,7 @@ goog.scope(function() {
   /**
    * Class to decode QR Code images. Loads a worker at initialization, if enabled,
    * so make sure to re-use instances whenever possible.
-   * @param {Object<string,*>=} options options with the following properties:
+   * @param {Object<string,*>=} opt_options options with the following properties:
    * - {boolean} worker: use web worker, if supported, defaults to true
    * - {boolean} webgl: use webgl binarizer, if supported, defaults to true
    * - {number} maxSize: scale down image if large than this value in any dimension.
@@ -59,13 +59,13 @@ goog.scope(function() {
    * @constructor
    * @export
    */
-  _.Decoder = function(options) {
+  _.Decoder = function(opt_options) {
     var opt = {
       'worker': true,
       'webgl': true,
       'maxSize': 700
     };
-    object.extend(opt, options || {});
+    object.extend(opt, opt_options || {});
     var worker = new DecodeInWorkerHelper();
     worker.enableWebGl(opt['webgl']);
     worker.enableWorker(opt['worker']);
@@ -109,16 +109,22 @@ goog.scope(function() {
         size.floor();
       }
     }
-    worker.decode(img, size, function(type, value) {
-      switch (type) {
-        case WorkerMessageType.DECODED:
-          resolver.resolve(value);
-          break;
-        case WorkerMessageType.NOTFOUND:
-          resolver.reject(value ? new Error(value) : null);
-          break;
+    worker.decode(img, size,
+      /**
+       * @param {string} type
+       * @param {?=} opt_value
+       */
+      function(type, opt_value) {
+        switch (type) {
+          case WorkerMessageType.DECODED:
+            resolver.resolve(opt_value);
+            break;
+          case WorkerMessageType.NOTFOUND:
+            resolver.reject(opt_value ? new Error(opt_value) : null);
+            break;
+        }
       }
-    });
+    );
     resolver.promise.thenAlways(function() {
       this.busy_ = false;
     }.bind(this));

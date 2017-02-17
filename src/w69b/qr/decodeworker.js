@@ -2,19 +2,22 @@
 goog.provide('w69b.qr.DecodeWorker');
 goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
-goog.require('w69b.ReaderException');
 goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.WorkerMessageType');
+goog.require('w69b.qr.detector.AlignmentPattern');
+goog.require('w69b.qr.detector.FinderPattern');
 goog.require('w69b.qr.imagedecoding');
+
 
 // Hack to work arround closure warnings.
 var host = self;
 
 goog.scope(function() {
   var qrcode = w69b.qr.imagedecoding;
-  var ReaderException = w69b.ReaderException;
   var WorkerMessageType = w69b.qr.WorkerMessageType;
+  var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
+  var FinderPattern = w69b.qr.detector.FinderPattern;
 
   var _ = w69b.qr.DecodeWorker;
   _.iconvPath = 'iconv.js';
@@ -29,17 +32,16 @@ goog.scope(function() {
 
   /**
    * @param {(!w69b.qr.QRImage|!w69b.img.RGBABitMatrix)} imgdata image to
-   * @param {boolean=} failOnCharset immediately fail on charset error if true,
-   * do not try to load iconv.
-   * decode.
+   * @param {boolean=} opt_failOnCharset immediately fail on charset error if
+   *                                     true, do not try to load iconv. decode.
    */
-  _.decode = function(imgdata, failOnCharset) {
+  _.decode = function(imgdata, opt_failOnCharset) {
     var result;
     try {
       result = qrcode.decodeFromImageData(imgdata, _.onPatternFound);
     } catch (err) {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
-        _.iconvPath && !failOnCharset) {
+        _.iconvPath && !opt_failOnCharset) {
         // load iconv.
         importScripts(_.iconvPath);
         // and try again.
@@ -58,16 +60,16 @@ goog.scope(function() {
   };
 
   /**
-   * @param {(w69b.qr.detector.AlignmentPattern|w69b.qr.detector.FinderPattern)} pattern found.
+   * @param {(AlignmentPattern|FinderPattern)} pattern found.
    */
   _.onPatternFound = function(pattern) {
     // Build plain json object.
     _.send(WorkerMessageType.PATTERN, pattern);
   };
 
-
   /**
    * Received message from host.
+   * @param {MessageEvent} event
    */
   self.onmessage = function(event) {
     var data = event.data;
@@ -104,4 +106,3 @@ goog.scope(function() {
     }
   };
 });
-

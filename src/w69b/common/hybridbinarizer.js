@@ -16,7 +16,6 @@
  */
 
 goog.provide('w69b.common.HybridBinarizer');
-goog.require('w69b.common.BitArray');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.GlobalHistogramBinarizer');
 goog.require('w69b.qr.IntArray2D');
@@ -123,6 +122,13 @@ goog.scope(function() {
    * grid of the blocks around it. Also handles the corner cases (fractional
    * blocks are computed based on the last pixels in the row/column which are
    * also used in the previous block).
+   * @param {(Uint8Array|Uint8ClampedArray)} luminances
+   * @param {number} subWidth
+   * @param {number} subHeight
+   * @param {number} width
+   * @param {number} height
+   * @param {IntArray2D} blackPoints
+   * @param {BitMatrix} matrix
    */
   _.calculateThresholdForBlock = function(luminances, subWidth, subHeight,
                                           width, height, blackPoints, matrix) {
@@ -166,6 +172,12 @@ goog.scope(function() {
 
   /**
    * Applies a single threshold to a block of pixels.
+   * @param {(Uint8Array|Uint8ClampedArray)} luminances
+   * @param {number} xoffset
+   * @param {number} yoffset
+   * @param {number} threshold
+   * @param {number} stride
+   * @param {BitMatrix} matrix
    */
   _.thresholdBlock = function(luminances, xoffset, yoffset, threshold, stride,
                               matrix) {
@@ -185,6 +197,11 @@ goog.scope(function() {
    * Calculates a single black point for each block of pixels and saves it away.
    * See the following thread for a discussion of this algorithm:
    *  http://groups.google.com/group/zxing/browse_thread/thread/d06efa2c35a7ddc0
+   * @param {(Uint8Array|Uint8ClampedArray)} luminances
+   * @param {number} subWidth
+   * @param {number} subHeight
+   * @param {number} width
+   * @param {number} height
    * @return {IntArray2D} the black points
    */
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
@@ -269,4 +286,3 @@ goog.scope(function() {
     return blackPoints;
   };
 });
-

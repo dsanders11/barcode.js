@@ -33,7 +33,7 @@ goog.scope(function() {
 
   /**
    * Row (y) first byte matrix.
-   * @param {number} width with.
+   * @param {number} width width.
    * @param {number} height height.
    * @constructor
    */
@@ -52,31 +52,60 @@ goog.scope(function() {
   };
   var pro = w69b.qr.encoder.ByteMatrix.prototype;
 
+  /**
+   * @return {Int8Array}
+   */
   pro.getBytes = function() {
     return this.bytes_;
   };
 
+  /**
+   * @return {number}
+   */
   pro.getHeight = function() {
     return this.height_;
   };
 
+  /**
+   * @return {number}
+   */
   pro.getWidth = function() {
     return this.width_;
   };
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @return {number}
+   */
   pro.get = function(x, y) {
     return this.bytes_[this.width_ * y + x];
   };
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {(number|boolean)} value
+   */
   pro.set = function(x, y, value) {
+    if (typeof value == 'boolean') {
+      value = value ? 1 : 0;
+    }
+
     this.bytes_[this.width_ * y + x] = value;
   };
 
+  /**
+   * @param {number} value
+   */
   pro.clear = function(value) {
     for (var i = 0; i < this.bytes_.length; ++i)
       this.bytes_[i] = value;
   };
 
+  /**
+   * @override
+   */
   pro.toString = function() {
     var result = [];
     for (var y = 0; y < this.height_; ++y) {
@@ -97,5 +126,4 @@ goog.scope(function() {
     }
     return result.join('');
   };
-
 });

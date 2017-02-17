@@ -28,8 +28,7 @@ goog.scope(function() {
    * format is present within the image as well, and then decodes it accordingly.
    * @interface
    */
-  w69b.Reader = function() {
-  };
+  w69b.Reader = function() { };
   var pro = w69b.Reader.prototype;
 
   /**
@@ -47,6 +46,7 @@ goog.scope(function() {
   /**
    * Resets any internal state the implementation has after a decode, to prepare it
    * for reuse.
+   * @type {function()}
    */
   pro.reset;
 });

@@ -12,10 +12,10 @@ goog.scope(function() {
   var iconvlite = w69b.iconvlite;
   var InvalidCharsetException = w69b.InvalidCharsetException;
 
-  _.SHIFT_JIS = 'SHIFT_JIS';
+  _.SHIFT_JIS = 'SJIS';
   _.GB2312 = 'GB18030';
   _.EUC_JP = 'EUC-JP';
-  _.UTF8 = 'UTF-8';
+  _.UTF8 = 'UTF8';
   _.ISO88591 = 'ISO-8859-1';
   _.PLATFORM_DEFAULT_ENCODING = _.UTF8;
   _.ASSUME_SHIFT_JIS = false;
@@ -30,7 +30,7 @@ goog.scope(function() {
    * @return {string} decoded string.
    */
   _.bytesToString = function(bytes, opt_charset) {
-    var charset = opt_charset || 'UTF-8';
+    var charset = opt_charset || _.UTF8;
     var str = null;
 
     // try native TextDecoder first
@@ -42,7 +42,7 @@ goog.scope(function() {
         // try other methods if charset is not supported by native decoder (eg. CP437 on Chrome).
       }
     }
-    if (charset == 'UTF-8') {
+    if (charset == _.UTF8) {
       str = utf8.UTF8BytesToString(bytes);
     } else if (iconvlite.isSupported(charset)) {
       str = iconvlite.toString(bytes, charset);
@@ -50,7 +50,8 @@ goog.scope(function() {
       if (!iconv)
         throw new InvalidCharsetException(
           'iconv not loaded, cannot handle ' + charset);
-      var utf8Bytes = iconv.convert(bytes, charset, 'UTF-8');
+      /** @type {Array.<number>} */
+      var utf8Bytes = iconv.convert(bytes, charset, _.UTF8);
       if (utf8Bytes === null)
         throw new InvalidCharsetException(
           'toStr ' + charset + ' to UTF-8 ' + bytes);
@@ -71,6 +72,7 @@ goog.scope(function() {
    */
   _.stringToBytes = function(str, opt_charset) {
     var charset = opt_charset || 'UTF-8';
+    /** @type {Array.<number>} */
     var bytes = null;
     if (charset == 'UTF-8') {
       bytes = utf8.stringToUTF8Bytes(str);
@@ -266,5 +268,4 @@ goog.scope(function() {
     // Otherwise, we take a wild guess with platform encoding
     return _.PLATFORM_DEFAULT_ENCODING;
   };
-
 });

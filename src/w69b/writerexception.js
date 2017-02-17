@@ -12,5 +12,4 @@ goog.scope(function() {
     goog.base(this, opt_msg);
   };
   goog.inherits(w69b.WriterException, goog.debug.Error);
-
 });

@@ -19,8 +19,8 @@ goog.provide('w69b.qr.detector.FinderPatternFinder');
 goog.require('goog.array');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
+goog.require('w69b.ResultPoint');
 goog.require('w69b.img.BitMatrixLike');
-goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.detector.FinderPattern');
 goog.require('w69b.qr.detector.FinderPatternInfo');
 
@@ -28,16 +28,16 @@ goog.require('w69b.qr.detector.FinderPatternInfo');
 goog.scope(function() {
   var FinderPattern = w69b.qr.detector.FinderPattern;
   var FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
+  var ResultPoint = w69b.ResultPoint;
 
   /** @typedef {function((w69b.qr.detector.AlignmentPattern|w69b.qr.detector.FinderPattern))} */
   w69b.qr.ResultPointCallback;
 
   /**
-   * <p>This class attempts to find finder patterns in a QR Code. Finder
-   * patterns are the square
-   * markers at three corners of a QR Code.</p>
+   * This class attempts to find finder patterns in a QR Code. Finder
+   * patterns are the square markers at three corners of a QR Code.
    *
-   * <p>This class is thread-safe but not reentrant. Each thread must allocate
+   * This class is thread-safe but not reentrant. Each thread must allocate
    * its own object.
    *
    * @author Sean Owen
@@ -88,7 +88,10 @@ goog.scope(function() {
 
   // Maximum skew error to skip scanning soon.
   _.SKEW_THRESHOLD = 0.05;
-  // Precomputed combinations for 3 out of 6.
+  /**
+   * Precomputed combinations for 3 out of 6.
+   * @type {Array.<Array.<number>>}
+   */
   _.SKEW_COMBINATIONS = [
     [0, 1, 2],
     [0, 1, 3],
@@ -119,8 +122,8 @@ goog.scope(function() {
    */
   pro.find = function(opt_hints) {
     var tryHarder = opt_hints && !!opt_hints[w69b.DecodeHintType.TRY_HARDER];
-    var maxI = this.image_.height;
-    var maxJ = this.image_.width;
+    var maxI = this.image_.getHeight();
+    var maxJ = this.image_.getWidth();
     // We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
 
@@ -137,6 +140,7 @@ goog.scope(function() {
     }
 
     var done = false;
+    /** @type {Array.<number>} */
     var stateCount = new Array(5);
     var confirmed;
     for (var i = iSkip - 1; i < maxI && !done; i += iSkip) {
@@ -228,7 +232,7 @@ goog.scope(function() {
     }
 
     var patternInfo = this.selectBestPatterns(true);
-    w69b.qr.detector.FinderPattern.orderBestPatterns(patternInfo);
+    ResultPoint.orderBestPatterns(patternInfo);
 
     return new FinderPatternInfo(patternInfo);
   };
@@ -291,9 +295,9 @@ goog.scope(function() {
   };
 
   /**
-   * <p>After a horizontal scan finds a potential finder pattern, this method
+   * After a horizontal scan finds a potential finder pattern, this method
    * "cross-checks" by scanning down vertically through the center of the
-   * possible finder pattern to see if the same proportion is detected.</p>
+   * possible finder pattern to see if the same proportion is detected.
    *
    * @param {number} startI row where a finder pattern was detected.
    * @param {number} centerJ center of the section that appears to cross
@@ -309,7 +313,7 @@ goog.scope(function() {
                                     originalStateCountTotal) {
     var image = this.image_;
 
-    var maxI = image.height;
+    var maxI = image.getHeight();
     var stateCount = this.getCrossCheckStateCount();
 
     // Start counting up from center
@@ -397,7 +401,7 @@ goog.scope(function() {
                                       originalStateCountTotal) {
     var image = this.image_;
 
-    var maxJ = image.width;
+    var maxJ = image.getWidth();
     var stateCount = this.getCrossCheckStateCount();
 
     var j = startJ;
@@ -558,14 +562,14 @@ goog.scope(function() {
    */
   pro.haveMultiplyConfirmedCenters = function() {
     var confirmedCount = 0;
-    var totalModuleSize = 0.;
+    var totalModuleSize = 0.0;
     var max = this.possibleCenters_.length;
-    this.possibleCenters_.forEach(function(pattern) {
+    for (var pattern of this.possibleCenters_) {
       if (pattern.getCount() >= _.CENTER_QUORUM) {
         confirmedCount++;
         totalModuleSize += pattern.getEstimatedModuleSize();
       }
-    }, this);
+    }
     if (confirmedCount < 3) {
       return false;
     }
@@ -579,10 +583,10 @@ goog.scope(function() {
     // manu: Does it make sense to divide by max while counting
     // only those with >= CENTER_QUORUM.
     var average = totalModuleSize / max;
-    var totalDeviation = 0.;
-    this.possibleCenters_.forEach(function(pattern) {
+    var totalDeviation = 0.0;
+    for (var pattern of this.possibleCenters_) {
       totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
-    });
+    }
     if (totalDeviation > 0.05 * totalModuleSize)
       return false;
 
@@ -613,13 +617,13 @@ goog.scope(function() {
     if (startSize > 3) {
       // But we can only afford to do so if we have at least 4 possibilities
       // to choose from
-      var totalModuleSize = 0.;
-      var square = 0.;
-      centers.forEach(function(center) {
+      var totalModuleSize = 0.0;
+      var square = 0.0;
+      for (var center of centers) {
         var size = center.getEstimatedModuleSize();
         totalModuleSize += size;
         square += size * size;
-      });
+      }
       average = totalModuleSize / startSize;
       var stdDev = Math.sqrt(square / startSize - average * average);
 
@@ -640,10 +644,10 @@ goog.scope(function() {
     if (centers.length > 3) {
       // Throw away all but those first size candidate points we found.
 
-      totalModuleSize = 0.;
-      centers.forEach(function(possibleCenter) {
+      totalModuleSize = 0.0;
+      for (var possibleCenter of centers) {
         totalModuleSize += possibleCenter.getEstimatedModuleSize();
-      });
+      }
 
       average = totalModuleSize / centers.length;
 
@@ -663,8 +667,6 @@ goog.scope(function() {
       } else {
         centers = centers.slice(0, 3);
       }
-
-
     }
 
     return centers;
@@ -688,25 +690,37 @@ goog.scope(function() {
   };
 
   /**
-   * <p>Orders by furthest from average</p>
+   * Orders by furthest from average
    * @param {number} average average.
    * @return {function(FinderPattern, FinderPattern):number} compare function.
    */
   _.FurthestFromAverageComparator = function(average) {
-    return function(center1, center2) {
+    /**
+     * @param {FinderPattern} center1
+     * @param {FinderPattern} center2
+     * @return {number}
+     */
+    function comparator(center1, center2) {
       var dA = Math.abs(center2.getEstimatedModuleSize() - average);
       var dB = Math.abs(center1.getEstimatedModuleSize() - average);
       return dA < dB ? -1 : dA == dB ? 0 : 1;
-    };
+    }
+
+    return comparator;
   };
 
   /**
-   * <p>Orders by {@link FinderPattern#getCount()}, descending.</p>
+   * Orders by {@link FinderPattern#getCount()}, descending.
    * @param {number} average average.
    * @return {function(FinderPattern, FinderPattern):number} compare function.
    */
   _.CenterComparator = function(average) {
-    return function(center1, center2) {
+    /**
+     * @param {FinderPattern} center1
+     * @param {FinderPattern} center2
+     * @return {number}
+     */
+    function comparator(center1, center2) {
       if (center2.getCount() == center1.getCount()) {
         var dA = Math.abs(center2.getEstimatedModuleSize() - average);
         var dB = Math.abs(center1.getEstimatedModuleSize() - average);
@@ -714,13 +728,15 @@ goog.scope(function() {
       } else {
         return center2.getCount() - center1.getCount();
       }
-    };
+    }
+
+    return comparator;
   };
 
   /**
    * Computes a - b / |a-b|.
-   * @param {w69b.ResultPoint} pattern1 a.
-   * @param {w69b.ResultPoint} pattern2 b.
+   * @param {ResultPoint} pattern1 a.
+   * @param {ResultPoint} pattern2 b.
    * @return {Array.<number>} result as array [x, y].
    */
   _.diff = function(pattern1, pattern2) {
@@ -753,6 +769,7 @@ goog.scope(function() {
     var diff01 = _.diff(patterns[0], patterns[1]);
     var diff02 = _.diff(patterns[0], patterns[2]);
     var diff12 = _.diff(patterns[1], patterns[2]);
+    /** @type {Array.<number>} */
     var scalars = [Math.abs(_.scalarProduct(diff01, diff02)),
       Math.abs(_.scalarProduct(diff01, diff12)),
       Math.abs(_.scalarProduct(diff02, diff12))
@@ -764,5 +781,4 @@ goog.scope(function() {
       Math.abs(scalars[2] - _.SQRT_05);
     return error;
   };
-
 });

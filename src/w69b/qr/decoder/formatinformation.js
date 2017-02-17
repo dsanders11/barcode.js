@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,10 +25,7 @@ goog.provide('w69b.qr.decoder.URShift');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 goog.scope(function() {
-
-
   /**
-   *
    * @param {number} number todo.
    * @param {number} bits todo.
    * @return {number} todo.
@@ -57,6 +52,10 @@ goog.scope(function() {
   var pro = FormatInformation.prototype;
 
   FormatInformation.FORMAT_INFO_MASK_QR = 0x5412;
+
+  /**
+   * @type {Array.<Array.<number>>}
+   */
   FormatInformation.FORMAT_INFO_DECODE_LOOKUP = [
     [0x5412, 0x00],
     [0x5125, 0x01],
@@ -94,19 +93,32 @@ goog.scope(function() {
 
   /**
    * Offset i holds the number of 1 bits in the binary representation of i
+   * @type {Array.<number>}
    */
   FormatInformation.BITS_SET_IN_HALF_BYTE = [0, 1, 1, 2, 1, 2, 2, 3,
     1, 2, 2, 3, 2, 3, 3, 4];
 
+  /**
+   * @returns {number} hash code
+   */
   pro.GetHashCode = function() {
     return (this.errorCorrectionLevel.ordinal << 3) | this.dataMask;
   };
 
+  /**
+   * @param {FormatInformation} other
+   * @return {boolean} are they equal
+   */
   pro.Equals = function(other) {
     return this.errorCorrectionLevel == other.errorCorrectionLevel &&
       this.dataMask == other.dataMask;
   };
 
+  /**
+   * @param {number} a
+   * @param {number} b
+   * @return {number}
+   */
   FormatInformation.numBitsDiffering = function(a, b) {
     a ^= b; // a now has a 1 bit exactly where its bit differs with b's
     // Count bits set quickly with a series of lookups:
@@ -120,6 +132,10 @@ goog.scope(function() {
       FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 28) & 0x0F)];
   };
 
+  /**
+   * @param {number} maskedFormatInfo
+   * @return {FormatInformation}
+   */
   FormatInformation.decodeFormatInformation = function(maskedFormatInfo) {
     var formatInfo = FormatInformation.doDecodeFormatInformation(
       maskedFormatInfo);
@@ -133,6 +149,10 @@ goog.scope(function() {
       FormatInformation.FORMAT_INFO_MASK_QR);
   };
 
+  /**
+   * @param {number} maskedFormatInfo
+   * @return {FormatInformation}
+   */
   FormatInformation.doDecodeFormatInformation = function(maskedFormatInfo) {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
     var bestDifference = 0xffffffff;
@@ -159,5 +179,4 @@ goog.scope(function() {
     }
     return null;
   };
-
 });

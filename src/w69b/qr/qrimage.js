@@ -53,7 +53,7 @@ goog.scope(function() {
 
   /**
    * @param {number} y index.
-   * @param {Uint8Array} opt_row pre-allocated.
+   * @param {Uint8Array=} opt_row pre-allocated.
    * @return {Uint8Array} row.
    */
   pro.getRow = function(y, opt_row) {
@@ -67,7 +67,6 @@ goog.scope(function() {
       row[x] = this.data[offset + x];
     return row;
   };
-
 
   /**
    * Get index in data for given position.
@@ -100,4 +99,3 @@ goog.scope(function() {
       new Uint8Array(new ArrayBuffer(width * height)));
   };
 });
-

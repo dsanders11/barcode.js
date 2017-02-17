@@ -10,12 +10,16 @@ goog.scope(function() {
    */
   w69b.qr.CanvasDrawable = function(canvas) {
     this.canvas_ = canvas;
-    this.context_ = canvas.getContext('2d');
+    this.context_ = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
     this.bgStyle_ = 'rgb(255, 255, 255)';
     this.fgStyle_ = 'rgb(0, 0, 0)';
   };
   var pro = w69b.qr.CanvasDrawable.prototype;
 
+  /**
+   * @param {number} width
+   * @param {number} height
+   */
   pro.fillBackground = function(width, height) {
     this.canvas_.width = width;
     this.canvas_.height = height;
@@ -23,10 +27,15 @@ goog.scope(function() {
     this.context_.fillRect(0, 0, width, height);
   };
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   */
   pro.fillBlack = function(x, y, width, height) {
     this.context_.fillStyle = this.fgStyle_;
     // this.context_.strokeStyle = this.fgStyle_;
     this.context_.fillRect(x, y, width, height);
   };
-
 });

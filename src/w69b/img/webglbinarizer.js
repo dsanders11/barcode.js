@@ -1,7 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
-goog.require('goog.math.Size');
 goog.provide('w69b.img.WebGLBinarizer');
+goog.require('goog.math.Size');
 goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.RGBAImageData');
 goog.require('w69b.img.WebGLFilter');
@@ -10,14 +10,8 @@ goog.require('w69b.img.WebGLPipeline');
 goog.require('w69b.img.WebGLProgram');
 goog.require('w69b.shaders.binarizeAvg1');
 goog.require('w69b.shaders.binarizeGroup');
-goog.require('w69b.shaders.debug');
 goog.require('w69b.shaders.estimateBlack');
-goog.require('w69b.shaders.extractChannel');
-goog.require('w69b.shaders.fragCoordTest');
 goog.require('w69b.shaders.gaussBlur');
-goog.require('w69b.shaders.grayscale');
-goog.require('w69b.shaders.rectVertex');
-goog.require('w69b.shaders.scale');
 
 
 goog.scope(function() {
@@ -73,9 +67,24 @@ goog.scope(function() {
    */
   pro.inSize_ = null;
 
+  /** @type {WebGLProgram} */
+  pro.programDynRange1 = null;
+
+  /** @type {WebGLProgram} */
+  pro.programDynRange2 = null;
+
+  /** @type {WebGLProgram} */
+  pro.programEstimateBlack = null;
+
+  /** @type {WebGLProgram} */
+  pro.programThreshold = null;
+
+  /** @type {WebGLProgram} */
+  pro.programGauss = null;
+
   /**
    * @param {string} source fragment source.
-   * @return {w69b.img.WebGLProgram} compiled program.
+   * @return {WebGLProgram} compiled program.
    */
   pro.getProgram = function(source) {
     return new WebGLProgram(this.filter_.getContext(), source);
@@ -125,6 +134,9 @@ goog.scope(function() {
     this.setupCalled_ = true;
   };
 
+  /**
+   * @return {WebGLPipeline}
+   */
   pro.createPipeline = function() {
     var width = this.filter_.getWidth();
     var height = this.filter_.getHeight();
@@ -230,7 +242,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {(Image|HTMLVideoElement|RGBAImageData|ImageData)} image image
+   * @param {(Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|ImageData|RGBAImageData)} image image
    * to render.
    */
   pro.render = function(image) {
@@ -276,7 +288,7 @@ goog.scope(function() {
   };
 
   /**
-   *
+   * @return {boolean}
    */
   _.isSupported = function() {
     // create test image
@@ -306,5 +318,4 @@ goog.scope(function() {
     }
     return _.isSupported_;
   };
-
 });

@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,14 +21,22 @@
  * limitations under the License.
  */
 
+goog.provide('w69b.qr.ECB');
+goog.provide('w69b.qr.ECBlocks');
 goog.provide('w69b.qr.decoder.Version');
 goog.require('w69b.FormatException');
 goog.require('w69b.common.BitMatrix');
+goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 goog.scope(function() {
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   var FormatException = w69b.FormatException;
+  var BitMatrix = w69b.common.BitMatrix;
+
   /**
    * @constructor
+   * @param {number} count
+   * @param {number} dataCodewords
    */
   w69b.qr.ECB = function(count, dataCodewords) {
     this.count = count;
@@ -54,15 +60,25 @@ goog.scope(function() {
   };
   var ECBlocks = w69b.qr.ECBlocks;
 
+  /**
+   * @return {Array.<ECB>}
+   */
   ECBlocks.prototype.getECBlocks = function() {
     return this.ecBlocks;
   };
 
+  /**
+   * @return {number}
+   */
   ECBlocks.prototype.getTotalECCodewords = function() {
     return this.ecCodewordsPerBlock * this.getNumBlocks();
   };
 
+  /**
+   * @return {number}
+   */
   ECBlocks.prototype.getNumBlocks = function() {
+    /** @type {number} */
     var total = 0;
     for (var i = 0; i < this.ecBlocks.length; i++) {
       total += this.ecBlocks[i].count;
@@ -72,6 +88,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @param {number} versionNumber
+   * @param {Array.<number>} alignmentPatternCenters
+   * @param {ECBlocks} ecBlocks1
+   * @param {ECBlocks} ecBlocks2
+   * @param {ECBlocks} ecBlocks3
+   * @param {ECBlocks} ecBlocks4
    */
   w69b.qr.decoder.Version = function(versionNumber, alignmentPatternCenters, ecBlocks1,
                              ecBlocks2, ecBlocks3, ecBlocks4) {
@@ -94,10 +116,16 @@ goog.scope(function() {
   var Version = w69b.qr.decoder.Version;
   var pro = Version.prototype;
 
+  /**
+   * @return {number}
+   */
   pro.getVersionNumber = function() {
     return this.versionNumber;
   };
 
+  /**
+   * @return {number}
+   */
   pro.getTotalCodewords = function() {
     return this.totalCodewords;
   };
@@ -116,9 +144,12 @@ goog.scope(function() {
     return 17 + 4 * this.versionNumber;
   };
 
+  /**
+   * @return {BitMatrix}
+   */
   pro.buildFunctionPattern = function() {
     var dimension = this.getDimensionForVersion();
-    var bitMatrix = new w69b.common.BitMatrix(dimension);
+    var bitMatrix = new BitMatrix(dimension);
 
     // Top left finder pattern + separator + format
     bitMatrix.setRegion(0, 0, 9, 9);
@@ -154,16 +185,23 @@ goog.scope(function() {
 
     return bitMatrix;
   };
+
+  /**
+   * @param {ErrorCorrectionLevel} ecLevel
+   * @return {ECBlocks}
+   */
   pro.getECBlocksForLevel = function(ecLevel) {
     return this.ecBlocks[ecLevel.ordinal];
   };
 
+  /** @type {Array.<number>} */
   Version.VERSION_DECODE_INFO = new Array(0x07C94, 0x085BC, 0x09A99, 0x0A4D3,
     0x0BBF6, 0x0C762, 0x0D847, 0x0E60D, 0x0F928, 0x10B78, 0x1145D, 0x12A17,
     0x13532, 0x149A6, 0x15683, 0x168C9, 0x177EC, 0x18EC4, 0x191E1, 0x1AFAB,
     0x1B08E, 0x1CC1A, 0x1D33F, 0x1ED75, 0x1F250, 0x209D5, 0x216F0, 0x228BA,
     0x2379F, 0x24B0B, 0x2542E, 0x26A64, 0x27541, 0x28C69);
 
+  /** @type {Array.<Version>} */
   Version.VERSIONS = function() {
     return new Array(new Version(1, [],
       new ECBlocks(7, new ECB(1, 19)),
@@ -352,6 +390,10 @@ goog.scope(function() {
         new ECBlocks(30, new ECB(20, 15), new ECB(61, 16))));
   }();
 
+  /**
+   * @param {number} versionNumber
+   * @return {Version}
+   */
   Version.getVersionForNumber = function(versionNumber) {
     if (versionNumber < 1 || versionNumber > 40) {
       throw new FormatException();
@@ -359,6 +401,13 @@ goog.scope(function() {
     return Version.VERSIONS[versionNumber - 1];
   };
 
+  /**
+   * Deduces version information purely from QR Code dimensions.
+   *
+   * @param {number} dimension dimension in modules
+   * @return {Version} for a QR Code of that dimension
+   * @throws {FormatException} if dimension is not 1 mod 4
+   */
   Version.getProvisionalVersionForDimension = function(dimension) {
     if (dimension % 4 != 1) {
       throw new FormatException();
@@ -366,6 +415,10 @@ goog.scope(function() {
     return Version.getVersionForNumber((dimension - 17) >> 2);
   };
 
+  /**
+   * @param {number} versionBits
+   * @return {Version}
+   */
   Version.decodeVersionInformation = function(versionBits) {
     var bestDifference = 0xffffffff;
     var bestVersion = 0;
@@ -393,4 +446,3 @@ goog.scope(function() {
     return null;
   };
 });
-

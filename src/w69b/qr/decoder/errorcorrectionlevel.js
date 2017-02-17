@@ -1,6 +1,5 @@
 // javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +26,9 @@ goog.scope(function() {
    * @author mb@w69b.com (Manuel Braun)
    *
    * @constructor
+   * @param {number} ordinal
+   * @param {number} bits
+   * @param {string} name
    */
   w69b.qr.decoder.ErrorCorrectionLevel = function(ordinal, bits, name) {
     this.ordinal = ordinal;
@@ -64,12 +66,15 @@ goog.scope(function() {
 
   var pro = ErrorCorrectionLevel.prototype;
 
+  /**
+   * @return {number}
+   */
   pro.getBits = function() {
     return this.bits;
   };
 
   /**
-   * @return {string} debug string.
+   * @override
    */
   pro.toString = function() {
     return this.name;

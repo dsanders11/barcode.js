@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,18 +22,20 @@
  */
 goog.provide('w69b.qr.decoder.BitMatrixParser');
 goog.require('w69b.FormatException');
+goog.require('w69b.common.BitMatrix');
 goog.require('w69b.qr.decoder.DataMask');
 goog.require('w69b.qr.decoder.FormatInformation');
 goog.require('w69b.qr.decoder.Version');
 
 goog.scope(function() {
+  var BitMatrix = w69b.common.BitMatrix;
   var FormatInformation = w69b.qr.decoder.FormatInformation;
   var Version = w69b.qr.decoder.Version;
   var DataMask = w69b.qr.decoder.DataMask;
   var FormatException = w69b.FormatException;
 
   /**
-   * @param {w69b.common.BitMatrix} bitMatrix matrix.
+   * @param {BitMatrix} bitMatrix matrix.
    * @constructor
    */
   w69b.qr.decoder.BitMatrixParser = function(bitMatrix) {
@@ -43,26 +43,35 @@ goog.scope(function() {
     if (dimension < 21 || (dimension & 0x03) != 1) {
       throw new FormatException();
     }
+    /**
+     * @type {BitMatrix}
+     */
     this.bitMatrix = bitMatrix;
     /**
-     * @type {w69b.qr.decoder.Version}
+     * @type {Version}
      */
     this.parsedVersion = null;
     /**
-     * @type {w69b.qr.decoder.FormatInformation}
+     * @type {FormatInformation}
      */
     this.parsedFormatInfo = null;
   };
   var BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
   var pro = BitMatrixParser.prototype;
 
+  /**
+   * @param {number} i
+   * @param {number} j
+   * @param {number} versionBits
+   * @return {number}
+   */
   pro.copyBit = function(i, j, versionBits) {
     return this.bitMatrix.get(i,
       j) ? (versionBits << 1) | 0x1 : versionBits << 1;
   };
 
   /**
-   * @return {!w69b.qr.decoder.FormatInformation} format information.
+   * @return {!FormatInformation} format information.
    */
   pro.readFormatInformation = function() {
     if (this.parsedFormatInfo != null) {
@@ -109,7 +118,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {w69b.qr.decoder.Version} version.
+   * @return {Version} version.
    */
   pro.readVersion = function() {
     if (this.parsedVersion != null) {
@@ -154,8 +163,10 @@ goog.scope(function() {
     throw new FormatException();
   };
 
+  /**
+   * @return {Array} bytes encoded within the QR Code
+   */
   pro.readCodewords = function() {
-
     var formatInfo = this.readFormatInformation();
     var version = this.readVersion();
 
@@ -208,4 +219,3 @@ goog.scope(function() {
     return result;
   };
 });
-

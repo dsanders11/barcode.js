@@ -24,8 +24,7 @@ goog.scope(function() {
    * The base class for all objects which encode/generate a barcode image.
    * @interface
    */
-  w69b.Writer = function() {
-  };
+  w69b.Writer = function() { };
   var pro = w69b.Writer.prototype;
 
   /**

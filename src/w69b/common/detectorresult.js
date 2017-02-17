@@ -35,7 +35,7 @@ goog.scope(function() {
   /**
    * @return {w69b.common.BitMatrix} raw barcode bits
    */
-    pro.getBits = function() {
+  pro.getBits = function() {
     return this.bits;
   };
 

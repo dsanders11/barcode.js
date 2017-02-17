@@ -1,11 +1,11 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.encoding');
-goog.require('w69b.EncodeHintType');
 goog.require('w69b.qr.CanvasDrawable');
 goog.require('w69b.qr.EpsDrawable');
 goog.require('w69b.qr.SvgDrawable');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 goog.require('w69b.qr.encoder.Encoder');
+goog.require('w69b.qr.encoder.QRCode');
 goog.require('w69b.qr.renderer');
 
 /**
@@ -15,10 +15,11 @@ goog.scope(function() {
   var Encoder = w69b.qr.encoder.Encoder;
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   var renderer = w69b.qr.renderer;
-  var EncodeHintType = w69b.EncodeHintType;
   var SvgDrawable = w69b.qr.SvgDrawable;
   var EpsDrawable = w69b.qr.EpsDrawable;
+  var QRCode = w69b.qr.encoder.QRCode;
 
+  /** @type {Object} */
   var _ = w69b.qr.encoding;
 
   /**
@@ -38,6 +39,7 @@ goog.scope(function() {
    * @param {string=} opt_ecName optional error correciton name.
    * Defaults to L .
    * @private
+   * @return {QRCode}
    */
   _.encode_ = function(content, opt_ecName) {
     var ecLevel = null;

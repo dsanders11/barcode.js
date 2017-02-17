@@ -6,16 +6,16 @@ define(['chai'], function(chai) {
   describe('CharacterSetECI', function() {
 
     it('should return value by name', function() {
-      expect(CharacterSetECI.getValue('UTF-8')).to.equal(26);
-      expect(CharacterSetECI.getValue('UTF-8')).to.equal(26);
-      expect(CharacterSetECI.getValue('SHIFT_JIS')).to.equal(20);
+      expect(CharacterSetECI.getCharacterSetECIByName('UTF-8').getValue()).to.equal(26);
+      expect(CharacterSetECI.getCharacterSetECIByName('UTF-8').getValue()).to.equal(26);
+      expect(CharacterSetECI.getCharacterSetECIByName('Shift_JIS').getValue()).to.equal(20);
     });
 
     it('should return name by value', function() {
-      expect(CharacterSetECI.getName(26)).to.equal('UTF-8');
-      expect(CharacterSetECI.getName(20)).to.equal('SHIFT_JIS');
-      expect(CharacterSetECI.getName(0)).to.equal('CP437');
-      expect(CharacterSetECI.getName(2)).to.equal('CP437');
+      expect(CharacterSetECI.getCharacterSetECIByValue(26).name).to.equal('UTF8');
+      expect(CharacterSetECI.getCharacterSetECIByValue(20).name).to.equal('SJIS');
+      expect(CharacterSetECI.getCharacterSetECIByValue(0).name).to.equal('Cp437');
+      expect(CharacterSetECI.getCharacterSetECIByValue(2).name).to.equal('Cp437');
     });
   });
 });

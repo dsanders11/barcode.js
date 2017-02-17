@@ -19,12 +19,13 @@
 goog.provide('w69b.common.BitSource');
 
 goog.scope(function() {
-  /** <p>This provides an easy abstraction to read bits at a time from a
+  /**
+   * This provides an easy abstraction to read bits at a time from a
    * sequence of bytes, where the number of bits read is not often a multiple
-   * of 8.</p>
+   * of 8.
    *
-   * <p>This class is thread-safe but not reentrant -- unless the caller
-   * modifies the bytes array it passed in, in which case all bets are off.</p>
+   * This class is thread-safe but not reentrant -- unless the caller
+   * modifies the bytes array it passed in, in which case all bets are off.
    *
    * @param {Array.<number>} bytes bytes bytes from which this will read bits.
    * Bits will be read from the first byte first.  Bits are read within a byte
@@ -48,8 +49,8 @@ goog.scope(function() {
   };
 
   /**
-  * @return {number} index of next byte in input byte array which would be read
-  * by the next call to readBits().
+   * @return {number} index of next byte in input byte array which would be read
+   * by the next call to readBits().
    */
   pro.getByteOffset = function() {
     return this.byteOffset_;
@@ -110,5 +111,4 @@ goog.scope(function() {
   pro.available = function() {
     return 8 * (this.bytes_.length - this.byteOffset_) - this.bitOffset_;
   };
-
 });

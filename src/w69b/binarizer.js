@@ -19,34 +19,32 @@
 goog.provide('w69b.Binarizer');
 
 goog.scope(function() {
-
-/**
- * This class hierarchy provides a set of methods to convert luminance data to
- * 1 bit data.  It allows the algorithm to vary polymorphically, for example
- * allowing a very expensive thresholding technique for servers and a fast one
- * for mobile. It also permits the implementation to vary, e.g. a JNI version
- * for Android and a Java fallback version for other platforms.
- *
- * @author dswitkin@google.com (Daniel Switkin)
- * Ported to js by Manuel Braun
- *
- *  @param {w69b.qr.QRImage} source gray values .
- *  @constructor
- */
-w69b.Binarizer = function(source) {
   /**
-   * @protected
-   * @type {w69b.qr.QRImage}
+   * This class hierarchy provides a set of methods to convert luminance data to
+   * 1 bit data.  It allows the algorithm to vary polymorphically, for example
+   * allowing a very expensive thresholding technique for servers and a fast one
+   * for mobile. It also permits the implementation to vary, e.g. a JNI version
+   * for Android and a Java fallback version for other platforms.
+   *
+   * @author dswitkin@google.com (Daniel Switkin)
+   * Ported to js by Manuel Braun
+   *
+   *  @param {w69b.qr.QRImage} source gray values .
+   *  @constructor
    */
-  this.source = source;
-};
+  w69b.Binarizer = function(source) {
+    /**
+     * @protected
+     * @type {w69b.qr.QRImage}
+     */
+    this.source = source;
+  };
   var Binarizer = w69b.Binarizer;
-  var pro = Binarizer.prototype;
 
   /**
    * @return {w69b.qr.QRImage} image.
    */
-  pro.getLuminanceSource = function() {
+  Binarizer.prototype.getLuminanceSource = function() {
     return this.source;
   };
 
@@ -59,14 +57,17 @@ w69b.Binarizer = function(source) {
    * be reused and passed in with each call for performance. However it is
    * legal to keep more than one row at a time if needed.
    *
+   * @abstract
    * @param {number} y The row to fetch, 0 <= y < bitmap height.
-   * @param {w69b.common.BitArray} opt_row An optional preallocated array. If null
-   * or too small, it will be ignored.  If used, the Binarizer will call
+   * @param {w69b.common.BitArray=} opt_row An optional preallocated array. If
+   *                                        null or too small, it will be
+   *                                        ignored.  If used, the Binarizer
+   *                                        will call
    * BitArray.clear(). Always use the returned object.
    * @return {!w69b.common.BitArray} The array of bits for this row (true means
-   * black).
+   *                                 black).
    */
-  pro.getBlackRow = function(y, opt_row) { throw Error(); };
+  Binarizer.prototype.getBlackRow = function(y, opt_row) { };
 
   /**
    * Converts a 2D array of luminance data to 1 bit data. As above, assume this
@@ -75,10 +76,11 @@ w69b.Binarizer = function(source) {
    * row from this matrix may not be identical to one fetched using
    * getBlackRow(), so don't mix and match between them.
    *
+   * @abstract
    * @return {!w69b.common.BitMatrix} The 2D array of bits for the image
    * (true means black).
    */
-  pro.getBlackMatrix = function() { throw Error(); };
+  Binarizer.prototype.getBlackMatrix = function() { };
 
   /**
    * Creates a new object with the same type as this Binarizer implementation,
@@ -86,26 +88,26 @@ w69b.Binarizer = function(source) {
    * may be stateful, e.g. keeping a cache of 1 bit data. See Effective Java
    * for why we can't use Java's clone() method.
    *
+   * @abstract
    * @param {w69b.qr.QRImage} source The LuminanceSource this Binarizer
    * will operate on.
    * @return {w69b.Binarizer} A new concrete Binarizer implementation
    * object.
    */
-  pro.createBinarizer = function(source) { throw Error(); };
+  Binarizer.prototype.createBinarizer = function(source) { };
 
   /**
    * @return {number} width.
    */
-  pro.getWidth = function() {
+  Binarizer.prototype.getWidth = function() {
     return this.source.width;
   };
 
   /**
    * @return {number} height.
    */
-  pro.getHeight = function() {
+  Binarizer.prototype.getHeight = function() {
     return this.source.height;
   };
-
 });
 

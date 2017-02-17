@@ -136,7 +136,8 @@ var _ = w69b.qr.encoder.MaskUtil;
     return penalty;
   };
 
-  /** Apply mask penalty rule 4 and return the penalty. Calculate the ratio of
+  /**
+   * Apply mask penalty rule 4 and return the penalty. Calculate the ratio of
    * dark cells and give penalty if the ratio is far from 50%. It gives 10
    * penalty for 5% distance.
    * @param {ByteMatrix} matrix working matrix.
@@ -167,6 +168,7 @@ var _ = w69b.qr.encoder.MaskUtil;
    * @param {number} maskPattern pattern.
    * @param {number} x pos.
    * @param {number} y pos.
+   * @return {boolean}
    */
   _.getDataMaskBit = function(maskPattern, x, y) {
     var intermediate;

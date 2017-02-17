@@ -4,7 +4,6 @@ goog.require('goog.math.Size');
 goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
-goog.require('goog.userAgent');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.WebGLBinarizer');
@@ -47,8 +46,19 @@ goog.scope(function() {
    * @type {WebGLBinarizer}
    * @private
    */
-  pro.webglBinarizer_ = null;
+  pro.webGLBinarizer_ = null;
 
+  /**
+   * @type {boolean}
+   * @private
+   */
+  pro.useWorker_ = false;
+
+  /**
+   * @type {Worker}
+   * @private
+   */
+  pro.worker_ = null;
 
   /**
    * @private
@@ -130,6 +140,7 @@ goog.scope(function() {
 
   /**
    * Only use workers in browsers that support transferable objects.
+   * @return {boolean} true if should use worker
    */
   pro.shallUseWorker = function() {
     if (!this.enableWorker_) return false;
@@ -142,6 +153,7 @@ goog.scope(function() {
 
   /**
    * Message form worker received
+   * @param {MessageEvent} event
    * @private
    */
   pro.onMessage_ = function(event) {
@@ -158,7 +170,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(HTMLCanvasElement|ImageData|Image|HTMLVideoElement)} imgdata frame to process.
+   * @param {!(HTMLCanvasElement|ImageData|Image|HTMLImageElement|HTMLVideoElement)} imgdata frame to process.
    * @param {!goog.math.Size} size of image data, or desired size of binarizer output in
    * case webGl is used. If aspect ratio is different from input espect ratio, we only use the
    * top-left rectange of the input image that covers the desired size.
@@ -170,17 +182,19 @@ goog.scope(function() {
     size.round();
     if (this.enableWebGl_) {
       // lazzily initialize binarizer
-      if (!this.webGLBinarizer_ && WebGLBinarizer.isSupported())
+      if (!this.webGLBinarizer_ && WebGLBinarizer.isSupported()) {
         this.webGLBinarizer_ = new WebGLBinarizer();
+      }
       // binarize
       if (this.webGLBinarizer_) {
         var coverSize = new goog.math.Size(
           /** @type {number} */ (imgdata.width || imgdata.videoWidth),
           /** @type {number} */ (imgdata.height || imgdata.videoHeight));
-        if (coverSize.fitsInside(size))
+        if (coverSize.fitsInside(size)) {
           size = coverSize;
-        else
+        } else {
           coverSize = coverSize.scaleToCover(size);
+        }
         this.webGLBinarizer_.setup(size.width, size.height, coverSize.width, coverSize.height);
         this.webGLBinarizer_.render(imgdata);
         imgDataOrMatrix = this.webGLBinarizer_.getBitMatrix();

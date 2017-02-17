@@ -18,7 +18,7 @@
 goog.provide('w69b.common.BitArray');
 
 goog.scope(function() {
-/**
+  /**
    * <p>A simple, fast array of bits, represented compactly by an array of ints
    * internally.</p>
    * @param {number=} opt_size size, defaults to 0.
@@ -37,10 +37,14 @@ goog.scope(function() {
      */
     this.bits_ = w69b.common.BitArray.makeArray(this.size_);
   };
-  var _ = w69b.common.BitArray;
-  var pro = _.prototype;
+  var BitArray = w69b.common.BitArray;
+  var pro = BitArray.prototype;
 
-  _.numberOfTrailingZeros = function(i) {
+  /**
+   * @param {number} i
+   * @return {number}
+   */
+  BitArray.numberOfTrailingZeros = function(i) {
     // HD, Figure 5-14
     var y;
     if (i == 0) return 32;
@@ -52,17 +56,26 @@ goog.scope(function() {
     return n - ((i << 1) >>> 31);
   };
 
+  /**
+   * @return {number}
+   */
   pro.getSize = function() {
     return this.size_;
   };
 
+  /**
+   * @return {number}
+   */
   pro.getSizeInBytes = function() {
     return (this.size_ + 7) >> 3;
   };
 
+  /**
+   * @param {number} size
+   */
   pro.ensureCapacity = function(size) {
     if (size > this.bits_.length << 5) {
-      var newBits = _.makeArray(size);
+      var newBits = BitArray.makeArray(size);
       newBits.set(this.bits_, 0);
       this.bits_ = newBits;
     }
@@ -114,12 +127,14 @@ goog.scope(function() {
       }
       currentBits = this.bits_[bitsOffset];
     }
-    var result = (bitsOffset << 5) + _.numberOfTrailingZeros(currentBits);
+    var result = (bitsOffset << 5) + BitArray.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
   };
 
   /**
    * @see #getNextSet(int)
+   * @param {number} from
+   * @return {number}
    */
   pro.getNextUnset = function(from) {
     var size = this.size_;
@@ -136,7 +151,7 @@ goog.scope(function() {
       }
       currentBits = ~this.bits_[bitsOffset];
     }
-    var result = (bitsOffset << 5) + _.numberOfTrailingZeros(currentBits);
+    var result = (bitsOffset << 5) + BitArray.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
   };
 
@@ -239,6 +254,9 @@ goog.scope(function() {
     return true;
   };
 
+  /**
+   * @param {boolean} bit
+   */
   pro.appendBit = function(bit) {
     this.ensureCapacity(this.size_ + 1);
     if (bit) {
@@ -251,6 +269,8 @@ goog.scope(function() {
    * Appends the least-significant this.bits_, from value, in order from
    * most-significant to least-significant. For example, appending 6 this.bits_
    * from 0x000001E will append the this.bits_ 0, 1, 1, 1, 1, 0 in that order.
+   * @param {number} value int containing bits to append
+   * @param {number} numBits bits from value to append
    */
   pro.appendBits = function(value, numBits) {
     if (numBits < 0 || numBits > 32) {
@@ -262,6 +282,9 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {BitArray} other other.
+   */
   pro.appendBitArray = function(other) {
     var otherSize = other.size_;
     this.ensureCapacity(this.size_ + otherSize);
@@ -271,7 +294,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {w69b.common.BitArray} other other.
+   * @param {BitArray} other other.
    */
   pro.xor = function(other) {
     if (this.bits_.length != other.bits_.length) {
@@ -328,10 +351,17 @@ goog.scope(function() {
     this.bits_ = newBits;
   };
 
-  _.makeArray = function(size) {
+  /**
+   * @param {number} size
+   * @return {Int32Array}
+   */
+  BitArray.makeArray = function(size) {
     return new Int32Array((size + 31) >> 5);
   };
 
+  /**
+   * @return {string}
+   */
   pro.toString = function() {
     var result = [];
     for (var i = 0; i < this.size_; i++) {
@@ -342,6 +372,4 @@ goog.scope(function() {
     }
     return result.join('');
   };
-
 });
-

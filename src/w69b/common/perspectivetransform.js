@@ -20,6 +20,15 @@ goog.provide('w69b.common.PerspectiveTransform');
 goog.scope(function() {
   /**
    * @constructor
+   * @param {number} a11
+   * @param {number} a21
+   * @param {number} a31
+   * @param {number} a12
+   * @param {number} a22
+   * @param {number} a32
+   * @param {number} a13
+   * @param {number} a23
+   * @param {number} a33
    */
   w69b.common.PerspectiveTransform = function(a11, a21, a31, a12, a22, a32, a13,
                                           a23, a33) {
@@ -35,6 +44,10 @@ goog.scope(function() {
   };
   var PerspectiveTransform = w69b.common.PerspectiveTransform;
   var pro = PerspectiveTransform.prototype;
+
+  /**
+   * @param {Array.<number>} points
+   */
   pro.transformPoints1 = function(points) {
     var max = points.length;
     var a11 = this.a11;
@@ -55,6 +68,10 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {Array.<number>} xValues
+   * @param {Array.<number>} yValues
+   */
   pro.transformPoints2 = function(xValues, yValues) {
     var n = xValues.length;
     for (var i = 0; i < n; i++) {
@@ -66,6 +83,9 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @return {PerspectiveTransform}
+   */
   pro.buildAdjoint = function() {
     // Adjoint is the transpose of the cofactor matrix:
     return new PerspectiveTransform(this.a22 * this.a33 -
@@ -80,6 +100,10 @@ goog.scope(function() {
       this.a11 * this.a22 - this.a12 * this.a21);
   };
 
+  /**
+   * @param {PerspectiveTransform} other
+   * @return {PerspectiveTransform}
+   */
   pro.times = function(other) {
     return new PerspectiveTransform(this.a11 * other.a11 +
       this.a21 * other.a12 + this.a31 * other.a13,
@@ -93,6 +117,25 @@ goog.scope(function() {
       this.a13 * other.a31 + this.a23 * other.a32 + this.a33 * other.a33);
   };
 
+  /**
+   * @param {number} x0
+   * @param {number} y0
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number} x3
+   * @param {number} y3
+   * @param {number} x0p
+   * @param {number} y0p
+   * @param {number} x1p
+   * @param {number} y1p
+   * @param {number} x2p
+   * @param {number} y2p
+   * @param {number} x3p
+   * @param {number} y3p
+   * @return {PerspectiveTransform}
+   */
   PerspectiveTransform.quadrilateralToQuadrilateral = function(
     x0, y0, x1, y1, x2, y2, x3, y3, x0p, y0p, x1p, y1p, x2p, y2p, x3p, y3p) {
 
@@ -104,6 +147,17 @@ goog.scope(function() {
     return sToQ.times(qToS);
   };
 
+  /**
+   * @param {number} x0
+   * @param {number} y0
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number} x3
+   * @param {number} y3
+   * @return {PerspectiveTransform}
+   */
   PerspectiveTransform.squareToQuadrilateral = function(x0, y0, x1, y1,
                                                         x2, y2, x3, y3) {
     var dy2 = y3 - y2;
@@ -126,11 +180,21 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {number} x0
+   * @param {number} y0
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number} x3
+   * @param {number} y3
+   * @return {PerspectiveTransform}
+   */
   PerspectiveTransform.quadrilateralToSquare = function(x0, y0, x1, y1,
                                                         x2, y2, x3, y3) {
     // Here, the adjoint serves as the inverse:
     return PerspectiveTransform.squareToQuadrilateral(
       x0, y0, x1, y1, x2, y2, x3, y3).buildAdjoint();
   };
-
 });

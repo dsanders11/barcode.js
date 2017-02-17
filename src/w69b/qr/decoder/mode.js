@@ -25,8 +25,6 @@ goog.scope(function() {
    * standard.</p>
    *
    * @author Sean Owen
-   */
-  /**
    *
    * @param {Array.<number>} characterCountBitsForVersions nodoc.
    * @param {number} bits nodoc.
@@ -43,7 +41,6 @@ goog.scope(function() {
 
 
   /** @enum {Mode} */
-
   w69b.qr.decoder.ModeEnum = {
     // Not really a mode...
     TERMINATOR: new Mode([0, 0, 0], 0x00, 'TERMINATOR'),
@@ -80,6 +77,9 @@ goog.scope(function() {
     return this.characterCountBitsForVersions[offset];
   };
 
+  /**
+   * @return {number}
+   */
   pro.getBits = function() {
     return this.bits;
   };
@@ -90,7 +90,6 @@ goog.scope(function() {
   pro.toString = function() {
     return this.name_;
   };
-
 
   /**
    * @param {number} bits four bits encoding a QR Code data mode.
@@ -125,4 +124,3 @@ goog.scope(function() {
     }
   };
 });
-

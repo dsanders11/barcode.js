@@ -7,11 +7,13 @@ goog.provide('w69b.utf8');
  */
 (function(global) {
   /**
-   * @license
-   * Snippet fixedCharCodeAt borrowed from http://goo.gl/3lRpR.
+   * @param {string} str
+   * @param {number} idx
+   * @return {(number|boolean)}
+   * @license Snippet fixedCharCodeAt borrowed from http://goo.gl/3lRpR.
    * (c) see contributers of site.
    * License: MIT
-  */
+   */
   function fixedCharCodeAt(str, idx) {
       var code = str.charCodeAt(idx);
       var hi, low;
@@ -35,16 +37,14 @@ goog.provide('w69b.utf8');
   }
 
   /**
-   * @license
    * fixedFromCodePoint
-  * Convert array of unicode code points to string.
-  * Originally from:
-  * ES6 Unicode Shims 0.1
-  * (c) 2012 Steven Levithan <http://slevithan.com/>
-  * MIT License
-  * @param {Array.<number>} codePoints codePoints sequence.
-  * @return {string} resulting string.
-  */
+   * Convert array of unicode code points to string.
+   * @param {Array.<number>} codePoints codePoints sequence.
+   * @return {string} resulting string.
+   * @license Originally from ES6 Unicode Shims 0.1
+   * (c) 2012 Steven Levithan <http://slevithan.com/>
+   * MIT License
+   */
   function fixedFromCodePoint(codePoints) {
     var chars = [], point, offset, units, i;
     for (i = 0; i < codePoints.length; ++i) {
@@ -107,6 +107,11 @@ goog.provide('w69b.utf8');
    */
   function UTF8BytesToString(bytes) {
     var length = bytes.length;
+
+    /**
+     * @param {number} idx
+     * @return {number}
+     */
     var getContinuation = function(idx) {
       if (idx > length) throw new Error();
       var b = bytes[idx];

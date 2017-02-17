@@ -4,8 +4,6 @@ goog.provide('w69b.img.NotSupportedError');
 goog.provide('w69b.img.WebGLFilter');
 goog.require('goog.debug.Error');
 goog.require('w69b.img.RGBAImageData');
-goog.require('w69b.img.WebGLParams');
-goog.require('w69b.img.WebGLPipeline');
 goog.require('w69b.img.WebGLProgram');
 goog.require('w69b.shaders.fragCoordTest');
 
@@ -60,7 +58,6 @@ goog.scope(function() {
 
   var pro = w69b.img.WebGLFilter.prototype;
 
-
   /**
    * Rendering context of back canvas.
    * @type {WebGLRenderingContext}
@@ -68,6 +65,8 @@ goog.scope(function() {
    */
   pro.context_ = null;
 
+  /** @type {Array.<WebGLTexture>} */
+  pro.textures = null;
 
   /**
    * @param {number} width canvas width.
@@ -128,6 +127,7 @@ goog.scope(function() {
 
   /**
    * Creates num textures. The first texture is
+   * @param {number} num
    */
   pro.createTextures = function(num) {
     var width = this.getWidth();
@@ -211,7 +211,6 @@ goog.scope(function() {
     return new RGBAImageData(width, height, imgdata);
   };
 
-
   /**
    * WebGL implementation supply different offsets for gl_FragCoord to
    * fragment shaders. For the first pixel this can be (0,0), (0.5, 0.5)
@@ -220,9 +219,9 @@ goog.scope(function() {
   _.testFragCoordOffset = function() {
     if (_.fragCoordOffset_)
       return;
-    var canvas = document.createElement('canvas');
-    var gl = canvas.getContext('webgl') ||
-      canvas.getContext('experimental-webgl');
+    var canvas = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
+    var gl = /** @type {?WebGLRenderingContext} */ (
+      canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
     canvas.width = 20;
     canvas.height = 20;
     canvas.imageSmoothingEnabled = false;
@@ -231,12 +230,15 @@ goog.scope(function() {
     program.use();
     program.initCommonAttributes();
 
-
     program.drawRect();
     var imgdata = new Uint8Array(4 * canvas.width * canvas.height);
     gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA,
       gl.UNSIGNED_BYTE, imgdata);
 
+    /**
+     * @param {number} val
+     * @return {number}
+     */
     function round(val) {
       return Math.round(100 * val / 255) / 10;
     }
@@ -250,6 +252,4 @@ goog.scope(function() {
     // window.console.log('detected fragment coord offset: (' +
     //   xOffset + ' ' + yOffset + ')');
   };
-
-
 });

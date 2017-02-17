@@ -36,6 +36,4 @@ goog.scope(function() {
     }
     return grayImg;
   };
-
 });
-

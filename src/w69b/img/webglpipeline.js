@@ -1,8 +1,13 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
 goog.provide('w69b.img.WebGLPipeline');
+goog.require('w69b.img.WebGLParams');
+goog.require('w69b.img.WebGLProgram');
 
 goog.scope(function() {
+  var WebGLParams = w69b.img.WebGLParams;
+  var WebGLProgram = w69b.img.WebGLProgram;
+
   /**
    * Helps to execute multipass webgl programms by applying multiple programs
    * and parameter successively.
@@ -10,6 +15,7 @@ goog.scope(function() {
    * @constructor
    */
   w69b.img.WebGLPipeline = function(filter) {
+    /** @type {(function(number, number, number)|Array.<(WebGLProgram|WebGLParams)>)}*/
     this.passes_ = [];
     this.filter_ = filter;
   };
@@ -17,8 +23,8 @@ goog.scope(function() {
 
   /**
    *
-   * @param {w69b.img.WebGLProgram} program to run.
-   * @param {w69b.img.WebGLParams} parameters to apply.
+   * @param {WebGLProgram} program to run.
+   * @param {WebGLParams} parameters to apply.
    */
   pro.addPass = function(program, parameters) {
     this.passes_.push([program, parameters]);
@@ -36,25 +42,32 @@ goog.scope(function() {
     this.passes_.push(callback);
   };
 
-
+  /**
+   * @param {number} inTextureId
+   * @param {number} outTextureId
+   * @param {number} workTextureId
+   * @param {boolean=} opt_resultOnScreen
+   */
   pro.render = function(inTextureId, outTextureId, workTextureId,
                         opt_resultOnScreen) {
     var prevProgarm = null;
     var filter = this.filter_;
     var numPasses = this.passes_.length;
+    /** @type {Array.<number>} */
     var pingPongTextureIds;
     // Ensures last pass goes on outTextureId.
-    if (numPasses % 2 == 0)
+    if (numPasses % 2 == 0) {
       pingPongTextureIds = [workTextureId, outTextureId];
-    else
+    } else {
       pingPongTextureIds = [outTextureId, workTextureId];
+    }
 
     var prevTextureId = inTextureId;
     for (var i = 0; i < numPasses; ++i) {
       var pass = this.passes_[i];
       if (pass.length) {
-        var program = pass[0];
-        var params = pass[1];
+        var program = /** @type {WebGLProgram} */ (pass[0]);
+        var params = /** @type {WebGLParams} */ (pass[1]);
         if (program != prevProgarm) {
           program.use();
           program.initCommonAttributes();
@@ -76,7 +89,6 @@ goog.scope(function() {
           params.getValue('width'),
           params.getValue('height'));
         program.drawRect();
-
       } else {
         // custom pass
         var outTex = pingPongTextureIds[i % 2];
@@ -84,9 +96,6 @@ goog.scope(function() {
         pass(prevTextureId, outTex, workTex);
         prevTextureId = outTex;
       }
-
     }
   };
-
-
 });

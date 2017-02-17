@@ -48,6 +48,4 @@ goog.scope(function() {
     else
       return true;
   };
-
-
 });

@@ -16,6 +16,7 @@
  */
 
 goog.provide('w69b.common.DefaultGridSampler');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.GridSampler');
 goog.require('w69b.common.GridSamplerInterface');
@@ -36,6 +37,28 @@ goog.scope(function() {
   };
   var pro = w69b.common.DefaultGridSampler.prototype;
 
+  /**
+   * @param {BitMatrix} image
+   * @param {number} dimensionX
+   * @param {number} dimensionY
+   * @param {number} p1ToX
+   * @param {number} p1ToY
+   * @param {number} p2ToX
+   * @param {number} p2ToY
+   * @param {number} p3ToX
+   * @param {number} p3ToY
+   * @param {number} p4ToX
+   * @param {number} p4ToY
+   * @param {number} p1FromX
+   * @param {number} p1FromY
+   * @param {number} p2FromX
+   * @param {number} p2FromY
+   * @param {number} p3FromX
+   * @param {number} p3FromY
+   * @param {number} p4FromX
+   * @param {number} p4FromY
+   * @return {BitMatrix}
+   */
   pro.sampleGrid = function(image, dimensionX, dimensionY, p1ToX, p1ToY, p2ToX,
                             p2ToY, p3ToX, p3ToY, p4ToX, p4ToY, p1FromX,
                             p1FromY, p2FromX, p2FromY, p3FromX, p3FromY,
@@ -48,6 +71,13 @@ goog.scope(function() {
     return this.sampleGridTransform(image, dimensionX, dimensionY, transform);
   };
 
+  /**
+   * @param {BitMatrix} image
+   * @param {number} dimensionX
+   * @param {number} dimensionY
+   * @param {PerspectiveTransform} transform
+   * @return {BitMatrix}
+   */
   pro.sampleGridTransform = function(image, dimensionX, dimensionY,
                                      transform) {
     if (dimensionX <= 0 || dimensionY <= 0) {
@@ -89,8 +119,4 @@ goog.scope(function() {
     }
     return bits;
   };
-
-  // set default grid sampler.
-  GridSampler.setGridSampler(new w69b.common.DefaultGridSampler());
-
 });

@@ -7,7 +7,6 @@
  */
 
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,6 +111,12 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {GF256Poly} a
+   * @param {GF256Poly} b
+   * @param {number} R
+   * @return {Array.<GF256Poly>}
+   */
   pro.runEuclideanAlgorithm = function(a, b, R) {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {
@@ -168,6 +173,11 @@ goog.scope(function() {
     var omega = r.multiply2(inverse);
     return new Array(sigma, omega);
   };
+
+  /**
+   * @param {GF256Poly} errorLocator
+   * @return {Array.<number>}
+   */
   pro.findErrorLocations = function(errorLocator) {
     // This is a direct application of Chien's search
     var numErrors = errorLocator.getDegree();
@@ -189,8 +199,14 @@ goog.scope(function() {
     }
     return result;
   };
-  pro.findErrorMagnitudes =
-    function(errorEvaluator, errorLocations, dataMatrix) {
+
+  /**
+   * @param {GF256Poly} errorEvaluator
+   * @param {Array.<number>} errorLocations
+   * @param {boolean} dataMatrix
+   * @return {Array.<number>}
+   */
+  pro.findErrorMagnitudes = function(errorEvaluator, errorLocations, dataMatrix) {
       // This is directly applying Forney's Formula
       var s = errorLocations.length;
       var result = new Array(s);

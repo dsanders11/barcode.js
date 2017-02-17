@@ -40,15 +40,14 @@ goog.scope(function() {
   goog.inherits(AlignmentPattern, w69b.ResultPoint);
   var pro = AlignmentPattern.prototype;
 
-  pro.incrementCount = function() {
-    this.count++;
-  };
-
   /**
    * Determines if this alignment pattern "about equals" an alignment
-   * pattern at the stated
-   * position and size -- meaning, it is at nearly the same center with nearly
-   * the same size.
+   * pattern at the stated position and size -- meaning, it is at nearly the
+   * same center with nearly the same size.
+   * @param {number} moduleSize
+   * @param {number} i
+   * @param {number} j
+   * @return {boolean} is aligntment pattern "about equals"
    */
   pro.aboutEquals = function(moduleSize, i, j) {
     if (Math.abs(i - this.y) <= moduleSize &&
@@ -71,6 +70,9 @@ goog.scope(function() {
    * Combines this object's current estimate of a finder pattern position
    * and module size
    * with a new estimate.
+   * @param {number} i
+   * @param {number} j
+   * @param {number} newModuleSize
    * @return {AlignmentPattern} a new containing an average of the two.
    */
   pro.combineEstimate = function(i, j, newModuleSize) {
@@ -90,7 +92,4 @@ goog.scope(function() {
       'y': this.getY(),
       'size': this.getEstimatedModuleSize()};
   };
-
-
-
 });

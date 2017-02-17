@@ -7,6 +7,8 @@ var fs = require('fs');
 
 /**
  * Returns javascript code that exports the given string using goog.provide.
+ * @param {string} txt javascript text
+ * @param {string} name name to export
  */
 function txt2js(txt, name) {
   var js = 'goog.provide(\'' + name + '\');\n' +
@@ -18,6 +20,9 @@ function txt2js(txt, name) {
 
 /**
  * Process c-style include directives.
+ * @param {string} shaderCode the shader code as a string
+ * @param {string} dirname directory name
+ * @return {string} preprocessed shader
  */
 function preprocess(shaderCode, dirname) {
   // Simple shader preprocessing hack.
@@ -54,7 +59,7 @@ function preprocess(shaderCode, dirname) {
 
 /**
  * Path to module name.
- * @param {String} filePath relative path to file
+ * @param {string} filePath relative path to file
  * @returns {string} closure module name
  */
 function pathToName(filePath) {

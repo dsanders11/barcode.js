@@ -1,6 +1,5 @@
 // javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +21,8 @@ goog.require('w69b.ResultPoint');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.DefaultGridSampler');
 goog.require('w69b.common.DetectorResult');
+goog.require('w69b.common.GridSampler');
+goog.require('w69b.common.PerspectiveTransform');
 goog.require('w69b.common.detector.MathUtils');
 goog.require('w69b.img.BitMatrixLike');
 goog.require('w69b.qr.decoder.Version');
@@ -38,7 +39,12 @@ goog.scope(function() {
   var MathUtils = w69b.common.detector.MathUtils;
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
   var DetectorResult = w69b.common.DetectorResult;
+  var GridSampler = w69b.common.GridSampler;
   var ResultPoint = w69b.ResultPoint;
+  var BitMatrix = w69b.common.BitMatrix;
+
+  // set default grid sampler.
+  GridSampler.setGridSampler(new w69b.common.DefaultGridSampler());
 
   /**
    * Encapsulates logic that can detect a QR Code in an image, even if the
@@ -61,25 +67,20 @@ goog.scope(function() {
   var pro = w69b.qr.detector.Detector.prototype;
 
   /**
-   * <p>This method traces a line from a point in the image, in the
-   * direction towards another point.
-   * It begins in a black region, and keeps going until it finds white,
-   * then black, then white again.
-   * It reports the distance from the start to this point.</p>
-   *
-   * <p>This is used when figuring out how wide a finder pattern is,
-   * when the finder pattern may be skewed or rotated.</p>
-   */
-  /**
-   * <p>This method traces a line from a point in the image, in the direction
+   * This method traces a line from a point in the image, in the direction
    * towards another point.
    * It begins in a black region, and keeps going until it finds white, then
    * black, then white again.
-   * It reports the distance from the start to this point.</p>
+   * It reports the distance from the start to this point.
    *
-   * <p>This is used when figuring out how wide a finder pattern is, when the
-   * finder pattern
-   * may be skewed or rotated.</p>
+   * This is used when figuring out how wide a finder pattern is, when the
+   * finder pattern may be skewed or rotated.
+   *
+   * @param {number} fromX
+   * @param {number} fromY
+   * @param {number} toX
+   * @param {number} toY
+   * @return {number}
    */
   pro.sizeOfBlackWhiteBlackRun = function(fromX, fromY, toX, toY) {
     // Mild variant of Bresenham's algorithm;
@@ -149,10 +150,15 @@ goog.scope(function() {
    * a finder pattern by looking for a black-white-black run from the center
    * in the direction
    * of another point (another finder pattern center), and in the opposite
-   * direction too.</p>
+   * direction too.
+   *
+   * @param {number} fromX
+   * @param {number} fromY
+   * @param {number} toX
+   * @param {number} toY
+   * @return {number}
    */
   pro.sizeOfBlackWhiteBlackRunBothWays = function(fromX, fromY, toX, toY) {
-
     var result = this.sizeOfBlackWhiteBlackRun(fromX, fromY, toX, toY);
 
     // Now count other way -- don't run off image though of course
@@ -161,9 +167,9 @@ goog.scope(function() {
     if (otherToX < 0) {
       scale = fromX / (fromX - otherToX);
       otherToX = 0;
-    } else if (otherToX >= this.image.width) {
-      scale = (this.image.width - 1 - fromX) / (otherToX - fromX);
-      otherToX = this.image.width - 1;
+    } else if (otherToX >= this.image.getWidth()) {
+      scale = (this.image.getWidth() - 1 - fromX) / (otherToX - fromX);
+      otherToX = this.image.getWidth() - 1;
     }
     var otherToY = Math.floor(fromY - (toY - fromY) * scale);
 
@@ -171,9 +177,9 @@ goog.scope(function() {
     if (otherToY < 0) {
       scale = fromY / (fromY - otherToY);
       otherToY = 0;
-    } else if (otherToY >= this.image.height) {
-      scale = (this.image.height - 1 - fromY) / (otherToY - fromY);
-      otherToY = this.image.height - 1;
+    } else if (otherToY >= this.image.getHeight()) {
+      scale = (this.image.getHeight() - 1 - fromY) / (otherToY - fromY);
+      otherToY = this.image.getHeight() - 1;
     }
     otherToX = Math.floor(fromX + (otherToX - fromX) * scale);
 
@@ -227,17 +233,20 @@ goog.scope(function() {
       topRight) + this.calculateModuleSizeOneWay(topLeft, bottomLeft)) / 2.0;
   };
 
-  pro.distance = function(pattern1, pattern2) {
-    var xDiff = pattern1.x - pattern2.x;
-    var yDiff = pattern1.y - pattern2.y;
-    return Math.sqrt((xDiff * xDiff + yDiff * yDiff));
-  };
-
+  /**
+   * Computes the dimension (number of modules on a size) of the QR Code based
+   * on the position of the finder patterns and estimated module size.
+   *
+   * @param {ResultPoint} topLeft detected top-left finder pattern center
+   * @param {ResultPoint} topRight detected top-right finder pattern center
+   * @param {ResultPoint} bottomLeft detected bottom-left finder pattern center
+   * @param {number} moduleSize
+   * @return {number} computed dimension
+   */
   pro.computeDimension = function(topLeft, topRight, bottomLeft, moduleSize) {
-
-    var tltrCentersDimension = this.distance(topLeft,
+    var tltrCentersDimension = ResultPoint.distance(topLeft,
       topRight) / moduleSize;
-    var tlblCentersDimension = this.distance(topLeft,
+    var tlblCentersDimension = ResultPoint.distance(topLeft,
       bottomLeft) / moduleSize;
     var dimension = Math.round((
       tltrCentersDimension + tlblCentersDimension) / 2) + 7;
@@ -281,7 +290,7 @@ goog.scope(function() {
     // should be
     var allowance = Math.floor(allowanceFactor * overallEstModuleSize);
     var alignmentAreaLeftX = Math.max(0, estAlignmentX - allowance);
-    var alignmentAreaRightX = Math.min(this.image.width - 1,
+    var alignmentAreaRightX = Math.min(this.image.getWidth() - 1,
       estAlignmentX + allowance);
     if (alignmentAreaRightX - alignmentAreaLeftX <
       overallEstModuleSize * 3) {
@@ -289,7 +298,7 @@ goog.scope(function() {
     }
 
     var alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
-    var alignmentAreaBottomY = Math.min(this.image.height - 1,
+    var alignmentAreaBottomY = Math.min(this.image.getHeight() - 1,
       estAlignmentY + allowance);
 
     var alignmentFinder = new w69b.qr.detector.AlignmentPatternFinder(this.image,
@@ -300,6 +309,14 @@ goog.scope(function() {
     return alignmentFinder.find();
   };
 
+  /**
+   * @param {ResultPoint} topLeft detected top-left finder pattern center
+   * @param {ResultPoint} topRight detected top-right finder pattern center
+   * @param {ResultPoint} bottomLeft detected bottom-left finder pattern center
+   * @param {ResultPoint} alignmentPattern
+   * @param {number} dimension
+   * @return {PerspectiveTransform}
+   */
   pro.createTransform = function(topLeft, topRight, bottomLeft,
                                  alignmentPattern, dimension) {
     var dimMinusThree = dimension - 3.5;
@@ -328,8 +345,14 @@ goog.scope(function() {
     return transform;
   };
 
+  /**
+   * @param {BitMatrix} image
+   * @param {PerspectiveTransform} transform
+   * @param {number} dimension
+   * @return {BitMatrix}
+   */
   pro.sampleGrid = function(image, transform, dimension) {
-    var sampler = w69b.common.GridSampler.getInstance();
+    var sampler = GridSampler.getInstance();
     return sampler.sampleGridTransform(image, dimension, dimension, transform);
   };
 
@@ -402,7 +425,6 @@ goog.scope(function() {
     }
     return new DetectorResult(bits, points);
   };
-
 
   /**
    * @return {!w69b.common.DetectorResult} result.

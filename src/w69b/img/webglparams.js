@@ -9,6 +9,7 @@ goog.scope(function() {
    * @param {Object=} opt_config initial config, see set().
    */
   w69b.img.WebGLParams = function(opt_config) {
+    /** @type {Object<string, Array>} */
     this.data_ = {};
     if (opt_config)
       this.set(opt_config);
@@ -31,18 +32,23 @@ goog.scope(function() {
    * 'imageId': ['i', 1]
    * }
    *
-   * @param {Object} config mapping of names to either:
+   * @param {Object<string, (number|Array.<(string|number)>)>} config mapping of names to either:
      *  one or multiple float values,
      * ['i', 21, 45, 6] one or multiple integers with a preceeding 'i'.
    * @return {w69b.img.WebGLParams} this for chaining.
    */
   pro.set = function(config) {
-    goog.object.forEach(config, function(value, key) {
-      if (value.length > 0 && value[0] == 'i')
-        this.setInt(key, value.slice(1));
-      else
-        this.setFloat(key, value);
-    }, this);
+    goog.object.forEach(config,
+      /**
+       * @param {(number|Array.<(string|number)>)} value
+       * @param {string} key
+       */
+      function(value, key) {
+        if (value.length > 0 && value[0] == 'i')
+          this.setInt(key, value.slice(1));
+        else
+          this.setFloat(key, value);
+      }, this);
     return this;
   };
 
@@ -78,7 +84,6 @@ goog.scope(function() {
     return this;
   };
 
-
   /**
    * @param {string} name parameter name.
    * @return {?number} value or null.
@@ -98,11 +103,16 @@ goog.scope(function() {
    */
   pro.apply = function(program) {
     var setters = program.getNamedSetterFunctions();
-    goog.object.forEach(this.data_, function(value, name) {
-      var type = value[0];
-      var valueArgs = value[1];
-      setters[type].apply(program, [name].concat(valueArgs));
-    }, this);
+    goog.object.forEach(this.data_,
+      /**
+       * @param {(string|Array.<(string|number)>)} value
+       * @param {string} name
+       */
+      function(value, name) {
+        var type = /** @type {string} */ (value[0]);
+        var valueArgs = /** @type {Array.<(string|number)>} */ (value[1]);
+        setters[type].apply(program, [name].concat(valueArgs));
+      }, this);
   };
 
   /**

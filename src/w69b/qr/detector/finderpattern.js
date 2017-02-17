@@ -1,6 +1,5 @@
 // javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,14 +36,21 @@ goog.scope(function() {
   goog.inherits(FinderPattern, w69b.ResultPoint);
   var pro = FinderPattern.prototype;
 
-  pro.incrementCount = function() {
-    this.count++;
-  };
-
+  /**
+   * @return {number}
+   */
   pro.getCount = function() {
     return this.count;
   };
 
+  /**
+   * Determines if this finder pattern "about equals" a finder pattern at the stated
+   * position and size -- meaning, it is at nearly the same center with nearly the same size.
+   * @param {number} moduleSize
+   * @param {number} i
+   * @param {number} j
+   * @return {boolean}
+   */
   pro.aboutEquals = function(moduleSize, i, j) {
     if (Math.abs(i - this.y) <= moduleSize &&
       Math.abs(j - this.x) <= moduleSize) {
@@ -76,8 +82,6 @@ goog.scope(function() {
       combinedModuleSize, combinedCount);
   };
 
-
-
   /**
    * @return {number} module size.
    */
@@ -98,71 +102,6 @@ goog.scope(function() {
   pro.getY = function() {
     return this.y;
   };
-
-  /**
-   * Orders an array of three ResultPoints in an order [A,B,C] such that
-   * AB < AC and
-   * BC < AC and
-   * the angle between BC and BA is less than 180 degrees.
-
-   * @param {Array.<w69b.qr.detector.FinderPattern>} patterns patterns to sort.
-   */
-  FinderPattern.orderBestPatterns = function(patterns) {
-    function distance(pattern1, pattern2) {
-      var xDiff = pattern1.x - pattern2.x;
-      var yDiff = pattern1.y - pattern2.y;
-      return (xDiff * xDiff + yDiff * yDiff);
-    }
-
-    // Returns the z component of the cross product between
-    // vectors BC and BA.
-    function crossProductZ(pointA, pointB, pointC) {
-      var bX = pointB.x;
-      var bY = pointB.y;
-      return ((pointC.x - bX) * (pointA.y - bY)) -
-        ((pointC.y - bY) * (pointA.x - bX));
-    }
-
-
-    // Find distances between pattern centers
-    var zeroOneDistance = distance(patterns[0], patterns[1]);
-    var oneTwoDistance = distance(patterns[1], patterns[2]);
-    var zeroTwoDistance = distance(patterns[0], patterns[2]);
-
-    var pointA, pointB, pointC;
-    // Assume one closest to other two is B; A and C will just be guesses at
-    // first.
-    if (oneTwoDistance >= zeroOneDistance &&
-      oneTwoDistance >= zeroTwoDistance) {
-      pointB = patterns[0];
-      pointA = patterns[1];
-      pointC = patterns[2];
-    } else if (zeroTwoDistance >= oneTwoDistance &&
-      zeroTwoDistance >= zeroOneDistance) {
-      pointB = patterns[1];
-      pointA = patterns[0];
-      pointC = patterns[2];
-    } else {
-      pointB = patterns[2];
-      pointA = patterns[0];
-      pointC = patterns[1];
-    }
-
-    // Use cross product to figure out whether A and C are correct or flipped.
-    // This asks whether BC x BA has a positive z component, which is the
-    // arrangement we want for A, B, C. If it's negative, then we've got it
-    // flipped around and should swap A and C.
-    if (crossProductZ(pointA, pointB, pointC) < 0.0) {
-      var temp = pointA;
-      pointA = pointC;
-      pointC = temp;
-    }
-
-    patterns[0] = pointA;
-    patterns[1] = pointB;
-    patterns[2] = pointC;
-  };
-
 
   /**
    * @return {Object} JSON object for pattern.

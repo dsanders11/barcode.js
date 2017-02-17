@@ -8,7 +8,6 @@ goog.require('w69b.qr.DecodeResult');
 goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.decoder.Decoder');
 goog.require('w69b.qr.detector.Detector');
-goog.require('w69b.qr.encoder.Encoder');
 goog.require('w69b.qr.nativepreprocessing');
 
 /**
@@ -27,6 +26,9 @@ goog.scope(function() {
 
   _.webGLBinarizer_ = null;
 
+  /**
+   * @return {WebGLBinarizer}
+   */
   _.getWebGLBinarizer_ = function() {
     if (!_.webGLBinarizer_) {
       _.webGLBinarizer_ = new WebGLBinarizer();
@@ -37,11 +39,11 @@ goog.scope(function() {
   /**
    * Decode qr code in main thread.
    * @param {(Image|HTMLVideoElement)} img image or video.
-   * @param {?w69b.qr.ResultPointCallback=} callback callback for patterns.
+   * @param {?w69b.qr.ResultPointCallback=} opt_callback callback for patterns.
    * @param {boolean=} opt_webgl whether to use WebGl binarizer if supported.
    * @return {DecodeResult} result.
    */
-  _.decode = function(img, callback, opt_webgl) {
+  _.decode = function(img, opt_callback, opt_webgl) {
     var imgData;
     if (opt_webgl && WebGLBinarizer.isSupported()) {
       var binarizer = _.getWebGLBinarizer_();
@@ -51,7 +53,7 @@ goog.scope(function() {
     } else {
       imgData = imgtools.getImageData(img, 700);
     }
-    return _.decodeFromImageData(imgData, callback);
+    return _.decodeFromImageData(imgData, opt_callback);
   };
 
   /**

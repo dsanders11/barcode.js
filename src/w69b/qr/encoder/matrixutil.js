@@ -41,6 +41,9 @@ goog.scope(function() {
    */
   var _ = w69b.qr.encoder.MatrixUtil;
 
+  /**
+   * @type {Array<Array<number>>}
+   */
   _.POSITION_DETECTION_PATTERN = [
     [1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 1],
@@ -51,6 +54,9 @@ goog.scope(function() {
     [1, 1, 1, 1, 1, 1, 1]
   ];
 
+  /**
+   * @type {Array<Array<number>>}
+   */
   _.POSITION_ADJUSTMENT_PATTERN = [
     [1, 1, 1, 1, 1],
     [1, 0, 0, 0, 1],
@@ -59,8 +65,11 @@ goog.scope(function() {
     [1, 1, 1, 1, 1]
   ];
 
-  // From Appendix E. Table 1, JIS0510X:2004 (p 71). The table was
-  // double-checked by komatsu.
+  /**
+   * From Appendix E. Table 1, JIS0510X:2004 (p 71). The table was
+   * double-checked by komatsu.
+   * @type {Array<Array<number>>}
+   */
   _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = [
     [-1, -1, -1, -1, -1, -1, -1],  // Version 1
     [6, 18, -1, -1, -1, -1, -1],  // Version 2
@@ -104,7 +113,10 @@ goog.scope(function() {
     [6, 30, 58, 86, 114, 142, 170]  // Version 40
   ];
 
-  // Type info cells at the left top corner.
+  /**
+   * Type info cells at the left top corner.
+   * @type {Array<Array<number>>}
+   */
   _.TYPE_INFO_COORDINATES = [
     [8, 0],
     [8, 1],
@@ -130,11 +142,11 @@ goog.scope(function() {
   _.TYPE_INFO_POLY = 0x537;
   _.TYPE_INFO_MASK_PATTERN = 0x5412;
 
-  // Set all cells to -1.  -1 means that the cell is empty (not set yet).
-  //
-  // JAVAPORT: We shouldn't need to do this at all. The code should be
-  // rewritten to begin encoding with the ByteMatrix initialized all to zero.
   /**
+   * Set all cells to -1.  -1 means that the cell is empty (not set yet).
+   *
+   * JAVAPORT: We shouldn't need to do this at all. The code should be
+   * rewritten to begin encoding with the ByteMatrix initialized all to zero.
    * @param {ByteMatrix} matrix matrix.
    */
   _.clearMatrix = function(matrix) {
@@ -162,7 +174,6 @@ goog.scope(function() {
   };
 
   /**
-   *
    * Embed basic patterns. On success, modify the matrix and return true.
    * The basic patterns are:
    * - Position detection patterns
@@ -304,13 +315,14 @@ goog.scope(function() {
   };
 
   /**
-   *
    * Return the position of the most significant bit set (to one) in the
    * "value". The most significant bit is position 32. If there is no bit set,
    * return 0. Examples:
    * - findMSBSet(0) => 0
    * - findMSBSet(1) => 1
    * - findMSBSet(255) => 8
+   * @param {number} value
+   * @return {number} position of MSB
    */
   _.findMSBSet = function(value) {
     var numDigits = 0;
@@ -322,7 +334,6 @@ goog.scope(function() {
   };
 
   /**
-   *
    * Calculate BCH (Bose-Chaudhuri-Hocquenghem) code for "value" using
    * polynomial "poly". The BCH
    * code is used for encoding type information and version information.
@@ -414,6 +425,7 @@ goog.scope(function() {
   };
 
   /**
+   * @param {number} value
    * @return {boolean} if value is empty.
    */
   _.isEmpty = function(value) {
@@ -450,6 +462,12 @@ goog.scope(function() {
     matrix.set(8, matrix.getHeight() - 8, 1);
   };
 
+  /**
+   * @param {number} xStart
+   * @param {number} yStart
+   * @param {ByteMatrix} matrix
+   * @throws {WriterException}
+   */
   _.embedHorizontalSeparationPattern = function(xStart, yStart, matrix) {
     for (var x = 0; x < 8; ++x) {
       if (!_.isEmpty(matrix.get(xStart + x, yStart))) {
@@ -459,6 +477,12 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {number} xStart
+   * @param {number} yStart
+   * @param {ByteMatrix} matrix
+   * @throws {WriterException}
+   */
   _.embedVerticalSeparationPattern = function(xStart, yStart, matrix) {
     for (var y = 0; y < 7; ++y) {
       if (!_.isEmpty(matrix.get(xStart, yStart + y))) {
@@ -468,6 +492,12 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {number} xStart
+   * @param {number} yStart
+   * @param {ByteMatrix} matrix
+   * @throws {WriterException}
+   */
   _.embedPositionAdjustmentPattern = function(xStart, yStart, matrix) {
     for (var y = 0; y < 5; ++y) {
       for (var x = 0; x < 5; ++x) {
@@ -477,6 +507,12 @@ goog.scope(function() {
     }
   };
 
+  /**
+   * @param {number} xStart
+   * @param {number} yStart
+   * @param {ByteMatrix} matrix
+   * @throws {WriterException}
+   */
   _.embedPositionDetectionPattern = function(xStart, yStart, matrix) {
     for (var y = 0; y < 7; ++y) {
       for (var x = 0; x < 7; ++x) {
@@ -525,6 +561,8 @@ goog.scope(function() {
 
   /**
    * Embed position adjustment patterns if needed.
+   * @param {Version} version
+   * @param {ByteMatrix} matrix
    */
   _.maybeEmbedPositionAdjustmentPatterns = function(version, matrix) {
     // The patterns appear if version >= 2
@@ -552,5 +590,4 @@ goog.scope(function() {
       }
     }
   };
-
 });

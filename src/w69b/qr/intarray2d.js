@@ -23,6 +23,7 @@ goog.scope(function() {
   pro.getAt = function(dim1, dim2) {
     return this.data[this.size2 * dim1 + dim2];
   };
+
   /**
    * Set value.
    * @param {number} dim1 first dimension.

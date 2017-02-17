@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,11 +22,21 @@
  */
 
 goog.provide('w69b.qr.decoder.DataBlock');
+goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
+goog.require('w69b.qr.decoder.Version');
 
 goog.scope(function() {
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  var Version = w69b.qr.decoder.Version;
 
   /**
+   * Encapsulates a block of data within a QR Code. QR Codes may split their data into
+   * multiple blocks, each of which is a unit of data and error-correction codewords. Each
+   * is represented by an instance of this class.
+   *
    * @constructor
+   * @param {number} numDataCodewords
+   * @param {Array.<number>} codewords
    */
   w69b.qr.decoder.DataBlock = function(numDataCodewords, codewords) {
     this.numDataCodewords = numDataCodewords;
@@ -36,8 +44,18 @@ goog.scope(function() {
   };
   var DataBlock = w69b.qr.decoder.DataBlock;
 
+  /**
+   * When QR Codes use multiple data blocks, they are actually interleaved.
+   * That is, the first byte of data block 1 to n is written, then the second
+   * bytes, and so on. This method will separate the data into original blocks.
+   *
+   * @param {Array.<number>} rawCodewords bytes as read directly from the QR Code
+   * @param {Version} version version of the QR Code
+   * @param {ErrorCorrectionLevel} ecLevel error-correction level of the QR Code
+   * @return {Array.<DataBlock>} containing original bytes, "de-interleaved" from
+   *                             representation in the QR Code
+   */
   DataBlock.getDataBlocks = function(rawCodewords, version, ecLevel) {
-
     if (rawCodewords.length != version.totalCodewords) {
       throw 'ArgumentException';
     }
@@ -55,6 +73,7 @@ goog.scope(function() {
 
     // Now establish DataBlocks of the appropriate size and number of data
     // codewords
+    /** @type {Array.<DataBlock>} */
     var result = new Array(totalBlocks);
     var numResultBlocks = 0;
     for (var j = 0; j < ecBlockArray.length; j++) {
@@ -105,6 +124,4 @@ goog.scope(function() {
     }
     return result;
   };
-
 });
-

@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +32,9 @@ goog.scope(function() {
    * @constructor
    */
   w69b.common.reedsolomon.GF256 = function(primitive) {
+    /** @type {Array.<number>} */
     this.expTable = new Array(256);
+    /** @type {Array.<number>} */
     this.logTable = new Array(256);
     var x = 1;
     for (var i = 0; i < 256; i++) {
@@ -58,7 +58,15 @@ goog.scope(function() {
   var GF256 = w69b.common.reedsolomon.GF256;
   var pro = GF256.prototype;
 
+  /** @type {!GF256Poly} */
+  pro.zero;
+
+  /** @type {!GF256Poly} */
+  pro.one;
+
   /**
+   * @param {number} degree
+   * @param {number} coefficient
    * @return {!GF256Poly} poly.
    */
   pro.buildMonomial = function(degree, coefficient) {
@@ -73,21 +81,42 @@ goog.scope(function() {
     coefficients[0] = coefficient;
     return new GF256Poly(this, coefficients);
   };
+
+  /**
+   * @param {number} a
+   * @return {number} 2 to the power of a
+   */
   pro.exp = function(a) {
     return this.expTable[a];
   };
+
+  /**
+   * @param {number} a
+   * @return {number} base 2 log of a
+   */
   pro.log = function(a) {
     if (a == 0) {
       throw Error();
     }
     return this.logTable[a];
   };
+
+  /**
+   * @param {number} a
+   * @return {number} multiplicative inverse of a
+   */
   pro.inverse = function(a) {
     if (a == 0) {
       throw Error();
     }
     return this.expTable[255 - this.logTable[a]];
   };
+
+  /**
+   * @param {number} a
+   * @param {number} b
+   * @return {number} product of a and b
+   */
   pro.multiply = function(a, b) {
     if (a == 0 || b == 0) {
       return 0;
@@ -103,6 +132,4 @@ goog.scope(function() {
 
   GF256.QR_CODE_FIELD = new GF256(0x011D);
   GF256.DATA_MATRIX_FIELD = new GF256(0x012D);
-
 });
-

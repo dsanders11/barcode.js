@@ -22,7 +22,6 @@ goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.ByteMatrix');
 
 goog.scope(function() {
-
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   var Mode = w69b.qr.decoder.Mode;
   var Version = w69b.qr.decoder.Version;
@@ -176,6 +175,4 @@ goog.scope(function() {
   _.isValidMaskPattern = function(maskPattern) {
     return maskPattern >= 0 && maskPattern < _.NUM_MASK_PATTERNS;
   };
-
 });
-
