@@ -11,18 +11,26 @@
   "mode": "ADVANCED",
   "level": "VERBOSE",
   "output-charset": "UTF-8",
+  "language-out": "ECMASCRIPT5_STRICT",
   "define": {
   },
   "externs": [
     "externs/iconv.js"
   ],
   "experimental-compiler-options": {
+    "languageIn": "ECMASCRIPT6_STRICT",
     "generateExports": true,
     // These options degrades performance significantly, so disable them.
     "inlineFunctions": false,
     "collapseProperties": false // Flattens multi-level property names (e.g. a$b = x)
   },
   "checks": {
-    "lintChecks": "WARNING"
+    "lintChecks": "WARNING",
+    "missingProvide": "WARNING",
+    "missingRequire": "WARNING",
+    "missingReturn": "WARNING",
+    "unusedLocalVariables": "WARNING",
+    "extraRequire": "WARNING"
+    // "reportUnknownTypes": "WARNING"
   }
 }
