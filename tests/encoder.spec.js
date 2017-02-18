@@ -129,7 +129,7 @@ define(['chai'], function(chai) {
 
     it('testSimpleUTF8ECI', function() {
       var hints = {};
-      hints[EncodeHintType.CHARACTER_SET] = 'UTF8';
+      hints[EncodeHintType.CHARACTER_SET] = 'UTF-8';
       hints[EncodeHintType.FORCE_ADD_ECI] = true;
       var qrCode = Encoder.encode('hello', ErrorCorrectionLevel.H, hints);
       var expected =

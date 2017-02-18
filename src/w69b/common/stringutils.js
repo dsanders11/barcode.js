@@ -12,10 +12,10 @@ goog.scope(function() {
   var iconvlite = w69b.iconvlite;
   var InvalidCharsetException = w69b.InvalidCharsetException;
 
-  _.SHIFT_JIS = 'SJIS';
+  _.SHIFT_JIS = 'Shift_JIS';
   _.GB2312 = 'GB18030';
   _.EUC_JP = 'EUC-JP';
-  _.UTF8 = 'UTF8';
+  _.UTF8 = 'UTF-8';
   _.ISO88591 = 'ISO-8859-1';
   _.PLATFORM_DEFAULT_ENCODING = _.UTF8;
   _.ASSUME_SHIFT_JIS = false;
@@ -71,10 +71,10 @@ goog.scope(function() {
    * @return {Array.<number>} bytes.
    */
   _.stringToBytes = function(str, opt_charset) {
-    var charset = opt_charset || 'UTF-8';
+    var charset = opt_charset || _.UTF8;
     /** @type {Array.<number>} */
     var bytes = null;
-    if (charset == 'UTF-8') {
+    if (charset == _.UTF8) {
       bytes = utf8.stringToUTF8Bytes(str);
       if (bytes === null)
         throw new InvalidCharsetException();
@@ -84,7 +84,7 @@ goog.scope(function() {
       bytes = utf8.stringToUTF8Bytes(str);
       if (!iconv)
         throw new InvalidCharsetException('iconv not loaded');
-      bytes = iconv.convert(bytes, 'UTF-8', charset);
+      bytes = iconv.convert(bytes, _.UTF8, charset);
     }
     if (bytes === null)
       throw new InvalidCharsetException(charset + ' to bytes: ' + str);
