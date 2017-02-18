@@ -21,6 +21,9 @@ goog.provide('w69b.EncodeHintType');
  * @enum {number}
  */
 w69b.EncodeHintType = {
-  CHARACTER_SET: 1,
-  FORCE_ADD_ECI: 2
+  ERROR_CORRECTION: 1,
+  CHARACTER_SET: 2,
+  FORCE_ADD_ECI: 3,
+  MARGIN: 4,
+  QR_VERSION: 5
 };

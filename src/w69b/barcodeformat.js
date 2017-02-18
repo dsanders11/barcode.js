@@ -22,6 +22,7 @@ goog.provide('w69b.BarcodeFormat');
  * @enum {number}
  */
 w69b.BarcodeFormat = {
-  CODE_128: 1,
-  QR_CODE: 2
+  CODE_39: 1,
+  CODE_128: 2,
+  QR_CODE: 3
 };

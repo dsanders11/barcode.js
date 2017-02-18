@@ -5,7 +5,6 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
  * Copyright 2007 ZXing authors
  *
@@ -230,4 +229,3 @@ goog.scope(function() {
       return result;
     };
 });
-

@@ -5,9 +5,7 @@
  lazarsoft@gmail.com, www.lazarsoft.info
 
  */
-
 /*
- *
  * Copyright 2007 ZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,9 +22,12 @@
  */
 
 goog.provide('w69b.common.BitMatrix');
+goog.require('goog.asserts');
+goog.require('w69b.IllegalArgumentException');
 goog.require('w69b.img.BitMatrixLike');
 
 goog.scope(function() {
+  var IllegalArgumentException = w69b.IllegalArgumentException;
 
   /**
    * @param {number} width width.
@@ -37,7 +38,7 @@ goog.scope(function() {
   w69b.common.BitMatrix = function(width, opt_height) {
     var height = goog.isDef(opt_height) ? opt_height : width;
     if (width < 1 || height < 1) {
-      throw Error();
+      throw new IllegalArgumentException("Both dimensions must be greater than 0");
     }
     this.width = width;
     this.height = height;
@@ -66,13 +67,15 @@ goog.scope(function() {
     return this.height;
   };
 
-
   /**
    * @param {number} x x pos.
    * @param {number} y y pos.
    * @return {boolean} bit at given position.
    */
   pro.get = function(x, y) {
+    goog.asserts.assert(Number.isInteger(x));
+    goog.asserts.assert(Number.isInteger(y));
+
     var offset = y * this.rowSize + (x >> 5);
     return ((this.bits[offset] >> (x & 0x1f)) & 1) != 0;
   };
@@ -83,6 +86,9 @@ goog.scope(function() {
    * @param {number} y y pos.
    */
   pro.set = function(x, y) {
+    goog.asserts.assert(Number.isInteger(x));
+    goog.asserts.assert(Number.isInteger(y));
+
     var offset = y * this.rowSize + (x >> 5);
     this.bits[offset] |= 1 << (x & 0x1f);
   };
@@ -93,6 +99,9 @@ goog.scope(function() {
    * @param {number} y y pos.
    */
   pro.flip = function(x, y) {
+    goog.asserts.assert(Number.isInteger(x));
+    goog.asserts.assert(Number.isInteger(y));
+
     var offset = y * this.rowSize + (x >> 5);
     this.bits[offset] ^= 1 << (x & 0x1f);
   };
@@ -113,18 +122,24 @@ goog.scope(function() {
    * @param {number} top top pos.
    * @param {number} width width.
    * @param {number} height height.
+   * @throws {IllegalArgumentException}
    */
   pro.setRegion = function(left, top, width, height) {
+    goog.asserts.assert(Number.isInteger(left));
+    goog.asserts.assert(Number.isInteger(top));
+    goog.asserts.assert(Number.isInteger(width));
+    goog.asserts.assert(Number.isInteger(height));
+
     if (top < 0 || left < 0) {
-      throw Error();
+      throw new IllegalArgumentException("Left and top must be nonnegative");
     }
     if (height < 1 || width < 1) {
-      throw Error();   // Height and width must be at least 1
+      throw new IllegalArgumentException("Height and width must be at least 1");
     }
     var right = left + width;
     var bottom = top + height;
     if (bottom > this.height || right > this.width) {
-      throw Error();  // The region must fit inside the matrix
+      throw new IllegalArgumentException("The region must fit inside the matrix");
     }
     for (var y = top; y < bottom; y++) {
       var offset = y * this.rowSize;
@@ -147,6 +162,4 @@ goog.scope(function() {
     }
     return result.join('');
   };
-
 });
-

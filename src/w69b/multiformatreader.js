@@ -16,55 +16,151 @@
  */
 
 goog.provide('w69b.MultiFormatReader');
+goog.require('w69b.BarcodeFormat');
+goog.require('w69b.BinaryBitmap');
+goog.require('w69b.DecodeHintType');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
+goog.require('w69b.Result');
+goog.require('w69b.oned.MultiFormatOneDReader');
 
 goog.scope(function() {
+  var BarcodeFormat = w69b.BarcodeFormat;
+  var BinaryBitmap = w69b.BinaryBitmap;
+  var DecodeHintType = w69b.DecodeHintType;
+  var NotFoundException = w69b.NotFoundException;
+  var Reader = w69b.Reader;
+  var Result = w69b.Result;
+  var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
+
   /**
    * MultiFormatReader is a convenience class and the main entry point into the
    * library for most uses. By default it attempts to decode all barcode
    * formats that the library supports. Optionally, you can provide a hints
    * object to request different behavior, for example only decoding QR codes.
    * @constructor
-   * @implements {w69b.Reader}
+   * @implements {Reader}
+   * @final
    */
-  w69b.MultiFormatReader = function() {
-
-  };
+  w69b.MultiFormatReader = function() { };
   var pro = w69b.MultiFormatReader.prototype;
 
   /**
+   * @private
+   * @type {Object<DecodeHintType,*>}
+   */
+  pro.hints_ = null;
+
+  /**
+   * @private
+   * @type {Array.<Reader>}
+   */
+  pro.readers_ = null;
+
+  /**
+   * This version of decode honors the intent of Reader.decode(BinaryBitmap) in
+   * that it passes null as a hint to the decoders. However, that makes it
+   * inefficient to call repeatedly. Use setHints() followed by decodeWithState()
+   * for continuous scan applications.
+   *
+   * Decode an image using the hints provided. Does not honor existing state.
+   *
    * @override
    */
   pro.decode = function(image, opt_hints) {
-
+    this.setHints(opt_hints ? opt_hints : null);
+    return this.decodeInternal_(image);
   };
 
   /**
-   * @throws {NotFoundException}
+   * Decode an image using the state set up by calling setHints() previously.
+   * Continuous scan clients will get a <b>large</b> speed increase by using
+   * this instead of decode().
+   *
+   * @param {BinaryBitmap} image The pixel data to decode
+   * @return {Result} The contents of the image
+   * @throws {NotFoundException} Any errors which occurred
    */
   pro.decodeWithState = function(image) {
-
+    // Make sure to set up the default state so we don't crash
+    if (this.readers_ == null) {
+      this.setHints(null);
+    }
+    return this.decodeInternal_(image);
   };
 
   /**
-   * @param {Object} hints Hints to do shit
+   * This method adds state to the MultiFormatReader. By setting the hints once,
+   * subsequent calls to decodeWithState(image) can reuse the same set of
+   * readers without reallocating memory. This is important for performance in
+   * continuous scan clients.
+   *
+   * @param {?Object<DecodeHintType,*>} hints The set of hints to use for
+   *                                          subsequent calls to decode(image)
    */
   pro.setHints = function(hints) {
+    this.hints_ = hints;
 
+    var tryHarder = hints !== null && !!hints[DecodeHintType.TRY_HARDER];
+    var formats = hints === null ? null : hints[DecodeHintType.POSSIBLE_FORMATS];
+    /** @type {Array.<Reader>} */
+    var readers = new Array();
+    if (formats !== null) {
+      var addOneDReader = Boolean(formats[BarcodeFormat.CODE_128]);
+
+      // Put 1D readers upfront in "normal" mode
+      if (addOneDReader && !tryHarder) {
+        readers.push(new MultiFormatOneDReader(hints));
+      }
+      if (formats[BarcodeFormat.QR_CODE]) {
+        //readers.push(new QRCodeReader());
+      }
+      // At end in "try harder" mode
+      if (addOneDReader && tryHarder) {
+        readers.push(new MultiFormatOneDReader(hints));
+      }
+    }
+    if (readers.length === 0) {
+      if (!tryHarder) {
+        readers.push(new MultiFormatOneDReader(hints));
+      }
+
+      //readers.add(new QRCodeReader());
+
+      if (tryHarder) {
+        readers.push(new MultiFormatOneDReader(hints));
+      }
+    }
+    this.readers_ = readers;
   };
 
   /**
    * @override
    */
   pro.reset = function() {
-
+    if (this.readers_ !== null) {
+      for (var reader of this.readers_) {
+        reader.reset();
+      }
+    }
   };
 
   /**
    * @private
+   * @param {BinaryBitmap} image
+   * @return {Result}
    * @throws {NotFoundException}
    */
-  function decodeInternal(image) {
-
-  }
+  pro.decodeInternal_ = function(image) {
+    if (this.readers_ !== null) {
+      for (var reader of this.readers_) {
+        try {
+          return reader.decode(image, this.hints_);
+        } catch (err) {
+          // continue
+        }
+      }
+    }
+    throw new NotFoundException();
+  };
 });

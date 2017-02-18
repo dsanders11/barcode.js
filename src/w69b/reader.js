@@ -16,13 +16,26 @@
  */
 
 goog.provide('w69b.Reader');
+goog.require('w69b.BinaryBitmap');
+goog.require('w69b.ChecksumException');
+goog.require('w69b.DecodeHintType');
+goog.require('w69b.FormatException');
+goog.require('w69b.NotFoundException');
+goog.require('w69b.Result');
 
 goog.scope(function() {
+  var BinaryBitmap = w69b.BinaryBitmap;
+  var ChecksumException = w69b.ChecksumException;
+  var DecodeHintType = w69b.DecodeHintType;
+  var FormatException = w69b.FormatException;
+  var NotFoundException = w69b.NotFoundException;
+  var Result = w69b.Result;
+
   /**
-   * Implementations of this interface can decode an image of a barcode in some format into
-   * the String it encodes. For example, {@link com.google.zxing.qrcode.QRCodeReader} can
-   * decode a QR code. The decoder may optionally receive hints from the caller which may help
-   * it decode more quickly or accurately.
+   * Implementations of this interface can decode an image of a barcode in some
+   * format into the String it encodes. For example, QRCodeReader can decode a
+   * QR code. The decoder may optionally receive hints from the caller which may
+   * help it decode more quickly or accurately.
    *
    * See {@link MultiFormatReader}, which attempts to determine what barcode
    * format is present within the image as well, and then decodes it accordingly.
@@ -34,18 +47,18 @@ goog.scope(function() {
   /**
    * Locates and decodes a barcode in some format within an image.
    *
-   * @param {string} image image of barcode to decode
-   * @param {Object=} opt_hints the meaning of the data depends upon the hint type.
-   * @return {string} which the barcode encodes
-   * @throws {w69b.NotFoundException} if no potential barcode is found
-   * @throws {w69b.ChecksumException} if a potential barcode is found but does not pass its checksum
-   * @throws {w69b.FormatException} if a potential barcode is found but format is invalid
+   * @param {BinaryBitmap} image image of barcode to decode
+   * @param {Object<DecodeHintType,*>=} opt_hints the meaning of the data depends upon the hint type.
+   * @return {Result} which the barcode encodes
+   * @throws {NotFoundException} if no potential barcode is found
+   * @throws {ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {FormatException} if a potential barcode is found but format is invalid
    */
   pro.decode;
 
   /**
-   * Resets any internal state the implementation has after a decode, to prepare it
-   * for reuse.
+   * Resets any internal state the implementation has after a decode, to prepare
+   * it for reuse.
    * @type {function()}
    */
   pro.reset;

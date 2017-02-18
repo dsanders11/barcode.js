@@ -14,12 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 goog.provide('w69b.Writer');
 goog.require('w69b.BarcodeFormat');
+goog.require('w69b.EncodeHintType');
 goog.require('w69b.WriterException');
 goog.require('w69b.common.BitMatrix');
 
 goog.scope(function() {
+  var EncodeHintType = w69b.EncodeHintType;
+
   /**
    * The base class for all objects which encode/generate a barcode image.
    * @interface
@@ -30,11 +34,11 @@ goog.scope(function() {
   /**
    * Encode a barcode using the default settings.
    *
-   * @param {string} contents the contents to encode in the barcode
+   * @param {!string} contents the contents to encode in the barcode
    * @param {w69b.BarcodeFormat} format the barcode format to generate
    * @param {number} width the preferred width in pixels
    * @param {number} height the preferred height in pixels
-   * @param {Object=} opt_hints additional parameters to supply to the encoder
+   * @param {Object<EncodeHintType,*>=} opt_hints additional parameters to supply to the encoder
    * @return {w69b.common.BitMatrix} representing encoded barcode image
    * @throws {w69b.WriterException} if contents cannot be encoded legally in a format
    */
