@@ -76,8 +76,8 @@ goog.scope(function() {
     var outputWidth = Math.max(width, fullWidth);
     var outputHeight = Math.max(1, height);
 
-    var multiple = outputWidth / fullWidth;
-    var leftPadding = (outputWidth - (inputWidth * multiple)) / 2;
+    var multiple = Math.floor(outputWidth / fullWidth);
+    var leftPadding = (outputWidth - (inputWidth * multiple)) >> 1;
 
     var output = new BitMatrix(outputWidth, outputHeight);
     for (var inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
