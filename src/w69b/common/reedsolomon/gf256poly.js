@@ -188,7 +188,7 @@ goog.scope(function() {
   /**
    * Multiply with other poly.
    * @param {!w69b.common.reedsolomon.GF256Poly} other other poly.
-   * @return {w69b.common.reedsolomon.GF256Poly} result.
+   * @return {!w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiply1 = function(other) {
     if (this.field != other.field) {

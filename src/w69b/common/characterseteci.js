@@ -17,7 +17,6 @@
 
 goog.provide('w69b.common.CharacterSetECI');
 goog.require('w69b.FormatException');
-goog.require('goog.object');
 
 goog.scope(function() {
   var FormatException = w69b.FormatException;

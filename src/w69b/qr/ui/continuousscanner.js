@@ -386,7 +386,7 @@ goog.scope(function() {
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.PATTERN:
-        this.addPattern_(opt_value);
+        this.addPattern_(/** @type {ResultPoint} */ (opt_value));
         break;
     }
   };

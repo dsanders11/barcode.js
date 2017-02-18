@@ -96,7 +96,7 @@ goog.scope(function() {
 
     // Decode the contents of that stream of bytes
     return w69b.qr.decoder.DecodedBitStreamParser.decode(resultBytes,
-      version, ecLevel.bits);
+      version, ecLevel);
     //return DecodedBitStreamParserOld.decode(resultBytes, version, ecLevel);
   };
 });
