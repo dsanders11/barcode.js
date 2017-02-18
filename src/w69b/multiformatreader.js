@@ -23,6 +23,7 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
 goog.require('w69b.Result');
 goog.require('w69b.oned.MultiFormatOneDReader');
+goog.require('w69b.qr.QRCodeReader');
 
 goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
@@ -32,6 +33,7 @@ goog.scope(function() {
   var Reader = w69b.Reader;
   var Result = w69b.Result;
   var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
+  var QRCodeReader = w69b.qr.QRCodeReader;
 
   /**
    * MultiFormatReader is a convenience class and the main entry point into the
@@ -113,7 +115,7 @@ goog.scope(function() {
         readers.push(new MultiFormatOneDReader(hints));
       }
       if (formats[BarcodeFormat.QR_CODE]) {
-        //readers.push(new QRCodeReader());
+        readers.push(new QRCodeReader());
       }
       // At end in "try harder" mode
       if (addOneDReader && tryHarder) {
@@ -125,7 +127,7 @@ goog.scope(function() {
         readers.push(new MultiFormatOneDReader(hints));
       }
 
-      //readers.add(new QRCodeReader());
+      readers.push(new QRCodeReader());
 
       if (tryHarder) {
         readers.push(new MultiFormatOneDReader(hints));

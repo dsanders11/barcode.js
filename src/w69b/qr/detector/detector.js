@@ -16,6 +16,7 @@
  */
 
 goog.provide('w69b.qr.detector.Detector');
+goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.common.BitMatrix');
@@ -40,6 +41,7 @@ goog.scope(function() {
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
   var DetectorResult = w69b.common.DetectorResult;
   var GridSampler = w69b.common.GridSampler;
+  var DecodeHintType = w69b.DecodeHintType;
   var ResultPoint = w69b.ResultPoint;
   var BitMatrix = w69b.common.BitMatrix;
 
@@ -62,7 +64,8 @@ goog.scope(function() {
      * @type {!w69b.img.BitMatrixLike}
      */
     this.image = image;
-    this.resultPointCallback = opt_callback || null;
+    this.resultPointCallback = null;
+    //this.resultPointCallback = opt_callback || null;
   };
   var pro = w69b.qr.detector.Detector.prototype;
 
@@ -427,11 +430,19 @@ goog.scope(function() {
   };
 
   /**
-   * @return {!w69b.common.DetectorResult} result.
+   * Detects a QR Code in an image.
+   *
+   * @param {Object<DecodeHintType,*>=} opt_hints optional hints to detector
+   * @return {DetectorResult} encapsulating results of detecting a QR Code
+   * @throws {NotFoundException} if QR Code cannot be found
+   * @throws {FormatException} if a QR Code cannot be decoded
    */
-  pro.detect = function() {
-    var info = new w69b.qr.detector.FinderPatternFinder(this.image,
-      this.resultPointCallback).find();
+  pro.detect = function(opt_hints) {
+    var callback = /** @type {(w69b.qr.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
+    this.resultPointCallback = opt_hints && !!callback ? null : callback;
+
+    var finder = new w69b.qr.detector.FinderPatternFinder(this.image, callback);
+    var info = finder.find(opt_hints);
     return this.processFinderPatternInfo(info);
   };
 });

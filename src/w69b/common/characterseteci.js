@@ -22,7 +22,7 @@ goog.scope(function() {
   var FormatException = w69b.FormatException;
 
   /**
-   * @param {Array.<number>} values
+   * @param {!Array.<number>} values
    * @param {...string} opt_otherEncodingNames
    * @constructor
    */

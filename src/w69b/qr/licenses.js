@@ -59,6 +59,6 @@
  *
  * Copyright 2010 Cedric Beust cedric@beust.com
  *
- * */
+ */
 
 goog.provide('w69b.qr.licenses');

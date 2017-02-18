@@ -17,9 +17,11 @@
 
 goog.provide('w69b.qr.decoder.DecodedBitStreamParser');
 goog.require('goog.string.StringBuffer');
+goog.require('w69b.DecodeHintType');
 goog.require('w69b.FormatException');
 goog.require('w69b.common.BitSource');
 goog.require('w69b.common.CharacterSetECI');
+goog.require('w69b.common.DecoderResult');
 goog.require('w69b.common.stringutils');
 goog.require('w69b.qr.decoder.Mode');
 goog.require('w69b.qr.decoder.ModeEnum');
@@ -31,8 +33,10 @@ goog.scope(function() {
   var ModeEnum = w69b.qr.decoder.ModeEnum;
   var StringBuffer = goog.string.StringBuffer;
   var stringutils = w69b.common.stringutils;
+  var DecodeHintType = w69b.DecodeHintType;
   var FormatException = w69b.FormatException;
   var CharacterSetECI = w69b.common.CharacterSetECI;
+  var DecoderResult = w69b.common.DecoderResult;
 
   /**
    * <p>QR Codes can encode text as bits in one of several modes, and can use
@@ -61,18 +65,22 @@ goog.scope(function() {
    * @param {Array.<number>} bytes byte blocks.
    * @param {w69b.qr.decoder.Version} version qr code version.
    * @param {w69b.qr.decoder.ErrorCorrectionLevel} ecLevel error correction level.
-   * @return {string} decoded string.
+   * @param {Object<DecodeHintType,*>=} opt_hints
+   * @return {DecoderResult} decoded string.
    */
-  _.decode = function(bytes, version, ecLevel) {
+  _.decode = function(bytes, version, ecLevel, opt_hints) {
     var bits = new BitSource(bytes);
     var result = new StringBuffer();
     /**
-     * @type {Array.<number>}
+     * @type {Array.<Array.<number>>}
      */
     var byteSegments = [];
+    var symbolSequence = -1;
+    var parityData = -1;
+
+    var currentCharacterSet = null;
     var fc1InEffect = false;
     var mode;
-    var currentCharacterSet = null;
     do {
       // While still another segment to read...
       if (bits.available() < 4) {
@@ -92,9 +100,10 @@ goog.scope(function() {
           if (bits.available() < 16) {
             throw new FormatException();  // FormatException.getFormatInstance();
           }
-          // not really supported; all we do is ignore it Read next 8 bits
-          // (symbol sequence #) and 8 bits (parity data), then continue
-          bits.readBits(16);
+          // sequence number and parity is added later to the result metadata
+          // Read next 8 bits (symbol sequence #) and 8 bits (parity data), then continue
+          symbolSequence = bits.readBits(8);
+          parityData = bits.readBits(8);
         } else if (mode == ModeEnum.ECI) {
           // Count doesn't apply to ECI
           var value = _.parseECIValue(bits);
@@ -122,7 +131,7 @@ goog.scope(function() {
               _.decodeAlphanumericSegment(bits, result, count, fc1InEffect);
             } else if (mode == ModeEnum.BYTE) {
               _.decodeByteSegment(bits, result, count,
-                currentCharacterSet, byteSegments);
+                currentCharacterSet, byteSegments, opt_hints);
             } else if (mode == ModeEnum.KANJI) {
               _.decodeKanjiSegment(bits, result, count);
             } else {
@@ -133,7 +142,12 @@ goog.scope(function() {
       }
     } while (mode != ModeEnum.TERMINATOR);
 
-    return result.toString();
+    return new DecoderResult(bytes,
+                             result.toString(),
+                             byteSegments.length === 0 ? null : byteSegments,
+                             ecLevel === null ? null : ecLevel.toString(),
+                             symbolSequence,
+                             parityData);
   };
 
   /**
@@ -213,10 +227,11 @@ goog.scope(function() {
    * @param {StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
    * @param {?CharacterSetECI} currentCharacterSetECI character set eci name.
-   * @param {Array.<number>} byteSegments raw bytes.
+   * @param {Array.<Array.<number>>} byteSegments raw bytes.
+   * @param {Object<DecodeHintType,*>=} opt_hints
    */
   _.decodeByteSegment = function(bits, result, count, currentCharacterSetECI,
-                                 byteSegments) {
+                                 byteSegments, opt_hints) {
     // Don't crash trying to read more bits than we have available.
     if (count << 3 > bits.available()) {
       throw new FormatException();  //FormatException.getFormatInstance();
@@ -236,12 +251,12 @@ goog.scope(function() {
       // upon decoding. I have seen ISO-8859-1 used as well as
       // Shift_JIS -- without anything like an ECI designator to
       // give a hint.
-      encoding = stringutils.guessEncoding(readBytes);
+      encoding = stringutils.guessEncoding(readBytes, opt_hints);
     } else {
       encoding = currentCharacterSetECI.name;
     }
     result.append(stringutils.bytesToString(readBytes, encoding));
-    byteSegments.push(...readBytes);
+    byteSegments.push(readBytes);
   };
 
   /**

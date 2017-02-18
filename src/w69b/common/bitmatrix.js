@@ -54,20 +54,6 @@ goog.scope(function() {
   var pro = BitMatrix.prototype;
 
   /**
-   * @return {number} The width of the matrix.
-   */
-  pro.getWidth = function() {
-    return this.width;
-  };
-
-  /**
-   * @return {number} The height of the matrix.
-   */
-  pro.getHeight = function() {
-    return this.height;
-  };
-
-  /**
    * @param {number} x x pos.
    * @param {number} y y pos.
    * @return {boolean} bit at given position.
@@ -150,7 +136,78 @@ goog.scope(function() {
   };
 
   /**
-   * @return {string} matrix as string.
+   * This is useful in detecting a corner of a 'pure' barcode.
+   *
+   * @return {?Array.<number>} coordinate of top-left-most 1 bit, or null if it is all white
+   */
+  pro.getTopLeftOnBit = function() {
+    var bitsOffset = 0;
+    while (bitsOffset < this.bits.length && this.bits[bitsOffset] == 0) {
+      bitsOffset++;
+    }
+    if (bitsOffset == this.bits.length) {
+      return null;
+    }
+    var y = Math.floor(bitsOffset / this.rowSize);
+    var x = (bitsOffset % this.rowSize) * 32;
+
+    var theBits = this.bits[bitsOffset];
+    var bit = 0;
+    while ((theBits << (31 - bit)) == 0) {
+      bit++;
+    }
+    x += bit;
+    return [x, y];
+  };
+
+  /**
+   * @return {?Array.<number>} coordinate of bottom-right-most 1 bit, or null if it is all white
+   */
+  pro.getBottomRightOnBit = function() {
+    var bitsOffset = this.bits.length - 1;
+    while (bitsOffset >= 0 && this.bits[bitsOffset] == 0) {
+      bitsOffset--;
+    }
+    if (bitsOffset < 0) {
+      return null;
+    }
+
+    var y = Math.floor(bitsOffset / this.rowSize);
+    var x = (bitsOffset % this.rowSize) * 32;
+
+    var theBits = this.bits[bitsOffset];
+    var bit = 31;
+    while ((theBits >>> bit) == 0) {
+      bit--;
+    }
+    x += bit;
+
+    return [x, y];
+  };
+
+  /**
+   * @return {number} The width of the matrix.
+   */
+  pro.getWidth = function() {
+    return this.width;
+  };
+
+  /**
+   * @return {number} The height of the matrix.
+   */
+  pro.getHeight = function() {
+    return this.height;
+  };
+
+  /**
+   * @return {number} The row size of the matrix
+   */
+  pro.getRowSize = function() {
+    return this.rowSize;
+  };
+
+  /**
+   * @override
    */
   pro.toString = function() {
     var result = [];

@@ -22,6 +22,8 @@
  */
 
 goog.provide('w69b.qr.decoder.Decoder');
+goog.require('w69b.DecodeHintType');
+goog.require('w69b.common.DecoderResult');
 goog.require('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
 goog.require('w69b.qr.decoder.BitMatrixParser');
@@ -29,11 +31,22 @@ goog.require('w69b.qr.decoder.DataBlock');
 goog.require('w69b.qr.decoder.DecodedBitStreamParser');
 
 goog.scope(function() {
+  var DecodeHintType = w69b.DecodeHintType;
+  var DecoderResult = w69b.common.DecoderResult;
   var GF256 = w69b.common.reedsolomon.GF256;
   var DataBlock = w69b.qr.decoder.DataBlock;
 
-  var _ = w69b.qr.decoder.Decoder;
-  _.rsDecoder = new w69b.common.reedsolomon.ReedSolomonDecoder(GF256.QR_CODE_FIELD);
+  /**
+   * The main class which implements QR Code decoding -- as opposed to locating
+   * and extracting the QR Code from an image.
+   * @constructor
+   * @final
+   */
+  w69b.qr.decoder.Decoder = function() {
+    this.rsDecoder_ = new w69b.common.reedsolomon.ReedSolomonDecoder(GF256.QR_CODE_FIELD);
+  };
+  var Decoder = w69b.qr.decoder.Decoder;
+  var pro = Decoder.prototype;
 
   /**
    * Given data and error-correction codewords received, possibly corrupted by errors, attempts to
@@ -41,8 +54,9 @@ goog.scope(function() {
    *
    * @param {Array.<number>} codewordBytes data and error correction codewords
    * @param {number} numDataCodewords number of codewords that are data bytes
+   * @private
    */
-  _.correctErrors = function(codewordBytes, numDataCodewords) {
+  pro.correctErrors_ = function(codewordBytes, numDataCodewords) {
     var numCodewords = codewordBytes.length;
     // First read into an array of ints
     var codewordsInts = new Array(numCodewords);
@@ -50,7 +64,7 @@ goog.scope(function() {
       codewordsInts[i] = codewordBytes[i] & 0xFF;
     }
     var numECCodewords = codewordBytes.length - numDataCodewords;
-    _.rsDecoder.decode(codewordsInts, numECCodewords);
+    this.rsDecoder_.decode(codewordsInts, numECCodewords);
       //var corrector = new ReedSolomon(codewordsInts, numECCodewords);
       //corrector.correct();
     // Copy back into array of bytes -- only need to worry about the bytes that
@@ -61,10 +75,11 @@ goog.scope(function() {
   };
 
   /**
-   * @param {w69b.common.BitMatrix} bits matrix.
-   * @return {string} reader instnance.
+   * @param {w69b.common.BitMatrix} bits booleans representing white/black QR Code modules
+   * @param {Object<DecodeHintType,*>=} opt_hints decoding hints that should be used to influence decoding
+   * @return {DecoderResult} text and bytes encoded within the QR Code
    */
-  _.decode = function(bits) {
+  pro.decode = function(bits, opt_hints) {
     var parser = new w69b.qr.decoder.BitMatrixParser(bits);
     var version = parser.readVersion();
     var ecLevel = parser.readFormatInformation().errorCorrectionLevel;
@@ -88,7 +103,7 @@ goog.scope(function() {
       var dataBlock = dataBlocks[j];
       var codewordBytes = dataBlock.codewords;
       var numDataCodewords = dataBlock.numDataCodewords;
-      _.correctErrors(codewordBytes, numDataCodewords);
+      this.correctErrors_(codewordBytes, numDataCodewords);
       for (var i = 0; i < numDataCodewords; i++) {
         resultBytes[resultOffset++] = codewordBytes[i];
       }

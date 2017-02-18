@@ -26,6 +26,7 @@ goog.require('w69b.qr.detector.FinderPatternInfo');
 
 
 goog.scope(function() {
+  var DecodeHintType = w69b.DecodeHintType;
   var FinderPattern = w69b.qr.detector.FinderPattern;
   var FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
   var ResultPoint = w69b.ResultPoint;
@@ -117,11 +118,11 @@ goog.scope(function() {
 
 
   /**
-   * @param {Object=} opt_hints hints.
+   * @param {Object<DecodeHintType,*>=} opt_hints hints.
    * @return {FinderPatternInfo} info.
    */
   pro.find = function(opt_hints) {
-    var tryHarder = opt_hints && !!opt_hints[w69b.DecodeHintType.TRY_HARDER];
+    var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
     var maxI = this.image_.getHeight();
     var maxJ = this.image_.getWidth();
     // We are looking for black/white/black/white/black modules in

@@ -1,5 +1,6 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.imagedecoding');
+goog.require('w69b.DecodeHintType');
 goog.require('w69b.ReaderException');
 goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.WebGLBinarizer');
@@ -15,6 +16,7 @@ goog.require('w69b.qr.nativepreprocessing');
  * @author mb@w69b.com (Manuel Braun)
  */
 goog.scope(function() {
+  var DecodeHintType = w69b.DecodeHintType;
   var Detector = w69b.qr.detector.Detector;
   var RGBABitMatrix = w69b.img.RGBABitMatrix;
   var DecodeResult = w69b.qr.DecodeResult;
@@ -23,6 +25,8 @@ goog.scope(function() {
   var preprocessing = w69b.qr.nativepreprocessing;
 
   var _ = w69b.qr.imagedecoding;
+
+  _.decoder_ = new w69b.qr.decoder.Decoder();
 
   _.webGLBinarizer_ = null;
 
@@ -87,10 +91,16 @@ goog.scope(function() {
     } else {
       bitmap = preprocessing.binarizeImageData(imgdata);
     }
-    var detector = new Detector(bitmap, opt_callback);
+    var detector = new Detector(bitmap);
+    var opt_hints = undefined;
 
-    var detectorResult = detector.detect();
-    var text = w69b.qr.decoder.Decoder.decode(detectorResult.bits);
+    if (opt_callback) {
+      opt_hints = {};
+      opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
+    }
+
+    var detectorResult = detector.detect(opt_hints);
+    var text = _.decoder_.decode(detectorResult.bits).getText();
 
     return new DecodeResult(text, detectorResult.points);
   };

@@ -10,6 +10,7 @@ goog.scope(function() {
   var utf8 = w69b.utf8;
   var iconv = self.iconv;
   var iconvlite = w69b.iconvlite;
+  var DecodeHintType = w69b.DecodeHintType;
   var InvalidCharsetException = w69b.InvalidCharsetException;
 
   _.SHIFT_JIS = 'Shift_JIS';
@@ -98,15 +99,15 @@ goog.scope(function() {
   /**
    * @param {Array.<number>} bytes bytes encoding a string, whose encoding
    * should be guessed.
-   * @param {Object=} opt_hints decode hints if applicable.
+   * @param {Object<DecodeHintType,*>=} opt_hints decode hints if applicable.
    * @return {string} name of guessed encoding; at the moment will only
    * guess one of:
    *  {@link #SHIFT_JIS}, {@link #UTF8}, {@link #ISO88591}, or the platform
    *  default encoding if none of these can possibly be correct.
    */
   _.guessEncoding = function(bytes, opt_hints) {
-    if (opt_hints && !!opt_hints[w69b.DecodeHintType.CHARACTER_SET]) {
-      var characterSet = opt_hints[w69b.DecodeHintType.CHARACTER_SET].toString();
+    if (opt_hints && !!opt_hints[DecodeHintType.CHARACTER_SET]) {
+      var characterSet = opt_hints[DecodeHintType.CHARACTER_SET].toString();
       if (characterSet) {
         return characterSet;
       }

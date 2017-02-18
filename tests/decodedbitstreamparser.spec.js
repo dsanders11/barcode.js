@@ -33,9 +33,9 @@ define(['chai'], function(chai) {
       builder.write(0xF1, 8);
       builder.write(0xF2, 8);
       builder.write(0xF3, 8);
-      var result = DecodedBitStreamParser.decode(builder.toByteArray(),
-        Version.getVersionForNumber(1), null);
-      assert.equal(result, '\u00f1\u00f2\u00f3');
+      var text = DecodedBitStreamParser.decode(builder.toByteArray(),
+        Version.getVersionForNumber(1), null).getText();
+      assert.equal(text, '\u00f1\u00f2\u00f3');
     });
 
     it('sjis mode', function() {
@@ -46,9 +46,9 @@ define(['chai'], function(chai) {
       builder.write(0xA2, 8);
       builder.write(0xA3, 8);
       builder.write(0xD0, 8);
-      var result = DecodedBitStreamParser.decode(builder.toByteArray(),
-        Version.getVersionForNumber(1), null);
-      assert.equal(result, '\uff61\uff62\uff63\uff90');
+      var text = DecodedBitStreamParser.decode(builder.toByteArray(),
+        Version.getVersionForNumber(1), null).getText();
+      assert.equal(text, '\uff61\uff62\uff63\uff90');
     });
 
     it('testSimpleSJIS', function() {
@@ -59,9 +59,9 @@ define(['chai'], function(chai) {
       builder.write(0xA2, 8);
       builder.write(0xA3, 8);
       builder.write(0xD0, 8);
-      var result = DecodedBitStreamParser.decode(builder.toByteArray(),
-        Version.getVersionForNumber(1), null, null);
-      assert.equal('\uff61\uff62\uff63\uff90', result);
+      var text = DecodedBitStreamParser.decode(builder.toByteArray(),
+        Version.getVersionForNumber(1), null, null).getText();
+      assert.equal('\uff61\uff62\uff63\uff90', text);
     });
 
     it('testECI', function() {
@@ -73,9 +73,9 @@ define(['chai'], function(chai) {
       builder.write(0xA1, 8);
       builder.write(0xA2, 8);
       builder.write(0xA3, 8);
-      var result = DecodedBitStreamParser.decode(builder.toByteArray(),
-        Version.getVersionForNumber(1), null, null);
-      assert.equal('\u00ed\u00f3\u00fa', result);
+      var text = DecodedBitStreamParser.decode(builder.toByteArray(),
+        Version.getVersionForNumber(1), null, null).getText();
+      assert.equal('\u00ed\u00f3\u00fa', text);
     });
 
     it('testHanzi', function() {
@@ -84,9 +84,9 @@ define(['chai'], function(chai) {
       builder.write(0x01, 4); // Subset 1 = GB2312 encoding
       builder.write(0x01, 8); // 1 characters
       builder.write(0x03C1, 13);
-      var result = DecodedBitStreamParser.decode(builder.toByteArray(),
-        Version.getVersionForNumber(1), null, null);
-      assert.equal('\u963f', result);
+      var text = DecodedBitStreamParser.decode(builder.toByteArray(),
+        Version.getVersionForNumber(1), null, null).getText();
+      assert.equal('\u963f', text);
     });
 
   });
@@ -127,4 +127,3 @@ define(['chai'], function(chai) {
     return this.output;
   };
 });
-
