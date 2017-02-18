@@ -149,7 +149,7 @@ goog.scope(function() {
           default:
             // Then handle normal characters otherwise
             if (codeSet === CODE_CODE_B) {
-              patternIndex = contents.charAt(position) - ' ';
+              patternIndex = contents.charCodeAt(position) - ' '.charCodeAt(0);
             } else { // CODE_CODE_C
               patternIndex = parseInt(contents.substring(position, position + 2), 10);
               position++; // Also incremented below
@@ -159,9 +159,9 @@ goog.scope(function() {
       } else {
         // Should we change the current code?
         // Do we have a code set?
-        if (codeSet == 0) {
+        if (codeSet === 0) {
           // No, we don't have a code set
-          if (newCodeSet == CODE_CODE_B) {
+          if (newCodeSet === CODE_CODE_B) {
             patternIndex = CODE_START_B;
           } else {
             // CODE_CODE_C
@@ -179,7 +179,7 @@ goog.scope(function() {
 
       // Compute checksum
       checkSum += patternIndex * checkWeight;
-      if (position != 0) {
+      if (position !== 0) {
         checkWeight++;
       }
     }
