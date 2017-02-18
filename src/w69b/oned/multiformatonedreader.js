@@ -45,10 +45,10 @@ goog.scope(function() {
     var readers = new Array();
 
     if (possibleFormats !== null) {
-      if (possibleFormats[BarcodeFormat.CODE_39]) {
+      if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
         readers.push(new Code39Reader(useCode39CheckDigit));
       }
-      if (possibleFormats[BarcodeFormat.CODE_128]) {
+      if (possibleFormats.includes(BarcodeFormat.CODE_128)) {
         readers.push(new Code128Reader());
       }
     }

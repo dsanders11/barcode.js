@@ -108,13 +108,16 @@ goog.scope(function() {
     /** @type {Array.<Reader>} */
     var readers = new Array();
     if (formats !== null) {
-      var addOneDReader = Boolean(formats[BarcodeFormat.CODE_128]);
+      var addOneDReader = Boolean(
+          formats.includes(BarcodeFormat.CODE_39) ||
+          formats.includes(BarcodeFormat.CODE_128) ||
+          formats.includes(BarcodeFormat.ITF));
 
       // Put 1D readers upfront in "normal" mode
       if (addOneDReader && !tryHarder) {
         readers.push(new MultiFormatOneDReader(hints));
       }
-      if (formats[BarcodeFormat.QR_CODE]) {
+      if (formats.includes(BarcodeFormat.QR_CODE)) {
         readers.push(new QRCodeReader());
       }
       // At end in "try harder" mode

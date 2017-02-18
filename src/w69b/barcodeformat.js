@@ -24,5 +24,6 @@ goog.provide('w69b.BarcodeFormat');
 w69b.BarcodeFormat = {
   CODE_39: 1,
   CODE_128: 2,
-  QR_CODE: 3
+  ITF: 3,
+  QR_CODE: 4
 };

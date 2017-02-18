@@ -21,6 +21,7 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Writer');
 goog.require('w69b.oned.Code128Writer');
 goog.require('w69b.oned.Code39Writer');
+goog.require('w69b.oned.ITFWriter');
 goog.require('w69b.qr.QRCodeWriter');
 
 goog.scope(function() {
@@ -29,6 +30,7 @@ goog.scope(function() {
   var Writer = w69b.Writer;
   var Code39Writer = w69b.oned.Code39Writer;
   var Code128Writer = w69b.oned.Code128Writer;
+  var ITFWriter = w69b.oned.ITFWriter;
   var QRCodeWriter = w69b.qr.QRCodeWriter;
 
   /**
@@ -57,6 +59,9 @@ goog.scope(function() {
         break;
       case BarcodeFormat.CODE_128:
         writer = new Code128Writer();
+        break;
+      case BarcodeFormat.ITF:
+        writer = new ITFWriter();
         break;
       default:
         throw new NotFoundException("No encoder available for format " + format);
