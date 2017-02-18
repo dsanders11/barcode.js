@@ -58,8 +58,9 @@ goog.scope(function() {
       bytes = utf8Bytes;
       str = utf8.UTF8BytesToString(bytes);
     }
-    if (str === null)
+    if (str === null) {
       throw new InvalidCharsetException();
+    }
     return str;
   };
 
@@ -76,18 +77,21 @@ goog.scope(function() {
     var bytes = null;
     if (charset == _.UTF8) {
       bytes = utf8.stringToUTF8Bytes(str);
-      if (bytes === null)
+      if (bytes === null) {
         throw new InvalidCharsetException();
+      }
     } else if (iconvlite.isSupported(charset)) {
       bytes = iconvlite.toBytes(str, charset);
     } else {
       bytes = utf8.stringToUTF8Bytes(str);
-      if (!iconv)
+      if (!iconv) {
         throw new InvalidCharsetException('iconv not loaded');
+      }
       bytes = iconv.convert(bytes, _.UTF8, charset);
     }
-    if (bytes === null)
+    if (bytes === null) {
       throw new InvalidCharsetException(charset + ' to bytes: ' + str);
+    }
     return bytes;
   };
 
@@ -101,8 +105,8 @@ goog.scope(function() {
    *  default encoding if none of these can possibly be correct.
    */
   _.guessEncoding = function(bytes, opt_hints) {
-    if (opt_hints) {
-      var characterSet = opt_hints.get(w69b.DecodeHintType.CHARACTER_SET);
+    if (opt_hints && !!opt_hints[w69b.DecodeHintType.CHARACTER_SET]) {
+      var characterSet = opt_hints[w69b.DecodeHintType.CHARACTER_SET].toString();
       if (characterSet) {
         return characterSet;
       }

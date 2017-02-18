@@ -63,6 +63,7 @@ goog.provide('w69b.utf8');
    * @return {Array.<number>} byte sequence.
    */
   function stringToUTF8Bytes(str) {
+    /** @type {Array.<number>} */
     var bytes = [];
     for (var i = 0; i < str.length; ++i) {
       var codePoint = fixedCharCodeAt(str, i);

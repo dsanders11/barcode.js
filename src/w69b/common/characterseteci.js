@@ -33,6 +33,9 @@ goog.scope(function() {
   var CharacterSetECI = w69b.common.CharacterSetECI;
   var pro = CharacterSetECI.prototype;
 
+  /** @type {!string} */
+  pro.name = '';
+
   /** @enum {CharacterSetECI} */
   w69b.common.CharacterSetECIEnum = {
     Cp437: new CharacterSetECI([0, 2], 'CP437'),
@@ -73,8 +76,9 @@ goog.scope(function() {
 
   (function() {
     for (var eci in CharacterSetECIEnum) {
+      /** @type {!CharacterSetECI} */
       var enumValue = CharacterSetECIEnum[eci];
-      enumValue.name = eci;
+      enumValue.name = eci.toString();
 
       CharacterSetECI.namesToEnum_[eci] = enumValue;
 
