@@ -17,40 +17,24 @@
 
 goog.provide('w69b.qr.QRCodeWriter');
 goog.require('w69b.BarcodeFormat');
-//goog.require('w69b.ChecksumException');
 goog.require('w69b.EncodeHintType');
-//goog.require('w69b.FormatException');
 goog.require('w69b.IllegalArgumentException');
 goog.require('w69b.IllegalStateException');
-//goog.require('w69b.NotFoundException');
 goog.require('w69b.Writer');
-//goog.require('w69b.WriterException');
-//goog.require('w69b.Result');
-//goog.require('w69b.ResultMetadataType');
-//goog.require('w69b.ResultPoint');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
-//goog.require('w69b.qr.encoder.ByteMatrix');
 goog.require('w69b.qr.encoder.Encoder');
 goog.require('w69b.qr.encoder.QRCode');
 
 
 goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
-  //var ChecksumException = w69b.ChecksumException;
   var EncodeHintType = w69b.EncodeHintType;
-  //var FormatException = w69b.FormatException;
   var IllegalArgumentException = w69b.IllegalArgumentException;
   var IllegalStateException = w69b.IllegalStateException;
-  //var NotFoundException = w69b.NotFoundException;
   var Writer = w69b.Writer;
-  //var WriterException = w69b.WriterException;
-  //var Result = w69b.Result;
-  //var ResultMetadataType = w69b.ResultMetadataType;
-  //var ResultPoint = w69b.ResultPoint;
   var BitMatrix = w69b.common.BitMatrix;
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  //var ByteMatrix = w69b.qr.encoder.ByteMatrix;
   var Encoder = w69b.qr.encoder.Encoder;
   var QRCode = w69b.qr.encoder.QRCode;
 
