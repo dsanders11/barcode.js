@@ -42,7 +42,7 @@ goog.scope(function() {
   var _ = w69b.qr.encoder.MatrixUtil;
 
   /**
-   * @type {Array<Array<number>>}
+   * @type {Array.<Array.<number>>}
    */
   _.POSITION_DETECTION_PATTERN = [
     [1, 1, 1, 1, 1, 1, 1],
@@ -55,7 +55,7 @@ goog.scope(function() {
   ];
 
   /**
-   * @type {Array<Array<number>>}
+   * @type {Array.<Array.<number>>}
    */
   _.POSITION_ADJUSTMENT_PATTERN = [
     [1, 1, 1, 1, 1],
@@ -68,7 +68,7 @@ goog.scope(function() {
   /**
    * From Appendix E. Table 1, JIS0510X:2004 (p 71). The table was
    * double-checked by komatsu.
-   * @type {Array<Array<number>>}
+   * @type {Array.<Array.<number>>}
    */
   _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = [
     [-1, -1, -1, -1, -1, -1, -1],  // Version 1
@@ -115,7 +115,7 @@ goog.scope(function() {
 
   /**
    * Type info cells at the left top corner.
-   * @type {Array<Array<number>>}
+   * @type {Array.<Array.<number>>}
    */
   _.TYPE_INFO_COORDINATES = [
     [8, 0],
