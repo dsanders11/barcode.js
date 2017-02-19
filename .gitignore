@@ -6,6 +6,7 @@
 .hgignore
 node_modules/
 libs/
+coverage/
 dist/
 tmp/
 bower_components/

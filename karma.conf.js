@@ -23,7 +23,24 @@ module.exports = function(karma) {
     frameworks: ['mocha', 'requirejs'],
 
     preprocessors: {
-      '**/*.js': ['sourcemap']
+      '**/*.js': ['sourcemap'],
+      'dist/**/*.js': ['coverage']
+    },
+
+    coverageReporter: {
+      type : 'json',
+      dir : 'coverage/',
+      file : 'coverage.json'
+    },
+
+    remapIstanbulReporter: {
+      src: 'coverage/coverage.json',
+      reports: {
+        html: 'coverage/html/report'
+      },
+      remapOptions: {
+        exclude: 'node_modules'
+      }
     },
 
     files: [
@@ -44,7 +61,7 @@ module.exports = function(karma) {
 
     // list of files to exclude
     exclude: [],
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage', 'karma-remap-istanbul'],
     port: 8080,
     runnerPort: 9100,
     colors: true,
