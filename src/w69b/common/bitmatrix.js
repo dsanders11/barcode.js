@@ -22,32 +22,41 @@
  */
 
 goog.provide('w69b.common.BitMatrix');
+goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('w69b.IllegalArgumentException');
+goog.require('w69b.common.BitArray');
 goog.require('w69b.img.BitMatrixLike');
 
 goog.scope(function() {
   var IllegalArgumentException = w69b.IllegalArgumentException;
+  var BitArray = w69b.common.BitArray;
 
   /**
    * @param {number} width width.
    * @param {number=} opt_height height defaults to width.
+   * @param {number=} opt_rowSize
+   * @param {Uint32Array=} opt_bits
    * @constructor
    * @implements {w69b.img.BitMatrixLike}
    */
-  w69b.common.BitMatrix = function(width, opt_height) {
+  w69b.common.BitMatrix = function(width, opt_height, opt_rowSize, opt_bits) {
     var height = goog.isDef(opt_height) ? opt_height : width;
     if (width < 1 || height < 1) {
       throw new IllegalArgumentException("Both dimensions must be greater than 0");
     }
     this.width = width;
     this.height = height;
-    var rowSize = width >> 5;
-    if ((width & 0x1f) != 0) {
-      rowSize++;
+    if (opt_rowSize) {
+      this.rowSize = opt_rowSize;
+    } else {
+      var rowSize = width >> 5;
+      if ((width & 0x1f) != 0) {
+        rowSize++;
+      }
+      this.rowSize = rowSize;
     }
-    this.rowSize = rowSize;
-    this.bits = new Uint32Array(rowSize * height);
+    this.bits = opt_bits ? opt_bits : new Uint32Array(rowSize * height);
   };
 
   var BitMatrix = w69b.common.BitMatrix;
@@ -77,6 +86,19 @@ goog.scope(function() {
 
     var offset = y * this.rowSize + (x >> 5);
     this.bits[offset] |= 1 << (x & 0x1f);
+  };
+
+  /**
+   * Unsets bit at given position.
+   * @param {number} x x pos.
+   * @param {number} y y pos.
+   */
+  pro.unset = function(x, y) {
+    goog.asserts.assert(Number.isInteger(x));
+    goog.asserts.assert(Number.isInteger(y));
+
+    var offset = y * this.rowSize + (x >> 5);
+    this.bits[offset] &= ~(1 << (x & 0x1f));
   };
 
   /**
@@ -133,6 +155,28 @@ goog.scope(function() {
         this.bits[offset + (x >> 5)] |= 1 << (x & 0x1f);
       }
     }
+  };
+
+  /**
+   * A fast method to retrieve one row of data from the matrix as a BitArray.
+   *
+   * @param {number} y The row to retrieve
+   * @param {BitArray} row An optional caller-allocated BitArray, will be
+   *                       allocated if null or too small
+   * @return {BitArray} The resulting BitArray - this reference should always
+   *                    be used even when passing your own row
+   */
+  pro.getRow = function(y, row) {
+    if (row === null || row.getSize() < this.width) {
+      row = new BitArray(this.width);
+    } else {
+      row.clear();
+    }
+    var offset = y * this.rowSize;
+    for (var x = 0; x < this.rowSize; x++) {
+      row.setBulk(x * 32, this.bits[offset + x]);
+    }
+    return row;
   };
 
   /**
@@ -218,5 +262,12 @@ goog.scope(function() {
       result.push('\n');
     }
     return result.join('');
+  };
+
+  /**
+   * @return {BitMatrix} cloned matrix
+   */
+  pro.clone = function() {
+    return new BitMatrix(this.width, this.height, this.rowSize, this.bits.slice());
   };
 });
