@@ -81,7 +81,7 @@ goog.scope(function() {
       var one = parseInt(contents.charAt(i), 10);
       var two = parseInt(contents.charAt(i + 1), 10);
       /** @type {!Array.<number>} */
-      var encoding = new Array(9);
+      var encoding = new Array(10);
       for (var j = 0; j < 5; j++) {
         encoding[2 * j] = ITFReader.PATTERNS[one][j];
         encoding[2 * j + 1] = ITFReader.PATTERNS[two][j];
