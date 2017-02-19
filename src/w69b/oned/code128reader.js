@@ -545,7 +545,7 @@ goog.scope(function() {
 
     var counterPosition = 0;
     /** @type {!Array.<number>} */
-    var counters = new Array(6);
+    var counters = new Array(6).fill(0);
     var patternStart = rowOffset;
     var isWhite = false;
     var patternLength = counters.length;
