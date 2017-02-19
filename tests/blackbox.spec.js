@@ -1,7 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.require('w69b.qr.decoding');
 
-define(['chai', 'tests/blackbox.data', 'tests/testhelper'], function(chai, testData, testhelper) {
+define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   var expect = chai.expect;
   var baseUrl = '../';
   // Expected number of detections with native binarizer.
@@ -71,24 +71,39 @@ define(['chai', 'tests/blackbox.data', 'tests/testhelper'], function(chai, testD
 
   SuiteInfo.prototype.run = function(item, decoder) {
     var self = this;
-    var url = baseUrl + item['image'];
-    var expected = item['expected'];
-    return testhelper.loadImage(url).then(function(img) {
-      return decoder.decode(img);
-    }).then(function(result) {
-      if (result.text == expected) {
-        self.successCnt++;
-      } else {
-        self.failures.push(
-          ['Test with url: ' + url + ' failed:',
-            'expected: ' + expected,
-            'actual: ' + result.text]);
-      }
-    }, function(error) {
-      self.fatalCnt++;
-      self.failures.push(
-        ['Test with url: ' + url + ' failed with: ' + error]);
+    var url = item['image'];
+    var expectedFileName = item['expected'];
+
+    var promise = new Promise(function(resolve, reject) {
+      var oReq = new XMLHttpRequest();
+      oReq.onload = function() {
+        var expected = oReq.responseText;
+
+        testhelper.loadImage(url).then(function(img) {
+          return decoder.decode(img);
+        }).then(function(result) {
+          if (result.text == expected) {
+            self.successCnt++;
+          } else {
+            self.failures.push(
+              ['Test with url: ' + url + ' failed:',
+                'expected: ' + expected,
+                'actual: ' + result.text]);
+          }
+
+          resolve();
+        }, function(error) {
+          self.fatalCnt++;
+          self.failures.push(
+            ['Test with url: ' + url + ' failed with: ' + error]);
+          resolve();
+        });
+      };
+      oReq.open("GET", expectedFileName);
+      oReq.send();
     });
+
+    return promise;
   };
 
 
@@ -112,12 +127,32 @@ define(['chai', 'tests/blackbox.data', 'tests/testhelper'], function(chai, testD
       // Sequential testing, so use a larger timeout.
       this.timeout(10000);
 
-      for (var suiteName in testData) {
-        if (!testData.hasOwnProperty(suiteName) ||
-          (onlySuites && onlySuites.indexOf(suiteName) == -1))
-          continue;
+      var suites = {};
+      var extensions = ['.gif', '.png', '.jpg'];
 
-        var suite = testData[suiteName];
+      for (var suiteName in expectedSet) {
+        var suite = [];
+        var blackboxDataPattern = new RegExp('/base/test_data/blackbox/' + suiteName + '/.*\.txt');
+
+        for (var file in window.__karma__.files) {
+          var match = blackboxDataPattern.exec(file);
+          if (match) {
+            var fileName = file.slice(0, -4);
+
+            for (var i = 0; i < extensions.length; i++) {
+              var imageFile = fileName + extensions[i];
+              if (imageFile in window.__karma__.files) {
+                suite.push({expected: file, image: imageFile});
+              }
+            }
+          }
+        }
+
+        suites[suiteName] = suite;
+      }
+
+      for (var suiteName in suites) {
+        var suite = suites[suiteName];
         var suiteInfo = new SuiteInfo(suite, suiteName, expectedSet[suiteName]);
         // suite = [suite[23]];
         it('detects suite ' + suiteName, generateTest(suiteInfo, opt));

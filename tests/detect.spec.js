@@ -21,13 +21,13 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
     testhelper.ALL_DECODE_OPTIONS.forEach(function(opt) {
       describe(JSON.stringify(opt), function() {
         it('detects simple hello world code',
-          decodeTest('qr_hello.png', 'Hello World', opt));
+          decodeTest('/base/test_data/qr_hello.png', 'Hello World', opt));
 
         it('detects small qr code in big image',
-          decodeTest('big.jpg', 'http://www.mozilla.org/en-US/firefoxos/', opt));
+          decodeTest('/base/test_data/big.jpg', 'http://www.mozilla.org/en-US/firefoxos/', opt));
 
         it('detects firefox coffe cup qr code',
-          decodeTest('firefox.jpg', 'http://bit.ly/FirefoxAndroidMWC?r=qr', opt));
+          decodeTest('/base/test_data/firefox.jpg', 'http://bit.ly/FirefoxAndroidMWC?r=qr', opt));
       });
     });
 

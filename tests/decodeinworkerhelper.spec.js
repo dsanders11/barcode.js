@@ -38,11 +38,11 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
         });
 
         it('should decode image', function() {
-          return expect(decodeText('qr_hello.png', worker)).to.eventually.equal('Hello World');
+          return expect(decodeText('/base/test_data/qr_hello.png', worker)).to.eventually.equal('Hello World');
         });
 
         it('should fail', function() {
-          return expect(decodeText('corrupted.png', worker)).to.be.rejected;
+          return expect(decodeText('/base/test_data/corrupted.png', worker)).to.be.rejected;
         });
       });
     });

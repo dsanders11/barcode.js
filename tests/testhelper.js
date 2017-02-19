@@ -29,7 +29,7 @@ define(function() {
         resolve(image);
       };
     });
-    image.src = _.DATA_URL + src;
+    image.src = src;
     return promise;
   };
 
