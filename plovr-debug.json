@@ -1,5 +1,0 @@
-{
-  "inherits": "plovr-root.json",
-  "inputs": "src/main.js",
-  "output-wrapper": "self.CLOSURE_NO_DEPS = true;\n%output%"
-}

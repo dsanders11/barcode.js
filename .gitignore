@@ -6,7 +6,6 @@
 .hgignore
 node_modules/
 libs/
-build/
 coverage/
 dist/
 tmp/

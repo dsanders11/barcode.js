@@ -1,4 +1,0 @@
-{
-  "inherits": "plovr-root.json",
-  "inputs": "src/decodeworker.js"
-}
