@@ -1,6 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 'use strict';
 require('harmonize')();
+var fs = require('fs');
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var del = require('del');
@@ -38,7 +39,13 @@ var PATHS = {
       'node_modules/google-closure-library/third_party/**/*.js',
       'src/**/*.js'
     ],
-    plovr: ['plovr-decodeworker-productive.json', 'plovr-productive.json'],
+    plovr: {
+      debug: {
+        worker: 'plovr-decodeworker-debug.json',
+        main: 'plovr-debug.json'
+      },
+      release: ['plovr-decodeworker-productive.json', 'plovr-productive.json']
+    },
   },
   dst: {
     shaders: 'src/w69b/shaders/'
@@ -48,7 +55,7 @@ var PATHS = {
 gulp.task('clean', function() {
   return del(['dist']);
 });
- 
+
 gulp.task('check-format', function() {
   return gulp.src(PATHS.src.checkFormat)
      .pipe(format.checkFormat(undefined, undefined, {verbose: true}));
@@ -126,11 +133,23 @@ var closureDebugWrapper = 'self.CLOSURE_NO_DEPS = true;\n<%= contents %>';
  * Build library simply by concatenating all files.
  */
 gulp.task('buildDebug:main', ['shader2js'], function() {
-  return buildDebug('main')
-    .pipe(sourcemaps.init())
-    .pipe(concat('w69b.qrcode.js'))
-    .pipe(wrap(closureDebugWrapper))
-    .pipe(sourcemaps.write())
+  return gulp.src(PATHS.src.plovr.debug.main)
+    .pipe(plovr({
+      plovr_path: 'node_modules/plovr/bin/plovr.jar',
+      plovr_args: {"create_source_map": "build"},
+      out_path: 'w69b.qrcode.js',
+      debug: true
+    }))
+//    .pipe(through.obj(
+//      function(file, enc, cb) {
+//        var sourceMap = fs.readFileSync("build/barcodejs.map");
+//        var base64encoded = new Buffer(sourceMap).toString('base64');
+//        file.contents = Buffer.concat([file.contents, new Buffer("//# sourceMappingURL=data:application/json;charset=utf8;base64," + base64encoded)]);
+//
+//        this.push(file);
+//        cb();
+//      }
+//    ))
     .pipe(gulp.dest('dist'));
 });
 
@@ -150,7 +169,7 @@ gulp.task('compile', function() {
   // It might look odd to use plovr instead of using closure compiler directly here.
   // However there is no easy way to disable some advanced compilation options that degrate
   // performance significantly with closure compiler directy.
-  return gulp.src(PATHS.src.plovr)
+  return gulp.src(PATHS.src.plovr.release)
     .pipe(plovr({
       plovr_path: 'node_modules/plovr/bin/plovr.jar',
       debug: true
