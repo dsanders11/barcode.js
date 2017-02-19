@@ -115,7 +115,7 @@ function buildDebug(module) {
     }))
     .pipe(getFiles)
     .on('end', function() {
-      gulp.src([PATHS.src.closureBase].concat(fileList))
+      gulp.src([PATHS.src.closureBase].concat(fileList), { base: '.' })
         .pipe(bundleStream);
     });
   return es.duplex(str, es.merge(bundleStream, str));
