@@ -24,7 +24,7 @@ module.exports = function(karma) {
 
     preprocessors: {
       '**/*.js': ['sourcemap'],
-      'dist/**/*.js': ['coverage']
+      'dist/**/*.js': ['sourcemap', 'coverage']
     },
 
     coverageReporter: {
