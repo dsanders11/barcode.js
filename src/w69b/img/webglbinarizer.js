@@ -234,7 +234,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {w69b.img.RGBABitMatrix} image data wrapped in RGBABitmatrix.
+   * @return {!w69b.img.RGBABitMatrix} image data wrapped in RGBABitmatrix.
    */
   pro.getBitMatrix = function() {
     var imgdata = this.filter_.getImageData();
