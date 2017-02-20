@@ -69,7 +69,7 @@ goog.scope(function() {
    *                            small, it will be ignored. If used, the
    *                            Binarizer will call BitArray.clear(). Always use
    *                            the returned object.
-   * @return {BitArray} The array of bits for this row (true means black).
+   * @return {!BitArray} The array of bits for this row (true means black).
    * @throws {NotFoundException} if row can't be binarized
    */
   pro.getBlackRow = function(y, opt_row) {
@@ -83,7 +83,7 @@ goog.scope(function() {
    * row from this matrix may not be identical to one fetched using
    * getBlackRow(), so don't mix and match between them.
    *
-   * @return {BitMatrix} The 2D array of bits for the image (true means black).
+   * @return {!BitMatrix} The 2D array of bits for the image (true means black).
    * @throws {NotFoundException} if image can't be binarized to make a matrix
    */
   pro.getBlackMatrix = function() {
@@ -115,7 +115,7 @@ goog.scope(function() {
    * @param {number} top The top coordinate, which must be in [0,getHeight())
    * @param {number} width The width of the rectangle to crop.
    * @param {number} height The height of the rectangle to crop.
-   * @return {BinaryBitmap} A cropped version of this object.
+   * @return {!BinaryBitmap} A cropped version of this object.
    */
   pro.crop = function(left, top, width, height) {
     var newSource = this.binarizer.getLuminanceSource().crop(left, top, width, height);
@@ -133,7 +133,7 @@ goog.scope(function() {
    * Returns a new object with rotated image data by 90 degrees counterclockwise.
    * Only callable if {@link #isRotateSupported()} is true.
    *
-   * @return {BinaryBitmap} A rotated version of this object.
+   * @return {!BinaryBitmap} A rotated version of this object.
    */
   pro.rotateCounterClockwise = function() {
     var newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise();
@@ -144,7 +144,7 @@ goog.scope(function() {
    * Returns a new object with rotated image data by 45 degrees counterclockwise.
    * Only callable if {@link #isRotateSupported()} is true.
    *
-   * @return {BinaryBitmap} A rotated version of this object.
+   * @return {!BinaryBitmap} A rotated version of this object.
    */
   pro.rotateCounterClockwise45 = function() {
     var newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise45();
