@@ -52,7 +52,6 @@ module.exports = function(karma) {
       {pattern: 'src/**/*.js', included: false},
       {pattern: 'test_data/**/*.*', included: false, served: true, watched: true},
       // {pattern: 'tests/**/*.js', included: false, served: true, watched: true},
-      {pattern: 'tests/blackbox.data.js', included: false},
       {pattern: 'tests/**/*.js', included: false},
       'dist/w69b.qrcode.js',
       {pattern: 'dist/w69b.qrcode.decodeworker.*', included: false},
