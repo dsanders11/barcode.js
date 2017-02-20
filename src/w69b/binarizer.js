@@ -21,7 +21,7 @@ goog.provide('w69b.Binarizer');
 goog.scope(function() {
   /**
    * This class hierarchy provides a set of methods to convert luminance data to
-   * 1 bit data.  It allows the algorithm to vary polymorphically, for example
+   * 1 bit data. It allows the algorithm to vary polymorphically, for example
    * allowing a very expensive thresholding technique for servers and a fast one
    * for mobile. It also permits the implementation to vary, e.g. a JNI version
    * for Android and a Java fallback version for other platforms.
@@ -29,8 +29,8 @@ goog.scope(function() {
    * @author dswitkin@google.com (Daniel Switkin)
    * Ported to js by Manuel Braun
    *
-   *  @param {w69b.qr.QRImage} source gray values .
-   *  @constructor
+   * @constructor
+   * @param {w69b.qr.QRImage} source gray values
    */
   w69b.Binarizer = function(source) {
     /**
@@ -62,8 +62,8 @@ goog.scope(function() {
    * @param {w69b.common.BitArray=} opt_row An optional preallocated array. If
    *                                        null or too small, it will be
    *                                        ignored.  If used, the Binarizer
-   *                                        will call
-   * BitArray.clear(). Always use the returned object.
+   *                                        will call BitArray.clear(). Always
+   *                                        use the returned object.
    * @return {!w69b.common.BitArray} The array of bits for this row (true means
    *                                 black).
    */
@@ -110,4 +110,3 @@ goog.scope(function() {
     return this.source.height;
   };
 });
-
