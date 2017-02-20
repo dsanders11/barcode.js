@@ -61,6 +61,18 @@ gulp.task('format', function() {
       .pipe(gulp.dest('.'));
 });
 
+gulp.task('coverage', ['buildDebug'], function(done) {
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true,
+    preprocessors: {
+      '**/*.js': ['sourcemap'],
+      'dist/**/*.js': ['sourcemap', 'coverage']
+    },
+    reporters: ['progress', 'coverage', 'karma-remap-istanbul']
+  }, done).start();
+});
+
 gulp.task('test', ['buildDebug'], function(done) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',

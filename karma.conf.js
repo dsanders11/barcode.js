@@ -24,7 +24,6 @@ module.exports = function(karma) {
 
     preprocessors: {
       '**/*.js': ['sourcemap'],
-      'dist/**/*.js': ['sourcemap', 'coverage']
     },
 
     coverageReporter: {
@@ -60,7 +59,7 @@ module.exports = function(karma) {
 
     // list of files to exclude
     exclude: [],
-    reporters: ['progress', 'coverage', 'karma-remap-istanbul'],
+    reporters: ['progress'],
     port: 8080,
     runnerPort: 9100,
     colors: true,
