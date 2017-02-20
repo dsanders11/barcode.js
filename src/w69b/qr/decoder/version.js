@@ -21,8 +21,8 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.qr.ECB');
-goog.provide('w69b.qr.ECBlocks');
+goog.provide('w69b.qr.decoder.ECB');
+goog.provide('w69b.qr.decoder.ECBlocks');
 goog.provide('w69b.qr.decoder.Version');
 goog.require('w69b.FormatException');
 goog.require('w69b.common.BitMatrix');
@@ -38,11 +38,31 @@ goog.scope(function() {
    * @param {number} count
    * @param {number} dataCodewords
    */
-  w69b.qr.ECB = function(count, dataCodewords) {
+  w69b.qr.decoder.ECB = function(count, dataCodewords) {
+    /**
+     * @private
+     */
     this.count = count;
+    /**
+     * @private
+     */
     this.dataCodewords = dataCodewords;
   };
-  var ECB = w69b.qr.ECB;
+  var ECB = w69b.qr.decoder.ECB;
+
+  /**
+   * @return {number}
+   */
+  ECB.prototype.getCount = function() {
+    return this.count;
+  };
+
+  /**
+   * @return {number}
+   */
+  ECB.prototype.getDataCodewords = function() {
+    return this.dataCodewords;
+  };
 
   /**
    * @constructor
@@ -50,15 +70,19 @@ goog.scope(function() {
    * @param {!ECB} ecBlocks1 block1.
    * @param {ECB=} opt_ecBlocks2 block2.
    */
-  w69b.qr.ECBlocks = function(ecCodewordsPerBlock, ecBlocks1, opt_ecBlocks2) {
+  w69b.qr.decoder.ECBlocks = function(ecCodewordsPerBlock, ecBlocks1, opt_ecBlocks2) {
     this.ecCodewordsPerBlock = ecCodewordsPerBlock;
-    if (opt_ecBlocks2)
+    if (opt_ecBlocks2) {
       this.ecBlocks = [ecBlocks1, opt_ecBlocks2];
-    else
+    }
+    else {
       this.ecBlocks = [ecBlocks1];
-
+    }
   };
-  var ECBlocks = w69b.qr.ECBlocks;
+  var ECBlocks = w69b.qr.decoder.ECBlocks;
+
+  /** @type {Array.<ECB>} */
+  ECBlocks.prototype.ecBlocks;
 
   /**
    * @return {Array.<ECB>}
@@ -81,7 +105,7 @@ goog.scope(function() {
     /** @type {number} */
     var total = 0;
     for (var i = 0; i < this.ecBlocks.length; i++) {
-      total += this.ecBlocks[i].count;
+      total += this.ecBlocks[i].getCount();
     }
     return total;
   };
@@ -109,7 +133,7 @@ goog.scope(function() {
     var ecbArray = ecBlocks1.getECBlocks();
     for (var i = 0; i < ecbArray.length; i++) {
       var ecBlock = ecbArray[i];
-      total += ecBlock.count * (ecBlock.dataCodewords + ecCodewords);
+      total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
     }
     this.totalCodewords = total;
   };

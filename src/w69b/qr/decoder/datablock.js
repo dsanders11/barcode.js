@@ -68,7 +68,7 @@ goog.scope(function() {
     var totalBlocks = 0;
     var ecBlockArray = ecBlocks.getECBlocks();
     for (var i = 0; i < ecBlockArray.length; i++) {
-      totalBlocks += ecBlockArray[i].count;
+      totalBlocks += ecBlockArray[i].getCount();
     }
 
     // Now establish DataBlocks of the appropriate size and number of data
@@ -78,8 +78,8 @@ goog.scope(function() {
     var numResultBlocks = 0;
     for (var j = 0; j < ecBlockArray.length; j++) {
       var ecBlock = ecBlockArray[j];
-      for (var i = 0; i < ecBlock.count; i++) {
-        var numDataCodewords = ecBlock.dataCodewords;
+      for (var i = 0; i < ecBlock.getCount(); i++) {
+        var numDataCodewords = ecBlock.getDataCodewords();
         var numBlockCodewords = ecBlocks.ecCodewordsPerBlock + numDataCodewords;
         result[numResultBlocks++] = new DataBlock(numDataCodewords,
           new Int8Array(numBlockCodewords));
