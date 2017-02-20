@@ -63,8 +63,7 @@ goog.scope(function() {
     this.extendedMode_ = opt_extendedMode ? true : false;
     // TODO - Determine how this behavior might have changed in porting code
     //decodeRowResult = new StringBuilder(20);
-    /** @type {Array.<number>} */
-    this.counters_ = new Array(9);
+    this.counters_ = new Int32Array(9);
   };
   var Code39Reader = w69b.oned.Code39Reader;
   goog.inherits(Code39Reader, OneDReader);
@@ -84,16 +83,15 @@ goog.scope(function() {
    * These represent the encodings of characters, as patterns of wide and narrow
    * bars. The 9 least-significant bits of each int correspond to the pattern of
    * wide and narrow, with 1s representing "wide" and 0s representing narrow.
-   * @type {Array.<number>}
    * @final
    */
-  Code39Reader.CHARACTER_ENCODINGS = [
+  Code39Reader.CHARACTER_ENCODINGS = new Int32Array([
     0x034, 0x121, 0x061, 0x160, 0x031, 0x130, 0x070, 0x025, 0x124, 0x064, // 0-9
     0x109, 0x049, 0x148, 0x019, 0x118, 0x058, 0x00D, 0x10C, 0x04C, 0x01C, // A-J
     0x103, 0x043, 0x142, 0x013, 0x112, 0x052, 0x007, 0x106, 0x046, 0x016, // K-T
     0x181, 0x0C1, 0x1C0, 0x091, 0x190, 0x0D0, 0x085, 0x184, 0x0C4, 0x094, // U-*
     0x0A8, 0x0A2, 0x08A, 0x02A // $-%
-  ];
+  ]);
 
   /** @final */
   Code39Reader.ASTERISK_ENCODING = Code39Reader.CHARACTER_ENCODINGS[39];
@@ -101,9 +99,10 @@ goog.scope(function() {
   /**
    * For efficiency, returns -1 on failure. Not throwing here saved as many as
    * 700 exceptions per image when using some of our blackbox images.
-   * @param {Array.<number>} counters
+   * @param {Int32Array} counters
    * @return {number}
    * @private
+   * @suppress {checkTypes}
    */
   Code39Reader.toNarrowWidePattern_ = function(counters) {
     var numCounters = counters.length;
@@ -150,6 +149,7 @@ goog.scope(function() {
 
   /**
    * @override
+   * @suppress {checkTypes}
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     var theCounters = this.counters_;
@@ -229,8 +229,8 @@ goog.scope(function() {
 
   /**
    * @param {BitArray} row
-   * @param {Array.<number>} counters
-   * @return {Array.<number>}
+   * @param {Int32Array} counters
+   * @return {Int32Array}
    * @throws {NotFoundException}
    * @private
    */
@@ -251,7 +251,7 @@ goog.scope(function() {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (Code39Reader.toNarrowWidePattern_(counters) == Code39Reader.ASTERISK_ENCODING &&
               row.isRange(Math.max(0, patternStart - ((i - patternStart) / 2)), patternStart, false)) {
-            return [patternStart, i];
+            return new Int32Array([patternStart, i]);
           }
           patternStart += counters[0] + counters[1];
           //System.arraycopy(counters, 2, counters, 0, patternLength - 2);

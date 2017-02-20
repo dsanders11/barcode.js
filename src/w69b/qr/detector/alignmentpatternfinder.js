@@ -70,8 +70,7 @@ goog.scope(function() {
     this.width = width;
     this.height = height;
     this.moduleSize = moduleSize;
-    /** @type {Array.<number>} */
-    this.crossCheckStateCount = new Array(0, 0, 0);
+    this.crossCheckStateCount = new Int32Array([0, 0, 0]);
     this.resultPointCallback = resultPointCallback;
   };
   var AlignmentPatternFinder = w69b.qr.detector.AlignmentPatternFinder;
@@ -80,7 +79,7 @@ goog.scope(function() {
   /**
    * Given a count of black/white/black pixels just seen and an end position,
    * figures the location of the center of this black/white/black run.
-   * @param {Array.<number>} stateCount
+   * @param {Int32Array} stateCount
    * @param {number} end
    * @return {number}
    */
@@ -89,7 +88,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<number>} stateCount count of black/white/black pixels just read
+   * @param {Int32Array} stateCount count of black/white/black pixels just read
    * @return {boolean} true iff the proportions of the counts is close enough to the 1/1/1 ratios
    *         used by alignment patterns to be considered a match
    */
@@ -181,7 +180,7 @@ goog.scope(function() {
    * image. It is a bit messy since it's pretty performance-critical and so is
    * written to be fast foremost.
    *
-   * @param {Array.<number>} stateCount reading state module counts from horizontal scan
+   * @param {Int32Array} stateCount reading state module counts from horizontal scan
    * @param {number} i row where alignment pattern may be found
    * @param {number} j end of possible alignment pattern in row
    * @return {AlignmentPattern} if found
@@ -229,7 +228,7 @@ goog.scope(function() {
     var middleI = this.startY + (height >> 1);
     // We are looking for black/white/black modules in 1:1:1 ratio;
     // this tracks the number of black/white/black modules seen so far
-    var stateCount = new Array(0, 0, 0);
+    var stateCount = new Int32Array(3);
     for (var iGen = 0; iGen < height; iGen++) {
       // Search from middle outwards
       var i = middleI +

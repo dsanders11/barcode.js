@@ -91,10 +91,11 @@ goog.scope(function() {
   /**
    * @param {Array.<boolean>} target encode black/white pattern into this array
    * @param {number} pos position to start encoding at in {@code target}
-   * @param {!Array.<number>} pattern lengths of black/white runs to encode
+   * @param {!Int32Array} pattern lengths of black/white runs to encode
    * @param {boolean} startColor starting color - false for white, true for black
    * @return {number} the number of elements added to target.
    * @protected
+   * @suppress {checkTypes}
    */
   OneDimensionalCodeWriter.appendPattern = function(target, pos, pattern, startColor) {
     var color = startColor;

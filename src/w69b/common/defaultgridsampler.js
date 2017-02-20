@@ -84,7 +84,7 @@ goog.scope(function() {
       throw new w69b.NotFoundException();
     }
     var bits = new BitMatrix(dimensionX, dimensionY);
-    var points = new Array(dimensionX << 1);
+    var points = new Float32Array(dimensionX << 1);
     var x;
     for (var y = 0; y < dimensionY; y++) {
       var max = points.length;

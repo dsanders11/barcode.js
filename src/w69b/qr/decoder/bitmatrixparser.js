@@ -164,7 +164,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Array} bytes encoded within the QR Code
+   * @return {Int8Array} bytes encoded within the QR Code
    */
   pro.readCodewords = function() {
     var formatInfo = this.readFormatInformation();
@@ -179,7 +179,7 @@ goog.scope(function() {
     var functionPattern = version.buildFunctionPattern();
 
     var readingUp = true;
-    var result = new Array(version.totalCodewords);
+    var result = new Int8Array(version.totalCodewords);
     var resultOffset = 0;
     var currentByte = 0;
     var bitsRead = 0;

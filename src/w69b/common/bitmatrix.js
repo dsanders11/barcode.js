@@ -22,7 +22,6 @@
  */
 
 goog.provide('w69b.common.BitMatrix');
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('w69b.IllegalArgumentException');
 goog.require('w69b.common.BitArray');
@@ -36,7 +35,7 @@ goog.scope(function() {
    * @param {number} width width.
    * @param {number=} opt_height height defaults to width.
    * @param {number=} opt_rowSize
-   * @param {Uint32Array=} opt_bits
+   * @param {Int32Array=} opt_bits
    * @constructor
    * @implements {w69b.img.BitMatrixLike}
    */
@@ -56,7 +55,7 @@ goog.scope(function() {
       }
       this.rowSize = rowSize;
     }
-    this.bits = opt_bits ? opt_bits : new Uint32Array(rowSize * height);
+    this.bits = opt_bits ? opt_bits : new Int32Array(rowSize * height);
   };
 
   var BitMatrix = w69b.common.BitMatrix;
@@ -118,10 +117,7 @@ goog.scope(function() {
    * Clear matrix.
    */
   pro.clear = function() {
-    var max = this.bits.length;
-    for (var i = 0; i < max; i++) {
-      this.bits[i] = 0;
-    }
+    this.bits.fill(0);
   };
 
   /**
@@ -163,8 +159,8 @@ goog.scope(function() {
    * @param {number} y The row to retrieve
    * @param {BitArray} row An optional caller-allocated BitArray, will be
    *                       allocated if null or too small
-   * @return {BitArray} The resulting BitArray - this reference should always
-   *                    be used even when passing your own row
+   * @return {!BitArray} The resulting BitArray - this reference should always
+   *                     be used even when passing your own row
    */
   pro.getRow = function(y, row) {
     if (row === null || row.getSize() < this.width) {
@@ -182,7 +178,7 @@ goog.scope(function() {
   /**
    * This is useful in detecting a corner of a 'pure' barcode.
    *
-   * @return {?Array.<number>} coordinate of top-left-most 1 bit, or null if it is all white
+   * @return {?Int32Array} coordinate of top-left-most 1 bit, or null if it is all white
    */
   pro.getTopLeftOnBit = function() {
     var bitsOffset = 0;
@@ -201,11 +197,11 @@ goog.scope(function() {
       bit++;
     }
     x += bit;
-    return [x, y];
+    return new Int32Array([x, y]);
   };
 
   /**
-   * @return {?Array.<number>} coordinate of bottom-right-most 1 bit, or null if it is all white
+   * @return {?Int32Array} coordinate of bottom-right-most 1 bit, or null if it is all white
    */
   pro.getBottomRightOnBit = function() {
     var bitsOffset = this.bits.length - 1;
@@ -226,7 +222,7 @@ goog.scope(function() {
     }
     x += bit;
 
-    return [x, y];
+    return new Int32Array([x, y]);
   };
 
   /**
@@ -265,7 +261,8 @@ goog.scope(function() {
   };
 
   /**
-   * @return {BitMatrix} cloned matrix
+   * @return {!BitMatrix} cloned matrix
+   * @suppress {checkTypes}
    */
   pro.clone = function() {
     return new BitMatrix(this.width, this.height, this.rowSize, this.bits.slice());

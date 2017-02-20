@@ -39,17 +39,11 @@ goog.scope(function() {
   goog.inherits(ITFWriter, OneDimensionalCodeWriter);
   var pro = ITFWriter.prototype;
 
-  /**
-   * @type {!Array.<number>}
-   * @final
-   */
-  var START_PATTERN = [1, 1, 1, 1];
+  /** @final */
+  var START_PATTERN = new Int32Array([1, 1, 1, 1]);
 
-  /**
-   * @type {!Array.<number>}
-   * @final
-   */
-  var END_PATTERN = [3, 1, 1];
+  /** @final */
+  var END_PATTERN = new Int32Array([3, 1, 1]);
 
   /**
    * @override
@@ -80,8 +74,7 @@ goog.scope(function() {
     for (var i = 0; i < length; i += 2) {
       var one = parseInt(contents.charAt(i), 10);
       var two = parseInt(contents.charAt(i + 1), 10);
-      /** @type {!Array.<number>} */
-      var encoding = new Array(10);
+      var encoding = new Int32Array(10);
       for (var j = 0; j < 5; j++) {
         encoding[2 * j] = ITFReader.PATTERNS[one][j];
         encoding[2 * j + 1] = ITFReader.PATTERNS[two][j];

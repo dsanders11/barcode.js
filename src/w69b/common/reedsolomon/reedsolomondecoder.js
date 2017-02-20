@@ -71,14 +71,12 @@ goog.scope(function() {
    * Really, this means it uses Reed-Solomon to detect and correct  errors,
    * in-place, in the input.</p>
    *
-   * @param {Array.<number>} received data and error-correction codewords.
+   * @param {Int32Array} received data and error-correction codewords.
    * @param {number} twoS number of error-correction codewords available.
    */
   pro.decode = function(received, twoS) {
     var poly = new GF256Poly(this.field, received);
-    var syndromeCoefficients = new Array(twoS);
-    for (var i = 0; i <
-      syndromeCoefficients.length; i++)syndromeCoefficients[i] = 0;
+    var syndromeCoefficients = new Int32Array(twoS);
     var dataMatrix = false;//this.field.Equals(GF256.DATA_MATRIX_FIELD);
     var noError = true;
     for (var i = 0; i < twoS; i++) {
@@ -175,16 +173,16 @@ goog.scope(function() {
 
   /**
    * @param {GF256Poly} errorLocator
-   * @return {Array.<number>}
+   * @return {!Int32Array}
    */
   pro.findErrorLocations = function(errorLocator) {
     // This is a direct application of Chien's search
     var numErrors = errorLocator.getDegree();
     if (numErrors == 1) {
       // shortcut
-      return [errorLocator.getCoefficient(1)];
+      return new Int32Array([errorLocator.getCoefficient(1)]);
     }
-    var result = new Array(numErrors);
+    var result = new Int32Array(numErrors);
     var e = 0;
     for (var i = 1; i < 256 && e < numErrors; i++) {
       if (errorLocator.evaluateAt(i) == 0) {
@@ -201,14 +199,14 @@ goog.scope(function() {
 
   /**
    * @param {GF256Poly} errorEvaluator
-   * @param {Array.<number>} errorLocations
+   * @param {Int32Array} errorLocations
    * @param {boolean} dataMatrix
-   * @return {Array.<number>}
+   * @return {Int32Array}
    */
   pro.findErrorMagnitudes = function(errorEvaluator, errorLocations, dataMatrix) {
       // This is directly applying Forney's Formula
       var s = errorLocations.length;
-      var result = new Array(s);
+      var result = new Int32Array(s);
       for (var i = 0; i < s; i++) {
         var xiInverse = this.field.inverse(errorLocations[i]);
         var denominator = 1;

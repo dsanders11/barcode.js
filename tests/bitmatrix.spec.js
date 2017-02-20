@@ -56,14 +56,14 @@ define(['chai'], function(chai) {
       assert.isNull(matrix.getTopLeftOnBit());
       assert.isNull(matrix.getBottomRightOnBit());
       matrix.setRegion(1, 1, 1, 1);
-      assert.deepEqual([ 1, 1 ], matrix.getTopLeftOnBit());
-      assert.deepEqual([ 1, 1 ], matrix.getBottomRightOnBit());
+      assert.deepEqual(new Int32Array([ 1, 1 ]), matrix.getTopLeftOnBit());
+      assert.deepEqual(new Int32Array([ 1, 1 ]), matrix.getBottomRightOnBit());
       matrix.setRegion(1, 1, 3, 2);
-      assert.deepEqual([ 1, 1 ], matrix.getTopLeftOnBit());
-      assert.deepEqual([ 3, 2 ], matrix.getBottomRightOnBit());
+      assert.deepEqual(new Int32Array([ 1, 1 ]), matrix.getTopLeftOnBit());
+      assert.deepEqual(new Int32Array([ 3, 2 ]), matrix.getBottomRightOnBit());
       matrix.setRegion(0, 0, 5, 5);
-      assert.deepEqual([ 0, 0 ], matrix.getTopLeftOnBit());
-      assert.deepEqual([ 4, 4 ], matrix.getBottomRightOnBit());
+      assert.deepEqual(new Int32Array([ 0, 0 ]), matrix.getTopLeftOnBit());
+      assert.deepEqual(new Int32Array([ 4, 4 ]), matrix.getBottomRightOnBit());
     });
 
     it('testRectangularMatrix', function() {

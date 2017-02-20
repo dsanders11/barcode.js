@@ -60,9 +60,9 @@ goog.scope(function() {
 
   /**
    * The original table is defined in the table 5 of JISX0510:2004 (p.19).
-   * @type {Array.<number>}
+   * @final
    */
-  _.ALPHANUMERIC_TABLE = [
+  _.ALPHANUMERIC_TABLE = new Int32Array([
     // 0x00-0x0f
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     // 0x10-0x1f
@@ -75,7 +75,7 @@ goog.scope(function() {
     -1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
     // 0x50-0x5f
     25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1
-  ];
+  ]);
 
   _.DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
 
@@ -371,8 +371,8 @@ goog.scope(function() {
    * @param {number} numDataBytes
    * @param {number} numRSBlocks
    * @param {number} blockID
-   * @param {Array.<number>} numDataBytesInBlock
-   * @param {Array.<number>} numECBytesInBlock
+   * @param {Int32Array} numDataBytesInBlock
+   * @param {Int32Array} numECBytesInBlock
    */
   _.getNumDataBytesAndNumECBytesForBlockID = function(numTotalBytes,
                                                       numDataBytes,
@@ -457,16 +457,14 @@ goog.scope(function() {
     var i;
 
     for (i = 0; i < numRSBlocks; ++i) {
-      /** @type {Array.<number>} */
-      var numDataBytesInBlock = [0];
-      /** @type {Array.<number>} */
-      var numEcBytesInBlock = [0];
+      var numDataBytesInBlock = new Int32Array(1);
+      var numEcBytesInBlock = new Int32Array(1);
       _.getNumDataBytesAndNumECBytesForBlockID(
         numTotalBytes, numDataBytes, numRSBlocks, i,
         numDataBytesInBlock, numEcBytesInBlock);
 
       var size = numDataBytesInBlock[0];
-      var dataBytes = new Array(size);
+      var dataBytes = new Int8Array(size);
       bits.toBytes(8 * dataBytesOffset, dataBytes, 0, size);
       var ecBytes = _.generateECBytes(dataBytes, numEcBytesInBlock[0]);
       blocks.push(new BlockPair(dataBytes, ecBytes));
@@ -514,13 +512,13 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<number>} dataBytes bytes.
+   * @param {Int8Array} dataBytes bytes.
    * @param {number} numEcBytesInBlock num.
-   * @return {Array.<number>} bytes.
+   * @return {Int8Array} bytes.
    */
   _.generateECBytes = function(dataBytes, numEcBytesInBlock) {
     var numDataBytes = dataBytes.length;
-    var toEncode = new Array(numDataBytes + numEcBytesInBlock);
+    var toEncode = new Int32Array(numDataBytes + numEcBytesInBlock);
     var i;
     for (i = 0; i < numDataBytes; i++) {
       toEncode[i] = dataBytes[i] & 0xFF;
@@ -528,7 +526,7 @@ goog.scope(function() {
     new ReedSolomonEncoder(w69b.common.reedsolomon.GF256.QR_CODE_FIELD).encode(toEncode,
       numEcBytesInBlock);
 
-    var ecBytes = new Array(numEcBytesInBlock);
+    var ecBytes = new Int8Array(numEcBytesInBlock);
     for (i = 0; i < numEcBytesInBlock; i++) {
       ecBytes[i] = toEncode[numDataBytes + i];
     }
@@ -651,6 +649,7 @@ goog.scope(function() {
    * @param {string} content
    * @param {BitArray} bits
    * @param {string} encoding
+   * @suppress {checkTypes}
    */
   _.append8BitBytes = function(content, bits, encoding) {
     var bytes;

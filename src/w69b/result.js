@@ -33,7 +33,7 @@ goog.scope(function() {
    * Encapsulates the result of decoding a barcode within an image.
    * @constructor
    * @param {string} text
-   * @param {Array.<number>} rawBytes
+   * @param {Int8Array} rawBytes
    * @param {Array.<ResultPoint>} resultPoints
    * @param {BarcodeFormat} format
    * @param {number=} opt_timestamp
@@ -58,7 +58,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Array.<number>} raw bytes encoded by the barcode, if applicable, otherwise {@code null}
+   * @return {Int8Array} raw bytes encoded by the barcode, if applicable, otherwise {@code null}
    */
   pro.getRawBytes = function() {
     return this.rawBytes_;

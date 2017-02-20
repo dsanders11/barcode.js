@@ -52,14 +52,14 @@ goog.scope(function() {
    * Given data and error-correction codewords received, possibly corrupted by errors, attempts to
    * correct the errors in-place using Reed-Solomon error correction.
    *
-   * @param {Array.<number>} codewordBytes data and error correction codewords
+   * @param {Int8Array} codewordBytes data and error correction codewords
    * @param {number} numDataCodewords number of codewords that are data bytes
    * @private
    */
   pro.correctErrors_ = function(codewordBytes, numDataCodewords) {
     var numCodewords = codewordBytes.length;
     // First read into an array of ints
-    var codewordsInts = new Array(numCodewords);
+    var codewordsInts = new Int32Array(numCodewords);
     for (var i = 0; i < numCodewords; i++) {
       codewordsInts[i] = codewordBytes[i] & 0xFF;
     }
@@ -95,7 +95,7 @@ goog.scope(function() {
     for (var i = 0; i < dataBlocks.length; i++) {
       totalBytes += dataBlocks[i].numDataCodewords;
     }
-    var resultBytes = new Array(totalBytes);
+    var resultBytes = new Int8Array(totalBytes);
     var resultOffset = 0;
 
     // Error-correct and copy data blocks together into a stream of bytes

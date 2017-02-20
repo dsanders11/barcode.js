@@ -50,19 +50,19 @@ goog.scope(function() {
 
   /**
    * Patterns of Wide / Narrow lines to indicate each digit
-   * @type {!Array.<Array.<number>>}
+   * @type {Array.<Int32Array>}
    * @final
    */
   ITFReader.PATTERNS = [
-      [N, N, W, W, N], // 0
-      [W, N, N, N, W], // 1
-      [N, W, N, N, W], // 2
-      [W, W, N, N, N], // 3
-      [N, N, W, N, W], // 4
-      [W, N, W, N, N], // 5
-      [N, W, W, N, N], // 6
-      [N, N, N, W, W], // 7
-      [W, N, N, W, N], // 8
-      [N, W, N, W, N]  // 9
+      new Int32Array([N, N, W, W, N]), // 0
+      new Int32Array([W, N, N, N, W]), // 1
+      new Int32Array([N, W, N, N, W]), // 2
+      new Int32Array([W, W, N, N, N]), // 3
+      new Int32Array([N, N, W, N, W]), // 4
+      new Int32Array([W, N, W, N, N]), // 5
+      new Int32Array([N, W, W, N, N]), // 6
+      new Int32Array([N, N, N, W, W]), // 7
+      new Int32Array([W, N, N, W, N]), // 8
+      new Int32Array([N, W, N, W, N])  // 9
   ];
 });

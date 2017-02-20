@@ -221,7 +221,7 @@ goog.scope(function() {
   }
 
   /**
-   * @param {Array.<number>} leftTopBlack
+   * @param {Int32Array} leftTopBlack
    * @param {BitMatrix} image
    * @return {number}
    * @throws {NotFoundException}

@@ -19,8 +19,8 @@ goog.provide('w69b.common.BitArray');
 
 goog.scope(function() {
   /**
-   * <p>A simple, fast array of bits, represented compactly by an array of ints
-   * internally.</p>
+   * A simple, fast array of bits, represented compactly by an array of ints
+   * internally.
    * @param {number=} opt_size size, defaults to 0.
    * @constructor
    * @author Sean Owen
@@ -204,10 +204,7 @@ goog.scope(function() {
    * Clears all bits (sets to false).
    */
   pro.clear = function() {
-    var max = this.bits_.length;
-    for (var i = 0; i < max; i++) {
-      this.bits_[i] = 0;
-    }
+    this.bits_.fill(0);
   };
 
   /**
@@ -310,9 +307,9 @@ goog.scope(function() {
   /**
    *
    * @param {number} bitOffset first bit to start writing.
-   * @param {Array} array array to write varo. Bytes are written
-   * most-significant byte first. This is the opposite of the varernal
-   * representation, which is * exposed by {@link #getBitArray()}.
+   * @param {Int8Array} array array to write into. Bytes are written
+   * most-significant byte first. This is the opposite of the internal
+   * representation, which is exposed by {@link #getBitArray()}.
    * @param {number} offset position in array to start writing.
    * @param {number} numBytes how many bytes to write.
    */

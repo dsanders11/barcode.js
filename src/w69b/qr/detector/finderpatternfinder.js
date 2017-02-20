@@ -62,10 +62,9 @@ goog.scope(function() {
     this.possibleCenters_ = [];
     /**
      *
-     * @type {Array}
      * @private
      */
-    this.crossCheckStateCount_ = new Array(5);
+    this.crossCheckStateCount_ = new Int32Array(5);
     /**
      * @type {?w69b.qr.ResultPointCallback}
      * @private
@@ -141,8 +140,7 @@ goog.scope(function() {
     }
 
     var done = false;
-    /** @type {Array.<number>} */
-    var stateCount = new Array(5);
+    var stateCount = new Int32Array(5);
     var confirmed;
     for (var i = iSkip - 1; i < maxI && !done; i += iSkip) {
       // Get a row of black/white values
@@ -242,7 +240,7 @@ goog.scope(function() {
    * Given a count of black/white/black/white/black pixels just seen and an
    * end position,
    * figures the location of the center of this run.
-   * @param {Array.<number>} stateCount state count.
+   * @param {Int32Array} stateCount state count.
    * @param {number} end end position.
    * @return {number} position.
    */
@@ -251,7 +249,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<number>} stateCount count of
+   * @param {Int32Array} stateCount count of
    * black/white/black/white/black pixels just read.
    * @return {boolean} true iff the proportions of the counts is close enough
    * to the 1/1/3/1/1 ratios used by finder patterns to be considered a match.
@@ -284,7 +282,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Array.<number>} count.
+   * @return {Int32Array} count.
    */
   pro.getCrossCheckStateCount = function() {
     this.crossCheckStateCount_[0] = 0;
@@ -481,7 +479,7 @@ goog.scope(function() {
    * finder pattern.  Each additional find is more evidence that the location
    * is in fact a finder pattern center
    *
-   * @param {Array.<number>} stateCount reading state module counts from
+   * @param {Int32Array} stateCount reading state module counts from
    * horizontal scan.
    * @param {number} i row where finder pattern may be found.
    * @param {number} j end of possible finder pattern in row.

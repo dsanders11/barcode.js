@@ -100,8 +100,8 @@ goog.scope(function() {
    * total variance from the expected pattern proportions across all pattern
    * elements, to the length of the pattern.
    *
-   * @param {Array.<number>} counters observed counters
-   * @param {Array.<number>} pattern expected pattern
+   * @param {Int32Array} counters observed counters
+   * @param {Int32Array} pattern expected pattern
    * @param {number} maxIndividualVariance The most any counter can differ before we give up
    * @return {number} ratio of total variance between counters and pattern compared to total pattern size
    * @protected
@@ -139,7 +139,7 @@ goog.scope(function() {
   /**
    * @param {BitArray} row
    * @param {number} start
-   * @param {Array.<number>} counters
+   * @param {Int32Array} counters
    * @throws {NotFoundException}
    * @protected
    */
@@ -170,7 +170,7 @@ goog.scope(function() {
    *
    * @param {BitArray} row row to count from
    * @param {number} start offset into row to start at
-   * @param {!Array.<number>} counters array into which to record counts
+   * @param {Int32Array} counters array into which to record counts
    * @throws {NotFoundException} if counters cannot be filled entirely from row before running out of pixels
    * @protected
    */

@@ -53,7 +53,7 @@ goog.scope(function() {
   /**
    * @constructor
    * @param {!w69b.common.reedsolomon.GF256} field field.
-   * @param {Array.<number>} coefficients coefficients.
+   * @param {Int32Array} coefficients coefficients.
    */
   w69b.common.reedsolomon.GF256Poly = function(field, coefficients) {
     goog.asserts.assert(coefficients != null && coefficients.length != 0);
@@ -69,10 +69,7 @@ goog.scope(function() {
       if (firstNonZero == coefficientsLength) {
         this.coefficients = field.zero.coefficients;
       } else {
-        this.coefficients = new Array(coefficientsLength - firstNonZero);
-        for (var i = 0; i < this.coefficients.length; i++) {
-          this.coefficients[i] = 0;
-        }
+        this.coefficients = new Int32Array(coefficientsLength - firstNonZero);
         for (var ci = 0; ci < this.coefficients.length; ci++) {
           this.coefficients[ci] = coefficients[firstNonZero + ci];
         }
@@ -84,7 +81,7 @@ goog.scope(function() {
   var GF256Poly = w69b.common.reedsolomon.GF256Poly;
   var pro = GF256Poly.prototype;
 
-  /** @type {Array.<number>} */
+  /** @type {Int32Array} */
   pro.coefficients;
 
   /**
@@ -168,8 +165,7 @@ goog.scope(function() {
       smallerCoefficients = largerCoefficients;
       largerCoefficients = temp;
     }
-    /** @type {Array.<number>} */
-    var sumDiff = new Array(largerCoefficients.length);
+    var sumDiff = new Int32Array(largerCoefficients.length);
     var lengthDiff = largerCoefficients.length - smallerCoefficients.length;
     // Copy high-order terms only found in higher-degree polynomial's
     // coefficients
@@ -201,7 +197,7 @@ goog.scope(function() {
     var aLength = aCoefficients.length;
     var bCoefficients = other.coefficients;
     var bLength = bCoefficients.length;
-    var product = new Array(aLength + bLength - 1);
+    var product = new Int32Array(aLength + bLength - 1);
     for (var i = 0; i < aLength; i++) {
       var aCoeff = aCoefficients[i];
       for (var j = 0; j < bLength; j++) {
@@ -225,7 +221,7 @@ goog.scope(function() {
       return this;
     }
     var size = this.coefficients.length;
-    var product = new Array(size);
+    var product = new Int32Array(size);
     for (var i = 0; i < size; i++) {
       product[i] = this.field.multiply(this.coefficients[i], scalar);
     }
@@ -244,10 +240,7 @@ goog.scope(function() {
       return this.field.zero;
     }
     var size = this.coefficients.length;
-    var product = new Array(size + degree);
-    for (var i = 0; i < product.length; i++) {
-      product[i] = 0;
-    }
+    var product = new Int32Array(size + degree);
     for (var i = 0; i < size; i++) {
       product[i] = this.field.multiply(this.coefficients[i], coefficient);
     }

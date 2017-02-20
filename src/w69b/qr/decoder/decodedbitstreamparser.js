@@ -62,7 +62,7 @@ goog.scope(function() {
 
 
   /**
-   * @param {Array.<number>} bytes byte blocks.
+   * @param {Int8Array} bytes byte blocks.
    * @param {w69b.qr.decoder.Version} version qr code version.
    * @param {w69b.qr.decoder.ErrorCorrectionLevel} ecLevel error correction level.
    * @param {Object<DecodeHintType,*>=} opt_hints
@@ -72,7 +72,7 @@ goog.scope(function() {
     var bits = new BitSource(bytes);
     var result = new StringBuffer();
     /**
-     * @type {Array.<Array.<number>>}
+     * @type {Array.<Int8Array>}
      */
     var byteSegments = [];
     var symbolSequence = -1;
@@ -164,7 +164,7 @@ goog.scope(function() {
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
     // and decode as GB2312 afterwards
-    var buffer = new Array(2 * count);
+    var buffer = new Int8Array(2 * count);
     var offset = 0;
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
@@ -200,7 +200,7 @@ goog.scope(function() {
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
     // and decode as Shift_JIS afterwards
-    var buffer = new Array(2 * count);
+    var buffer = new Int8Array(2 * count);
     var offset = 0;
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
@@ -227,7 +227,7 @@ goog.scope(function() {
    * @param {StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
    * @param {?CharacterSetECI} currentCharacterSetECI character set eci name.
-   * @param {Array.<Array.<number>>} byteSegments raw bytes.
+   * @param {Array.<Int8Array>} byteSegments raw bytes.
    * @param {Object<DecodeHintType,*>=} opt_hints
    */
   _.decodeByteSegment = function(bits, result, count, currentCharacterSetECI,
@@ -237,8 +237,7 @@ goog.scope(function() {
       throw new FormatException();  //FormatException.getFormatInstance();
     }
 
-    /** @type {!Array.<number>} */
-    var readBytes = new Array(count);
+    var readBytes = new Int8Array(count);
     for (var i = 0; i < count; i++) {
       readBytes[i] = bits.readBits(8);
     }

@@ -62,9 +62,10 @@ goog.scope(function() {
   _.REVERSE_MAPS_ = {};
 
   /**
-   * @param {Array.<number>} bytes sequence of given charset.
+   * @param {Int8Array} bytes sequence of given charset.
    * @param {string} charset name of charset.
    * @return {string} decoded string.
+   * @suppress {checkTypes}
    */
   _.toString = function(bytes, charset) {
     var chars = _.ASCII + _.SINGLEBYTES[charset];
@@ -86,7 +87,7 @@ goog.scope(function() {
    *
    * @param {string} string encoded in charset.
    * @param {string} charset charset name
-   * @return {Array.<number>} bytes.
+   * @return {Int8Array} bytes.
    */
   _.toBytes = function(string, charset) {
     var map = _.getReverseMap_(charset);
@@ -96,7 +97,7 @@ goog.scope(function() {
       if (b === undefined) return null;
       bytes.push(b);
     }
-    return bytes;
+    return new Int8Array(bytes);
   };
 
   /**

@@ -24,9 +24,9 @@ goog.scope(function() {
    * applies to 2D barcode formats. For now it contains the raw bytes obtained,
    * as well as a String interpretation of those bytes, if applicable.
    * @constructor
-   * @param {?Array.<number>} rawBytes
+   * @param {?Int8Array} rawBytes
    * @param {string} text
-   * @param {?Array.<Array.<number>>} byteSegments
+   * @param {?Array.<Int8Array>} byteSegments
    * @param {?string} ecLevel
    * @param {number=} opt_saSequence
    * @param {number=} opt_saParity
@@ -45,7 +45,7 @@ goog.scope(function() {
   var pro = DecoderResult.prototype;
 
   /**
-   * @return {?Array.<number>} raw bytes representing the result, or {@code null} if not applicable
+   * @return {?Int8Array} raw bytes representing the result, or {@code null} if not applicable
    */
   pro.getRawBytes = function() {
     return this.rawBytes_;
@@ -73,7 +73,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {?Array.<Array.<number>>} list of byte segments in the result, or {@code null} if not applicable
+   * @return {?Array.<Int8Array>} list of byte segments in the result, or {@code null} if not applicable
    */
   pro.getByteSegments = function() {
     return this.byteSegments_;

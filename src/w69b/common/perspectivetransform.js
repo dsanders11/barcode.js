@@ -46,7 +46,7 @@ goog.scope(function() {
   var pro = PerspectiveTransform.prototype;
 
   /**
-   * @param {Array.<number>} points
+   * @param {Float32Array} points
    */
   pro.transformPoints1 = function(points) {
     var max = points.length;
@@ -69,8 +69,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<number>} xValues
-   * @param {Array.<number>} yValues
+   * @param {Float32Array} xValues
+   * @param {Float32Array} yValues
    */
   pro.transformPoints2 = function(xValues, yValues) {
     var n = xValues.length;

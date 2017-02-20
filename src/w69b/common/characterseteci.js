@@ -22,7 +22,7 @@ goog.scope(function() {
   var FormatException = w69b.FormatException;
 
   /**
-   * @param {!Array.<number>} values
+   * @param {!Int32Array} values
    * @param {...string} opt_otherEncodingNames
    * @constructor
    */
@@ -38,33 +38,33 @@ goog.scope(function() {
 
   /** @enum {CharacterSetECI} */
   w69b.common.CharacterSetECIEnum = {
-    Cp437: new CharacterSetECI([0, 2], 'CP437'),
-    ISO8859_1: new CharacterSetECI([1, 3], 'ISO-8859-1'),
-    ISO8859_2: new CharacterSetECI([4], 'ISO-8859-2'),
-    ISO8859_3: new CharacterSetECI([5], 'ISO-8859-3'),
-    ISO8859_4: new CharacterSetECI([6], 'ISO-8859-4'),
-    ISO8859_5: new CharacterSetECI([7], 'ISO-8859-5'),
-    ISO8859_6: new CharacterSetECI([8], 'ISO-8859-6'),
-    ISO8859_7: new CharacterSetECI([9], 'ISO-8859-7'),
-    ISO8859_8: new CharacterSetECI([10], 'ISO-8859-8'),
-    ISO8859_9: new CharacterSetECI([11], 'ISO-8859-9'),
-    ISO8859_10: new CharacterSetECI([12], 'ISO-8859-10'),
-    ISO8859_11: new CharacterSetECI([13], 'ISO-8859-11'),
-    ISO8859_13: new CharacterSetECI([15], 'ISO-8859-13'),
-    ISO8859_14: new CharacterSetECI([16], 'ISO-8859-14'),
-    ISO8859_15: new CharacterSetECI([17], 'ISO-8859-15'),
-    ISO8859_16: new CharacterSetECI([18], 'ISO-8859-16'),
-    SJIS: new CharacterSetECI([20], 'Shift_JIS'),
-    Cp1250: new CharacterSetECI([21], 'windows-1250'),
-    Cp1251: new CharacterSetECI([22], 'windows-1251'),
-    Cp1252: new CharacterSetECI([23], 'windows-1252'),
-    Cp1256: new CharacterSetECI([24], 'windows-1256'),
-    UnicodeBigUnmarked: new CharacterSetECI([25], 'UTF-16BE', 'UnicodeBig'),
-    UTF8: new CharacterSetECI([26], 'UTF-8'),
-    ASCII: new CharacterSetECI([27, 170], 'US-ASCII'),
-    Big5: new CharacterSetECI([28]),
-    GB18030: new CharacterSetECI([29], 'GB2312', 'EUC_CN', 'GBK'),
-    EUC_KR: new CharacterSetECI([30], 'EUC-KR')
+    Cp437: new CharacterSetECI(new Int32Array([0, 2]), 'CP437'),
+    ISO8859_1: new CharacterSetECI(new Int32Array([1, 3]), 'ISO-8859-1'),
+    ISO8859_2: new CharacterSetECI(new Int32Array([4]), 'ISO-8859-2'),
+    ISO8859_3: new CharacterSetECI(new Int32Array([5]), 'ISO-8859-3'),
+    ISO8859_4: new CharacterSetECI(new Int32Array([6]), 'ISO-8859-4'),
+    ISO8859_5: new CharacterSetECI(new Int32Array([7]), 'ISO-8859-5'),
+    ISO8859_6: new CharacterSetECI(new Int32Array([8]), 'ISO-8859-6'),
+    ISO8859_7: new CharacterSetECI(new Int32Array([9]), 'ISO-8859-7'),
+    ISO8859_8: new CharacterSetECI(new Int32Array([10]), 'ISO-8859-8'),
+    ISO8859_9: new CharacterSetECI(new Int32Array([11]), 'ISO-8859-9'),
+    ISO8859_10: new CharacterSetECI(new Int32Array([12]), 'ISO-8859-10'),
+    ISO8859_11: new CharacterSetECI(new Int32Array([13]), 'ISO-8859-11'),
+    ISO8859_13: new CharacterSetECI(new Int32Array([15]), 'ISO-8859-13'),
+    ISO8859_14: new CharacterSetECI(new Int32Array([16]), 'ISO-8859-14'),
+    ISO8859_15: new CharacterSetECI(new Int32Array([17]), 'ISO-8859-15'),
+    ISO8859_16: new CharacterSetECI(new Int32Array([18]), 'ISO-8859-16'),
+    SJIS: new CharacterSetECI(new Int32Array([20]), 'Shift_JIS'),
+    Cp1250: new CharacterSetECI(new Int32Array([21]), 'windows-1250'),
+    Cp1251: new CharacterSetECI(new Int32Array([22]), 'windows-1251'),
+    Cp1252: new CharacterSetECI(new Int32Array([23]), 'windows-1252'),
+    Cp1256: new CharacterSetECI(new Int32Array([24]), 'windows-1256'),
+    UnicodeBigUnmarked: new CharacterSetECI(new Int32Array([25]), 'UTF-16BE', 'UnicodeBig'),
+    UTF8: new CharacterSetECI(new Int32Array([26]), 'UTF-8'),
+    ASCII: new CharacterSetECI(new Int32Array([27, 170]), 'US-ASCII'),
+    Big5: new CharacterSetECI(new Int32Array([28])),
+    GB18030: new CharacterSetECI(new Int32Array([29]), 'GB2312', 'EUC_CN', 'GBK'),
+    EUC_KR: new CharacterSetECI(new Int32Array([30]), 'EUC-KR')
   };
   var CharacterSetECIEnum = w69b.common.CharacterSetECIEnum;
 
@@ -74,6 +74,9 @@ goog.scope(function() {
   /** @type {Object<number, CharacterSetECI>} */
   CharacterSetECI.valuesToEnum_ = {};
 
+  /**
+   * @suppress {checkTypes}
+   */
   (function() {
     for (var eci in CharacterSetECIEnum) {
       /** @type {!CharacterSetECI} */

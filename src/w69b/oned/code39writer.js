@@ -52,6 +52,7 @@ goog.scope(function() {
 
   /**
    * @override
+   * @suppress {checkTypes}
    */
   pro.encodeBoolean = function(contents) {
     var length = contents.length;
@@ -60,8 +61,7 @@ goog.scope(function() {
         "Requested contents should be less than 80 digits long, but got " + length);
     }
 
-    /** @type {!Array.<number>} */
-    var widths = new Array(9);
+    var widths = new Int32Array(9);
     var codeWidth = 24 + 1 + length;
     for (var i = 0; i < length; i++) {
       var indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
@@ -77,7 +77,7 @@ goog.scope(function() {
     var result = new Array(codeWidth);
     toIntArray(Code39Reader.ASTERISK_ENCODING, widths);
     var pos = OneDimensionalCodeWriter.appendPattern(result, 0, widths, true);
-    var narrowWhite = [1];
+    var narrowWhite = new Int32Array([1]);
     pos += OneDimensionalCodeWriter.appendPattern(result, pos, narrowWhite, false);
     //append next character to byte matrix
     for (var i = 0; i < length; i++) {
@@ -93,7 +93,7 @@ goog.scope(function() {
 
   /**
    * @param {number} a
-   * @param {Array.<number>} toReturn
+   * @param {Int32Array} toReturn
    * @private
    */
   function toIntArray(a, toReturn) {

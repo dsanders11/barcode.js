@@ -60,7 +60,7 @@ goog.provide('w69b.utf8');
   /**
    * Convert string to UTF8 byte sequence.
    * @param {string} str javascript string (unicode).
-   * @return {Array.<number>} byte sequence.
+   * @return {Int8Array} byte sequence.
    */
   function stringToUTF8Bytes(str) {
     /** @type {Array.<number>} */
@@ -98,12 +98,12 @@ goog.provide('w69b.utf8');
         bytes.push(0x80 | (codePoint & 0x3F));
       }
     }
-    return bytes;
+    return new Int8Array(bytes);
   }
 
   /**
    * Convert UTF8 byte sequence to string.
-   * @param {Array.<number>} bytes UTF8 byte sequence.
+   * @param {Int8Array} bytes UTF8 byte sequence.
    * @return {?string} result string or null on error (invalid input).
    */
   function UTF8BytesToString(bytes) {

@@ -136,7 +136,7 @@ goog.scope(function() {
    * are assumed to be linear, this is valid.</p>
    *
    * @param {w69b.common.BitMatrix} image image into which the points should map.
-   * @param {Array.<number>} points actual points in x1,y1,...,xn,yn form.
+   * @param {Float32Array} points actual points in x1,y1,...,xn,yn form.
    */
   _.checkAndNudgePoints = function(image, points) {
     var width = image.getWidth();

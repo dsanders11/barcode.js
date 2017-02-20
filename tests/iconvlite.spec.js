@@ -18,13 +18,15 @@ define(['chai'], function(chai) {
         expect(utf8bytes).not.be.null;
         var iconvString = w69b.utf8.UTF8BytesToString(utf8bytes);
         expect(liteString).equals(iconvString);
-        expect(w69b.iconvlite.toBytes(liteString, charset)).deep.equals([b]);
+        var expected = new Int8Array([b]);
+        expect(w69b.iconvlite.toBytes(liteString, charset)).deep.equals(expected);
       });
     }
 
     function testEncode(str, charset) {
       var utf8Bytes = w69b.utf8.stringToUTF8Bytes(str);
       var bytes = iconv.convert(utf8Bytes, 'UTF-8', charset);
+      bytes = bytes === null ? null : new Int8Array(bytes);
       var liteBytes = w69b.iconvlite.toBytes(str, charset);
       expect(liteBytes).deep.equals(bytes);
     }

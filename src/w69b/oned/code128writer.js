@@ -93,6 +93,7 @@ goog.scope(function() {
 
   /**
    * @override
+   * @suppress {checkTypes}
    */
   pro.encodeBoolean = function(contents) {
     var length = contents.length;
@@ -117,8 +118,8 @@ goog.scope(function() {
       }
     }
 
-    /** @type {Array.<!Array.<number>>} */
-    var patterns = new Array(); // temporary storage for patterns
+    /** @type {Array.<!Int32Array>} */
+    var patterns = []; // temporary storage for patterns
     var checkSum = 0;
     var checkWeight = 1;
     var codeSet = 0; // selected code (CODE_CODE_B or CODE_CODE_C)

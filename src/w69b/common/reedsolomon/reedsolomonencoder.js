@@ -46,7 +46,7 @@ goog.scope(function() {
      * @private
      * @type {Array.<!GF256Poly>}
      */
-    this.cachedGenerators_ = [new GF256Poly(field, [1])];
+    this.cachedGenerators_ = [new GF256Poly(field, new Int32Array([1]))];
   };
   var pro = w69b.common.reedsolomon.ReedSolomonEncoder.prototype;
 
@@ -60,7 +60,7 @@ goog.scope(function() {
       var lastGenerator = cachedGenerators[cachedGenerators.length - 1];
       for (var d = cachedGenerators.length; d <= degree; d++) {
         var nextGenerator = lastGenerator.multiply1(
-          new GF256Poly(this.field_, [1, this.field_.exp(d - 1)]));
+          new GF256Poly(this.field_, new Int32Array([1, this.field_.exp(d - 1)])));
         cachedGenerators.push(nextGenerator);
         lastGenerator = nextGenerator;
       }
@@ -69,9 +69,10 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<number>} toEncode data to encode, including pre-allocated
+   * @param {Int32Array} toEncode data to encode, including pre-allocated
    * space for ecc bytes.
    * @param {number} ecBytes number of ec bytes.
+   * @suppress {checkTypes}
    */
   pro.encode = function(toEncode, ecBytes) {
     if (ecBytes == 0) {

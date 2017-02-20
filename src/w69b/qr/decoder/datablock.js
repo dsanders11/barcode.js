@@ -36,7 +36,7 @@ goog.scope(function() {
    *
    * @constructor
    * @param {number} numDataCodewords
-   * @param {Array.<number>} codewords
+   * @param {Int8Array} codewords
    */
   w69b.qr.decoder.DataBlock = function(numDataCodewords, codewords) {
     this.numDataCodewords = numDataCodewords;
@@ -49,7 +49,7 @@ goog.scope(function() {
    * That is, the first byte of data block 1 to n is written, then the second
    * bytes, and so on. This method will separate the data into original blocks.
    *
-   * @param {Array.<number>} rawCodewords bytes as read directly from the QR Code
+   * @param {Int8Array} rawCodewords bytes as read directly from the QR Code
    * @param {Version} version version of the QR Code
    * @param {ErrorCorrectionLevel} ecLevel error-correction level of the QR Code
    * @return {Array.<DataBlock>} containing original bytes, "de-interleaved" from
@@ -82,7 +82,7 @@ goog.scope(function() {
         var numDataCodewords = ecBlock.dataCodewords;
         var numBlockCodewords = ecBlocks.ecCodewordsPerBlock + numDataCodewords;
         result[numResultBlocks++] = new DataBlock(numDataCodewords,
-          new Array(numBlockCodewords));
+          new Int8Array(numBlockCodewords));
       }
     }
 

@@ -20,13 +20,13 @@ goog.provide('w69b.qr.decoder.ModeEnum');
 
 goog.scope(function() {
   /**
-   * <p>See ISO 18004:2006, 6.4.1, Tables 2 and 3. This enum encapsulates the
+   * See ISO 18004:2006, 6.4.1, Tables 2 and 3. This enum encapsulates the
    * various modes in which data can be encoded to bits in the QR code
-   * standard.</p>
+   * standard.
    *
    * @author Sean Owen
    *
-   * @param {Array.<number>} characterCountBitsForVersions nodoc.
+   * @param {Int32Array} characterCountBitsForVersions nodoc.
    * @param {number} bits nodoc.
    * @param {string=} opt_name name for testing.
    * @constructor
@@ -43,18 +43,18 @@ goog.scope(function() {
   /** @enum {Mode} */
   w69b.qr.decoder.ModeEnum = {
     // Not really a mode...
-    TERMINATOR: new Mode([0, 0, 0], 0x00, 'TERMINATOR'),
-    NUMERIC: new Mode([10, 12, 14], 0x01, 'NUMERIC'),
-    ALPHANUMERIC: new Mode([9, 11, 13], 0x02, 'ALPHANUMERIC'),
+    TERMINATOR: new Mode(new Int32Array([0, 0, 0]), 0x00, 'TERMINATOR'),
+    NUMERIC: new Mode(new Int32Array([10, 12, 14]), 0x01, 'NUMERIC'),
+    ALPHANUMERIC: new Mode(new Int32Array([9, 11, 13]), 0x02, 'ALPHANUMERIC'),
     // Not supported
-    STRUCTURED_APPEND: new Mode([0, 0, 0], 0x03, 'STRUCTURED_APPEND'),
-    BYTE: new Mode([8, 16, 16], 0x04, 'BYTE'),
-    ECI: new Mode([0, 0, 0], 0x07, 'ECI'), // character counts don't apply
-    KANJI: new Mode([8, 10, 12], 0x08, 'KANJI'),
-    FNC1_FIRST_POSITION: new Mode([0, 0, 0], 0x05, 'FNC1_FIRST_POSITION'),
-    FNC1_SECOND_POSITION: new Mode([0, 0, 0], 0x09, 'FNC1_SECOND_POSITION'),
+    STRUCTURED_APPEND: new Mode(new Int32Array([0, 0, 0]), 0x03, 'STRUCTURED_APPEND'),
+    BYTE: new Mode(new Int32Array([8, 16, 16]), 0x04, 'BYTE'),
+    ECI: new Mode(new Int32Array([0, 0, 0]), 0x07, 'ECI'), // character counts don't apply
+    KANJI: new Mode(new Int32Array([8, 10, 12]), 0x08, 'KANJI'),
+    FNC1_FIRST_POSITION: new Mode(new Int32Array([0, 0, 0]), 0x05, 'FNC1_FIRST_POSITION'),
+    FNC1_SECOND_POSITION: new Mode(new Int32Array([0, 0, 0]), 0x09, 'FNC1_SECOND_POSITION'),
     /** See GBT 18284-2000; "Hanzi" is a transliteration of this mode name. */
-    HANZI: new Mode([8, 10, 12], 0x0D, 'HANZI')
+    HANZI: new Mode(new Int32Array([8, 10, 12]), 0x0D, 'HANZI')
   };
   var ModeEnum = w69b.qr.decoder.ModeEnum;
 

@@ -164,9 +164,7 @@ goog.scope(function() {
     if (this.luminances_.length < luminanceSize) {
       this.luminances_ = new Uint8Array(luminanceSize);
     }
-    for (var x = 0; x < _.LUMINANCE_BUCKETS; x++) {
-      this.buckets_[x] = 0;
-    }
+    this.buckets_.fill(0);
   };
 
   /**

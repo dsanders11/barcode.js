@@ -42,97 +42,97 @@ goog.scope(function() {
   var _ = w69b.qr.encoder.MatrixUtil;
 
   /**
-   * @type {Array.<Array.<number>>}
+   * @type {Array.<Int32Array>}
    */
   _.POSITION_DETECTION_PATTERN = [
-    [1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 0, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1]
+    new Int32Array([1, 1, 1, 1, 1, 1, 1]),
+    new Int32Array([1, 0, 0, 0, 0, 0, 1]),
+    new Int32Array([1, 0, 1, 1, 1, 0, 1]),
+    new Int32Array([1, 0, 1, 1, 1, 0, 1]),
+    new Int32Array([1, 0, 1, 1, 1, 0, 1]),
+    new Int32Array([1, 0, 0, 0, 0, 0, 1]),
+    new Int32Array([1, 1, 1, 1, 1, 1, 1])
   ];
 
   /**
-   * @type {Array.<Array.<number>>}
+   * @type {Array.<Int32Array>}
    */
   _.POSITION_ADJUSTMENT_PATTERN = [
-    [1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 1],
-    [1, 1, 1, 1, 1]
+    new Int32Array([1, 1, 1, 1, 1]),
+    new Int32Array([1, 0, 0, 0, 1]),
+    new Int32Array([1, 0, 1, 0, 1]),
+    new Int32Array([1, 0, 0, 0, 1]),
+    new Int32Array([1, 1, 1, 1, 1])
   ];
 
   /**
    * From Appendix E. Table 1, JIS0510X:2004 (p 71). The table was
    * double-checked by komatsu.
-   * @type {Array.<Array.<number>>}
+   * @type {Array.<Int32Array>}
    */
   _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = [
-    [-1, -1, -1, -1, -1, -1, -1],  // Version 1
-    [6, 18, -1, -1, -1, -1, -1],  // Version 2
-    [6, 22, -1, -1, -1, -1, -1],  // Version 3
-    [6, 26, -1, -1, -1, -1, -1],  // Version 4
-    [6, 30, -1, -1, -1, -1, -1],  // Version 5
-    [6, 34, -1, -1, -1, -1, -1],  // Version 6
-    [6, 22, 38, -1, -1, -1, -1],  // Version 7
-    [6, 24, 42, -1, -1, -1, -1],  // Version 8
-    [6, 26, 46, -1, -1, -1, -1],  // Version 9
-    [6, 28, 50, -1, -1, -1, -1],  // Version 10
-    [6, 30, 54, -1, -1, -1, -1],  // Version 11
-    [6, 32, 58, -1, -1, -1, -1],  // Version 12
-    [6, 34, 62, -1, -1, -1, -1],  // Version 13
-    [6, 26, 46, 66, -1, -1, -1],  // Version 14
-    [6, 26, 48, 70, -1, -1, -1],  // Version 15
-    [6, 26, 50, 74, -1, -1, -1],  // Version 16
-    [6, 30, 54, 78, -1, -1, -1],  // Version 17
-    [6, 30, 56, 82, -1, -1, -1],  // Version 18
-    [6, 30, 58, 86, -1, -1, -1],  // Version 19
-    [6, 34, 62, 90, -1, -1, -1],  // Version 20
-    [6, 28, 50, 72, 94, -1, -1],  // Version 21
-    [6, 26, 50, 74, 98, -1, -1],  // Version 22
-    [6, 30, 54, 78, 102, -1, -1],  // Version 23
-    [6, 28, 54, 80, 106, -1, -1],  // Version 24
-    [6, 32, 58, 84, 110, -1, -1],  // Version 25
-    [6, 30, 58, 86, 114, -1, -1],  // Version 26
-    [6, 34, 62, 90, 118, -1, -1],  // Version 27
-    [6, 26, 50, 74, 98, 122, -1],  // Version 28
-    [6, 30, 54, 78, 102, 126, -1],  // Version 29
-    [6, 26, 52, 78, 104, 130, -1],  // Version 30
-    [6, 30, 56, 82, 108, 134, -1],  // Version 31
-    [6, 34, 60, 86, 112, 138, -1],  // Version 32
-    [6, 30, 58, 86, 114, 142, -1],  // Version 33
-    [6, 34, 62, 90, 118, 146, -1],  // Version 34
-    [6, 30, 54, 78, 102, 126, 150],  // Version 35
-    [6, 24, 50, 76, 102, 128, 154],  // Version 36
-    [6, 28, 54, 80, 106, 132, 158],  // Version 37
-    [6, 32, 58, 84, 110, 136, 162],  // Version 38
-    [6, 26, 54, 82, 110, 138, 166],  // Version 39
-    [6, 30, 58, 86, 114, 142, 170]  // Version 40
+    new Int32Array([-1, -1, -1, -1, -1, -1, -1]),  // Version 1
+    new Int32Array([6, 18, -1, -1, -1, -1, -1]),  // Version 2
+    new Int32Array([6, 22, -1, -1, -1, -1, -1]),  // Version 3
+    new Int32Array([6, 26, -1, -1, -1, -1, -1]),  // Version 4
+    new Int32Array([6, 30, -1, -1, -1, -1, -1]),  // Version 5
+    new Int32Array([6, 34, -1, -1, -1, -1, -1]),  // Version 6
+    new Int32Array([6, 22, 38, -1, -1, -1, -1]),  // Version 7
+    new Int32Array([6, 24, 42, -1, -1, -1, -1]),  // Version 8
+    new Int32Array([6, 26, 46, -1, -1, -1, -1]),  // Version 9
+    new Int32Array([6, 28, 50, -1, -1, -1, -1]),  // Version 10
+    new Int32Array([6, 30, 54, -1, -1, -1, -1]),  // Version 11
+    new Int32Array([6, 32, 58, -1, -1, -1, -1]),  // Version 12
+    new Int32Array([6, 34, 62, -1, -1, -1, -1]),  // Version 13
+    new Int32Array([6, 26, 46, 66, -1, -1, -1]),  // Version 14
+    new Int32Array([6, 26, 48, 70, -1, -1, -1]),  // Version 15
+    new Int32Array([6, 26, 50, 74, -1, -1, -1]),  // Version 16
+    new Int32Array([6, 30, 54, 78, -1, -1, -1]),  // Version 17
+    new Int32Array([6, 30, 56, 82, -1, -1, -1]),  // Version 18
+    new Int32Array([6, 30, 58, 86, -1, -1, -1]),  // Version 19
+    new Int32Array([6, 34, 62, 90, -1, -1, -1]),  // Version 20
+    new Int32Array([6, 28, 50, 72, 94, -1, -1]),  // Version 21
+    new Int32Array([6, 26, 50, 74, 98, -1, -1]),  // Version 22
+    new Int32Array([6, 30, 54, 78, 102, -1, -1]),  // Version 23
+    new Int32Array([6, 28, 54, 80, 106, -1, -1]),  // Version 24
+    new Int32Array([6, 32, 58, 84, 110, -1, -1]),  // Version 25
+    new Int32Array([6, 30, 58, 86, 114, -1, -1]),  // Version 26
+    new Int32Array([6, 34, 62, 90, 118, -1, -1]),  // Version 27
+    new Int32Array([6, 26, 50, 74, 98, 122, -1]),  // Version 28
+    new Int32Array([6, 30, 54, 78, 102, 126, -1]),  // Version 29
+    new Int32Array([6, 26, 52, 78, 104, 130, -1]),  // Version 30
+    new Int32Array([6, 30, 56, 82, 108, 134, -1]),  // Version 31
+    new Int32Array([6, 34, 60, 86, 112, 138, -1]),  // Version 32
+    new Int32Array([6, 30, 58, 86, 114, 142, -1]),  // Version 33
+    new Int32Array([6, 34, 62, 90, 118, 146, -1]),  // Version 34
+    new Int32Array([6, 30, 54, 78, 102, 126, 150]),  // Version 35
+    new Int32Array([6, 24, 50, 76, 102, 128, 154]),  // Version 36
+    new Int32Array([6, 28, 54, 80, 106, 132, 158]),  // Version 37
+    new Int32Array([6, 32, 58, 84, 110, 136, 162]),  // Version 38
+    new Int32Array([6, 26, 54, 82, 110, 138, 166]),  // Version 39
+    new Int32Array([6, 30, 58, 86, 114, 142, 170])  // Version 40
   ];
 
   /**
    * Type info cells at the left top corner.
-   * @type {Array.<Array.<number>>}
+   * @type {Array.<Int32Array>}
    */
   _.TYPE_INFO_COORDINATES = [
-    [8, 0],
-    [8, 1],
-    [8, 2],
-    [8, 3],
-    [8, 4],
-    [8, 5],
-    [8, 7],
-    [8, 8],
-    [7, 8],
-    [5, 8],
-    [4, 8],
-    [3, 8],
-    [2, 8],
-    [1, 8],
-    [0, 8]
+    new Int32Array([8, 0]),
+    new Int32Array([8, 1]),
+    new Int32Array([8, 2]),
+    new Int32Array([8, 3]),
+    new Int32Array([8, 4]),
+    new Int32Array([8, 5]),
+    new Int32Array([8, 7]),
+    new Int32Array([8, 8]),
+    new Int32Array([7, 8]),
+    new Int32Array([5, 8]),
+    new Int32Array([4, 8]),
+    new Int32Array([3, 8]),
+    new Int32Array([2, 8]),
+    new Int32Array([1, 8]),
+    new Int32Array([0, 8])
   ];
 
   // From Appendix D in JISX0510:2004 (p. 67)
