@@ -438,10 +438,13 @@ goog.scope(function() {
    * @throws {FormatException} if a QR Code cannot be decoded
    */
   pro.detect = function(opt_hints) {
-    var callback = /** @type {(w69b.qr.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
-    this.resultPointCallback = opt_hints && !!callback ? null : callback;
+    var callback = null;
+    if (opt_hints && !!opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]) {
+      callback = /** @type {(w69b.qr.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
+    }
+    this.resultPointCallback = callback;
 
-    var finder = new w69b.qr.detector.FinderPatternFinder(this.image, callback);
+    var finder = new w69b.qr.detector.FinderPatternFinder(this.image, callback ? callback : undefined);
     var info = finder.find(opt_hints);
     return this.processFinderPatternInfo(info);
   };
