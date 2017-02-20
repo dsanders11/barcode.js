@@ -17,8 +17,12 @@
  */
 
 goog.provide('w69b.Binarizer');
+goog.require('w69b.LuminanceSource');
+
 
 goog.scope(function() {
+  var LuminanceSource = w69b.LuminanceSource;
+
   /**
    * This class hierarchy provides a set of methods to convert luminance data to
    * 1 bit data. It allows the algorithm to vary polymorphically, for example
@@ -30,19 +34,19 @@ goog.scope(function() {
    * Ported to js by Manuel Braun
    *
    * @constructor
-   * @param {w69b.qr.QRImage} source gray values
+   * @param {LuminanceSource} source gray values
    */
   w69b.Binarizer = function(source) {
     /**
      * @protected
-     * @type {w69b.qr.QRImage}
+     * @type {LuminanceSource}
      */
     this.source = source;
   };
   var Binarizer = w69b.Binarizer;
 
   /**
-   * @return {w69b.qr.QRImage} image.
+   * @return {LuminanceSource} image.
    */
   Binarizer.prototype.getLuminanceSource = function() {
     return this.source;
@@ -89,7 +93,7 @@ goog.scope(function() {
    * for why we can't use Java's clone() method.
    *
    * @abstract
-   * @param {w69b.qr.QRImage} source The LuminanceSource this Binarizer
+   * @param {LuminanceSource} source The LuminanceSource this Binarizer
    * will operate on.
    * @return {w69b.Binarizer} A new concrete Binarizer implementation
    * object.
@@ -100,13 +104,13 @@ goog.scope(function() {
    * @return {number} width.
    */
   Binarizer.prototype.getWidth = function() {
-    return this.source.width;
+    return this.source.getWidth();
   };
 
   /**
    * @return {number} height.
    */
   Binarizer.prototype.getHeight = function() {
-    return this.source.height;
+    return this.source.getHeight();
   };
 });

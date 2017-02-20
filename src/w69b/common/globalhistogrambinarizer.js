@@ -17,12 +17,14 @@
 
 goog.provide('w69b.common.GlobalHistogramBinarizer');
 goog.require('w69b.Binarizer');
+goog.require('w69b.LuminanceSource');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.BitMatrix');
 
 
 goog.scope(function() {
+  var LuminanceSource = w69b.LuminanceSource;
   var BitMatrix = w69b.common.BitMatrix;
   var BitArray = w69b.common.BitArray;
   /**
@@ -39,7 +41,7 @@ goog.scope(function() {
    * @author Sean Owen
    * Ported to js by Manuel Braun
    *
-   * @param {w69b.qr.QRImage} source gray values.
+   * @param {LuminanceSource} source gray values.
    * @constructor
    * @extends {w69b.Binarizer}
    */
