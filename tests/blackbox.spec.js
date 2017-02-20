@@ -127,10 +127,11 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
       // Sequential testing, so use a larger timeout.
       this.timeout(10000);
 
+      var suitesToRun = onlySuites === null ? Object.keys(expectedSet) : onlySuites;
       var suites = {};
       var extensions = ['.gif', '.png', '.jpg'];
 
-      for (var suiteName in expectedSet) {
+      for (var suiteName of suitesToRun) {
         var suite = [];
         var blackboxDataPattern = new RegExp('/base/test_data/blackbox/' + suiteName + '/.*\.txt');
 
