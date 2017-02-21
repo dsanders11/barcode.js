@@ -72,7 +72,6 @@ goog.scope(function() {
    * @override
    */
   pro.getBlackRow = function(y, row) {
-    var x;
     var source = this.getLuminanceSource();
     var width = source.getWidth();
     if (row == null || row.getSize() < width) {
@@ -84,18 +83,18 @@ goog.scope(function() {
     this.initArrays(width);
     var localLuminances = source.getRow(y, this.luminances_);
     var localBuckets = this.buckets_;
-    for (x = 0; x < width; x++) {
-      var pixel = localLuminances[x] & 0xff;
+    for (let x = 0; x < width; x++) {
+      let  pixel = localLuminances[x] & 0xff;
       localBuckets[pixel >> _.LUMINANCE_SHIFT]++;
     }
     var blackPoint = _.estimateBlackPoint(localBuckets);
 
     var left = localLuminances[0] & 0xff;
     var center = localLuminances[1] & 0xff;
-    for (x = 1; x < width - 1; x++) {
-      var right = localLuminances[x + 1] & 0xff;
+    for (let x = 1; x < width - 1; x++) {
+      let right = localLuminances[x + 1] & 0xff;
       // A simple -1 4 -1 box filter with a weight of 2.
-      var luminance = ((center << 2) - left - right) >> 1;
+      let luminance = ((center << 2) - left - right) >> 1;
       if (luminance < blackPoint) {
         row.set(x);
       }
@@ -116,19 +115,17 @@ goog.scope(function() {
     var height = source.getHeight();
     var matrix = new BitMatrix(width, height);
 
-    // nasty js scopes.
-    var localLuminances, pixel, x, y;
     // Quickly calculates the histogram by sampling four rows from the image.
     // This proved to be more robust on the blackbox tests than sampling a
     // diagonal as we used to do.
     this.initArrays(width);
     var localBuckets = this.buckets_;
-    for (y = 1; y < 5; y++) {
-      var row = height * y / 5;
-      localLuminances = source.getRow(row, this.luminances_);
-      var right = (width << 2) / 5;
-      for (x = width / 5; x < right; x++) {
-        pixel = localLuminances[x] & 0xff;
+    for (let y = 1; y < 5; y++) {
+      let row = height * y / 5;
+      let localLuminances = source.getRow(row, this.luminances_);
+      let right = (width << 2) / 5;
+      for (let x = width / 5; x < right; x++) {
+        let pixel = localLuminances[x] & 0xff;
         localBuckets[pixel >> _.LUMINANCE_SHIFT]++;
       }
     }
@@ -138,11 +135,11 @@ goog.scope(function() {
     // estimation succeeds.  Although we end up reading four rows twice, it
     // is consistent with our motto of "fail quickly" which is necessary for
     // continuous scanning.
-    localLuminances = source.getMatrix();
-    for (y = 0; y < height; y++) {
-      var offset = y * width;
-      for (x = 0; x < width; x++) {
-        pixel = localLuminances[offset + x] & 0xff;
+    var localLuminances = source.getMatrix();
+    for (let y = 0; y < height; y++) {
+      let  offset = y * width;
+      for (let x = 0; x < width; x++) {
+        let pixel = localLuminances[offset + x] & 0xff;
         if (pixel < blackPoint) {
           matrix.set(x, y);
         }
@@ -174,13 +171,12 @@ goog.scope(function() {
    * @return {number}
    */
   _.estimateBlackPoint = function(buckets) {
-    var x, score;
     // Find the tallest peak in the histogram.
     var numBuckets = buckets.length;
     var maxBucketCount = 0;
     var firstPeak = 0;
     var firstPeakSize = 0;
-    for (x = 0; x < numBuckets; x++) {
+    for (let x = 0; x < numBuckets; x++) {
       if (buckets[x] > firstPeakSize) {
         firstPeak = x;
         firstPeakSize = buckets[x];
@@ -194,11 +190,11 @@ goog.scope(function() {
     // peak.
     var secondPeak = 0;
     var secondPeakScore = 0;
-    for (x = 0; x < numBuckets; x++) {
-      var distanceToBiggest = x - firstPeak;
+    for (let x = 0; x < numBuckets; x++) {
+      let distanceToBiggest = x - firstPeak;
       // Encourage more distant second peaks by multiplying by square of
       // distance.
-      score = buckets[x] * distanceToBiggest * distanceToBiggest;
+      let score = buckets[x] * distanceToBiggest * distanceToBiggest;
       if (score > secondPeakScore) {
         secondPeak = x;
         secondPeakScore = score;
@@ -207,7 +203,7 @@ goog.scope(function() {
 
     // Make sure firstPeak corresponds to the black peak.
     if (firstPeak > secondPeak) {
-      var temp = firstPeak;
+      let temp = firstPeak;
       firstPeak = secondPeak;
       secondPeak = temp;
     }
@@ -222,9 +218,9 @@ goog.scope(function() {
     // Find a valley between them that is low and closer to the white peak.
     var bestValley = secondPeak - 1;
     var bestValleyScore = -1;
-    for (x = secondPeak - 1; x > firstPeak; x--) {
-      var fromFirst = x - firstPeak;
-      score = fromFirst * fromFirst * (secondPeak - x) *
+    for (let x = secondPeak - 1; x > firstPeak; x--) {
+      let fromFirst = x - firstPeak;
+      let score = fromFirst * fromFirst * (secondPeak - x) *
         (maxBucketCount - buckets[x]);
       if (score > bestValleyScore) {
         bestValley = x;

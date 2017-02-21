@@ -208,27 +208,26 @@ goog.scope(function() {
    */
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
                                     height) {
-    var xx;
     var blackPoints = new IntArray2D(subHeight, subWidth);
-    for (var y = 0; y < subHeight; y++) {
-      var yoffset = y << _.BLOCK_SIZE_POWER;
-      var maxYOffset = height - _.BLOCK_SIZE;
+    for (let y = 0; y < subHeight; y++) {
+      let yoffset = y << _.BLOCK_SIZE_POWER;
+      let maxYOffset = height - _.BLOCK_SIZE;
       if (yoffset > maxYOffset) {
         yoffset = maxYOffset;
       }
-      for (var x = 0; x < subWidth; x++) {
-        var xoffset = x << _.BLOCK_SIZE_POWER;
-        var maxXOffset = width - _.BLOCK_SIZE;
+      for (let x = 0; x < subWidth; x++) {
+        let xoffset = x << _.BLOCK_SIZE_POWER;
+        let maxXOffset = width - _.BLOCK_SIZE;
         if (xoffset > maxXOffset) {
           xoffset = maxXOffset;
         }
-        var sum = 0;
-        var min = 0xFF;
-        var max = 0;
-        for (var yy = 0, offset = yoffset * width + xoffset;
+        let sum = 0;
+        let min = 0xFF;
+        let max = 0;
+        for (let yy = 0, offset = yoffset * width + xoffset;
              yy < _.BLOCK_SIZE; yy++, offset += width) {
-          for (xx = 0; xx < _.BLOCK_SIZE; xx++) {
-            var pixel = luminances[offset + xx] & 0xFF;
+          for (let xx = 0; xx < _.BLOCK_SIZE; xx++) {
+            let pixel = luminances[offset + xx] & 0xFF;
             sum += pixel;
             // still looking for good contrast
             if (pixel < min) {
@@ -243,7 +242,7 @@ goog.scope(function() {
             // finish the rest of the rows quickly
             for (yy++, offset += width;
                  yy < _.BLOCK_SIZE; yy++, offset += width) {
-              for (xx = 0; xx < _.BLOCK_SIZE; xx++) {
+              for (let xx = 0; xx < _.BLOCK_SIZE; xx++) {
                 sum += luminances[offset + xx] & 0xFF;
               }
             }
@@ -251,7 +250,7 @@ goog.scope(function() {
         }
 
         // The default estimate is the average of the values in the block.
-        var average = sum >> (_.BLOCK_SIZE_POWER * 2);
+        let average = sum >> (_.BLOCK_SIZE_POWER * 2);
         if (max - min <= _.MIN_DYNAMIC_RANGE) {
           // If variation within the block is low, assume this is a block with
           // only light or only dark pixels. In that case we do not want to use
@@ -274,7 +273,7 @@ goog.scope(function() {
 
             // The (min < bp) is arbitrary but works better than other
             // heuristics that were tried.
-            var averageNeighborBlackPoint = (blackPoints.getAt(y - 1, x) +
+            let averageNeighborBlackPoint = (blackPoints.getAt(y - 1, x) +
               (2 * blackPoints.getAt(y, x - 1)) +
               blackPoints.getAt(y - 1, x - 1)) >> 2;
             if (min < averageNeighborBlackPoint) {

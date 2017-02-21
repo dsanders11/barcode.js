@@ -85,11 +85,10 @@ goog.scope(function() {
     }
     var bits = new BitMatrix(dimensionX, dimensionY);
     var points = new Float32Array(dimensionX << 1);
-    var x;
     for (var y = 0; y < dimensionY; y++) {
-      var max = points.length;
-      var iValue = y + 0.5;
-      for (x = 0; x < max; x += 2) {
+      let max = points.length;
+      let iValue = y + 0.5;
+      for (let x = 0; x < max; x += 2) {
         points[x] = (x >> 1) + 0.5;
         points[x + 1] = iValue;
       }
@@ -98,7 +97,7 @@ goog.scope(function() {
       // image; sufficient to check the endpoints
       GridSampler.checkAndNudgePoints(image, points);
       try {
-        for (x = 0; x < max; x += 2) {
+        for (let x = 0; x < max; x += 2) {
           if (image.get(points[x] >> 0, points[x + 1] >> 0)) {
             // Black(-ish) pixel
             bits.set(x >> 1, y);

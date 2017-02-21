@@ -334,27 +334,26 @@ goog.scope(function() {
    * @param {BitArray} bits
    */
   _.terminateBits = function(numDataBytes, bits) {
-    var i;
     var capacity = numDataBytes << 3;
     if (bits.getSize() > capacity) {
       throw new WriterException('data bits cannot fit in the QR Code' +
         bits.getSize() + ' > ' + capacity);
     }
-    for (i = 0; i < 4 && bits.getSize() < capacity; ++i) {
+    for (let i = 0; i < 4 && bits.getSize() < capacity; ++i) {
       bits.appendBit(false);
     }
     // Append termination bits. See 8.4.8 of JISX0510:2004 (p.24) for details.
     // If the last byte isn't 8-bit aligned, we'll add padding bits.
     var numBitsInLastByte = bits.getSize() & 0x07;
     if (numBitsInLastByte > 0) {
-      for (i = numBitsInLastByte; i < 8; i++) {
+      for (let i = numBitsInLastByte; i < 8; i++) {
         bits.appendBit(false);
       }
     }
     // If we have more space, we'll fill the space with padding patterns
     // defined in 8.4.9 (p.24).
     var numPaddingBytes = numDataBytes - bits.getSizeInBytes();
-    for (i = 0; i < numPaddingBytes; ++i) {
+    for (let i = 0; i < numPaddingBytes; ++i) {
       bits.appendBits((i & 0x01) == 0 ? 0xEC : 0x11, 8);
     }
     if (bits.getSize() != capacity) {
@@ -454,9 +453,8 @@ goog.scope(function() {
     // Since, we know the number of reedsolomon blocks, we can initialize the
     // vector with the number.
     var blocks = [];
-    var i;
 
-    for (i = 0; i < numRSBlocks; ++i) {
+    for (let i = 0; i < numRSBlocks; ++i) {
       var numDataBytesInBlock = new Int32Array(1);
       var numEcBytesInBlock = new Int32Array(1);
       _.getNumDataBytesAndNumECBytesForBlockID(
@@ -480,7 +478,7 @@ goog.scope(function() {
     var result = new BitArray();
 
     // First, place data blocks.
-    for (i = 0; i < maxNumDataBytes; ++i) {
+    for (let i = 0; i < maxNumDataBytes; ++i) {
       blocks.forEach(
         /** @param {BlockPair} block */
         function(block) {
@@ -492,7 +490,7 @@ goog.scope(function() {
       );
     }
     // Then, place error correction blocks.
-    for (i = 0; i < maxNumEcBytes; ++i) {
+    for (let i = 0; i < maxNumEcBytes; ++i) {
       blocks.forEach(
         /** @param {BlockPair} block */
         function(block) {
@@ -519,15 +517,14 @@ goog.scope(function() {
   _.generateECBytes = function(dataBytes, numEcBytesInBlock) {
     var numDataBytes = dataBytes.length;
     var toEncode = new Int32Array(numDataBytes + numEcBytesInBlock);
-    var i;
-    for (i = 0; i < numDataBytes; i++) {
+    for (let i = 0; i < numDataBytes; i++) {
       toEncode[i] = dataBytes[i] & 0xFF;
     }
     new ReedSolomonEncoder(w69b.common.reedsolomon.GF256.QR_CODE_FIELD).encode(toEncode,
       numEcBytesInBlock);
 
     var ecBytes = new Int8Array(numEcBytesInBlock);
-    for (i = 0; i < numEcBytesInBlock; i++) {
+    for (let i = 0; i < numEcBytesInBlock; i++) {
       ecBytes[i] = toEncode[numDataBytes + i];
     }
     return ecBytes;
@@ -594,19 +591,18 @@ goog.scope(function() {
   _.appendNumericBytes = function(content, bits) {
     var length = content.length;
     var i = 0;
-    var num2;
     var codeZero = '0'.charCodeAt(0);
     while (i < length) {
-      var num1 = content.charCodeAt(i) - codeZero;
+      let num1 = content.charCodeAt(i) - codeZero;
       if (i + 2 < length) {
         // Encode three numeric letters in ten bits.
-        num2 = content.charCodeAt(i + 1) - codeZero;
-        var num3 = content.charCodeAt(i + 2) - codeZero;
+        let num2 = content.charCodeAt(i + 1) - codeZero;
+        let num3 = content.charCodeAt(i + 2) - codeZero;
         bits.appendBits(num1 * 100 + num2 * 10 + num3, 10);
         i += 3;
       } else if (i + 1 < length) {
         // Encode two numeric letters in seven bits.
-        num2 = content.charCodeAt(i + 1) - codeZero;
+        let num2 = content.charCodeAt(i + 1) - codeZero;
         bits.appendBits(num1 * 10 + num2, 7);
         i += 2;
       } else {

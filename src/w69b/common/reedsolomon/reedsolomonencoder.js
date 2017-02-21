@@ -89,11 +89,10 @@ goog.scope(function() {
     var remainder = info.divide(generator)[1];
     var coefficients = remainder.coefficients;
     var numZeroCoefficients = ecBytes - coefficients.length;
-    var i;
-    for (i = 0; i < numZeroCoefficients; i++) {
+    for (let i = 0; i < numZeroCoefficients; i++) {
       toEncode[dataBytes + i] = 0;
     }
-    for (i = 0; i < coefficients.length; ++i) {
+    for (let i = 0; i < coefficients.length; ++i) {
       toEncode[dataBytes + numZeroCoefficients + i] = coefficients[i];
     }
     // System.arraycopy(coefficients, 0, toEncode,
