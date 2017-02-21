@@ -143,10 +143,9 @@ goog.scope(function() {
     var height = image.getHeight();
     // Check and nudge points from start until we see some that are OK:
     var nudged = true;
-    var x, y, offset;
-    for (offset = 0; offset < points.length && nudged; offset += 2) {
-      x = points[offset] >> 0;
-      y = points[offset + 1] >> 0;
+    for (let offset = 0; offset < points.length && nudged; offset += 2) {
+      let x = points[offset] >> 0;
+      let y = points[offset + 1] >> 0;
       if (x < -1 || x > width || y < -1 || y > height) {
         throw new w69b.NotFoundException();
       }
@@ -168,9 +167,9 @@ goog.scope(function() {
     }
     // Check and nudge points from end:
     nudged = true;
-    for (offset = points.length - 2; offset >= 0 && nudged; offset -= 2) {
-      x = points[offset] >> 0;
-      y = points[offset + 1] >> 0;
+    for (let offset = points.length - 2; offset >= 0 && nudged; offset -= 2) {
+      let x = points[offset] >> 0;
+      let y = points[offset + 1] >> 0;
       if (x < -1 || x > width || y < -1 || y > height) {
         throw new w69b.NotFoundException();
       }
