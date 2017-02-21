@@ -35,7 +35,7 @@ goog.scope(function() {
      * @type {Int32Array} bits.
      * @private
      */
-    this.bits_ = w69b.common.BitArray.makeArray(this.size_);
+    this.bits_ = opt_size ? makeArray(this.size_) : new Int32Array(1);
   };
   var BitArray = w69b.common.BitArray;
   var pro = BitArray.prototype;
@@ -72,10 +72,11 @@ goog.scope(function() {
 
   /**
    * @param {number} size
+   * @private
    */
   pro.ensureCapacity = function(size) {
     if (size > this.bits_.length << 5) {
-      var newBits = BitArray.makeArray(size);
+      var newBits = makeArray(size);
       newBits.set(this.bits_, 0);
       this.bits_ = newBits;
     }
@@ -352,9 +353,9 @@ goog.scope(function() {
    * @param {number} size
    * @return {Int32Array}
    */
-  BitArray.makeArray = function(size) {
+  function makeArray(size) {
     return new Int32Array((size + 31) >> 5);
-  };
+  }
 
   /**
    * @return {string}

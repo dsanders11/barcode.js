@@ -123,7 +123,6 @@ define(['chai'], function(chai) {
       }
     });
 
-
     it('testSetBulk', function() {
       var i;
       var array = new BitArray(64);
@@ -136,6 +135,16 @@ define(['chai'], function(chai) {
       }
     });
 
+    it('testSetRange', function() {
+      var array = new BitArray(64);
+      array.setRange(28, 36);
+      assert.isFalse(array.get(27));
+      for (let i = 28; i < 36; i++) {
+        assert.isTrue(array.get(i));
+      }
+      assert.isFalse(array.get(36));
+    });
+
     it('testClear', function() {
       var array = new BitArray(32);
       var i;
@@ -146,6 +155,15 @@ define(['chai'], function(chai) {
       for (i = 0; i < 32; i++) {
         assert.isFalse(array.get(i));
       }
+    });
+
+    it('testFlip', function() {
+      var array = new BitArray(32);
+      assert.isFalse(array.get(5));
+      array.flip(5);
+      assert.isTrue(array.get(5));
+      array.flip(5);
+      assert.isFalse(array.get(5));
     });
 
     it('testGetArray', function() {
@@ -178,6 +196,57 @@ define(['chai'], function(chai) {
       assert.isTrue(array.isRange(0, 64, true));
       assert.isFalse(array.isRange(0, 64, false));
     });
-  });
 
+    it('reverseAlgorithmTest', function() {
+      var oldBits = new Int32Array([128, 256, 512, 6453324, 50934953]);
+      for (let size = 1; size < 160; size++) {
+        var newBitsOriginal = reverseOriginal(oldBits, size);
+        var newBitArray = new BitArray(size);
+        newBitArray.bits_ = oldBits.slice();
+        newBitArray.reverse();
+        var newBitsNew = newBitArray.getBitArray();
+        assert.isTrue(
+          arraysAreEqual(newBitsOriginal, newBitsNew, (size >> 5) + 1));
+      }
+    });
+
+    /**
+     * @param {Int32Array} oldBits
+     * @param {number} size
+     * @return {Int32Array}
+     */
+    function reverseOriginal(oldBits, size) {
+      var newBits = new Int32Array(oldBits.length);
+      for (let i = 0; i < size; i++) {
+        if (bitSet(oldBits, size - i - 1)) {
+          newBits[i >> 5] |= 1 << (i & 0x1F);
+        }
+      }
+      return newBits;
+    }
+
+    /**
+     * @param {Int32Array} bits
+     * @param {number} i
+     * @return {boolean}
+     */
+    function bitSet(bits, i) {
+      return (bits[i >> 5] & (1 << (i & 0x1F))) !== 0;
+    }
+
+    /**
+     * @param {Int32Array} left
+     * @param {Int32Array} right
+     * @param {number} size
+     * @return {boolean}
+     */
+    function arraysAreEqual(left, right, size) {
+      for (let i = 0; i < size; i++) {
+        if (left[i] !== right[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+  });
 });
