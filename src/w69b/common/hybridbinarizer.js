@@ -124,7 +124,7 @@ goog.scope(function() {
    * grid of the blocks around it. Also handles the corner cases (fractional
    * blocks are computed based on the last pixels in the row/column which are
    * also used in the previous block).
-   * @param {(Uint8Array|Uint8ClampedArray)} luminances
+   * @param {Int8Array} luminances
    * @param {number} subWidth
    * @param {number} subHeight
    * @param {number} width
@@ -174,7 +174,7 @@ goog.scope(function() {
 
   /**
    * Applies a single threshold to a block of pixels.
-   * @param {(Uint8Array|Uint8ClampedArray)} luminances
+   * @param {Int8Array} luminances
    * @param {number} xoffset
    * @param {number} yoffset
    * @param {number} threshold
@@ -199,7 +199,7 @@ goog.scope(function() {
    * Calculates a single black point for each block of pixels and saves it away.
    * See the following thread for a discussion of this algorithm:
    *  http://groups.google.com/group/zxing/browse_thread/thread/d06efa2c35a7ddc0
-   * @param {(Uint8Array|Uint8ClampedArray)} luminances
+   * @param {Int8Array} luminances
    * @param {number} subWidth
    * @param {number} subHeight
    * @param {number} width

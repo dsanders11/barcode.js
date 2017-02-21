@@ -25,7 +25,6 @@ goog.provide('w69b.common.BitMatrix');
 goog.require('goog.asserts');
 goog.require('w69b.IllegalArgumentException');
 goog.require('w69b.common.BitArray');
-goog.require('w69b.img.BitMatrixLike');
 
 goog.scope(function() {
   var IllegalArgumentException = w69b.IllegalArgumentException;
@@ -37,7 +36,6 @@ goog.scope(function() {
    * @param {number=} opt_rowSize
    * @param {Int32Array=} opt_bits
    * @constructor
-   * @implements {w69b.img.BitMatrixLike}
    */
   w69b.common.BitMatrix = function(width, opt_height, opt_rowSize, opt_bits) {
     var height = goog.isDef(opt_height) ? opt_height : width;

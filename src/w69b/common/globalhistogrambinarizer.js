@@ -48,10 +48,10 @@ goog.scope(function() {
   w69b.common.GlobalHistogramBinarizer = function(source) {
     goog.base(this, source);
     /**
-     * @type {Uint8Array}
+     * @type {Int8Array}
      * @private
      */
-    this.luminances_ = new Uint8Array(0);
+    this.luminances_ = new Int8Array(0);
     /**
      * @type {Uint8Array}
      * @private
@@ -84,7 +84,7 @@ goog.scope(function() {
     var localLuminances = source.getRow(y, this.luminances_);
     var localBuckets = this.buckets_;
     for (let x = 0; x < width; x++) {
-      let  pixel = localLuminances[x] & 0xff;
+      let pixel = localLuminances[x] & 0xff;
       localBuckets[pixel >> _.LUMINANCE_SHIFT]++;
     }
     var blackPoint = _.estimateBlackPoint(localBuckets);
@@ -161,7 +161,7 @@ goog.scope(function() {
    */
   pro.initArrays = function(luminanceSize) {
     if (this.luminances_.length < luminanceSize) {
-      this.luminances_ = new Uint8Array(luminanceSize);
+      this.luminances_ = new Int8Array(luminanceSize);
     }
     this.buckets_.fill(0);
   };

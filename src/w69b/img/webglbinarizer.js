@@ -2,8 +2,6 @@
 
 goog.provide('w69b.img.WebGLBinarizer');
 goog.require('goog.math.Size');
-goog.require('w69b.img.RGBABitMatrix');
-goog.require('w69b.img.RGBAImageData');
 goog.require('w69b.img.WebGLFilter');
 goog.require('w69b.img.WebGLParams');
 goog.require('w69b.img.WebGLPipeline');
@@ -19,8 +17,6 @@ goog.scope(function() {
   var WebGLProgram = w69b.img.WebGLProgram;
   var WebGLParams = w69b.img.WebGLParams;
   var WebGLPipeline = w69b.img.WebGLPipeline;
-  var RGBAImageData = w69b.img.RGBAImageData;
-  var RGBABitMatrix = w69b.img.RGBABitMatrix;
   /**
    * WebGL shader based image binarizer.
    * The basic idea is to estimate an average black level for each pixel by looking at
@@ -227,22 +223,15 @@ goog.scope(function() {
 
 
   /**
-   * @return {w69b.img.RGBAImageData} image data.
+   * @return {!ImageData} image data.
    */
   pro.getImageData = function() {
     return this.filter_.getImageData();
   };
 
-  /**
-   * @return {!w69b.img.RGBABitMatrix} image data wrapped in RGBABitmatrix.
-   */
-  pro.getBitMatrix = function() {
-    var imgdata = this.filter_.getImageData();
-    return new RGBABitMatrix(imgdata.width, imgdata.height, imgdata.data);
-  };
 
   /**
-   * @param {(Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|ImageData|RGBAImageData)} image image
+   * @param {(Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|ImageData)} image image
    * to render.
    */
   pro.render = function(image) {
@@ -253,10 +242,10 @@ goog.scope(function() {
     // bind input image to texture 0.
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.filter_.getTexture(0));
-    if (image instanceof RGBAImageData) {
+    if (image instanceof ImageData) {
       // custom image data
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0,
-        gl.RGBA, gl.UNSIGNED_BYTE, image.data);
+        gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(image.data.buffer));
 
     } else {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE,
@@ -269,10 +258,10 @@ goog.scope(function() {
   /**
    * @param {number} width in pixels.
    * @param {number} height in pixels.
-   * @return {w69b.img.RGBAImageData} test image.
+   * @return {!ImageData} test image.
    */
   _.createSupportCheckImage = function(width, height) {
-    var imgdata = new Uint8Array(4 * width * height);
+    var imgdata = new Uint8ClampedArray(4 * width * height);
     // build gradient
     for (var y = 0; y < height; ++y) {
       for (var x = 0; x < width; ++x) {
@@ -284,7 +273,7 @@ goog.scope(function() {
         imgdata[pos + 3] = 255;
       }
     }
-    return new RGBAImageData(width, height, imgdata);
+    return new ImageData(imgdata, width, height);
   };
 
   /**
@@ -297,13 +286,13 @@ goog.scope(function() {
       var height = 20;
       var img = _.createSupportCheckImage(width, height);
       // set contrast on some pixels.
-      img.setGray(30, 4, 18);
-      img.setGray(90, 4, 50);
+      setPixelGray(img, 30, 4, 18);
+      setPixelGray(img, 90, 4, 50);
       try {
         var binarizer = new w69b.img.WebGLBinarizer();
         binarizer.setFlipInput(false);
         binarizer.setup(width, height);
-        binarizer.render(img);
+        binarizer.render(new ImageData(img.data, width, height));
       } catch (err) {
         console.debug('No webgl binarizer support:', err);
         _.isSupported_ = false;
@@ -311,11 +300,38 @@ goog.scope(function() {
       }
       var binary = binarizer.getImageData();
       // Check some black and white values.
-      _.isSupported_ = (binary.get(30, 4)[0] == 0 &&
-      binary.get(90, 4)[0] == 0 &&
-      binary.get(31, 4)[0] == 255 &&
-      binary.get(29, 4)[0] == 255);
+      _.isSupported_ = (getPixel(binary, 30, 4)[0] == 0 &&
+      getPixel(binary, 90, 4)[0] == 0 &&
+      getPixel(binary, 31, 4)[0] == 255 &&
+      getPixel(binary, 29, 4)[0] == 255);
     }
     return _.isSupported_;
   };
+
+  /**
+   * @param {!ImageData} imageData
+   * @param {number} x
+   * @param {number} y
+   * @param {number} gray
+   */
+  function setPixelGray(imageData, x, y, gray) {
+    var data = imageData.data;
+    var pos = 4 * (y * imageData.width + x);
+    data[pos] = gray;
+    data[pos + 1] = gray;
+    data[pos + 2] = gray;
+    data[pos + 3] = 255;
+  }
+
+  /**
+   * @param {!ImageData} imageData
+   * @param {number} x pos.
+   * @param {number} y pos.
+   * @return {Array.<number>} [red, green, blue, alpha] values.
+   */
+  function getPixel(imageData, x, y) {
+    var data = imageData.data;
+    var pos = 4 * (y * imageData.width + x);
+    return [data[pos], data[pos + 1], data[pos + 2], data[pos + 3]];
+  }
 });

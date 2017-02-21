@@ -1,15 +1,16 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.imagedecoding');
+goog.require('w69b.BinaryBitmap');
 goog.require('w69b.DecodeHintType');
+goog.require('w69b.ImageDataLuminanceSource');
+goog.require('w69b.MultiFormatReader');
 goog.require('w69b.ReaderException');
-goog.require('w69b.img.RGBABitMatrix');
+goog.require('w69b.common.HybridBinarizer');
+goog.require('w69b.common.NoOpBinarizer');
 goog.require('w69b.img.WebGLBinarizer');
-goog.require('w69b.imgtools');
 goog.require('w69b.qr.DecodeResult');
-goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.decoder.Decoder');
-goog.require('w69b.qr.detector.Detector');
-goog.require('w69b.qr.nativepreprocessing');
+
 
 /**
  * Simple high-level interface to decode qr codes.
@@ -17,12 +18,9 @@ goog.require('w69b.qr.nativepreprocessing');
  */
 goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
-  var Detector = w69b.qr.detector.Detector;
-  var RGBABitMatrix = w69b.img.RGBABitMatrix;
   var DecodeResult = w69b.qr.DecodeResult;
   var WebGLBinarizer = w69b.img.WebGLBinarizer;
-  var imgtools = w69b.imgtools;
-  var preprocessing = w69b.qr.nativepreprocessing;
+  //var imgtools = w69b.imgtools;
 
   var _ = w69b.qr.imagedecoding;
 
@@ -41,35 +39,16 @@ goog.scope(function() {
   };
 
   /**
-   * Decode qr code in main thread.
-   * @param {(Image|HTMLVideoElement)} img image or video.
-   * @param {?w69b.qr.ResultPointCallback=} opt_callback callback for patterns.
-   * @param {boolean=} opt_webgl whether to use WebGl binarizer if supported.
-   * @return {DecodeResult} result.
-   */
-  _.decode = function(img, opt_callback, opt_webgl) {
-    var imgData;
-    if (opt_webgl && WebGLBinarizer.isSupported()) {
-      var binarizer = _.getWebGLBinarizer_();
-      binarizer.setup(img.width || img.videoHeight, img.height || img.videoHeight);
-      binarizer.render(img);
-      imgData = binarizer.getBitMatrix();
-    } else {
-      imgData = imgtools.getImageData(img, 700);
-    }
-    return _.decodeFromImageData(imgData, opt_callback);
-  };
-
-  /**
-   * Decode qr code from ImageData or preprocessed RGBABitMatrix.
-   * @param {(!ImageData|!w69b.qr.QRImage|!RGBABitMatrix)} imgdata from canvas.
+   * Decode qr code from ImageData.
+   * @param {!ImageData} imgdata from canvas.
+   * @param {boolean} isBinary
    * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.
    */
-  _.decodeFromImageData = function(imgdata, opt_callback) {
+  _.decodeFromImageData = function(imgdata, isBinary, opt_callback) {
     var result;
     try {
-      result = _.decodeFromImageDataThrowing(imgdata, opt_callback);
+      result = _.decodeFromImageDataThrowing(imgdata, isBinary, opt_callback);
     } catch (err) {
       result = new DecodeResult(err);
       if (!(err instanceof w69b.ReaderException))
@@ -80,18 +59,20 @@ goog.scope(function() {
 
   /**
    * Throws ReaderException if detection fails.
-   * @param {(!ImageData|!w69b.qr.QRImage|!RGBABitMatrix)} imgdata from canvas.
+   * @param {!ImageData} imgdata from canvas.
+   * @param {boolean} isBinary
    * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.
    */
-  _.decodeFromImageDataThrowing = function(imgdata, opt_callback) {
-    var bitmap;
-    if (imgdata instanceof RGBABitMatrix) {
-      bitmap = imgdata;
+  _.decodeFromImageDataThrowing = function(imgdata, isBinary, opt_callback) {
+    var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
+    var binarizer;
+    if (isBinary) {
+      binarizer = new w69b.common.NoOpBinarizer(luminanceSource);
     } else {
-      bitmap = preprocessing.binarizeImageData(imgdata);
+      binarizer = new w69b.common.HybridBinarizer(luminanceSource);
     }
-    var detector = new Detector(bitmap);
+    var bitmap = new w69b.BinaryBitmap(binarizer);
     var opt_hints = undefined;
 
     if (opt_callback) {
@@ -99,10 +80,9 @@ goog.scope(function() {
       opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
     }
 
-    var detectorResult = detector.detect(opt_hints);
-    var text = _.decoder_.decode(detectorResult.bits).getText();
+    var result = new w69b.MultiFormatReader().decode(bitmap);
 
-    return new DecodeResult(text, detectorResult.points);
+    return new DecodeResult(result.getText(), result.getResultPoints());
   };
 
 });

@@ -5,7 +5,6 @@ goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
 goog.require('w69b.InvalidCharsetException');
-goog.require('w69b.img.RGBABitMatrix');
 goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.imgtools');
 goog.require('w69b.qr.WorkerMessageType');
@@ -13,7 +12,6 @@ goog.require('w69b.qr.imagedecoding');
 
 
 goog.scope(function() {
-  var qrcode = w69b.qr.imagedecoding;
   var jsloader = goog.net.jsloader;
   var WorkerMessageType = w69b.qr.WorkerMessageType;
   var WebGLBinarizer = w69b.img.WebGLBinarizer;
@@ -197,13 +195,12 @@ goog.scope(function() {
         }
         this.webGLBinarizer_.setup(size.width, size.height, coverSize.width, coverSize.height);
         this.webGLBinarizer_.render(imgdata);
-        imgDataOrMatrix = this.webGLBinarizer_.getBitMatrix();
+        imgDataOrMatrix = this.webGLBinarizer_.getImageData();
         isBinary = true;
         // window.console.log('decoded with webgl');
       }
     }
-    if (!(imgDataOrMatrix instanceof ImageData ||
-      imgDataOrMatrix instanceof w69b.img.RGBABitMatrix)) {
+    if (!(imgDataOrMatrix instanceof ImageData)) {
       imgDataOrMatrix = w69b.imgtools.getImageData(imgDataOrMatrix, size);
     }
     if (this.useWorker_) {
@@ -220,7 +217,7 @@ goog.scope(function() {
       imgdata.data = null;
     } else {
       // local fallback
-      this.decodeLocalFallback_(imgDataOrMatrix, callback);
+      this.decodeLocalFallback_(imgDataOrMatrix, isBinary, callback);
     }
   };
 
@@ -234,12 +231,13 @@ goog.scope(function() {
 
   /**
    * @private
-   * @param {!(ImageData|w69b.img.RGBABitMatrix)} imgdata image data.
+   * @param {!ImageData} imgdata image data.
+   * @param {boolean} isBinary
    * @param {function(string, ?=)} callback called with result..
    */
-  pro.decodeLocalFallback_ = function(imgdata, callback) {
+  pro.decodeLocalFallback_ = function(imgdata, isBinary, callback) {
     try {
-      var result = qrcode.decodeFromImageData(imgdata, function(pattern) {
+      var result = w69b.qr.imagedecoding.decodeFromImageData(imgdata, isBinary, function(pattern) {
         callback(WorkerMessageType.PATTERN, pattern['toJSON']());
       }.bind(this));
     } catch (err) {
@@ -255,7 +253,7 @@ goog.scope(function() {
         }
         // And try again when loaded.
         jsloader.load(url).addCallback(function() {
-          this.decodeLocalFallback_(imgdata, callback);
+          this.decodeLocalFallback_(imgdata, isBinary, callback);
         }, this);
         return;
       } else {

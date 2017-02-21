@@ -2,8 +2,6 @@
 goog.provide('w69b.qr.DecodeWorker');
 goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
-goog.require('w69b.img.RGBABitMatrix');
-goog.require('w69b.qr.QRImage');
 goog.require('w69b.qr.WorkerMessageType');
 goog.require('w69b.qr.detector.AlignmentPattern');
 goog.require('w69b.qr.detector.FinderPattern');
@@ -14,7 +12,6 @@ goog.require('w69b.qr.imagedecoding');
 var host = self;
 
 goog.scope(function() {
-  var qrcode = w69b.qr.imagedecoding;
   var WorkerMessageType = w69b.qr.WorkerMessageType;
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
   var FinderPattern = w69b.qr.detector.FinderPattern;
@@ -31,14 +28,15 @@ goog.scope(function() {
   };
 
   /**
-   * @param {(!w69b.qr.QRImage|!w69b.img.RGBABitMatrix)} imgdata image to
+   * @param {!ImageData} imgdata image to
+   * @param {boolean} isBinary
    * @param {boolean=} opt_failOnCharset immediately fail on charset error if
    *                                     true, do not try to load iconv. decode.
    */
-  _.decode = function(imgdata, opt_failOnCharset) {
+  _.decode = function(imgdata, isBinary, opt_failOnCharset) {
     var result;
     try {
-      result = qrcode.decodeFromImageData(imgdata, _.onPatternFound);
+      result = w69b.qr.imagedecoding.decodeFromImageData(imgdata, isBinary, _.onPatternFound);
     } catch (err) {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         _.iconvPath && !opt_failOnCharset) {
@@ -83,19 +81,12 @@ goog.scope(function() {
       var width = data['width'];
       var height = data['height'];
       var buffer = data['buffer'];
-      var isBinary = data['isBinary'];
+      var isBinary = data['isBinary'] || false;
       if (!buffer.byteLength) {
         throw Error('worker commmunication failed');
       }
-      var image;
-      if (isBinary) {
-        image = new w69b.img.RGBABitMatrix(width, height,
-          new Uint8ClampedArray(buffer));
-      } else {
-        image = new w69b.qr.QRImage(width, height,
-          new Uint8ClampedArray(buffer));
-      }
-      _.decode(image);
+      var imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
+      _.decode(imageData, isBinary);
       // Hack for FF memory leak - if webgl is used, we tranfer back the
       // buffer as a workaround.
       if (goog.userAgent.product.FIREFOX) {

@@ -21,11 +21,12 @@
 
 goog.provide('w69b.qr.detector.AlignmentPatternFinder');
 goog.require('w69b.NotFoundException');
-goog.require('w69b.img.BitMatrixLike');
+goog.require('w69b.common.BitMatrix');
 goog.require('w69b.qr.detector.AlignmentPattern');
 
 
 goog.scope(function() {
+  var BitMatrix = w69b.common.BitMatrix;
   var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
   var NotFoundException = w69b.NotFoundException;
   /**
@@ -50,7 +51,7 @@ goog.scope(function() {
    * @author mb@w69b.com (Manuel Braun) - ported to js
    *
    * @constructor
-   * @param {!w69b.img.BitMatrixLike} image image to search.
+   * @param {!BitMatrix} image image to search.
    * @param {number} startX left column from which to start searching.
    * @param {number} startY stat top row from which to start searching.
    * @param {number} width width of region to search.
@@ -61,7 +62,7 @@ goog.scope(function() {
   w69b.qr.detector.AlignmentPatternFinder = function(image, startX, startY, width,
                                             height, moduleSize,
                                             resultPointCallback) {
-    /** @type {!w69b.img.BitMatrixLike} */
+    /** @type {!BitMatrix} */
     this.image = image;
     /** @type {Array.<AlignmentPattern>} */
     this.possibleCenters = [];

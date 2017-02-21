@@ -3,14 +3,13 @@
 goog.provide('w69b.img.NotSupportedError');
 goog.provide('w69b.img.WebGLFilter');
 goog.require('goog.debug.Error');
-goog.require('w69b.img.RGBAImageData');
 goog.require('w69b.img.WebGLProgram');
 goog.require('w69b.shaders.fragCoordTest');
 
 
 goog.scope(function() {
   var WebGLProgram = w69b.img.WebGLProgram;
-  var RGBAImageData = w69b.img.RGBAImageData;
+
   /**
    * Thrown when webgl is not supported.
    * @constructor
@@ -200,15 +199,16 @@ goog.scope(function() {
 
   /**
    * Get image data of canvas.
-   * @return {RGBAImageData} image data.
+   * @return {!ImageData} image data.
    */
   pro.getImageData = function() {
     var gl = this.context_;
     var width = this.getWidth();
     var height = this.getHeight();
-    var imgdata = new Uint8Array(4 * width * height);
-    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, imgdata);
-    return new RGBAImageData(width, height, imgdata);
+    var imgdata = new Uint8ClampedArray(4 * width * height);
+    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(imgdata.buffer));
+    // TODO - This appears to be upside down, try flipping it over
+    return new ImageData(imgdata, width, height);
   };
 
   /**

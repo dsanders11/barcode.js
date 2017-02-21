@@ -20,13 +20,14 @@ goog.require('goog.array');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.ResultPoint');
-goog.require('w69b.img.BitMatrixLike');
+goog.require('w69b.common.BitMatrix');
 goog.require('w69b.qr.detector.FinderPattern');
 goog.require('w69b.qr.detector.FinderPatternInfo');
 
 
 goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
+  var BitMatrix = w69b.common.BitMatrix;
   var FinderPattern = w69b.qr.detector.FinderPattern;
   var FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
   var ResultPoint = w69b.ResultPoint;
@@ -46,13 +47,13 @@ goog.scope(function() {
    */
 
   /**
-   * @param {!w69b.img.BitMatrixLike} image binary image.
+   * @param {!BitMatrix} image binary image.
    * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
    * @constructor
    */
   w69b.qr.detector.FinderPatternFinder = function(image, opt_callback) {
     /**
-     * @type {!w69b.img.BitMatrixLike}
+     * @type {!BitMatrix}
      * @private
      */
     this.image_ = image;

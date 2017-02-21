@@ -25,7 +25,6 @@ goog.require('w69b.common.DetectorResult');
 goog.require('w69b.common.GridSampler');
 goog.require('w69b.common.PerspectiveTransform');
 goog.require('w69b.common.detector.MathUtils');
-goog.require('w69b.img.BitMatrixLike');
 goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.detector.AlignmentPattern');
 goog.require('w69b.qr.detector.AlignmentPatternFinder');
@@ -56,12 +55,12 @@ goog.scope(function() {
    * @author mb@w69b.com (Manuel Braun) - ported to js
    *
    * @constructor
-   * @param {!w69b.img.BitMatrixLike} image the image.
+   * @param {!BitMatrix} image the image.
    * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
    */
   w69b.qr.detector.Detector = function(image, opt_callback) {
     /**
-     * @type {!w69b.img.BitMatrixLike}
+     * @type {!BitMatrix}
      */
     this.image = image;
     this.resultPointCallback = null;

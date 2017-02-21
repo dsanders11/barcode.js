@@ -39,7 +39,7 @@ goog.scope(function() {
    * @param {Image|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} img image.
    * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or Size object
    * that img data should cover (cropping bottom-right corners).
-   * @return {!ImageData} image data.
+   * @return {ImageData} image data.
    */
   _.getImageData = function(img, opt_maxSize) {
     var size = new Size(
