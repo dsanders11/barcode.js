@@ -1,22 +1,22 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
-goog.provide('w69b.img.WebGLBinarizer');
+goog.provide('w69b.webgl.WebGLBinarizer');
 goog.require('goog.math.Size');
-goog.require('w69b.img.WebGLFilter');
-goog.require('w69b.img.WebGLParams');
-goog.require('w69b.img.WebGLPipeline');
-goog.require('w69b.img.WebGLProgram');
-goog.require('w69b.shaders.binarizeAvg1');
-goog.require('w69b.shaders.binarizeGroup');
-goog.require('w69b.shaders.estimateBlack');
-goog.require('w69b.shaders.gaussBlur');
+goog.require('w69b.webgl.WebGLFilter');
+goog.require('w69b.webgl.WebGLParams');
+goog.require('w69b.webgl.WebGLPipeline');
+goog.require('w69b.webgl.WebGLProgram');
+goog.require('w69b.webgl.shaders.binarizeAvg1');
+goog.require('w69b.webgl.shaders.binarizeGroup');
+goog.require('w69b.webgl.shaders.estimateBlack');
+goog.require('w69b.webgl.shaders.gaussBlur');
 
 
 goog.scope(function() {
-  var WebGLFilter = w69b.img.WebGLFilter;
-  var WebGLProgram = w69b.img.WebGLProgram;
-  var WebGLParams = w69b.img.WebGLParams;
-  var WebGLPipeline = w69b.img.WebGLPipeline;
+  var WebGLFilter = w69b.webgl.WebGLFilter;
+  var WebGLProgram = w69b.webgl.WebGLProgram;
+  var WebGLParams = w69b.webgl.WebGLParams;
+  var WebGLPipeline = w69b.webgl.WebGLPipeline;
   /**
    * WebGL shader based image binarizer.
    * The basic idea is to estimate an average black level for each pixel by looking at
@@ -35,11 +35,11 @@ goog.scope(function() {
    * @constructor
    * @param {HTMLCanvasElement=} opt_canvas canvas to use.
    */
-  w69b.img.WebGLBinarizer = function(opt_canvas) {
+  w69b.webgl.WebGLBinarizer = function(opt_canvas) {
     this.filter_ = new WebGLFilter(opt_canvas);
   };
-  var pro = w69b.img.WebGLBinarizer.prototype;
-  var _ = w69b.img.WebGLBinarizer;
+  var pro = w69b.webgl.WebGLBinarizer.prototype;
+  var _ = w69b.webgl.WebGLBinarizer;
   /**
    * @type {?boolean}
    */
@@ -108,11 +108,11 @@ goog.scope(function() {
       opt_inWidth = width;
     if (!this.setupCalled_) {
       // compile shaders
-      this.programDynRange1 = this.getProgram(w69b.shaders.binarizeAvg1);
-      this.programDynRange2 = this.getProgram(w69b.shaders.binarizeGroup);
-      this.programEstimateBlack = this.getProgram(w69b.shaders.estimateBlack);
-      this.programThreshold = this.getProgram(w69b.shaders.threshold);
-      this.programGauss = this.getProgram(w69b.shaders.gaussBlur);
+      this.programDynRange1 = this.getProgram(w69b.webgl.shaders.binarizeAvg1);
+      this.programDynRange2 = this.getProgram(w69b.webgl.shaders.binarizeGroup);
+      this.programEstimateBlack = this.getProgram(w69b.webgl.shaders.estimateBlack);
+      this.programThreshold = this.getProgram(w69b.webgl.shaders.threshold);
+      this.programGauss = this.getProgram(w69b.webgl.shaders.gaussBlur);
     }
 
     if (!this.setupCalled_ ||
@@ -140,10 +140,10 @@ goog.scope(function() {
 
     var pipeline = new WebGLPipeline(this.filter_);
     // Some shaders that are useful for debugging.
-    // var grayscale = new WebGLProgram(gl, w69b.shaders.grayscale);
-    // var dummy = this.getProgram(w69b.shaders.dummy);
-    // var extractChannel = this.getProgram(w69b.shaders.extractChannel);
-    // var debug = new WebGLProgram(gl, w69b.shaders.debug);
+    // var grayscale = new WebGLProgram(gl, w69b.webgl.shaders.grayscale);
+    // var dummy = this.getProgram(w69b.webgl.shaders.dummy);
+    // var extractChannel = this.getProgram(w69b.webgl.shaders.extractChannel);
+    // var debug = new WebGLProgram(gl, w69b.webgl.shaders.debug);
     var baseParams = new WebGLParams(
       {
         'width': width,
@@ -289,7 +289,7 @@ goog.scope(function() {
       setPixelGray(img, 30, 4, 18);
       setPixelGray(img, 90, 4, 50);
       try {
-        var binarizer = new w69b.img.WebGLBinarizer();
+        var binarizer = new w69b.webgl.WebGLBinarizer();
         binarizer.setFlipInput(false);
         binarizer.setup(width, height);
         binarizer.render(new ImageData(img.data, width, height));

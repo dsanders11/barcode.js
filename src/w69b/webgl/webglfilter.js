@@ -1,33 +1,33 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
-goog.provide('w69b.img.NotSupportedError');
-goog.provide('w69b.img.WebGLFilter');
+goog.provide('w69b.webgl.NotSupportedError');
+goog.provide('w69b.webgl.WebGLFilter');
 goog.require('goog.debug.Error');
-goog.require('w69b.img.WebGLProgram');
-goog.require('w69b.shaders.fragCoordTest');
+goog.require('w69b.webgl.WebGLProgram');
+goog.require('w69b.webgl.shaders.fragCoordTest');
 
 
 goog.scope(function() {
-  var WebGLProgram = w69b.img.WebGLProgram;
+  var WebGLProgram = w69b.webgl.WebGLProgram;
 
   /**
    * Thrown when webgl is not supported.
    * @constructor
    * @extends {goog.debug.Error}
    */
-  w69b.img.NotSupportedError = function() {
+  w69b.webgl.NotSupportedError = function() {
     goog.base(this);
   };
-  goog.inherits(w69b.img.NotSupportedError, goog.debug.Error);
+  goog.inherits(w69b.webgl.NotSupportedError, goog.debug.Error);
   /** @override */
-  w69b.img.NotSupportedError.prototype.name = 'NotSupported';
+  w69b.webgl.NotSupportedError.prototype.name = 'NotSupported';
 
   /**
    * Filters images using webgl shaders.
    * @param {HTMLCanvasElement=} opt_canvas canvas to use.
    * @constructor
    */
-  w69b.img.WebGLFilter = function(opt_canvas) {
+  w69b.webgl.WebGLFilter = function(opt_canvas) {
     this.textures = [];
     /**
      * @private
@@ -42,12 +42,12 @@ goog.scope(function() {
     } catch (ignored) {
     }
     if (!this.context_)
-      throw new w69b.img.NotSupportedError();
-    w69b.img.WebGLFilter.testFragCoordOffset();
+      throw new w69b.webgl.NotSupportedError();
+    w69b.webgl.WebGLFilter.testFragCoordOffset();
 
     this.framebuffer_ = this.context_.createFramebuffer();
   };
-  var _ = w69b.img.WebGLFilter;
+  var _ = w69b.webgl.WebGLFilter;
   /**
    * @type {Array.<number>}
    * @private
@@ -55,7 +55,7 @@ goog.scope(function() {
   _.fragCoordOffset_ = null;
   // Simple vertex shader.
 
-  var pro = w69b.img.WebGLFilter.prototype;
+  var pro = w69b.webgl.WebGLFilter.prototype;
 
   /**
    * Rendering context of back canvas.
@@ -225,7 +225,7 @@ goog.scope(function() {
     canvas.width = 20;
     canvas.height = 20;
     canvas.imageSmoothingEnabled = false;
-    var program = new WebGLProgram(gl, w69b.shaders.fragCoordTest);
+    var program = new WebGLProgram(gl, w69b.webgl.shaders.fragCoordTest);
 
     program.use();
     program.initCommonAttributes();

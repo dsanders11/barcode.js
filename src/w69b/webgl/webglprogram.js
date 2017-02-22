@@ -1,7 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
-goog.provide('w69b.img.WebGLProgram');
-goog.require('w69b.shaders.rectVertex');
+goog.provide('w69b.webgl.WebGLProgram');
+goog.require('w69b.webgl.shaders.rectVertex');
 
 goog.scope(function() {
   /**
@@ -11,10 +11,10 @@ goog.scope(function() {
    * @param {string=} opt_vertexSource vertex shader.
    * @constructor
    */
-  w69b.img.WebGLProgram = function(gl, fragmentSource, opt_vertexSource) {
+  w69b.webgl.WebGLProgram = function(gl, fragmentSource, opt_vertexSource) {
     this.context_ = gl;
     var vertexShader = this.buildShader_(
-      opt_vertexSource || w69b.shaders.rectVertex, true);
+      opt_vertexSource || w69b.webgl.shaders.rectVertex, true);
     var fragmentShader = this.buildShader_(fragmentSource, false);
     var shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
@@ -26,7 +26,7 @@ goog.scope(function() {
     }
     this.glProgram = shaderProgram;
   };
-  var pro = w69b.img.WebGLProgram.prototype;
+  var pro = w69b.webgl.WebGLProgram.prototype;
 
   /**
    * Linked shader program.

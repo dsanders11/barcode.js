@@ -5,8 +5,8 @@ goog.provide('w69b.qr.decoding');
 goog.require('goog.Promise');
 goog.require('goog.math.Size');
 goog.require('goog.object');
-goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.qr.DecodeInWorkerHelper');
+goog.require('w69b.webgl.WebGLBinarizer');
 
 
 /**
@@ -45,7 +45,7 @@ goog.scope(function() {
    * @export
    */
   _.isWebGlSupported = function() {
-    return w69b.img.WebGLBinarizer.isSupported();
+    return w69b.webgl.WebGLBinarizer.isSupported();
   };
 
   /**

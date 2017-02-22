@@ -31,7 +31,7 @@ var PATHS = {
     checkFormat: [
       'src/**/*.js'
     ],
-    shaders: ['src/w69b/shaders/*.{vs,fs}'],
+    shaders: ['src/w69b/webgl/shaders/*.{vs,fs}'],
     closureBase: 'node_modules/google-closure-library/closure/goog/base.js',
     closure: [
       'node_modules/google-closure-library/closure/goog/**/*.js',
@@ -41,14 +41,14 @@ var PATHS = {
     plovr: ['plovr-decodeworker-productive.json', 'plovr-productive.json'],
   },
   dst: {
-    shaders: 'src/w69b/shaders/'
+    shaders: 'src/w69b/webgl/shaders/'
   }
 };
 
 gulp.task('clean', function() {
   return del(['dist']);
 });
- 
+
 gulp.task('check-format', function() {
   return gulp.src(PATHS.src.checkFormat)
      .pipe(format.checkFormat(undefined, undefined, {verbose: true}));

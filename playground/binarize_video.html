@@ -22,7 +22,7 @@
 
   <script type="text/javascript" src="../dist/w69b.qrcode.js"></script>
   <script type="text/javascript">
-    goog.require('w69b.img.WebGLBinarizer');
+    goog.require('w69b.webgl.WebGLBinarizer');
     goog.require('w69b.LocalVideoCapturer');
     goog.require('w69b.imgtools');
     goog.require('w69b.qr.nativepreprocessing');
@@ -83,7 +83,7 @@
     }
 
     function init() {
-      binarizer = new w69b.img.WebGLBinarizer(glCanvas);
+      binarizer = new w69b.webgl.WebGLBinarizer(glCanvas);
       binarizer.setFlipInput(true);
       var promise;
       if (w69b.LocalVideoCapturer.getMedia) {

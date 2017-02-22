@@ -7,9 +7,9 @@ goog.require('w69b.MultiFormatReader');
 goog.require('w69b.ReaderException');
 goog.require('w69b.common.HybridBinarizer');
 goog.require('w69b.common.NoOpBinarizer');
-goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.qr.DecodeResult');
 goog.require('w69b.qr.decoder.Decoder');
+goog.require('w69b.webgl.WebGLBinarizer');
 
 
 /**
@@ -19,7 +19,7 @@ goog.require('w69b.qr.decoder.Decoder');
 goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
   var DecodeResult = w69b.qr.DecodeResult;
-  var WebGLBinarizer = w69b.img.WebGLBinarizer;
+  var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
   //var imgtools = w69b.imgtools;
 
   var _ = w69b.qr.imagedecoding;

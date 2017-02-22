@@ -6,16 +6,16 @@ goog.require('goog.string');
 goog.require('goog.string.path');
 goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
-goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.imgtools');
 goog.require('w69b.qr.WorkerMessageType');
 goog.require('w69b.qr.imagedecoding');
+goog.require('w69b.webgl.WebGLBinarizer');
 
 
 goog.scope(function() {
   var jsloader = goog.net.jsloader;
   var WorkerMessageType = w69b.qr.WorkerMessageType;
-  var WebGLBinarizer = w69b.img.WebGLBinarizer;
+  var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
 
   /**
    * Helper class that decodes in worker if available and reasonable

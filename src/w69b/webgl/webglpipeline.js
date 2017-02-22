@@ -1,25 +1,25 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
-goog.provide('w69b.img.WebGLPipeline');
-goog.require('w69b.img.WebGLParams');
-goog.require('w69b.img.WebGLProgram');
+goog.provide('w69b.webgl.WebGLPipeline');
+goog.require('w69b.webgl.WebGLParams');
+goog.require('w69b.webgl.WebGLProgram');
 
 goog.scope(function() {
-  var WebGLParams = w69b.img.WebGLParams;
-  var WebGLProgram = w69b.img.WebGLProgram;
+  var WebGLParams = w69b.webgl.WebGLParams;
+  var WebGLProgram = w69b.webgl.WebGLProgram;
 
   /**
    * Helps to execute multipass webgl programms by applying multiple programs
    * and parameter successively.
-   * @param {w69b.img.WebGLFilter} filter webgl filter.
+   * @param {w69b.webgl.WebGLFilter} filter webgl filter.
    * @constructor
    */
-  w69b.img.WebGLPipeline = function(filter) {
+  w69b.webgl.WebGLPipeline = function(filter) {
     /** @type {(function(number, number, number)|Array.<(WebGLProgram|WebGLParams)>)}*/
     this.passes_ = [];
     this.filter_ = filter;
   };
-  var pro = w69b.img.WebGLPipeline.prototype;
+  var pro = w69b.webgl.WebGLPipeline.prototype;
 
   /**
    *
