@@ -64,15 +64,17 @@ goog.scope(function() {
       if (image.grayscale_) {
         // Move the RGBA data to a single-byte representation
         var data = image.data;
-        for (var i = 0; i < data.length; i += 4) {
-          this.luminances_[i/4] = data[i];
+        let luminances = this.luminances_;
+        for (var i = 0, dlength = data.length; i < dlength; i += 4) {
+          luminances[i/4] = data[i];
         }
       } else {
-        var data = image.data;
-        for (var i = 0; i < data.length; i += 4) {
+        let data = image.data;
+        let luminances = this.luminances_;
+        for (let i = 0, dlength = data.length; i < dlength; i += 4) {
           // Average RGB data to convert to greyscale, favoring green channel
           // NOTE - This entirely disregards the alpha channel
-          this.luminances_[i/4] = (data[i] + 2*data[i + 1] + data[i + 2]) / 4;
+          luminances[i/4] = (data[i] + 2*data[i + 1] + data[i + 2]) / 4;
         }
       }
     } else {
