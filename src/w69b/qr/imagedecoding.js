@@ -42,13 +42,14 @@ goog.scope(function() {
    * Decode qr code from ImageData.
    * @param {!ImageData} imgdata from canvas.
    * @param {boolean} isBinary
+   * @param {Array=} opt_formats
    * @param {?w69b.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.
    */
-  _.decodeFromImageData = function(imgdata, isBinary, opt_callback) {
+  _.decodeFromImageData = function(imgdata, isBinary, opt_formats, opt_callback) {
     var result;
     try {
-      result = _.decodeFromImageDataThrowing(imgdata, isBinary, opt_callback);
+      result = _.decodeFromImageDataThrowing(imgdata, isBinary, opt_formats, opt_callback);
     } catch (err) {
       result = new DecodeResult(err);
       if (!(err instanceof w69b.ReaderException))
@@ -61,10 +62,11 @@ goog.scope(function() {
    * Throws ReaderException if detection fails.
    * @param {!ImageData} imgdata from canvas.
    * @param {boolean} isBinary
+   * @param {Array=} opt_formats
    * @param {?w69b.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.
    */
-  _.decodeFromImageDataThrowing = function(imgdata, isBinary, opt_callback) {
+  _.decodeFromImageDataThrowing = function(imgdata, isBinary, opt_formats, opt_callback) {
     var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
     var binarizer;
     if (isBinary) {
@@ -73,14 +75,17 @@ goog.scope(function() {
       binarizer = new w69b.common.HybridBinarizer(luminanceSource);
     }
     var bitmap = new w69b.BinaryBitmap(binarizer);
-    var opt_hints = undefined;
+    var opt_hints = (opt_formats || opt_callback) ? {} : undefined;
 
     if (opt_callback) {
-      opt_hints = {};
       opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
     }
 
-    var result = new w69b.MultiFormatReader().decode(bitmap);
+    if (opt_formats) {
+      opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
+    }
+
+    var result = new w69b.MultiFormatReader().decode(bitmap, opt_hints);
 
     return new DecodeResult(result.getText(), result.getResultPoints());
   };

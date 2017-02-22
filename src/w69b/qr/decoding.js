@@ -63,7 +63,8 @@ goog.scope(function() {
     var opt = {
       'worker': true,
       'webgl': true,
-      'maxSize': 700
+      'maxSize': 700,
+      'formats': null
     };
     object.extend(opt, opt_options || {});
     var worker = new DecodeInWorkerHelper();

@@ -17,6 +17,7 @@
 
 goog.provide('w69b.BarcodeFormat');
 
+
 /**
  * Enumerates barcode formats known to this package. Please keep alphabetized.
  * @enum {number}
@@ -27,3 +28,8 @@ w69b.BarcodeFormat = {
   ITF: 3,
   QR_CODE: 4
 };
+
+goog.exportSymbol('w69b.BarcodeFormat.CODE_39', w69b.BarcodeFormat.CODE_39);
+goog.exportSymbol('w69b.BarcodeFormat.CODE_128', w69b.BarcodeFormat.CODE_128);
+goog.exportSymbol('w69b.BarcodeFormat.ITF', w69b.BarcodeFormat.ITF);
+goog.exportSymbol('w69b.BarcodeFormat.QR_CODE', w69b.BarcodeFormat.QR_CODE);

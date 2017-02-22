@@ -21,9 +21,11 @@ goog.scope(function() {
    * Helper class that decodes in worker if available and reasonable
    * and falls back to main thread decoding if not.
    * @constructor
+   * @param {Array=} opt_formats Formats to decode for
    */
-  w69b.qr.DecodeInWorkerHelper = function() {
+  w69b.qr.DecodeInWorkerHelper = function(opt_formats) {
     this.callback_ = null;
+    this.formats_ = opt_formats;
   };
   var DecodeInWorkerHelper = w69b.qr.DecodeInWorkerHelper;
   var pro = DecodeInWorkerHelper.prototype;
@@ -210,6 +212,7 @@ goog.scope(function() {
         'width': imgDataOrMatrix.width,
         'height': imgDataOrMatrix.height,
         'buffer': buffer,
+        'formats': this.formats_,
         'isFirefox': Boolean(goog.userAgent.product.FIREFOX),
         'isBinary': isBinary,
         'isGrayscale': imgDataOrMatrix.grayscale_
@@ -238,7 +241,7 @@ goog.scope(function() {
    */
   pro.decodeLocalFallback_ = function(imgdata, isBinary, callback) {
     try {
-      var result = w69b.qr.imagedecoding.decodeFromImageData(imgdata, isBinary, function(pattern) {
+      var result = w69b.qr.imagedecoding.decodeFromImageData(imgdata, isBinary, this.formats_, function(pattern) {
         callback(WorkerMessageType.PATTERN, pattern['toJSON']());
       }.bind(this));
     } catch (err) {
