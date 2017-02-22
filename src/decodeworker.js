@@ -3,5 +3,5 @@
  * @fileoverview
  * @suppress {extraRequire}
  */
-goog.require('w69b.qr.DecodeWorker');
+goog.require('w69b.worker.DecodeWorker');
 goog.require('w69b.qr.licenses');

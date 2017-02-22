@@ -5,8 +5,8 @@ goog.provide('w69b.qr.decoding');
 goog.require('goog.Promise');
 goog.require('goog.math.Size');
 goog.require('goog.object');
-goog.require('w69b.qr.DecodeInWorkerHelper');
 goog.require('w69b.webgl.WebGLBinarizer');
+goog.require('w69b.worker.DecodeInWorkerHelper');
 
 
 /**
@@ -14,8 +14,8 @@ goog.require('w69b.webgl.WebGLBinarizer');
  * @author mb@w69b.com (Manuel Braun)
  */
 goog.scope(function() {
-  var WorkerMessageType = w69b.qr.WorkerMessageType;
-  var DecodeInWorkerHelper = w69b.qr.DecodeInWorkerHelper;
+  var WorkerMessageType = w69b.worker.WorkerMessageType;
+  var DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
   var object = goog.object;
   var Promise = goog.Promise;
   var _ = w69b.qr.decoding;

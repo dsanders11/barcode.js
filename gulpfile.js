@@ -147,7 +147,7 @@ gulp.task('buildDebug:main', ['shader2js'], function() {
 });
 
 gulp.task('buildDebug:worker', ['shader2js'], function() {
-  return buildDebug('w69b.qr.DecodeWorker')
+  return buildDebug('w69b.worker.DecodeWorker')
     .pipe(sourcemaps.init())
     .pipe(concat('w69b.qrcode.decodeworker.js'))
     .pipe(wrap(closureDebugWrapper))

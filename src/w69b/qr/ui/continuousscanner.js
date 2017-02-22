@@ -10,13 +10,13 @@ goog.require('goog.userAgent');
 goog.require('w69b.LocalVideoCapturer');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.imgtools');
-goog.require('w69b.qr.DecodeInWorkerHelper');
-goog.require('w69b.qr.WorkerMessageType');
+goog.require('w69b.worker.DecodeInWorkerHelper');
+goog.require('w69b.worker.WorkerMessageType');
 
 goog.scope(function() {
   var imgtools = w69b.imgtools;
   var Size = goog.math.Size;
-  var WorkerMessageType = w69b.qr.WorkerMessageType;
+  var WorkerMessageType = w69b.worker.WorkerMessageType;
   var ResultPoint = w69b.ResultPoint;
   var object = goog.object;
 
@@ -49,7 +49,7 @@ goog.scope(function() {
     };
     object.extend(opt, opt_options || {});
     this.capturer_ = new w69b.LocalVideoCapturer();
-    this.worker_ = new w69b.qr.DecodeInWorkerHelper();
+    this.worker_ = new w69b.worker.DecodeInWorkerHelper();
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();
     this.foundPatterns_ = [];

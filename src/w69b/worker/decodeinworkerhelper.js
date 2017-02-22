@@ -1,5 +1,5 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.DecodeInWorkerHelper');
+goog.provide('w69b.worker.DecodeInWorkerHelper');
 goog.require('goog.math.Size');
 goog.require('goog.net.jsloader');
 goog.require('goog.string');
@@ -7,14 +7,14 @@ goog.require('goog.string.path');
 goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.imgtools');
-goog.require('w69b.qr.WorkerMessageType');
 goog.require('w69b.qr.imagedecoding');
 goog.require('w69b.webgl.WebGLBinarizer');
+goog.require('w69b.worker.WorkerMessageType');
 
 
 goog.scope(function() {
   var jsloader = goog.net.jsloader;
-  var WorkerMessageType = w69b.qr.WorkerMessageType;
+  var WorkerMessageType = w69b.worker.WorkerMessageType;
   var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
 
   /**
@@ -23,11 +23,11 @@ goog.scope(function() {
    * @constructor
    * @param {Array=} opt_formats Formats to decode for
    */
-  w69b.qr.DecodeInWorkerHelper = function(opt_formats) {
+  w69b.worker.DecodeInWorkerHelper = function(opt_formats) {
     this.callback_ = null;
     this.formats_ = opt_formats;
   };
-  var DecodeInWorkerHelper = w69b.qr.DecodeInWorkerHelper;
+  var DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
   var pro = DecodeInWorkerHelper.prototype;
 
   /**
@@ -112,7 +112,7 @@ goog.scope(function() {
    */
   pro.init = function() {
     if (this.enableWorker_) {
-      var url = w69b.qr.DecodeInWorkerHelper.workerUrl_;
+      var url = w69b.worker.DecodeInWorkerHelper.workerUrl_;
       if (!url)
         throw Error('missing worker url setup');
       this.worker_ = new Worker(url);
@@ -120,9 +120,9 @@ goog.scope(function() {
       if (this.useWorker_) {
         // hack for invalid extern.
         this.worker_['addEventListener']('message', this.onMessage_.bind(this));
-        if (w69b.qr.DecodeInWorkerHelper.iconvUrl_) {
+        if (w69b.worker.DecodeInWorkerHelper.iconvUrl_) {
           this.worker_.postMessage(
-            {'setIconvUrl': w69b.qr.DecodeInWorkerHelper.iconvUrl_});
+            {'setIconvUrl': w69b.worker.DecodeInWorkerHelper.iconvUrl_});
         }
       } else {
         this.worker_.terminate();

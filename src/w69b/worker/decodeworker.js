@@ -1,8 +1,8 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.DecodeWorker');
+goog.provide('w69b.worker.DecodeWorker');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.ResultPoint');
-goog.require('w69b.qr.WorkerMessageType');
+goog.require('w69b.worker.WorkerMessageType');
 goog.require('w69b.qr.imagedecoding');
 
 
@@ -10,10 +10,10 @@ goog.require('w69b.qr.imagedecoding');
 var host = self;
 
 goog.scope(function() {
-  var WorkerMessageType = w69b.qr.WorkerMessageType;
+  var WorkerMessageType = w69b.worker.WorkerMessageType;
   var ResultPoint = w69b.ResultPoint;
 
-  var _ = w69b.qr.DecodeWorker;
+  var _ = w69b.worker.DecodeWorker;
   _.iconvPath = 'iconv.js';
 
   /**
