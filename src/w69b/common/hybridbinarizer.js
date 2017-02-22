@@ -19,12 +19,12 @@ goog.provide('w69b.common.HybridBinarizer');
 goog.require('w69b.LuminanceSource');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.GlobalHistogramBinarizer');
-goog.require('w69b.qr.IntArray2D');
+
 
 goog.scope(function() {
   var LuminanceSource = w69b.LuminanceSource;
   var BitMatrix = w69b.common.BitMatrix;
-  var IntArray2D = w69b.qr.IntArray2D;
+
   /**
    * This class implements a local thresholding algorithm, which while slower
    * than the GlobalHistogramBinarizer, is fairly efficient for what it does.
@@ -129,7 +129,7 @@ goog.scope(function() {
    * @param {number} subHeight
    * @param {number} width
    * @param {number} height
-   * @param {IntArray2D} blackPoints
+   * @param {Array.<Int32Array>} blackPoints
    * @param {BitMatrix} matrix
    */
   _.calculateThresholdForBlock = function(luminances, subWidth, subHeight,
@@ -150,11 +150,9 @@ goog.scope(function() {
         var top = _.cap(y, 2, subHeight - 3);
         var sum = 0;
         for (var z = -2; z <= 2; z++) {
-          var offset = (top + z) * blackPoints.size2;
-          var raw = blackPoints.data;
-          sum += raw[offset + left - 2] + raw[offset + left - 1] +
-            raw[offset + left] + raw[offset + left + 1] +
-            raw[offset + left + 2];
+          var blackRow = blackPoints[top + z];
+          sum += blackRow[left - 2] + blackRow[left - 1] +
+            blackRow[left] + blackRow[left + 1] + blackRow[left + 2];
         }
         var average = sum / 25;
         _.thresholdBlock(luminances, xoffset, yoffset, average, width, matrix);
@@ -204,11 +202,11 @@ goog.scope(function() {
    * @param {number} subHeight
    * @param {number} width
    * @param {number} height
-   * @return {IntArray2D} the black points
+   * @return {Array.<Int32Array>} the black points
    */
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
                                     height) {
-    var blackPoints = new IntArray2D(subHeight, subWidth);
+    var blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
     for (let y = 0; y < subHeight; y++) {
       let yoffset = y << _.BLOCK_SIZE_POWER;
       let maxYOffset = height - _.BLOCK_SIZE;
@@ -273,15 +271,14 @@ goog.scope(function() {
 
             // The (min < bp) is arbitrary but works better than other
             // heuristics that were tried.
-            let averageNeighborBlackPoint = (blackPoints.getAt(y - 1, x) +
-              (2 * blackPoints.getAt(y, x - 1)) +
-              blackPoints.getAt(y - 1, x - 1)) >> 2;
+            let averageNeighborBlackPoint = (blackPoints[y - 1][x] +
+              (2 * blackPoints[y][x - 1]) + blackPoints[y - 1][x - 1]) >> 2;
             if (min < averageNeighborBlackPoint) {
               average = averageNeighborBlackPoint;
             }
           }
         }
-        blackPoints.setAt(y, x, average);
+        blackPoints[y][x] = average;
       }
     }
     return blackPoints;

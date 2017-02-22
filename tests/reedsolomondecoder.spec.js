@@ -23,6 +23,7 @@ goog.require('w69b.common.reedsolomon.ReedSolomonException');
 
 define(['chai', 'corrupt'], function(chai, corrupt) {
   var assert = chai.assert;
+  var expect = chai.expect;
   describe('ReedSolomonDecoder tests', function() {
     var ReedSolomonDecoder = w69b.common.reedsolomon.ReedSolomonDecoder;
 
