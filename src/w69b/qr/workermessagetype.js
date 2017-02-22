@@ -11,7 +11,6 @@ w69b.qr.WorkerMessageType = {
   PATTERN: 'pattern'
 };
 
-goog.exportSymbol('w69b.qr.WorkerMessageType', w69b.qr.WorkerMessageType);
 goog.exportSymbol('w69b.qr.WorkerMessageType.DECODED',
   w69b.qr.WorkerMessageType.DECODED);
 goog.exportSymbol('w69b.qr.WorkerMessageType.NOTFOUND',
