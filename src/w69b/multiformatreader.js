@@ -103,8 +103,8 @@ goog.scope(function() {
   pro.setHints = function(hints) {
     this.hints_ = hints;
 
-    var tryHarder = hints !== null && !!hints[DecodeHintType.TRY_HARDER];
-    var formats = hints === null ? null : hints[DecodeHintType.POSSIBLE_FORMATS];
+    var tryHarder = hints && !!hints[DecodeHintType.TRY_HARDER];
+    var formats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
     /** @type {Array.<Reader>} */
     var readers = new Array();
     if (formats !== null) {

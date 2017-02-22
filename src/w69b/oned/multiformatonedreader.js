@@ -39,7 +39,7 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.MultiFormatOneDReader = function(hints) {
-    var possibleFormats = hints === null ? null : hints[DecodeHintType.POSSIBLE_FORMATS];
+    var possibleFormats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
     var useCode39CheckDigit = Boolean(hints !== null && hints[DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT]);
     /** @type {!Array.<OneDReader>} */
     var readers = new Array();
