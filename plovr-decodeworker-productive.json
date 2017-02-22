@@ -3,5 +3,5 @@
   "inherits": "plovr-root.json",
   "inputs": "src/decodeworker.js",
   "output-file": "dist/w69b.qrcode.decodeworker.min.js",
-  "output-wrapper": "// barcode.js Copyright 2012 mb@w69b.com\n(function(){%output%})();"
+  "output-wrapper": "// barcode.js Copyright 2012 mb@w69b.com\n(function() { %output% }).call(this);"
 }

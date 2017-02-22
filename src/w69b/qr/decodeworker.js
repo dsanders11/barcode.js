@@ -1,6 +1,5 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.qr.DecodeWorker');
-goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.qr.WorkerMessageType');
@@ -79,6 +78,7 @@ goog.scope(function() {
       var width = data['width'];
       var height = data['height'];
       var buffer = data['buffer'];
+      var isFirefox = data['isFirefox'];
       var isBinary = data['isBinary'] || false;
       if (!buffer.byteLength) {
         throw Error('worker commmunication failed');
@@ -87,7 +87,7 @@ goog.scope(function() {
       _.decode(imageData, isBinary);
       // Hack for FF memory leak - if webgl is used, we tranfer back the
       // buffer as a workaround.
-      if (goog.userAgent.product.FIREFOX) {
+      if (isFirefox) {
         host.postMessage(['ffmemoryhack', null], [buffer]);
         event.data['buffer'] = null;
         // event.data = null;

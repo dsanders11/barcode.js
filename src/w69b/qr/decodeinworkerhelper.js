@@ -4,6 +4,7 @@ goog.require('goog.math.Size');
 goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
+goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.img.WebGLBinarizer');
 goog.require('w69b.imgtools');
@@ -209,7 +210,8 @@ goog.scope(function() {
         'width': imgDataOrMatrix.width,
         'height': imgDataOrMatrix.height,
         'buffer': buffer,
-        'isBinary': isBinary
+        'isFirefox': Boolean(goog.userAgent.product.FIREFOX),
+        'isBinary': isBinary,
       };
       this.callback_ = callback;
       this.worker_.postMessage(msg, [buffer]);
