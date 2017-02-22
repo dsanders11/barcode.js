@@ -213,8 +213,6 @@ goog.scope(function() {
       };
       this.callback_ = callback;
       this.worker_.postMessage(msg, [buffer]);
-      imgDataOrMatrix.data = null;
-      imgdata.data = null;
     } else {
       // local fallback
       this.decodeLocalFallback_(imgDataOrMatrix, isBinary, callback);
