@@ -42,7 +42,7 @@ goog.scope(function() {
    * Decode qr code from ImageData.
    * @param {!ImageData} imgdata from canvas.
    * @param {boolean} isBinary
-   * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
+   * @param {?w69b.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.
    */
   _.decodeFromImageData = function(imgdata, isBinary, opt_callback) {
@@ -61,7 +61,7 @@ goog.scope(function() {
    * Throws ReaderException if detection fails.
    * @param {!ImageData} imgdata from canvas.
    * @param {boolean} isBinary
-   * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
+   * @param {?w69b.ResultPointCallback=} opt_callback callback.
    * @return {DecodeResult} decoded qr code.
    */
   _.decodeFromImageDataThrowing = function(imgdata, isBinary, opt_callback) {

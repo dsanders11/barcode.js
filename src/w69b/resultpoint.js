@@ -112,4 +112,7 @@ goog.scope(function() {
     var bY = pointB.y;
     return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));
   };
+
+  /** @typedef {function(ResultPoint)} */
+  w69b.ResultPointCallback;
 });

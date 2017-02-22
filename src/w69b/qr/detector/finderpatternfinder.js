@@ -32,9 +32,6 @@ goog.scope(function() {
   var FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
   var ResultPoint = w69b.ResultPoint;
 
-  /** @typedef {function((w69b.qr.detector.AlignmentPattern|w69b.qr.detector.FinderPattern))} */
-  w69b.qr.ResultPointCallback;
-
   /**
    * This class attempts to find finder patterns in a QR Code. Finder
    * patterns are the square markers at three corners of a QR Code.
@@ -48,7 +45,7 @@ goog.scope(function() {
 
   /**
    * @param {!BitMatrix} image binary image.
-   * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
+   * @param {?w69b.ResultPointCallback=} opt_callback callback.
    * @constructor
    */
   w69b.qr.detector.FinderPatternFinder = function(image, opt_callback) {
@@ -67,7 +64,7 @@ goog.scope(function() {
      */
     this.crossCheckStateCount_ = new Int32Array(5);
     /**
-     * @type {?w69b.qr.ResultPointCallback}
+     * @type {?w69b.ResultPointCallback}
      * @private
      */
     this.resultPointCallback_ = opt_callback || null;

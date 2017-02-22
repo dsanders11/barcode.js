@@ -56,7 +56,7 @@ goog.scope(function() {
    *
    * @constructor
    * @param {!BitMatrix} image the image.
-   * @param {?w69b.qr.ResultPointCallback=} opt_callback callback.
+   * @param {?w69b.ResultPointCallback=} opt_callback callback.
    */
   w69b.qr.detector.Detector = function(image, opt_callback) {
     /**
@@ -439,7 +439,7 @@ goog.scope(function() {
   pro.detect = function(opt_hints) {
     var callback = null;
     if (opt_hints && !!opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]) {
-      callback = /** @type {(w69b.qr.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
+      callback = /** @type {(w69b.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
     }
     this.resultPointCallback = callback;
 

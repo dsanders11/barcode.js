@@ -57,7 +57,7 @@ goog.scope(function() {
    * @param {number} width width of region to search.
    * @param {number} height height of region to search.
    * @param {number} moduleSize size module size so far.
-   * @param {?w69b.qr.ResultPointCallback} resultPointCallback callback.
+   * @param {?w69b.ResultPointCallback} resultPointCallback callback.
    */
   w69b.qr.detector.AlignmentPatternFinder = function(image, startX, startY, width,
                                             height, moduleSize,

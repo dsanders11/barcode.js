@@ -2,9 +2,8 @@
 goog.provide('w69b.qr.DecodeWorker');
 goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
+goog.require('w69b.ResultPoint');
 goog.require('w69b.qr.WorkerMessageType');
-goog.require('w69b.qr.detector.AlignmentPattern');
-goog.require('w69b.qr.detector.FinderPattern');
 goog.require('w69b.qr.imagedecoding');
 
 
@@ -13,8 +12,7 @@ var host = self;
 
 goog.scope(function() {
   var WorkerMessageType = w69b.qr.WorkerMessageType;
-  var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
-  var FinderPattern = w69b.qr.detector.FinderPattern;
+  var ResultPoint = w69b.ResultPoint;
 
   var _ = w69b.qr.DecodeWorker;
   _.iconvPath = 'iconv.js';
@@ -58,7 +56,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {(AlignmentPattern|FinderPattern)} pattern found.
+   * @param {ResultPoint} pattern found.
    */
   _.onPatternFound = function(pattern) {
     // Build plain json object.
