@@ -47,7 +47,7 @@ goog.scope(function() {
     }
     // logTable[0] == 0 but this should never be used
     this.zero = new GF256Poly(this, new Int32Array(1));
-    this.one = new GF256Poly(this, new Int32Array([1]));
+    this.one = new GF256Poly(this, Int32Array.of(1));
   };
   var GF256 = w69b.common.reedsolomon.GF256;
   var pro = GF256.prototype;

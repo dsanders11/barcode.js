@@ -45,24 +45,24 @@ goog.scope(function() {
    * @type {Array.<Int32Array>}
    */
   _.POSITION_DETECTION_PATTERN = [
-    new Int32Array([1, 1, 1, 1, 1, 1, 1]),
-    new Int32Array([1, 0, 0, 0, 0, 0, 1]),
-    new Int32Array([1, 0, 1, 1, 1, 0, 1]),
-    new Int32Array([1, 0, 1, 1, 1, 0, 1]),
-    new Int32Array([1, 0, 1, 1, 1, 0, 1]),
-    new Int32Array([1, 0, 0, 0, 0, 0, 1]),
-    new Int32Array([1, 1, 1, 1, 1, 1, 1])
+    Int32Array.of(1, 1, 1, 1, 1, 1, 1),
+    Int32Array.of(1, 0, 0, 0, 0, 0, 1),
+    Int32Array.of(1, 0, 1, 1, 1, 0, 1),
+    Int32Array.of(1, 0, 1, 1, 1, 0, 1),
+    Int32Array.of(1, 0, 1, 1, 1, 0, 1),
+    Int32Array.of(1, 0, 0, 0, 0, 0, 1),
+    Int32Array.of(1, 1, 1, 1, 1, 1, 1)
   ];
 
   /**
    * @type {Array.<Int32Array>}
    */
   _.POSITION_ADJUSTMENT_PATTERN = [
-    new Int32Array([1, 1, 1, 1, 1]),
-    new Int32Array([1, 0, 0, 0, 1]),
-    new Int32Array([1, 0, 1, 0, 1]),
-    new Int32Array([1, 0, 0, 0, 1]),
-    new Int32Array([1, 1, 1, 1, 1])
+    Int32Array.of(1, 1, 1, 1, 1),
+    Int32Array.of(1, 0, 0, 0, 1),
+    Int32Array.of(1, 0, 1, 0, 1),
+    Int32Array.of(1, 0, 0, 0, 1),
+    Int32Array.of(1, 1, 1, 1, 1)
   ];
 
   /**
@@ -71,46 +71,46 @@ goog.scope(function() {
    * @type {Array.<Int32Array>}
    */
   _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = [
-    new Int32Array([-1, -1, -1, -1, -1, -1, -1]),  // Version 1
-    new Int32Array([6, 18, -1, -1, -1, -1, -1]),  // Version 2
-    new Int32Array([6, 22, -1, -1, -1, -1, -1]),  // Version 3
-    new Int32Array([6, 26, -1, -1, -1, -1, -1]),  // Version 4
-    new Int32Array([6, 30, -1, -1, -1, -1, -1]),  // Version 5
-    new Int32Array([6, 34, -1, -1, -1, -1, -1]),  // Version 6
-    new Int32Array([6, 22, 38, -1, -1, -1, -1]),  // Version 7
-    new Int32Array([6, 24, 42, -1, -1, -1, -1]),  // Version 8
-    new Int32Array([6, 26, 46, -1, -1, -1, -1]),  // Version 9
-    new Int32Array([6, 28, 50, -1, -1, -1, -1]),  // Version 10
-    new Int32Array([6, 30, 54, -1, -1, -1, -1]),  // Version 11
-    new Int32Array([6, 32, 58, -1, -1, -1, -1]),  // Version 12
-    new Int32Array([6, 34, 62, -1, -1, -1, -1]),  // Version 13
-    new Int32Array([6, 26, 46, 66, -1, -1, -1]),  // Version 14
-    new Int32Array([6, 26, 48, 70, -1, -1, -1]),  // Version 15
-    new Int32Array([6, 26, 50, 74, -1, -1, -1]),  // Version 16
-    new Int32Array([6, 30, 54, 78, -1, -1, -1]),  // Version 17
-    new Int32Array([6, 30, 56, 82, -1, -1, -1]),  // Version 18
-    new Int32Array([6, 30, 58, 86, -1, -1, -1]),  // Version 19
-    new Int32Array([6, 34, 62, 90, -1, -1, -1]),  // Version 20
-    new Int32Array([6, 28, 50, 72, 94, -1, -1]),  // Version 21
-    new Int32Array([6, 26, 50, 74, 98, -1, -1]),  // Version 22
-    new Int32Array([6, 30, 54, 78, 102, -1, -1]),  // Version 23
-    new Int32Array([6, 28, 54, 80, 106, -1, -1]),  // Version 24
-    new Int32Array([6, 32, 58, 84, 110, -1, -1]),  // Version 25
-    new Int32Array([6, 30, 58, 86, 114, -1, -1]),  // Version 26
-    new Int32Array([6, 34, 62, 90, 118, -1, -1]),  // Version 27
-    new Int32Array([6, 26, 50, 74, 98, 122, -1]),  // Version 28
-    new Int32Array([6, 30, 54, 78, 102, 126, -1]),  // Version 29
-    new Int32Array([6, 26, 52, 78, 104, 130, -1]),  // Version 30
-    new Int32Array([6, 30, 56, 82, 108, 134, -1]),  // Version 31
-    new Int32Array([6, 34, 60, 86, 112, 138, -1]),  // Version 32
-    new Int32Array([6, 30, 58, 86, 114, 142, -1]),  // Version 33
-    new Int32Array([6, 34, 62, 90, 118, 146, -1]),  // Version 34
-    new Int32Array([6, 30, 54, 78, 102, 126, 150]),  // Version 35
-    new Int32Array([6, 24, 50, 76, 102, 128, 154]),  // Version 36
-    new Int32Array([6, 28, 54, 80, 106, 132, 158]),  // Version 37
-    new Int32Array([6, 32, 58, 84, 110, 136, 162]),  // Version 38
-    new Int32Array([6, 26, 54, 82, 110, 138, 166]),  // Version 39
-    new Int32Array([6, 30, 58, 86, 114, 142, 170])  // Version 40
+    Int32Array.of(-1, -1, -1, -1, -1, -1, -1),   // Version 1
+    Int32Array.of(6, 18, -1, -1, -1, -1, -1),    // Version 2
+    Int32Array.of(6, 22, -1, -1, -1, -1, -1),    // Version 3
+    Int32Array.of(6, 26, -1, -1, -1, -1, -1),    // Version 4
+    Int32Array.of(6, 30, -1, -1, -1, -1, -1),    // Version 5
+    Int32Array.of(6, 34, -1, -1, -1, -1, -1),    // Version 6
+    Int32Array.of(6, 22, 38, -1, -1, -1, -1),    // Version 7
+    Int32Array.of(6, 24, 42, -1, -1, -1, -1),    // Version 8
+    Int32Array.of(6, 26, 46, -1, -1, -1, -1),    // Version 9
+    Int32Array.of(6, 28, 50, -1, -1, -1, -1),    // Version 10
+    Int32Array.of(6, 30, 54, -1, -1, -1, -1),    // Version 11
+    Int32Array.of(6, 32, 58, -1, -1, -1, -1),    // Version 12
+    Int32Array.of(6, 34, 62, -1, -1, -1, -1),    // Version 13
+    Int32Array.of(6, 26, 46, 66, -1, -1, -1),    // Version 14
+    Int32Array.of(6, 26, 48, 70, -1, -1, -1),    // Version 15
+    Int32Array.of(6, 26, 50, 74, -1, -1, -1),    // Version 16
+    Int32Array.of(6, 30, 54, 78, -1, -1, -1),    // Version 17
+    Int32Array.of(6, 30, 56, 82, -1, -1, -1),    // Version 18
+    Int32Array.of(6, 30, 58, 86, -1, -1, -1),    // Version 19
+    Int32Array.of(6, 34, 62, 90, -1, -1, -1),    // Version 20
+    Int32Array.of(6, 28, 50, 72, 94, -1, -1),    // Version 21
+    Int32Array.of(6, 26, 50, 74, 98, -1, -1),    // Version 22
+    Int32Array.of(6, 30, 54, 78, 102, -1, -1),   // Version 23
+    Int32Array.of(6, 28, 54, 80, 106, -1, -1),   // Version 24
+    Int32Array.of(6, 32, 58, 84, 110, -1, -1),   // Version 25
+    Int32Array.of(6, 30, 58, 86, 114, -1, -1),   // Version 26
+    Int32Array.of(6, 34, 62, 90, 118, -1, -1),   // Version 27
+    Int32Array.of(6, 26, 50, 74, 98, 122, -1),   // Version 28
+    Int32Array.of(6, 30, 54, 78, 102, 126, -1),  // Version 29
+    Int32Array.of(6, 26, 52, 78, 104, 130, -1),  // Version 30
+    Int32Array.of(6, 30, 56, 82, 108, 134, -1),  // Version 31
+    Int32Array.of(6, 34, 60, 86, 112, 138, -1),  // Version 32
+    Int32Array.of(6, 30, 58, 86, 114, 142, -1),  // Version 33
+    Int32Array.of(6, 34, 62, 90, 118, 146, -1),  // Version 34
+    Int32Array.of(6, 30, 54, 78, 102, 126, 150), // Version 35
+    Int32Array.of(6, 24, 50, 76, 102, 128, 154), // Version 36
+    Int32Array.of(6, 28, 54, 80, 106, 132, 158), // Version 37
+    Int32Array.of(6, 32, 58, 84, 110, 136, 162), // Version 38
+    Int32Array.of(6, 26, 54, 82, 110, 138, 166), // Version 39
+    Int32Array.of(6, 30, 58, 86, 114, 142, 170)  // Version 40
   ];
 
   /**
@@ -118,21 +118,21 @@ goog.scope(function() {
    * @type {Array.<Int32Array>}
    */
   _.TYPE_INFO_COORDINATES = [
-    new Int32Array([8, 0]),
-    new Int32Array([8, 1]),
-    new Int32Array([8, 2]),
-    new Int32Array([8, 3]),
-    new Int32Array([8, 4]),
-    new Int32Array([8, 5]),
-    new Int32Array([8, 7]),
-    new Int32Array([8, 8]),
-    new Int32Array([7, 8]),
-    new Int32Array([5, 8]),
-    new Int32Array([4, 8]),
-    new Int32Array([3, 8]),
-    new Int32Array([2, 8]),
-    new Int32Array([1, 8]),
-    new Int32Array([0, 8])
+    Int32Array.of(8, 0),
+    Int32Array.of(8, 1),
+    Int32Array.of(8, 2),
+    Int32Array.of(8, 3),
+    Int32Array.of(8, 4),
+    Int32Array.of(8, 5),
+    Int32Array.of(8, 7),
+    Int32Array.of(8, 8),
+    Int32Array.of(7, 8),
+    Int32Array.of(5, 8),
+    Int32Array.of(4, 8),
+    Int32Array.of(3, 8),
+    Int32Array.of(2, 8),
+    Int32Array.of(1, 8),
+    Int32Array.of(0, 8)
   ];
 
   // From Appendix D in JISX0510:2004 (p. 67)

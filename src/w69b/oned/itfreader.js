@@ -54,15 +54,15 @@ goog.scope(function() {
    * @final
    */
   ITFReader.PATTERNS = [
-      new Int32Array([N, N, W, W, N]), // 0
-      new Int32Array([W, N, N, N, W]), // 1
-      new Int32Array([N, W, N, N, W]), // 2
-      new Int32Array([W, W, N, N, N]), // 3
-      new Int32Array([N, N, W, N, W]), // 4
-      new Int32Array([W, N, W, N, N]), // 5
-      new Int32Array([N, W, W, N, N]), // 6
-      new Int32Array([N, N, N, W, W]), // 7
-      new Int32Array([W, N, N, W, N]), // 8
-      new Int32Array([N, W, N, W, N])  // 9
+    Int32Array.of(N, N, W, W, N), // 0
+    Int32Array.of(W, N, N, N, W), // 1
+    Int32Array.of(N, W, N, N, W), // 2
+    Int32Array.of(W, W, N, N, N), // 3
+    Int32Array.of(N, N, W, N, W), // 4
+    Int32Array.of(W, N, W, N, N), // 5
+    Int32Array.of(N, W, W, N, N), // 6
+    Int32Array.of(N, N, N, W, W), // 7
+    Int32Array.of(W, N, N, W, N), // 8
+    Int32Array.of(N, W, N, W, N)  // 9
   ];
 });

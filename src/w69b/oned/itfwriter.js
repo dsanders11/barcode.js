@@ -40,10 +40,10 @@ goog.scope(function() {
   var pro = ITFWriter.prototype;
 
   /** @final */
-  var START_PATTERN = new Int32Array([1, 1, 1, 1]);
+  var START_PATTERN = Int32Array.of(1, 1, 1, 1);
 
   /** @final */
-  var END_PATTERN = new Int32Array([3, 1, 1]);
+  var END_PATTERN = Int32Array.of(3, 1, 1);
 
   /**
    * @override

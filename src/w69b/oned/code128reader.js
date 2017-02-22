@@ -54,113 +54,113 @@ goog.scope(function() {
    * @final
    */
   Code128Reader.CODE_PATTERNS = [
-      new Int32Array([2, 1, 2, 2, 2, 2]), // 0
-      new Int32Array([2, 2, 2, 1, 2, 2]),
-      new Int32Array([2, 2, 2, 2, 2, 1]),
-      new Int32Array([1, 2, 1, 2, 2, 3]),
-      new Int32Array([1, 2, 1, 3, 2, 2]),
-      new Int32Array([1, 3, 1, 2, 2, 2]), // 5
-      new Int32Array([1, 2, 2, 2, 1, 3]),
-      new Int32Array([1, 2, 2, 3, 1, 2]),
-      new Int32Array([1, 3, 2, 2, 1, 2]),
-      new Int32Array([2, 2, 1, 2, 1, 3]),
-      new Int32Array([2, 2, 1, 3, 1, 2]), // 10
-      new Int32Array([2, 3, 1, 2, 1, 2]),
-      new Int32Array([1, 1, 2, 2, 3, 2]),
-      new Int32Array([1, 2, 2, 1, 3, 2]),
-      new Int32Array([1, 2, 2, 2, 3, 1]),
-      new Int32Array([1, 1, 3, 2, 2, 2]), // 15
-      new Int32Array([1, 2, 3, 1, 2, 2]),
-      new Int32Array([1, 2, 3, 2, 2, 1]),
-      new Int32Array([2, 2, 3, 2, 1, 1]),
-      new Int32Array([2, 2, 1, 1, 3, 2]),
-      new Int32Array([2, 2, 1, 2, 3, 1]), // 20
-      new Int32Array([2, 1, 3, 2, 1, 2]),
-      new Int32Array([2, 2, 3, 1, 1, 2]),
-      new Int32Array([3, 1, 2, 1, 3, 1]),
-      new Int32Array([3, 1, 1, 2, 2, 2]),
-      new Int32Array([3, 2, 1, 1, 2, 2]), // 25
-      new Int32Array([3, 2, 1, 2, 2, 1]),
-      new Int32Array([3, 1, 2, 2, 1, 2]),
-      new Int32Array([3, 2, 2, 1, 1, 2]),
-      new Int32Array([3, 2, 2, 2, 1, 1]),
-      new Int32Array([2, 1, 2, 1, 2, 3]), // 30
-      new Int32Array([2, 1, 2, 3, 2, 1]),
-      new Int32Array([2, 3, 2, 1, 2, 1]),
-      new Int32Array([1, 1, 1, 3, 2, 3]),
-      new Int32Array([1, 3, 1, 1, 2, 3]),
-      new Int32Array([1, 3, 1, 3, 2, 1]), // 35
-      new Int32Array([1, 1, 2, 3, 1, 3]),
-      new Int32Array([1, 3, 2, 1, 1, 3]),
-      new Int32Array([1, 3, 2, 3, 1, 1]),
-      new Int32Array([2, 1, 1, 3, 1, 3]),
-      new Int32Array([2, 3, 1, 1, 1, 3]), // 40
-      new Int32Array([2, 3, 1, 3, 1, 1]),
-      new Int32Array([1, 1, 2, 1, 3, 3]),
-      new Int32Array([1, 1, 2, 3, 3, 1]),
-      new Int32Array([1, 3, 2, 1, 3, 1]),
-      new Int32Array([1, 1, 3, 1, 2, 3]), // 45
-      new Int32Array([1, 1, 3, 3, 2, 1]),
-      new Int32Array([1, 3, 3, 1, 2, 1]),
-      new Int32Array([3, 1, 3, 1, 2, 1]),
-      new Int32Array([2, 1, 1, 3, 3, 1]),
-      new Int32Array([2, 3, 1, 1, 3, 1]), // 50
-      new Int32Array([2, 1, 3, 1, 1, 3]),
-      new Int32Array([2, 1, 3, 3, 1, 1]),
-      new Int32Array([2, 1, 3, 1, 3, 1]),
-      new Int32Array([3, 1, 1, 1, 2, 3]),
-      new Int32Array([3, 1, 1, 3, 2, 1]), // 55
-      new Int32Array([3, 3, 1, 1, 2, 1]),
-      new Int32Array([3, 1, 2, 1, 1, 3]),
-      new Int32Array([3, 1, 2, 3, 1, 1]),
-      new Int32Array([3, 3, 2, 1, 1, 1]),
-      new Int32Array([3, 1, 4, 1, 1, 1]), // 60
-      new Int32Array([2, 2, 1, 4, 1, 1]),
-      new Int32Array([4, 3, 1, 1, 1, 1]),
-      new Int32Array([1, 1, 1, 2, 2, 4]),
-      new Int32Array([1, 1, 1, 4, 2, 2]),
-      new Int32Array([1, 2, 1, 1, 2, 4]), // 65
-      new Int32Array([1, 2, 1, 4, 2, 1]),
-      new Int32Array([1, 4, 1, 1, 2, 2]),
-      new Int32Array([1, 4, 1, 2, 2, 1]),
-      new Int32Array([1, 1, 2, 2, 1, 4]),
-      new Int32Array([1, 1, 2, 4, 1, 2]), // 70
-      new Int32Array([1, 2, 2, 1, 1, 4]),
-      new Int32Array([1, 2, 2, 4, 1, 1]),
-      new Int32Array([1, 4, 2, 1, 1, 2]),
-      new Int32Array([1, 4, 2, 2, 1, 1]),
-      new Int32Array([2, 4, 1, 2, 1, 1]), // 75
-      new Int32Array([2, 2, 1, 1, 1, 4]),
-      new Int32Array([4, 1, 3, 1, 1, 1]),
-      new Int32Array([2, 4, 1, 1, 1, 2]),
-      new Int32Array([1, 3, 4, 1, 1, 1]),
-      new Int32Array([1, 1, 1, 2, 4, 2]), // 80
-      new Int32Array([1, 2, 1, 1, 4, 2]),
-      new Int32Array([1, 2, 1, 2, 4, 1]),
-      new Int32Array([1, 1, 4, 2, 1, 2]),
-      new Int32Array([1, 2, 4, 1, 1, 2]),
-      new Int32Array([1, 2, 4, 2, 1, 1]), // 85
-      new Int32Array([4, 1, 1, 2, 1, 2]),
-      new Int32Array([4, 2, 1, 1, 1, 2]),
-      new Int32Array([4, 2, 1, 2, 1, 1]),
-      new Int32Array([2, 1, 2, 1, 4, 1]),
-      new Int32Array([2, 1, 4, 1, 2, 1]), // 90
-      new Int32Array([4, 1, 2, 1, 2, 1]),
-      new Int32Array([1, 1, 1, 1, 4, 3]),
-      new Int32Array([1, 1, 1, 3, 4, 1]),
-      new Int32Array([1, 3, 1, 1, 4, 1]),
-      new Int32Array([1, 1, 4, 1, 1, 3]), // 95
-      new Int32Array([1, 1, 4, 3, 1, 1]),
-      new Int32Array([4, 1, 1, 1, 1, 3]),
-      new Int32Array([4, 1, 1, 3, 1, 1]),
-      new Int32Array([1, 1, 3, 1, 4, 1]),
-      new Int32Array([1, 1, 4, 1, 3, 1]), // 100
-      new Int32Array([3, 1, 1, 1, 4, 1]),
-      new Int32Array([4, 1, 1, 1, 3, 1]),
-      new Int32Array([2, 1, 1, 4, 1, 2]),
-      new Int32Array([2, 1, 1, 2, 1, 4]),
-      new Int32Array([2, 1, 1, 2, 3, 2]), // 105
-      new Int32Array([2, 3, 3, 1, 1, 1, 2])
+    Int32Array.of(2, 1, 2, 2, 2, 2), // 0
+    Int32Array.of(2, 2, 2, 1, 2, 2),
+    Int32Array.of(2, 2, 2, 2, 2, 1),
+    Int32Array.of(1, 2, 1, 2, 2, 3),
+    Int32Array.of(1, 2, 1, 3, 2, 2),
+    Int32Array.of(1, 3, 1, 2, 2, 2), // 5
+    Int32Array.of(1, 2, 2, 2, 1, 3),
+    Int32Array.of(1, 2, 2, 3, 1, 2),
+    Int32Array.of(1, 3, 2, 2, 1, 2),
+    Int32Array.of(2, 2, 1, 2, 1, 3),
+    Int32Array.of(2, 2, 1, 3, 1, 2), // 10
+    Int32Array.of(2, 3, 1, 2, 1, 2),
+    Int32Array.of(1, 1, 2, 2, 3, 2),
+    Int32Array.of(1, 2, 2, 1, 3, 2),
+    Int32Array.of(1, 2, 2, 2, 3, 1),
+    Int32Array.of(1, 1, 3, 2, 2, 2), // 15
+    Int32Array.of(1, 2, 3, 1, 2, 2),
+    Int32Array.of(1, 2, 3, 2, 2, 1),
+    Int32Array.of(2, 2, 3, 2, 1, 1),
+    Int32Array.of(2, 2, 1, 1, 3, 2),
+    Int32Array.of(2, 2, 1, 2, 3, 1), // 20
+    Int32Array.of(2, 1, 3, 2, 1, 2),
+    Int32Array.of(2, 2, 3, 1, 1, 2),
+    Int32Array.of(3, 1, 2, 1, 3, 1),
+    Int32Array.of(3, 1, 1, 2, 2, 2),
+    Int32Array.of(3, 2, 1, 1, 2, 2), // 25
+    Int32Array.of(3, 2, 1, 2, 2, 1),
+    Int32Array.of(3, 1, 2, 2, 1, 2),
+    Int32Array.of(3, 2, 2, 1, 1, 2),
+    Int32Array.of(3, 2, 2, 2, 1, 1),
+    Int32Array.of(2, 1, 2, 1, 2, 3), // 30
+    Int32Array.of(2, 1, 2, 3, 2, 1),
+    Int32Array.of(2, 3, 2, 1, 2, 1),
+    Int32Array.of(1, 1, 1, 3, 2, 3),
+    Int32Array.of(1, 3, 1, 1, 2, 3),
+    Int32Array.of(1, 3, 1, 3, 2, 1), // 35
+    Int32Array.of(1, 1, 2, 3, 1, 3),
+    Int32Array.of(1, 3, 2, 1, 1, 3),
+    Int32Array.of(1, 3, 2, 3, 1, 1),
+    Int32Array.of(2, 1, 1, 3, 1, 3),
+    Int32Array.of(2, 3, 1, 1, 1, 3), // 40
+    Int32Array.of(2, 3, 1, 3, 1, 1),
+    Int32Array.of(1, 1, 2, 1, 3, 3),
+    Int32Array.of(1, 1, 2, 3, 3, 1),
+    Int32Array.of(1, 3, 2, 1, 3, 1),
+    Int32Array.of(1, 1, 3, 1, 2, 3), // 45
+    Int32Array.of(1, 1, 3, 3, 2, 1),
+    Int32Array.of(1, 3, 3, 1, 2, 1),
+    Int32Array.of(3, 1, 3, 1, 2, 1),
+    Int32Array.of(2, 1, 1, 3, 3, 1),
+    Int32Array.of(2, 3, 1, 1, 3, 1), // 50
+    Int32Array.of(2, 1, 3, 1, 1, 3),
+    Int32Array.of(2, 1, 3, 3, 1, 1),
+    Int32Array.of(2, 1, 3, 1, 3, 1),
+    Int32Array.of(3, 1, 1, 1, 2, 3),
+    Int32Array.of(3, 1, 1, 3, 2, 1), // 55
+    Int32Array.of(3, 3, 1, 1, 2, 1),
+    Int32Array.of(3, 1, 2, 1, 1, 3),
+    Int32Array.of(3, 1, 2, 3, 1, 1),
+    Int32Array.of(3, 3, 2, 1, 1, 1),
+    Int32Array.of(3, 1, 4, 1, 1, 1), // 60
+    Int32Array.of(2, 2, 1, 4, 1, 1),
+    Int32Array.of(4, 3, 1, 1, 1, 1),
+    Int32Array.of(1, 1, 1, 2, 2, 4),
+    Int32Array.of(1, 1, 1, 4, 2, 2),
+    Int32Array.of(1, 2, 1, 1, 2, 4), // 65
+    Int32Array.of(1, 2, 1, 4, 2, 1),
+    Int32Array.of(1, 4, 1, 1, 2, 2),
+    Int32Array.of(1, 4, 1, 2, 2, 1),
+    Int32Array.of(1, 1, 2, 2, 1, 4),
+    Int32Array.of(1, 1, 2, 4, 1, 2), // 70
+    Int32Array.of(1, 2, 2, 1, 1, 4),
+    Int32Array.of(1, 2, 2, 4, 1, 1),
+    Int32Array.of(1, 4, 2, 1, 1, 2),
+    Int32Array.of(1, 4, 2, 2, 1, 1),
+    Int32Array.of(2, 4, 1, 2, 1, 1), // 75
+    Int32Array.of(2, 2, 1, 1, 1, 4),
+    Int32Array.of(4, 1, 3, 1, 1, 1),
+    Int32Array.of(2, 4, 1, 1, 1, 2),
+    Int32Array.of(1, 3, 4, 1, 1, 1),
+    Int32Array.of(1, 1, 1, 2, 4, 2), // 80
+    Int32Array.of(1, 2, 1, 1, 4, 2),
+    Int32Array.of(1, 2, 1, 2, 4, 1),
+    Int32Array.of(1, 1, 4, 2, 1, 2),
+    Int32Array.of(1, 2, 4, 1, 1, 2),
+    Int32Array.of(1, 2, 4, 2, 1, 1), // 85
+    Int32Array.of(4, 1, 1, 2, 1, 2),
+    Int32Array.of(4, 2, 1, 1, 1, 2),
+    Int32Array.of(4, 2, 1, 2, 1, 1),
+    Int32Array.of(2, 1, 2, 1, 4, 1),
+    Int32Array.of(2, 1, 4, 1, 2, 1), // 90
+    Int32Array.of(4, 1, 2, 1, 2, 1),
+    Int32Array.of(1, 1, 1, 1, 4, 3),
+    Int32Array.of(1, 1, 1, 3, 4, 1),
+    Int32Array.of(1, 3, 1, 1, 4, 1),
+    Int32Array.of(1, 1, 4, 1, 1, 3), // 95
+    Int32Array.of(1, 1, 4, 3, 1, 1),
+    Int32Array.of(4, 1, 1, 1, 1, 3),
+    Int32Array.of(4, 1, 1, 3, 1, 1),
+    Int32Array.of(1, 1, 3, 1, 4, 1),
+    Int32Array.of(1, 1, 4, 1, 3, 1), // 100
+    Int32Array.of(3, 1, 1, 1, 4, 1),
+    Int32Array.of(4, 1, 1, 1, 3, 1),
+    Int32Array.of(2, 1, 1, 4, 1, 2),
+    Int32Array.of(2, 1, 1, 2, 1, 4),
+    Int32Array.of(2, 1, 1, 2, 3, 2), // 105
+    Int32Array.of(2, 3, 3, 1, 1, 1, 2)
   ];
 
   /** @final */
@@ -564,7 +564,7 @@ goog.scope(function() {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (bestMatch >= 0 &&
               row.isRange(Math.max(0, patternStart - (i - patternStart) / 2), patternStart, false)) {
-            return new Int32Array([patternStart, i, bestMatch]);
+            return Int32Array.of(patternStart, i, bestMatch);
           }
           patternStart += counters[0] + counters[1];
           //System.arraycopy(counters, 2, counters, 0, patternLength - 2);

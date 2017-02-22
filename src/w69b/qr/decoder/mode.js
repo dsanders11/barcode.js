@@ -43,18 +43,18 @@ goog.scope(function() {
   /** @enum {Mode} */
   w69b.qr.decoder.ModeEnum = {
     // Not really a mode...
-    TERMINATOR: new Mode(new Int32Array([0, 0, 0]), 0x00, 'TERMINATOR'),
-    NUMERIC: new Mode(new Int32Array([10, 12, 14]), 0x01, 'NUMERIC'),
-    ALPHANUMERIC: new Mode(new Int32Array([9, 11, 13]), 0x02, 'ALPHANUMERIC'),
+    TERMINATOR: new Mode(Int32Array.of(0, 0, 0), 0x00, 'TERMINATOR'),
+    NUMERIC: new Mode(Int32Array.of(10, 12, 14), 0x01, 'NUMERIC'),
+    ALPHANUMERIC: new Mode(Int32Array.of(9, 11, 13), 0x02, 'ALPHANUMERIC'),
     // Not supported
-    STRUCTURED_APPEND: new Mode(new Int32Array([0, 0, 0]), 0x03, 'STRUCTURED_APPEND'),
-    BYTE: new Mode(new Int32Array([8, 16, 16]), 0x04, 'BYTE'),
-    ECI: new Mode(new Int32Array([0, 0, 0]), 0x07, 'ECI'), // character counts don't apply
-    KANJI: new Mode(new Int32Array([8, 10, 12]), 0x08, 'KANJI'),
-    FNC1_FIRST_POSITION: new Mode(new Int32Array([0, 0, 0]), 0x05, 'FNC1_FIRST_POSITION'),
-    FNC1_SECOND_POSITION: new Mode(new Int32Array([0, 0, 0]), 0x09, 'FNC1_SECOND_POSITION'),
+    STRUCTURED_APPEND: new Mode(Int32Array.of(0, 0, 0), 0x03, 'STRUCTURED_APPEND'),
+    BYTE: new Mode(Int32Array.of(8, 16, 16), 0x04, 'BYTE'),
+    ECI: new Mode(Int32Array.of(0, 0, 0), 0x07, 'ECI'), // character counts don't apply
+    KANJI: new Mode(Int32Array.of(8, 10, 12), 0x08, 'KANJI'),
+    FNC1_FIRST_POSITION: new Mode(Int32Array.of(0, 0, 0), 0x05, 'FNC1_FIRST_POSITION'),
+    FNC1_SECOND_POSITION: new Mode(Int32Array.of(0, 0, 0), 0x09, 'FNC1_SECOND_POSITION'),
     /** See GBT 18284-2000; "Hanzi" is a transliteration of this mode name. */
-    HANZI: new Mode(new Int32Array([8, 10, 12]), 0x0D, 'HANZI')
+    HANZI: new Mode(Int32Array.of(8, 10, 12), 0x0D, 'HANZI')
   };
   var ModeEnum = w69b.qr.decoder.ModeEnum;
 

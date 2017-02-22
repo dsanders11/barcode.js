@@ -195,7 +195,7 @@ goog.scope(function() {
       bit++;
     }
     x += bit;
-    return new Int32Array([x, y]);
+    return Int32Array.of(x, y);
   };
 
   /**
@@ -220,7 +220,7 @@ goog.scope(function() {
     }
     x += bit;
 
-    return new Int32Array([x, y]);
+    return Int32Array.of(x, y);
   };
 
   /**

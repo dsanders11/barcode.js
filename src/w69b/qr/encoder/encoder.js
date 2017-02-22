@@ -62,7 +62,7 @@ goog.scope(function() {
    * The original table is defined in the table 5 of JISX0510:2004 (p.19).
    * @final
    */
-  _.ALPHANUMERIC_TABLE = new Int32Array([
+  _.ALPHANUMERIC_TABLE = Int32Array.of(
     // 0x00-0x0f
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     // 0x10-0x1f
@@ -75,7 +75,7 @@ goog.scope(function() {
     -1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
     // 0x50-0x5f
     25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1
-  ]);
+  );
 
   _.DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
 

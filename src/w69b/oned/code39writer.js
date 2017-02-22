@@ -77,7 +77,7 @@ goog.scope(function() {
     var result = new Array(codeWidth);
     toIntArray(Code39Reader.ASTERISK_ENCODING, widths);
     var pos = OneDimensionalCodeWriter.appendPattern(result, 0, widths, true);
-    var narrowWhite = new Int32Array([1]);
+    var narrowWhite = Int32Array.of(1);
     pos += OneDimensionalCodeWriter.appendPattern(result, pos, narrowWhite, false);
     //append next character to byte matrix
     for (var i = 0; i < length; i++) {

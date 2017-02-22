@@ -180,7 +180,7 @@ goog.scope(function() {
     var numErrors = errorLocator.getDegree();
     if (numErrors == 1) {
       // shortcut
-      return new Int32Array([errorLocator.getCoefficient(1)]);
+      return Int32Array.of(errorLocator.getCoefficient(1));
     }
     var result = new Int32Array(numErrors);
     var e = 0;

@@ -71,7 +71,7 @@ goog.scope(function() {
     this.width = width;
     this.height = height;
     this.moduleSize = moduleSize;
-    this.crossCheckStateCount = new Int32Array([0, 0, 0]);
+    this.crossCheckStateCount = Int32Array.of(0, 0, 0);
     this.resultPointCallback = resultPointCallback;
   };
   var AlignmentPatternFinder = w69b.qr.detector.AlignmentPatternFinder;

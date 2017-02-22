@@ -85,13 +85,13 @@ goog.scope(function() {
    * wide and narrow, with 1s representing "wide" and 0s representing narrow.
    * @final
    */
-  Code39Reader.CHARACTER_ENCODINGS = new Int32Array([
+  Code39Reader.CHARACTER_ENCODINGS = Int32Array.of(
     0x034, 0x121, 0x061, 0x160, 0x031, 0x130, 0x070, 0x025, 0x124, 0x064, // 0-9
     0x109, 0x049, 0x148, 0x019, 0x118, 0x058, 0x00D, 0x10C, 0x04C, 0x01C, // A-J
     0x103, 0x043, 0x142, 0x013, 0x112, 0x052, 0x007, 0x106, 0x046, 0x016, // K-T
     0x181, 0x0C1, 0x1C0, 0x091, 0x190, 0x0D0, 0x085, 0x184, 0x0C4, 0x094, // U-*
     0x0A8, 0x0A2, 0x08A, 0x02A // $-%
-  ]);
+  );
 
   /** @final */
   Code39Reader.ASTERISK_ENCODING = Code39Reader.CHARACTER_ENCODINGS[39];
@@ -251,7 +251,7 @@ goog.scope(function() {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (Code39Reader.toNarrowWidePattern_(counters) == Code39Reader.ASTERISK_ENCODING &&
               row.isRange(Math.max(0, patternStart - ((i - patternStart) / 2)), patternStart, false)) {
-            return new Int32Array([patternStart, i]);
+            return Int32Array.of(patternStart, i);
           }
           patternStart += counters[0] + counters[1];
           //System.arraycopy(counters, 2, counters, 0, patternLength - 2);
