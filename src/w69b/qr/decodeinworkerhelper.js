@@ -212,6 +212,7 @@ goog.scope(function() {
         'buffer': buffer,
         'isFirefox': Boolean(goog.userAgent.product.FIREFOX),
         'isBinary': isBinary,
+        'isGrayscale': imgDataOrMatrix.grayscale_
       };
       this.callback_ = callback;
       this.worker_.postMessage(msg, [buffer]);

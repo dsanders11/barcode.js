@@ -62,8 +62,33 @@ goog.scope(function() {
     canvas.width = size.width;
     canvas.height = size.height;
     var context = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
+    var canvasFiltersSupported = Boolean(context.filter);
+    if (canvasFiltersSupported) {
+      var svgHolder = document.createElement('div');
+      svgHolder.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             viewBox="0 0 204 224">
+          <defs>
+            <filter id="grayscale">
+              <feColorMatrix type="matrix"values="0.25 0.5 0.25 0 0
+                                                  0.25 0.5 0.25 0 0
+                                                  0.25 0.5 0.25 0 0
+                                                  0 0 0 0 1"/>
+            </filter>
+          </defs>
+        </svg>`;
+      document.body.appendChild(svgHolder);
+      context.filter = 'url(#grayscale)';
+    }
     context.drawImage(img, 0, 0, size.width, size.height);
-    return context.getImageData(0, 0, size.width, size.height);
+    var imageData = context.getImageData(0, 0, size.width, size.height);
+    canvas.remove();
+    if (canvasFiltersSupported) {
+      svgHolder.remove();
+      imageData.grayscale_ = true;
+    }
+    return imageData;
   };
 
   /**

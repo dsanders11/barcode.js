@@ -80,10 +80,12 @@ goog.scope(function() {
       var buffer = data['buffer'];
       var isFirefox = data['isFirefox'];
       var isBinary = data['isBinary'] || false;
+      var isGrayscale = data['isGrayscale'];
       if (!buffer.byteLength) {
         throw Error('worker commmunication failed');
       }
       var imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
+      imageData.grayscale_ = isGrayscale;
       _.decode(imageData, isBinary);
       // Hack for FF memory leak - if webgl is used, we tranfer back the
       // buffer as a workaround.
