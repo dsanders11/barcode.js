@@ -26,11 +26,16 @@
   },
   "checks": {
     "lintChecks": "WARNING",
+    "missingProperties": "WARNING",
     "missingProvide": "WARNING",
+    // "missingOverride": "WARNING",
     "missingRequire": "WARNING",
     "missingReturn": "WARNING",
     "unusedLocalVariables": "WARNING",
-    "extraRequire": "WARNING"
+    "undefinedNames": "WARNING",
+    "extraRequire": "WARNING",
+    "visibility": "WARNING",
+    "underscore": "WARNING"
     // "reportUnknownTypes": "WARNING"
   }
 }
