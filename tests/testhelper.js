@@ -1,7 +1,7 @@
 'use strict';
 goog.require('goog.Promise');
-goog.require('w69b.img.WebGLBinarizer');
-goog.require('w69b.qr.DecodeInWorkerHelper');
+goog.require('w69b.webgl.WebGLBinarizer');
+goog.require('w69b.worker.DecodeInWorkerHelper');
 // Copyright 2015 Manuel Braun (mb@w69b.com). All Rights Reserved.
 goog.require('w69b.qr.decoding');
 
@@ -9,7 +9,7 @@ define(function() {
   var _ = {};
 
   _.DATA_URL = '/base/test_data/';
-  var webGlSupported = w69b.img.WebGLBinarizer.isSupported();
+  var webGlSupported = w69b.webgl.WebGLBinarizer.isSupported();
   _.ALL_DECODE_OPTIONS = [
     {worker: false, webgl: false},
     {worker: true, webgl: false}
@@ -49,9 +49,9 @@ define(function() {
   };
 
   _.setupWorkerUrls = function() {
-    w69b.qr.DecodeInWorkerHelper.setWorkerUrl(
+    w69b.worker.DecodeInWorkerHelper.setWorkerUrl(
       '/base/dist/w69b.qrcode.decodeworker.js');
-    w69b.qr.DecodeInWorkerHelper.setIconvUrl(
+    w69b.worker.DecodeInWorkerHelper.setIconvUrl(
       '/base/node_modules/iconv.js/iconv.js');
   };
 

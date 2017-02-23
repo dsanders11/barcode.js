@@ -2,17 +2,18 @@
 define(['chai', 'sinon'], function(chai, sinon) {
   var expect = chai.expect;
   describe('ContinuousScanner', function() {
-    var ContinuousScanner = w69b.qr.ui.ContinuousScanner;
+    var ContinuousScanner = w69b.ui.ContinuousScanner;
+    var LocalVideoCapturer = w69b.ui.LocalVideoCapturer;
 
     function expectSupport(ua, apiPresent, supported) {
       var uaMock = sinon.mock(goog.userAgent);
       uaMock.expects('getUserAgentString').once().returns(ua);
-      var apiBackup = w69b.LocalVideoCapturer.getMedia;
-      w69b.LocalVideoCapturer.getMedia = apiPresent;
+      var apiBackup = LocalVideoCapturer.getMedia;
+      LocalVideoCapturer.getMedia = apiPresent;
       uaMock.expects('getUserAgentString').once().returns(ua);
       expect(ContinuousScanner.isSupported()).to.equal(supported);
       uaMock.restore();
-      w69b.LocalVideoCapturer.getMedia = apiBackup;
+      LocalVideoCapturer.getMedia = apiBackup;
     }
 
     it('detects supported browsers', function() {

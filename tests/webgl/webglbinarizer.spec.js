@@ -3,8 +3,8 @@
 define(['chai'], function(chai) {
   var expect = chai.expect;
   describe('WebGLBinarizer', function() {
-    var WebGLBinarizer = w69b.img.WebGLBinarizer;
-    var WebGLFiler = w69b.img.WebGLFilter;
+    var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
+    var WebGLFiler = w69b.webgl.WebGLFilter;
     var isWebGLSupported;
 
     // Check webgl support.

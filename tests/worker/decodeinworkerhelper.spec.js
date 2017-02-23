@@ -5,7 +5,7 @@ goog.require('goog.math.Size');
 define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   var expect = chai.expect;
   describe('decodeInWorkerHelper', function() {
-    var DecodeInWorkerHelper = w69b.qr.DecodeInWorkerHelper;
+    var DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
 
     it('should fail without worker url', function() {
       DecodeInWorkerHelper.setWorkerUrl(null);
@@ -19,9 +19,9 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
       return testhelper.loadImage(url).then(function(img) {
         return new goog.Promise(function(resolve, reject) {
           worker.decode(img, new goog.math.Size(img.width, img.height), function(type, value) {
-            if (type == w69b.qr.WorkerMessageType.DECODED)
+            if (type == w69b.worker.WorkerMessageType.DECODED)
               resolve(value.text);
-            else if (type == w69b.qr.WorkerMessageType.NOTFOUND)
+            else if (type == w69b.worker.WorkerMessageType.NOTFOUND)
               reject(value);
           });
         });

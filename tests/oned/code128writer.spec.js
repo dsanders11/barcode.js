@@ -16,7 +16,7 @@
  */
 
 
-define(['chai', './bitmatrix.spec.js'], function(chai, BitMatrixTestCase) {
+define(['chai', '../common/bitmatrix.spec.js'], function(chai, BitMatrixTestCase) {
   var assert = chai.assert;
   var BarcodeFormat = w69b.BarcodeFormat;
   var Code128Reader = w69b.oned.Code128Reader;

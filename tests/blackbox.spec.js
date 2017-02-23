@@ -7,7 +7,7 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   // Expected number of detections with native binarizer.
   var expectedDetections = {
     'qrcode-1': 19,
-    'qrcode-2': 30,
+    'qrcode-2': 29,
     'qrcode-3': 38,
     'qrcode-4': 35,
     'qrcode-5': 19,

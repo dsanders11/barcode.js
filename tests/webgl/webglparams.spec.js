@@ -3,7 +3,7 @@
 define(['chai', 'sinon'], function(chai, sinon) {
   var expect = chai.expect;
   describe('WebGLParams', function() {
-    var WebGLParams = w69b.img.WebGLParams;
+    var WebGLParams = w69b.webgl.WebGLParams;
 
     function getProgramStub() {
       var set1iSpy = sinon.spy();
@@ -47,4 +47,3 @@ define(['chai', 'sinon'], function(chai, sinon) {
     });
   });
 });
-

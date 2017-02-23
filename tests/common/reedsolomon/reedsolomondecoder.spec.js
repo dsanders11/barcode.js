@@ -21,7 +21,7 @@ goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
 goog.require('w69b.common.reedsolomon.ReedSolomonException');
 
 
-define(['chai', 'corrupt'], function(chai, corrupt) {
+define(['chai', '../../corrupt.spec.js'], function(chai, corrupt) {
   var assert = chai.assert;
   var expect = chai.expect;
   describe('ReedSolomonDecoder tests', function() {
@@ -46,8 +46,6 @@ define(['chai', 'corrupt'], function(chai, corrupt) {
         expect(received[i]).to.equal(QR_CODE_TEST[i]);
       }
     }
-
-
 
     it('decodes code with no errors', function() {
       var received = goog.array.clone(QR_CODE_TEST_WITH_EC);
@@ -80,4 +78,3 @@ define(['chai', 'corrupt'], function(chai, corrupt) {
     });
   });
 });
-

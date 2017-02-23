@@ -3,8 +3,8 @@
 define(['chai', 'sinon'], function(chai, sinon) {
   var expect = chai.expect;
   describe('WebGLPipeline', function() {
-    var WebGLPipeline = w69b.img.WebGLPipeline;
-    var WebGLParams = w69b.img.WebGLParams;
+    var WebGLPipeline = w69b.webgl.WebGLPipeline;
+    var WebGLParams = w69b.webgl.WebGLParams;
     var filterStub, pipeline;
 
     function getProgramStub() {
@@ -62,4 +62,3 @@ define(['chai', 'sinon'], function(chai, sinon) {
     });
   });
 });
-

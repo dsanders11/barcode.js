@@ -11,14 +11,14 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   // Expected number of detections with native binarizer.
   var expectedDetections = {
     'code128-1': 6,
-    'code128-2': 12,
+    'code128-2': 13,
     'code128-3': 2
   };
   // Expected number of detections with WebGl binarizer, slightly worse in some cases, slightly
   // better in others.
   var expectedDetectionsGl = {
     'code128-1': 6,
-    'code128-2': 12,
+    'code128-2': 13,
     'code128-3': 2
   };
   // If != null, run only specified suites (for debugging).

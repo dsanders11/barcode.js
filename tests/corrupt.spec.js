@@ -1,5 +1,5 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-define('corrupt', function() {
+define(function() {
   return function(received, howMany) {
     var corrupted = new Array(received.length);
     for (var j = 0; j < howMany; j++) {
@@ -14,5 +14,5 @@ define('corrupt', function() {
         // Math.round(Math.random() * 255)) % 0xFF;
       }
     }
-  }
+  };
 });

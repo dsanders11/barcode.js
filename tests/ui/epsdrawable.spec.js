@@ -5,7 +5,7 @@ define(['chai', 'sinon'], function(chai, sinon) {
   describe('EPS drawable', function() {
     var drawable;
     beforeEach(function() {
-      drawable = new w69b.qr.EpsDrawable();
+      drawable = new w69b.ui.EpsDrawable();
     });
 
     it('should draw simple figure', function() {
@@ -23,4 +23,3 @@ define(['chai', 'sinon'], function(chai, sinon) {
     });
   });
 });
-

@@ -5,7 +5,6 @@ define(['chai'], function(chai) {
   var ResultPoint = w69b.ResultPoint;
   var EPSILON = 0.001;
   describe('compute skew', function() {
-
     var triangle;
 
     beforeEach(function() {
@@ -22,7 +21,6 @@ define(['chai'], function(chai) {
       expect(FinderPatternFinder.computeSkew(reordered)).below(EPSILON);
       reordered = [triangle[2], triangle[0], triangle[1]];
       expect(FinderPatternFinder.computeSkew(reordered)).below(EPSILON);
-
     });
 
     it('should be small', function() {
@@ -37,5 +35,4 @@ define(['chai'], function(chai) {
       expect(FinderPatternFinder.computeSkew(triangle)).above(0.3);
     });
   });
-
 });
