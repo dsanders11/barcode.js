@@ -7,9 +7,9 @@ goog.provide('main');
 goog.require('w69b.FileSaver');
 goog.require('w69b.MultiFormatReader');
 goog.require('w69b.MultiFormatWriter');
+goog.require('w69b.licenses');
 goog.require('w69b.qr.decoding');
 goog.require('w69b.qr.encoding');
-goog.require('w69b.qr.licenses');
 goog.require('w69b.ui.ContinuousScanner');
 goog.require('w69b.ui.LocalVideoCapturer');
 goog.require('w69b.webgl.WebGLBinarizer');  // no compiled exports, debug only

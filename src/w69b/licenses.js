@@ -61,4 +61,4 @@
  *
  */
 
-goog.provide('w69b.qr.licenses');
+goog.provide('w69b.licenses');
