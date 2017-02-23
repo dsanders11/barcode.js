@@ -86,7 +86,7 @@
       binarizer = new w69b.webgl.WebGLBinarizer(glCanvas);
       binarizer.setFlipInput(true);
       var promise;
-      if (w69b.ui.LocalVideoCapturer.getMedia) {
+      if (w69b.ui.LocalVideoCapturer.isSupported()) {
         promise = captureVideo();
       } else {
         console.log('getUserMedia not supported, using boring fallback video');

@@ -85,7 +85,7 @@ goog.scope(function() {
    */
   ContinuousScanner.isSupported = function() {
     // If api is not pressent it's clearly not supported.
-    if (!w69b.ui.LocalVideoCapturer.getMedia)
+    if (!w69b.ui.LocalVideoCapturer.isSupported())
       return false;
     // But feature detection does not work as browsers lie about their
     // capabilities, so sniff versions and blacklist some.

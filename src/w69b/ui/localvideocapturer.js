@@ -12,6 +12,7 @@ goog.scope(function() {
    * TODO: add start/stop methods and ready/error events.
    * @constructor
    * @extends {goog.Disposable}
+   * @export
    */
   w69b.ui.LocalVideoCapturer = function() {
     goog.base(this);
@@ -37,9 +38,18 @@ goog.scope(function() {
       navigator['mozGetUserMedia'] ||
       navigator['msGetUserMedia']);
 
-  if (LocalVideoCapturer.getMedia)
+  if (LocalVideoCapturer.getMedia) {
     LocalVideoCapturer.getMedia =
       LocalVideoCapturer.getMedia.bind(navigator);
+  }
+
+  /**
+   * @return {boolean} if getUserMedia is supported.
+   * @export
+   */
+  LocalVideoCapturer.isSupported = function() {
+    return Boolean(LocalVideoCapturer.getMedia);
+  };
 
   /**
    * Canvas uses to call getImageData on.
@@ -69,6 +79,7 @@ goog.scope(function() {
 
   /**
    * @return {HTMLVideoElement} video element.
+   * @export
    */
   pro.getVideo = function() {
     return this.mediaVideo_;
@@ -77,6 +88,7 @@ goog.scope(function() {
   /**
    * Start capturing video.
    * @param {function()} ready
+   * @export
    */
   pro.start = function(ready) {
     goog.events.listenOnce(this.mediaVideo_, 'canplay', function() {
@@ -105,6 +117,7 @@ goog.scope(function() {
    * Image is scaled down to opt_maxSize if its width or height is larger.
    * @param {Size} size desired size of image.
    * @return {ImageData} image data.
+   * @export
    */
   pro.getImageData = function(size) {
     this.drawAndGetCanvas(size);
@@ -116,6 +129,7 @@ goog.scope(function() {
    * Image is scaled down to opt_maxSize if its width or height is larger.
    * @param {Size} size desired size of image.
    * @return {HTMLCanvasElement} canvas.
+   * @export
    */
   pro.drawAndGetCanvas = function(size) {
     var video = this.mediaVideo_;
@@ -136,6 +150,7 @@ goog.scope(function() {
    * Draws video on canvas, scaling to to fit into canvas.
    * @param {HTMLCanvasElement} canvas canvas to draw on.
    * @param {CanvasRenderingContext2D} context context of canvas.
+   * @export
    */
   pro.drawOnCanvas = function(canvas, context) {
     var video = this.getVideo();
@@ -165,6 +180,7 @@ goog.scope(function() {
 
   /**
    * @param {number} code error code
+   * @protected
    */
   pro.onGetMediaError = function(code) {
     window.console.log('error code:');
@@ -194,10 +210,12 @@ goog.scope(function() {
         self.onGetMediaSuccess.bind(self),
         self.onGetMediaError.bind(self));
     }
-    if (window['MediaStreamTrack'] && window['MediaStreamTrack']['getSources'])
+    if (window['MediaStreamTrack'] && window['MediaStreamTrack']['getSources']) {
       window['MediaStreamTrack']['getSources'](gotSources);
-    else
+    }
+    else {
       gotSources([]);
+    }
   };
 
   /**
@@ -208,12 +226,14 @@ goog.scope(function() {
     var url = this.mediaVideo_.src;
     this.mediaVideo_.pause();
     this.mediaVideo_.src = '';
-    if (window.URL && window.URL.revokeObjectURL)
+    if (window.URL && window.URL.revokeObjectURL) {
       window.URL.revokeObjectURL(url);
+    }
     this.mediaVideo_ = null;
     if (this.stream_) {
-      if (this.stream_['stop'])
+      if (this.stream_['stop']) {
         this.stream_.stop();
+      }
       if (this.stream_['getTracks']) {
         this.stream_['getTracks']().forEach(
           /** @param {MediaStreamTrack} track */
@@ -224,17 +244,4 @@ goog.scope(function() {
       }
     }
   };
-
-  // exports
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.getMedia',
-                    pro.getMedia);
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.getVideo',
-                    pro.getVideo);
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.start', pro.start);
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.getImageData',
-                    pro.getImageData);
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.drawAndGetCanvas',
-                    pro.drawAndGetCanvas);
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.drawOnCanvas',
-                    pro.drawOnCanvas);
 });
