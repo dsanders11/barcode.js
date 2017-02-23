@@ -120,6 +120,7 @@ goog.scope(function() {
    */
   pro.find = function(opt_hints) {
     var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
+    var pureBarcode = Boolean(opt_hints && !!opt_hints[DecodeHintType.PURE_BARCODE]);
     var maxI = this.image_.getHeight();
     var maxJ = this.image_.getWidth();
     // We are looking for black/white/black/white/black modules in
@@ -159,7 +160,7 @@ goog.scope(function() {
           if ((currentState & 1) == 0) { // Counting black pixels
             if (currentState == 4) { // A winner?
               if (_.foundPatternCross(stateCount)) { // Yes
-                confirmed = this.handlePossibleCenter(stateCount, i, j);
+                confirmed = this.handlePossibleCenter(stateCount, i, j, pureBarcode);
                 if (confirmed) {
                   // Start examining every other line. Checking each line
                   // turned out to be too
@@ -217,7 +218,7 @@ goog.scope(function() {
         }
       }
       if (_.foundPatternCross(stateCount)) {
-        confirmed = this.handlePossibleCenter(stateCount, i, maxJ);
+        confirmed = this.handlePossibleCenter(stateCount, i, maxJ, pureBarcode);
         if (confirmed) {
           iSkip = stateCount[0];
           if (this.hasSkipped_) {
@@ -289,6 +290,100 @@ goog.scope(function() {
     this.crossCheckStateCount_[3] = 0;
     this.crossCheckStateCount_[4] = 0;
     return this.crossCheckStateCount_;
+  };
+
+  /**
+   * After a vertical and horizontal scan finds a potential finder pattern,
+   * this method "cross-cross-cross-checks" by scanning down diagonally through
+   * the center of the possible finder pattern to see if the same proportion
+   * is detected.
+   *
+   * @param {number} startI row where a finder pattern was detected
+   * @param {number} centerJ center of the section that appears to cross a finder pattern
+   * @param {number} maxCount maximum reasonable number of modules that should be
+   *  observed in any reading state, based on the results of the horizontal scan
+   * @param {number} originalStateCountTotal The original state count total.
+   * @return {boolean} true if proportions are withing expected limits
+   * @private
+   */
+  pro.crossCheckDiagonal_ = function(startI, centerJ, maxCount, originalStateCountTotal) {
+    var image = this.image_;
+    var stateCount = this.getCrossCheckStateCount();
+
+    // Start counting up, left from center finding black center mass
+    var i = 0;
+    while (startI >= i && centerJ >= i && image.get(centerJ - i, startI - i)) {
+      stateCount[2]++;
+      i++;
+    }
+
+    if (startI < i || centerJ < i) {
+      return false;
+    }
+
+    // Continue up, left finding white space
+    while (startI >= i && centerJ >= i && !image.get(centerJ - i, startI - i) &&
+           stateCount[1] <= maxCount) {
+      stateCount[1]++;
+      i++;
+    }
+
+    // If already too many modules in this state or ran off the edge:
+    if (startI < i || centerJ < i || stateCount[1] > maxCount) {
+      return false;
+    }
+
+    // Continue up, left finding black border
+    while (startI >= i && centerJ >= i && image.get(centerJ - i, startI - i) &&
+           stateCount[0] <= maxCount) {
+      stateCount[0]++;
+      i++;
+    }
+    if (stateCount[0] > maxCount) {
+       return false;
+    }
+
+    var maxI = image.getHeight();
+    var maxJ = image.getWidth();
+
+    // Now also count down, right from center
+    i = 1;
+    while (startI + i < maxI && centerJ + i < maxJ && image.get(centerJ + i, startI + i)) {
+      stateCount[2]++;
+      i++;
+    }
+
+    // Ran off the edge?
+    if (startI + i >= maxI || centerJ + i >= maxJ) {
+       return false;
+    }
+
+    while (startI + i < maxI && centerJ + i < maxJ && !image.get(centerJ + i, startI + i) &&
+           stateCount[3] < maxCount) {
+      stateCount[3]++;
+      i++;
+    }
+
+    if (startI + i >= maxI || centerJ + i >= maxJ || stateCount[3] >= maxCount) {
+      return false;
+    }
+
+    while (startI + i < maxI && centerJ + i < maxJ && image.get(centerJ + i, startI + i) &&
+           stateCount[4] < maxCount) {
+      stateCount[4]++;
+      i++;
+    }
+
+    if (stateCount[4] >= maxCount) {
+      return false;
+    }
+
+    // If we found a finder-pattern-like section, but its size is more than
+    // 100% different than the original, assume it's a false positive
+    var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] +
+      stateCount[3] + stateCount[4];
+    return Math.abs(stateCountTotal - originalStateCountTotal) < 2 *
+      originalStateCountTotal && _.foundPatternCross(stateCount);
   };
 
   /**
@@ -481,9 +576,10 @@ goog.scope(function() {
    * horizontal scan.
    * @param {number} i row where finder pattern may be found.
    * @param {number} j end of possible finder pattern in row.
+   * @param {boolean} pureBarcode true if in "pure barcode" mode
    * @return {boolean} true if a finder pattern candidate was found this time.
    */
-  pro.handlePossibleCenter = function(stateCount, i, j) {
+  pro.handlePossibleCenter = function(stateCount, i, j, pureBarcode) {
     var stateCountTotal = stateCount[0] + stateCount[1] +
       stateCount[2] + stateCount[3] + stateCount[4];
     var centerJ = this.centerFromEnd(stateCount, j);
@@ -493,8 +589,11 @@ goog.scope(function() {
       // Re-cross check
       centerJ = this.crossCheckHorizontal(Math.floor(centerJ),
         Math.floor(centerI), stateCount[2], stateCountTotal);
-      if (!isNaN(centerJ)) {
-        var estimatedModuleSize = stateCountTotal / 7.;
+      if (!isNaN(centerJ) &&
+          (!pureBarcode || this.crossCheckDiagonal_(
+            Math.floor(centerI), Math.floor(centerJ), stateCount[2],
+            stateCountTotal))) {
+        var estimatedModuleSize = stateCountTotal / 7.0;
         var found = false;
         for (var index = 0; index < this.possibleCenters_.length; index++) {
           var center = this.possibleCenters_[index];
@@ -509,7 +608,7 @@ goog.scope(function() {
         if (!found) {
           var point = new FinderPattern(centerJ, centerI, estimatedModuleSize);
           this.possibleCenters_.push(point);
-          if (this.resultPointCallback_ != null) {
+          if (this.resultPointCallback_ !== null) {
             this.resultPointCallback_(point);
           }
         }
