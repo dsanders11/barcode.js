@@ -2,8 +2,8 @@
 goog.provide('w69b.worker.DecodeWorker');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.ResultPoint');
-goog.require('w69b.worker.WorkerMessageType');
 goog.require('w69b.qr.imagedecoding');
+goog.require('w69b.worker.WorkerMessageType');
 
 
 // Hack to work arround closure warnings.
