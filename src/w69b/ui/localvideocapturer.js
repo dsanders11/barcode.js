@@ -1,5 +1,5 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.LocalVideoCapturer');
+goog.provide('w69b.ui.LocalVideoCapturer');
 goog.require('goog.Disposable');
 goog.require('goog.asserts');
 goog.require('goog.events');
@@ -13,7 +13,7 @@ goog.scope(function() {
    * @constructor
    * @extends {goog.Disposable}
    */
-  w69b.LocalVideoCapturer = function() {
+  w69b.ui.LocalVideoCapturer = function() {
     goog.base(this);
     this.backCanvas_ = /** @type {HTMLCanvasElement} */ (
       document.createElement('canvas'));
@@ -23,7 +23,7 @@ goog.scope(function() {
     this.backContext_ = /** @type {CanvasRenderingContext2D} */ (
       this.backCanvas_.getContext('2d'));
   };
-  var LocalVideoCapturer = w69b.LocalVideoCapturer;
+  var LocalVideoCapturer = w69b.ui.LocalVideoCapturer;
   goog.inherits(LocalVideoCapturer, goog.Disposable);
   var pro = LocalVideoCapturer.prototype;
 
@@ -224,4 +224,17 @@ goog.scope(function() {
       }
     }
   };
+
+  // exports
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.getMedia',
+                    pro.getMedia);
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.getVideo',
+                    pro.getVideo);
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.start', pro.start);
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.getImageData',
+                    pro.getImageData);
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.drawAndGetCanvas',
+                    pro.drawAndGetCanvas);
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.drawOnCanvas',
+                    pro.drawOnCanvas);
 });

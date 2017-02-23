@@ -1,15 +1,15 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.ui.ContinuousScanner');
-goog.provide('w69b.qr.ui.PatternPoint');
+goog.provide('w69b.ui.ContinuousScanner');
+goog.provide('w69b.ui.PatternPoint');
 goog.require('goog.math.Size');
 goog.require('goog.object');
 goog.require('goog.string');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('goog.userAgent');
-goog.require('w69b.LocalVideoCapturer');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.imgtools');
+goog.require('w69b.ui.LocalVideoCapturer');
 goog.require('w69b.worker.DecodeInWorkerHelper');
 goog.require('w69b.worker.WorkerMessageType');
 
@@ -26,13 +26,13 @@ goog.scope(function() {
    * @param {number} size pattern size.
    * @constructor
    */
-  w69b.qr.ui.PatternPoint = function(x, y, size) {
+  w69b.ui.PatternPoint = function(x, y, size) {
     this.x = x;
     this.y = y;
     this.size = size || 4;
     this.birthTime = new Date().getTime();
   };
-  var PatternPoint = w69b.qr.ui.PatternPoint;
+  var PatternPoint = w69b.ui.PatternPoint;
   // PatternPoint.prototype.
   /**
    * Component that shows visualization of continuous scanning.
@@ -42,13 +42,13 @@ goog.scope(function() {
    * @param {Object=} opt_options
    * @export
    */
-  w69b.qr.ui.ContinuousScanner = function(opt_options) {
+  w69b.ui.ContinuousScanner = function(opt_options) {
     goog.base(this);
     var opt = {
       'webgl': true
     };
     object.extend(opt, opt_options || {});
-    this.capturer_ = new w69b.LocalVideoCapturer();
+    this.capturer_ = new w69b.ui.LocalVideoCapturer();
     this.worker_ = new w69b.worker.DecodeInWorkerHelper();
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();
@@ -74,7 +74,7 @@ goog.scope(function() {
      */
     this.decodedCallback_ = goog.nullFunction;
   };
-  var ContinuousScanner = w69b.qr.ui.ContinuousScanner;
+  var ContinuousScanner = w69b.ui.ContinuousScanner;
   goog.inherits(ContinuousScanner, goog.ui.Component);
   var pro = ContinuousScanner.prototype;
 
@@ -85,7 +85,7 @@ goog.scope(function() {
    */
   ContinuousScanner.isSupported = function() {
     // If api is not pressent it's clearly not supported.
-    if (!w69b.LocalVideoCapturer.getMedia)
+    if (!w69b.ui.LocalVideoCapturer.getMedia)
       return false;
     // But feature detection does not work as browsers lie about their
     // capabilities, so sniff versions and blacklist some.
@@ -444,6 +444,6 @@ goog.scope(function() {
 
 
   // exports
-  goog.exportSymbol('w69b.qr.ui.ContinuousScanner.prototype.render', pro.render);
-  goog.exportSymbol('w69b.qr.ui.ContinuousScanner.prototype.dispose', pro.dispose);
+  goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.render', pro.render);
+  goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.dispose', pro.dispose);
 });

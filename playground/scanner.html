@@ -35,7 +35,7 @@
       '../libs/iconv.js');
 
     function load() {
-      var scanner = new w69b.qr.ui.ContinuousScanner();
+      var scanner = new w69b.ui.ContinuousScanner();
       scanner.setDecodedCallback(function(result) {
         alert('decoded: ' + result);
       });

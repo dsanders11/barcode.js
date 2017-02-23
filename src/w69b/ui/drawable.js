@@ -1,14 +1,14 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.Drawable');
+goog.provide('w69b.ui.Drawable');
 
 goog.scope(function() {
   /**
    * Interface uses to draw qr codes.
    * @interface
    */
-  w69b.qr.Drawable = function() {
+  w69b.ui.Drawable = function() {
   };
-  var pro = w69b.qr.Drawable.prototype;
+  var pro = w69b.ui.Drawable.prototype;
 
   /**
    * Set size of drawable and fill background.

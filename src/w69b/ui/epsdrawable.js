@@ -1,14 +1,14 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.EpsDrawable');
+goog.provide('w69b.ui.EpsDrawable');
 goog.require('goog.asserts');
-goog.require('w69b.qr.Drawable');
+goog.require('w69b.ui.Drawable');
 
 goog.scope(function() {
   /**
    * @constructor
-   * @implements {w69b.qr.Drawable}
+   * @implements {w69b.ui.Drawable}
    */
-  w69b.qr.EpsDrawable = function() {
+  w69b.ui.EpsDrawable = function() {
     this.buffer_ = [];
     this.bgColor_ = '1 1 1';
     this.fgColor_ = '0 0 0';
@@ -16,7 +16,7 @@ goog.scope(function() {
     this.height_ = 0;
     this.width_ = 0;
   };
-  var pro = w69b.qr.EpsDrawable.prototype;
+  var pro = w69b.ui.EpsDrawable.prototype;
 
   /**
    * Writes header to buffer.

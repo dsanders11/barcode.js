@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.qr.renderer');
-goog.require('w69b.qr.Drawable');
+goog.provide('w69b.ui.renderer');
 goog.require('w69b.qr.encoder.QRCode');
+goog.require('w69b.ui.Drawable');
 
 /**
  * Renders a QR Code on a drawable.
@@ -26,7 +26,7 @@ goog.require('w69b.qr.encoder.QRCode');
  * @author mb@w69b.com (Manuel Braun)
  */
 goog.scope(function() {
-  var _ = w69b.qr.renderer;
+  var _ = w69b.ui.renderer;
   _.QUIET_ZONE_SIZE = 4;
 
   /**
@@ -35,7 +35,7 @@ goog.scope(function() {
    * size, including the quiet zones. What remains is filled with white
    * padding (ie the qr code is centered on  the desired image with).
    * @param {w69b.qr.encoder.QRCode} qrCode qr code to render.
-   * @param {w69b.qr.Drawable} drawable to draw on.
+   * @param {w69b.ui.Drawable} drawable to draw on.
    * @param {number} width desired with of output image.
    * @param {number} height desired height of output image.
    * @param {number} quietZone number of blocks (pixsels in input) to use

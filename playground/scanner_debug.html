@@ -20,7 +20,7 @@
   <script type="text/javascript" src="../dist/w69b.qrcode.js"></script>
 
   <script type="text/javascript">
-    goog.require('w69b.qr.ui.ContinuousScanner');
+    goog.require('w69b.ui.ContinuousScanner');
   </script>
 
 </head>
@@ -39,7 +39,7 @@
 
     function load() {
       // qrcode.decode('qr_hello.png');
-      var scanner = new w69b.qr.ui.ContinuousScanner();
+      var scanner = new w69b.ui.ContinuousScanner();
       scanner.setDecodedCallback(function(result) {
         alert('decoded: ' + result);
       });

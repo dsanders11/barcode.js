@@ -23,7 +23,7 @@
   <script type="text/javascript" src="../dist/w69b.qrcode.js"></script>
   <script type="text/javascript">
     goog.require('w69b.webgl.WebGLBinarizer');
-    goog.require('w69b.LocalVideoCapturer');
+    goog.require('w69b.ui.LocalVideoCapturer');
     goog.require('w69b.imgtools');
     goog.require('w69b.qr.nativepreprocessing');
   </script>
@@ -75,7 +75,7 @@
 
     function captureVideo() {
       return new Promise(function(resolve) {
-        var capturer = new w69b.LocalVideoCapturer();
+        var capturer = new w69b.ui.LocalVideoCapturer();
         capturer.start(function() {
           resolve(capturer.getVideo());
         });
@@ -86,7 +86,7 @@
       binarizer = new w69b.webgl.WebGLBinarizer(glCanvas);
       binarizer.setFlipInput(true);
       var promise;
-      if (w69b.LocalVideoCapturer.getMedia) {
+      if (w69b.ui.LocalVideoCapturer.getMedia) {
         promise = captureVideo();
       } else {
         console.log('getUserMedia not supported, using boring fallback video');

@@ -1,19 +1,19 @@
 // javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.SvgDrawable');
+goog.provide('w69b.ui.SvgDrawable');
 goog.require('goog.asserts');
-goog.require('w69b.qr.Drawable');
+goog.require('w69b.ui.Drawable');
 
 goog.scope(function() {
   /**
    * @constructor
-   * @implements {w69b.qr.Drawable}
+   * @implements {w69b.ui.Drawable}
    */
-  w69b.qr.SvgDrawable = function() {
+  w69b.ui.SvgDrawable = function() {
     this.buffer_ = [];
     this.bgStyle_ = 'white';
     this.fgStyle_ = 'black';
   };
-  var pro = w69b.qr.SvgDrawable.prototype;
+  var pro = w69b.ui.SvgDrawable.prototype;
 
   /**
    * Writes header to buffer.

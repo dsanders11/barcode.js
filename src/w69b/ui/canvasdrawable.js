@@ -1,20 +1,20 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.qr.CanvasDrawable');
-goog.require('w69b.qr.Drawable');
+goog.provide('w69b.ui.CanvasDrawable');
+goog.require('w69b.ui.Drawable');
 
 goog.scope(function() {
   /**
    * @constructor
    * @param {HTMLCanvasElement} canvas to draw on.
-   * @implements {w69b.qr.Drawable}
+   * @implements {w69b.ui.Drawable}
    */
-  w69b.qr.CanvasDrawable = function(canvas) {
+  w69b.ui.CanvasDrawable = function(canvas) {
     this.canvas_ = canvas;
     this.context_ = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
     this.bgStyle_ = 'rgb(255, 255, 255)';
     this.fgStyle_ = 'rgb(0, 0, 0)';
   };
-  var pro = w69b.qr.CanvasDrawable.prototype;
+  var pro = w69b.ui.CanvasDrawable.prototype;
 
   /**
    * @param {number} width
