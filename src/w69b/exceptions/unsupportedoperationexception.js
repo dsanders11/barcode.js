@@ -1,4 +1,4 @@
-goog.provide('w69b.UnsupportedOperationException');
+goog.provide('w69b.exceptions.UnsupportedOperationException');
 goog.require('goog.debug.Error');
 
 goog.scope(function() {
@@ -8,8 +8,8 @@ goog.scope(function() {
    * @param {string=} opt_msg message.
    * @extends {goog.debug.Error}
    */
-  w69b.UnsupportedOperationException = function(opt_msg) {
+  w69b.exceptions.UnsupportedOperationException = function(opt_msg) {
     goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.UnsupportedOperationException, goog.debug.Error);
+  goog.inherits(w69b.exceptions.UnsupportedOperationException, goog.debug.Error);
 });

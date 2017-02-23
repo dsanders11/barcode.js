@@ -17,14 +17,14 @@
 
 goog.provide('w69b.oned.OneDimensionalCodeWriter');
 goog.require('w69b.EncodeHintType');
-goog.require('w69b.IllegalArgumentException');
 goog.require('w69b.Writer');
 goog.require('w69b.common.BitMatrix');
+goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
   var EncodeHintType = w69b.EncodeHintType;
-  var IllegalArgumentException = w69b.IllegalArgumentException;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var Writer = w69b.Writer;
   var BitMatrix = w69b.common.BitMatrix;
 

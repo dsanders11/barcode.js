@@ -1,4 +1,4 @@
-goog.provide('w69b.IllegalArgumentException');
+goog.provide('w69b.exceptions.IllegalArgumentException');
 goog.require('goog.debug.Error');
 
 goog.scope(function() {
@@ -9,8 +9,8 @@ goog.scope(function() {
    * @param {string=} opt_msg message.
    * @extends {goog.debug.Error}
    */
-  w69b.IllegalArgumentException = function(opt_msg) {
+  w69b.exceptions.IllegalArgumentException = function(opt_msg) {
     goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.IllegalArgumentException, goog.debug.Error);
+  goog.inherits(w69b.exceptions.IllegalArgumentException, goog.debug.Error);
 });

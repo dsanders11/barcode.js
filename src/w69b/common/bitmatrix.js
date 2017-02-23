@@ -23,11 +23,11 @@
 
 goog.provide('w69b.common.BitMatrix');
 goog.require('goog.asserts');
-goog.require('w69b.IllegalArgumentException');
 goog.require('w69b.common.BitArray');
+goog.require('w69b.exceptions.IllegalArgumentException');
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.IllegalArgumentException;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var BitArray = w69b.common.BitArray;
 
   /**
