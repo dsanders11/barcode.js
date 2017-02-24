@@ -11,12 +11,14 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   // Expected number of detections with native binarizer.
   var expectedDetections = {
     'code39-1': 2,
+    'code39-2': 2,
     'code39-3': 12
   };
   // Expected number of detections with WebGl binarizer, slightly worse in some cases, slightly
   // better in others.
   var expectedDetectionsGl = {
     'code39-1': 2,
+    'code39-2': 2,
     'code39-3': 12
   };
   // If != null, run only specified suites (for debugging).
@@ -110,7 +112,12 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   function generateTest(suiteInfo, opt) {
     return function(done) {
       testhelper.setupWorkerUrls();
-      var decoder = new w69b.oned.Code39Reader();
+      if (suiteInfo.name === 'code39-2') {
+        // Enable extended mode
+        var decoder = new w69b.oned.Code39Reader(false, true);
+      } else {
+        var decoder = new w69b.oned.Code39Reader();
+      }
       suiteInfo.runAll(decoder).then(function() {
         suiteInfo.checkExpectations();
         done();
