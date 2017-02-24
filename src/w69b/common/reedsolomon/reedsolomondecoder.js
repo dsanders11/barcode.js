@@ -178,8 +178,7 @@ goog.scope(function() {
   pro.findErrorLocations = function(errorLocator) {
     // This is a direct application of Chien's search
     var numErrors = errorLocator.getDegree();
-    if (numErrors == 1) {
-      // shortcut
+    if (numErrors === 1) { // shortcut
       return Int32Array.of(errorLocator.getCoefficient(1));
     }
     var result = new Int32Array(numErrors);
