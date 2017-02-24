@@ -8,8 +8,6 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Result');
 goog.require('w69b.common.HybridBinarizer');
 goog.require('w69b.common.NoOpBinarizer');
-goog.require('w69b.qr.decoder.Decoder');
-goog.require('w69b.webgl.WebGLBinarizer');
 
 
 /**
@@ -18,24 +16,8 @@ goog.require('w69b.webgl.WebGLBinarizer');
  */
 goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
-  var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
-  //var imgtools = w69b.imgtools;
 
   var _ = w69b.qr.imagedecoding;
-
-  _.decoder_ = new w69b.qr.decoder.Decoder();
-
-  _.webGLBinarizer_ = null;
-
-  /**
-   * @return {WebGLBinarizer}
-   */
-  _.getWebGLBinarizer_ = function() {
-    if (!_.webGLBinarizer_) {
-      _.webGLBinarizer_ = new WebGLBinarizer();
-    }
-    return _.webGLBinarizer_;
-  };
 
   /**
    * Decode qr code from ImageData.
