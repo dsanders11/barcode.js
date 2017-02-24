@@ -149,6 +149,6 @@ goog.scope(function() {
   pro['toJSON'] = function() {
     return {
       'text': this.getText(),
-      'patterns': this.getResultPoints()};
+      'patterns': this.getResultPoints().map(pattern => pattern['toJSON']())};
   };
 });
