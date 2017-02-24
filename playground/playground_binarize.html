@@ -48,9 +48,12 @@
         var imgData = imgtools.getImageData(imageEl, 700);
         var binary = preprocessing.binarizeImageData(imgData);
         finder(binary);
-        var result = decoding.decodeFromImageData(imgData);
-        onDecoded(result.getText());
-        onDecoded(result.getError());
+        try {
+          var result = decoding.decodeFromImageDataThrowing(imgData);
+          onDecoded(result.getText());
+        } catch (err) {
+          onDecoded(err.message);
+        }
       };
     }
 

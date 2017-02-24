@@ -142,4 +142,13 @@ goog.scope(function() {
   pro.toString = function() {
     return this.text_;
   };
+
+  /**
+   * @return {Object} JSON object.
+   */
+  pro['toJSON'] = function() {
+    return {
+      'text': this.getText(),
+      'patterns': this.getResultPoints()};
+  };
 });

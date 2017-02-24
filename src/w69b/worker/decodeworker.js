@@ -1,6 +1,7 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.worker.DecodeWorker');
 goog.require('w69b.InvalidCharsetException');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.qr.imagedecoding');
 goog.require('w69b.worker.WorkerMessageType');
@@ -34,7 +35,7 @@ goog.scope(function() {
   _.decode = function(imgdata, isBinary, opt_formats, opt_failOnCharset) {
     var result;
     try {
-      result = w69b.qr.imagedecoding.decodeFromImageData(imgdata, isBinary, opt_formats, _.onPatternFound);
+      result = w69b.qr.imagedecoding.decodeFromImageDataThrowing(imgdata, isBinary, opt_formats, _.onPatternFound);
     } catch (err) {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         _.iconvPath && !opt_failOnCharset) {
@@ -43,16 +44,14 @@ goog.scope(function() {
         // and try again.
         _.decode(imgdata, true);
         return;
+      } else if (err instanceof w69b.NotFoundException) {
+        _.send(WorkerMessageType.NOTFOUND, err && err.message);
+        return;
       } else {
         throw err;
       }
     }
-    if (result.isError()) {
-      var err = result.getError();
-      _.send(WorkerMessageType.NOTFOUND, err && err.message);
-    } else {
-      _.send(WorkerMessageType.DECODED, result);
-    }
+    _.send(WorkerMessageType.DECODED, result);
   };
 
   /**

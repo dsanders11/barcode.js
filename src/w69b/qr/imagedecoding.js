@@ -4,10 +4,10 @@ goog.require('w69b.BinaryBitmap');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.MultiFormatReader');
-goog.require('w69b.ReaderException');
+goog.require('w69b.NotFoundException');
+goog.require('w69b.Result');
 goog.require('w69b.common.HybridBinarizer');
 goog.require('w69b.common.NoOpBinarizer');
-goog.require('w69b.qr.DecodeResult');
 goog.require('w69b.qr.decoder.Decoder');
 goog.require('w69b.webgl.WebGLBinarizer');
 
@@ -18,7 +18,6 @@ goog.require('w69b.webgl.WebGLBinarizer');
  */
 goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
-  var DecodeResult = w69b.qr.DecodeResult;
   var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
   //var imgtools = w69b.imgtools;
 
@@ -44,27 +43,8 @@ goog.scope(function() {
    * @param {boolean} isBinary
    * @param {Array=} opt_formats
    * @param {?w69b.ResultPointCallback=} opt_callback callback.
-   * @return {DecodeResult} decoded qr code.
-   */
-  _.decodeFromImageData = function(imgdata, isBinary, opt_formats, opt_callback) {
-    var result;
-    try {
-      result = _.decodeFromImageDataThrowing(imgdata, isBinary, opt_formats, opt_callback);
-    } catch (err) {
-      result = new DecodeResult(err);
-      if (!(err instanceof w69b.ReaderException))
-        throw err;
-    }
-    return result;
-  };
-
-  /**
-   * Throws ReaderException if detection fails.
-   * @param {!ImageData} imgdata from canvas.
-   * @param {boolean} isBinary
-   * @param {Array=} opt_formats
-   * @param {?w69b.ResultPointCallback=} opt_callback callback.
-   * @return {DecodeResult} decoded qr code.
+   * @return {w69b.Result} decoded qr code.
+   * @throws {w69b.NotFoundException} if nothing found
    */
   _.decodeFromImageDataThrowing = function(imgdata, isBinary, opt_formats, opt_callback) {
     var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
@@ -85,12 +65,6 @@ goog.scope(function() {
       opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
     }
 
-    var result = new w69b.MultiFormatReader().decode(bitmap, opt_hints);
-
-    return new DecodeResult(result.getText(), result.getResultPoints());
+    return new w69b.MultiFormatReader().decode(bitmap, opt_hints);
   };
-
 });
-
-goog.exportSymbol('w69b.qr.imagedecoding.decodeFromImageData',
-  w69b.qr.imagedecoding.decodeFromImageData);
