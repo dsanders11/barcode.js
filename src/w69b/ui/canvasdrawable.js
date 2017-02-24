@@ -17,8 +17,7 @@ goog.scope(function() {
   var pro = w69b.ui.CanvasDrawable.prototype;
 
   /**
-   * @param {number} width
-   * @param {number} height
+   * @override
    */
   pro.fillBackground = function(width, height) {
     this.canvas_.width = width;
@@ -28,14 +27,10 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} x
-   * @param {number} y
-   * @param {number} width
-   * @param {number} height
+   * @override
    */
   pro.fillBlack = function(x, y, width, height) {
     this.context_.fillStyle = this.fgStyle_;
-    // this.context_.strokeStyle = this.fgStyle_;
     this.context_.fillRect(x, y, width, height);
   };
 });

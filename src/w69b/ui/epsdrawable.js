@@ -70,8 +70,7 @@ goog.scope(function() {
   };
 
   /**
-   * Get svg source.
-   * @return {string} svg as string.
+   * @override
    */
   pro.toString = function() {
     goog.asserts.assert(this.buffer_.length > 0);

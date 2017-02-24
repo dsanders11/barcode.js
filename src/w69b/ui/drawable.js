@@ -6,8 +6,7 @@ goog.scope(function() {
    * Interface uses to draw qr codes.
    * @interface
    */
-  w69b.ui.Drawable = function() {
-  };
+  w69b.ui.Drawable = function() { };
   var pro = w69b.ui.Drawable.prototype;
 
   /**
@@ -15,7 +14,7 @@ goog.scope(function() {
    * @param {number} width width of drawable in pixels.
    * @param {number} height height of drawable in pixels.
    */
-  pro.fillBackground = function(width, height) { };
+  pro.fillBackground;
 
   /**
    * Fill rectangle with black color.
@@ -24,6 +23,6 @@ goog.scope(function() {
    * @param {number} width width of rectangle.
    * @param {number} height height of rectangle.
    */
-  pro.fillBlack = function(x, y, width, height) { };
+  pro.fillBlack;
 });
 
