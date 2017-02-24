@@ -1,5 +1,5 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.require('w69b.qr.decoding');
+goog.require('w69b.decoding');
 
 define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   var expect = chai.expect;
@@ -110,7 +110,7 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   function generateTest(suiteInfo, opt) {
     return function(done) {
       testhelper.setupWorkerUrls();
-      var decoder = new w69b.qr.decoding.Decoder(opt);
+      var decoder = new w69b.decoding.Decoder(opt);
       suiteInfo.runAll(decoder).then(function() {
         suiteInfo.checkExpectations();
         decoder.dispose();

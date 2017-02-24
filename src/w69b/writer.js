@@ -39,7 +39,7 @@ goog.scope(function() {
    * @param {number} width the preferred width in pixels
    * @param {number} height the preferred height in pixels
    * @param {Object<EncodeHintType,*>=} opt_hints additional parameters to supply to the encoder
-   * @return {w69b.common.BitMatrix} representing encoded barcode image
+   * @return {!w69b.common.BitMatrix} representing encoded barcode image
    * @throws {w69b.WriterException} if contents cannot be encoded legally in a format
    */
   pro.encode;

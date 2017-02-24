@@ -89,7 +89,7 @@ goog.scope(function() {
    * @param {number} width
    * @param {number} height
    * @param {number} quietZone
-   * @return {BitMatrix}
+   * @return {!BitMatrix}
    * @throws {IllegalStateException}
    */
   function renderResult(code, width, height, quietZone) {

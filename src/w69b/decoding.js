@@ -1,7 +1,7 @@
 // Copyright 2015 Manuel Braun (mb@w69b.com). All Rights Reserved.
 
 // Public API exports
-goog.provide('w69b.qr.decoding');
+goog.provide('w69b.decoding');
 goog.require('goog.Promise');
 goog.require('goog.math.Size');
 goog.require('goog.object');
@@ -18,7 +18,7 @@ goog.scope(function() {
   var DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
   var object = goog.object;
   var Promise = goog.Promise;
-  var _ = w69b.qr.decoding;
+  var _ = w69b.decoding;
 
   /**
    * Set this according to your setup before creating an instance.
@@ -49,7 +49,7 @@ goog.scope(function() {
   };
 
   /**
-   * Class to decode QR Code images. Loads a worker at initialization, if enabled,
+   * Class to decode barcode images. Loads a worker at initialization, if enabled,
    * so make sure to re-use instances whenever possible.
    * @param {Object<string,*>=} opt_options options with the following properties:
    * - {boolean} worker: use web worker, if supported, defaults to true
@@ -85,12 +85,12 @@ goog.scope(function() {
   };
 
   /**
-   * Decode image that contains a QR Code. It can handle image/video and imagedata objects.
+   * Decode image that contains a barcode. It can handle image/video and imagedata objects.
    * Note that image conversion is expensive, so pass your image as-is whenever possible.
    * @param {Image|HTMLVideoElement|ImageData} img image to decode.
    * @return {Promise} result. Resolves to an object
    * with a text property that contains the decoded string on success.
-   * Rejects if no QR code could be found or decoding failed.
+   * Rejects if no barcode could be found or decoding failed.
    * @export
    */
   _.Decoder.prototype.decode = function(img) {

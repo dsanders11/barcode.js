@@ -3,7 +3,7 @@ goog.require('goog.Promise');
 goog.require('w69b.webgl.WebGLBinarizer');
 goog.require('w69b.worker.DecodeInWorkerHelper');
 // Copyright 2015 Manuel Braun (mb@w69b.com). All Rights Reserved.
-goog.require('w69b.qr.decoding');
+goog.require('w69b.decoding');
 
 define(function() {
   var _ = {};
@@ -41,7 +41,7 @@ define(function() {
   _.decodeUrl = function(src, opt) {
     _.setupWorkerUrls();
     return _.loadImage(src).then(function(image) {
-      var decoder = new w69b.qr.decoding.Decoder(opt);
+      var decoder = new w69b.decoding.Decoder(opt);
       return decoder.decode(image).thenAlways(function() {
         decoder.dispose();
       });

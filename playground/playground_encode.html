@@ -14,11 +14,20 @@
     <button id="save_svg">saveSVG</button>
     <script type="text/javascript">
       (function() {
-        var input, canvas;
+        var input, formats, canvas;
 
-        function renderQR() {
+        function getFormat() {
+          var format = -1;
+          if (formats.selectedIndex >= 0) {
+              let option = formats.options[formats.selectedIndex];
+              format = parseInt(option.value);
+          }
+          return format;
+        }
+
+        function renderBarcode() {
           var txt = input.value;
-          w69b.qr.encoding.drawOnCanvas(txt, canvas);
+          w69b.encoding.drawOnCanvas(txt, getFormat(), canvas);
         }
 
         function onSave(ev) {
@@ -29,19 +38,32 @@
 
         function onSaveSvg(ev) {
           var txt = input.value;
-          var blob = new Blob([w69b.qr.encoding.drawAsSVG(txt, 100)]);
+          var svg = w69b.encoding.drawAsSVG(
+            txt, getFormat(), canvas.width, canvas.height, 100);
+          var blob = new Blob([svg]);
           w69b.FileSaver.saveAs(blob, 'bla.svg');
         }
 
         function load() {
+          formats = document.getElementById('format');
+          // Add available formats
+          Object.keys(w69b.BarcodeFormat).forEach(function(format, idx) {
+            let option = document.createElement("option");
+            option.text = format;
+            option.value = w69b.BarcodeFormat[format];
+            if (format === "QR_CODE") {
+              option.selected = true;
+            }
+            formats.add(option);
+          });
           input = document.getElementById('input');
           canvas = document.getElementById('canvas');
           var save = document.getElementById('save');
           var saveSvg = document.getElementById('save_svg');
-          input.addEventListener('keyup', renderQR, false);
+          input.addEventListener('keyup', renderBarcode, false);
           save.addEventListener('click', onSave, false);
           saveSvg.addEventListener('click', onSaveSvg, false);
-          renderQR();
+          renderBarcode();
         }
 
         load();

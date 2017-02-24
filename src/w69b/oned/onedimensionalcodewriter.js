@@ -66,7 +66,7 @@ goog.scope(function() {
    * @param {number} width
    * @param {number} height
    * @param {number} sidesMargin
-   * @return {BitMatrix} byte array of horizontal pixels (0 = white, 1 = black)
+   * @return {!BitMatrix} byte array of horizontal pixels (0 = white, 1 = black)
    * @private
    */
   function renderResult(code, width, height, sidesMargin) {
