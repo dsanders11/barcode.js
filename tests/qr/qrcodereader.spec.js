@@ -1,5 +1,6 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.require('w69b.BinaryBitmap');
+goog.require('w69b.DecodeHintType');
 goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.imgtools');
 goog.require('w69b.common.HybridBinarizer');
@@ -89,7 +90,15 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
           var luminanceSource = new w69b.ImageDataLuminanceSource(imageData);
           var binarizer = new w69b.common.HybridBinarizer(luminanceSource);
           var bitmap = new w69b.BinaryBitmap(binarizer);
-          return decoder.decode(bitmap);
+          try {
+            // Try in 'pure' mode mostly to exercise PURE_BARCODE code paths
+            // for exceptions; not expected to pass, generally
+            var hints = {}
+            hints[w69b.DecodeHintType.PURE_BARCODE] = true;
+            return decoder.decode(bitmap, hints);
+          } catch (err) {
+            return decoder.decode(bitmap);
+          }
         }).then(function(result) {
           if (result.getText() == expected) {
             self.successCnt++;
