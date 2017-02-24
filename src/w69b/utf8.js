@@ -9,7 +9,7 @@ goog.provide('w69b.utf8');
   /**
    * @param {string} str
    * @param {number} idx
-   * @return {(number|boolean)}
+   * @return {number}
    * @license Snippet fixedCharCodeAt borrowed from http://goo.gl/3lRpR.
    * (c) see contributers of site.
    * License: MIT
@@ -27,11 +27,11 @@ goog.provide('w69b.utf8');
           }
           return ((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000;
       }
-      // We return false to allow loops to skip this iteration since should
+      // We return 0 to allow loops to skip this iteration since should
       // have already handled high surrogate above in the previous iteration
       // Low surrogate
       if (0xDC00 <= code && code <= 0xDFFF) {
-          return false;
+          return 0;
       }
       return code;
   }
