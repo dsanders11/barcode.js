@@ -21,7 +21,6 @@
       goog.require('w69b.webgl.WebGLBinarizer');
       goog.require('w69b.ui.LocalVideoCapturer');
       goog.require('w69b.imgtools');
-      goog.require('w69b.qr.nativepreprocessing');
     </script>
   </head>
   <body>
@@ -43,7 +42,6 @@
     <script type="text/javascript">
       (function() {
         var imgtools = w69b.imgtools;
-        var preprocessing = w69b.qr.nativepreprocessing;
         var glCanvas = document.getElementById('glCanvas');
         var nativeCanvas = document.getElementById('nativeCanvas');
         var nativeCtx = nativeCanvas.getContext('2d');
@@ -112,7 +110,7 @@
               binarizer.getBitMatrix();
             } else {
               var imgData = imgtools.getImageData(video);
-              binary = preprocessing.binarizeImageData(imgData);
+              binary = imgtools.binarizeImageData(imgData);
             }
           });
           // don't measure time of this expensive conversion.

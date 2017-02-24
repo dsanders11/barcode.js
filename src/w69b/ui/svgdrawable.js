@@ -7,6 +7,7 @@ goog.scope(function() {
   /**
    * @constructor
    * @implements {w69b.ui.Drawable}
+   * @export
    */
   w69b.ui.SvgDrawable = function() {
     this.buffer_ = [];

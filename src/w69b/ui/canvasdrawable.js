@@ -7,6 +7,7 @@ goog.scope(function() {
    * @constructor
    * @param {HTMLCanvasElement} canvas to draw on.
    * @implements {w69b.ui.Drawable}
+   * @export
    */
   w69b.ui.CanvasDrawable = function(canvas) {
     this.canvas_ = canvas;

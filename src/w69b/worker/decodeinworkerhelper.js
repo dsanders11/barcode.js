@@ -8,8 +8,8 @@ goog.require('goog.userAgent.product');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.imgtools');
-goog.require('w69b.qr.imagedecoding');
 goog.require('w69b.webgl.WebGLBinarizer');
+goog.require('w69b.worker.DecodeWorker');
 goog.require('w69b.worker.WorkerMessageType');
 
 
@@ -242,9 +242,11 @@ goog.scope(function() {
    */
   pro.decodeLocalFallback_ = function(imgdata, isBinary, callback) {
     try {
-      var result = w69b.qr.imagedecoding.decodeFromImageDataThrowing(imgdata, isBinary, this.formats_, function(pattern) {
-        callback(WorkerMessageType.PATTERN, pattern['toJSON']());
-      }.bind(this));
+      var result = w69b.worker.DecodeWorker.decodeFromImageData(
+        imgdata, isBinary, this.formats_, function(pattern) {
+          callback(WorkerMessageType.PATTERN, pattern['toJSON']());
+        }.bind(this)
+      );
     } catch (err) {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         DecodeInWorkerHelper.iconvUrl_) {

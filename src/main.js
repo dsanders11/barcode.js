@@ -5,8 +5,6 @@
  */
 goog.provide('main');
 goog.require('w69b.FileSaver');
-goog.require('w69b.MultiFormatReader');
-goog.require('w69b.MultiFormatWriter');
 goog.require('w69b.decoding');
 goog.require('w69b.encoding');
 goog.require('w69b.licenses');

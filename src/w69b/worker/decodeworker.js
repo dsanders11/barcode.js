@@ -1,9 +1,15 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.worker.DecodeWorker');
+goog.require('w69b.BinaryBitmap');
+goog.require('w69b.DecodeHintType');
+goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.InvalidCharsetException');
+goog.require('w69b.MultiFormatReader');
 goog.require('w69b.NotFoundException');
+goog.require('w69b.Result');
 goog.require('w69b.ResultPoint');
-goog.require('w69b.qr.imagedecoding');
+goog.require('w69b.common.HybridBinarizer');
+goog.require('w69b.common.NoOpBinarizer');
 goog.require('w69b.worker.WorkerMessageType');
 
 
@@ -12,6 +18,7 @@ var host = self;
 
 goog.scope(function() {
   var WorkerMessageType = w69b.worker.WorkerMessageType;
+  var DecodeHintType = w69b.DecodeHintType;
   var ResultPoint = w69b.ResultPoint;
 
   var _ = w69b.worker.DecodeWorker;
@@ -35,7 +42,7 @@ goog.scope(function() {
   _.decode = function(imgdata, isBinary, opt_formats, opt_failOnCharset) {
     var result;
     try {
-      result = w69b.qr.imagedecoding.decodeFromImageDataThrowing(imgdata, isBinary, opt_formats, _.onPatternFound);
+      result = _.decodeFromImageData(imgdata, isBinary, opt_formats, _.onPatternFound);
     } catch (err) {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         _.iconvPath && !opt_failOnCharset) {
@@ -52,6 +59,37 @@ goog.scope(function() {
       }
     }
     _.send(WorkerMessageType.DECODED, result);
+  };
+
+  /**
+   * Decode barcode from ImageData.
+   * @param {!ImageData} imgdata from canvas.
+   * @param {boolean} isBinary
+   * @param {Array=} opt_formats
+   * @param {?w69b.ResultPointCallback=} opt_callback callback.
+   * @return {w69b.Result} decoded barcode.
+   * @throws {w69b.NotFoundException} if nothing found
+   */
+  _.decodeFromImageData = function(imgdata, isBinary, opt_formats, opt_callback) {
+    var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
+    var binarizer;
+    if (isBinary) {
+      binarizer = new w69b.common.NoOpBinarizer(luminanceSource);
+    } else {
+      binarizer = new w69b.common.HybridBinarizer(luminanceSource);
+    }
+    var bitmap = new w69b.BinaryBitmap(binarizer);
+    var opt_hints = (opt_formats || opt_callback) ? {} : undefined;
+
+    if (opt_callback) {
+      opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
+    }
+
+    if (opt_formats) {
+      opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
+    }
+
+    return new w69b.MultiFormatReader().decode(bitmap, opt_hints);
   };
 
   /**

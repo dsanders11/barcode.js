@@ -3,18 +3,24 @@ goog.provide('w69b.imgtools');
 goog.require('goog.asserts');
 goog.require('goog.crypt.base64');
 goog.require('goog.math.Size');
+goog.require('w69b.ImageDataLuminanceSource');
+goog.require('w69b.common.BitMatrix');
+goog.require('w69b.common.HybridBinarizer');
+goog.require('w69b.ui.Drawable');
+
 
 goog.scope(function() {
-  var _ = w69b.imgtools;
   var Size = goog.math.Size;
   var base64 = goog.crypt.base64;
+  var ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
 
   /**
    * Get content of canvas as png stored in a blob.
    * @param {HTMLCanvasElement} canvas canvas element.
    * @param {function(Blob)} callback called with blob data.
+   * @export
    */
-  _.getCanvasAsBlob = function(canvas, callback) {
+  w69b.imgtools.getCanvasAsBlob = function(canvas, callback) {
     if (canvas['toBlob']) {
       // toBlob supported
       canvas['toBlob'](callback);
@@ -40,8 +46,9 @@ goog.scope(function() {
    * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or Size object
    * that img data should cover (cropping bottom-right corners).
    * @return {!ImageData} image data.
+   * @export
    */
-  _.getImageData = function(img, opt_maxSize) {
+  w69b.imgtools.getImageData = function(img, opt_maxSize) {
     var size = new Size(
       /** @type {number} */ (img.width || img.videoWidth),
       /** @type {number} */ (img.height || img.videoHeight));
@@ -92,17 +99,45 @@ goog.scope(function() {
   };
 
   /**
+   * @param {ImageData} imageData data from canvas.
+   * @param {boolean=} useWebGL should webGL be used to binarize.
+   * @return {!w69b.common.BitMatrix} binary data.
+   * @export
+   */
+  w69b.imgtools.binarizeImageData = function(imageData, useWebGL = false) {
+    // TODO - Allow binarizing using WebGL, also make it more general
+    var luminanceSource = new ImageDataLuminanceSource(imageData);
+    var binarizer = new w69b.common.HybridBinarizer(luminanceSource);
+    return binarizer.getBlackMatrix();
+  };
+
+  /**
+   * @param {w69b.common.BitMatrix} matrix the matrix to render
+   * @param {w69b.ui.Drawable} drawable the drawable to render onto
+   * @export
+   */
+  w69b.imgtools.renderToDrawable = function(matrix, drawable) {
+    var width = matrix.getWidth();
+    var height = matrix.getHeight();
+    drawable.fillBackground(width, height);
+    for (let x=0; x < width; x++) {
+      for (let y=0; y < height; y++) {
+        if (matrix.get(x, y) === true) {
+          drawable.fillBlack(x, y, 1, 1);
+        }
+      }
+    }
+  };
+
+  /**
    * Scales size in-place to fit max if larger keeping the aspect ratio.
    * @param {Size} size original size.
    * @param {number} max size in pixels.
    */
-  _.scaleIfLarger = function(size, max) {
+  w69b.imgtools.scaleIfLarger = function(size, max) {
     var s = Math.min(max / size.width, max / size.height);
     if (s <= 1) {
       size.scale(s).round();
     }
   };
-
-  goog.exportSymbol('w69b.imgtools.getImageData', _.getImageData);
-  goog.exportSymbol('w69b.imgtools.getCanvasAsBlob', _.getCanvasAsBlob);
 });
