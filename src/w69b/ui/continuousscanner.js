@@ -60,6 +60,7 @@ goog.scope(function() {
      * @private
      */
     this.size_ = new Size(200, 200);
+
     /**
      * Size of decoding image.
      * @type {Size}
@@ -73,6 +74,11 @@ goog.scope(function() {
      * @private
      */
     this.decodedCallback_ = goog.nullFunction;
+
+    /**
+     * @private
+     */
+    this.notFoundCallback_ = goog.nullFunction;
   };
   var ContinuousScanner = w69b.ui.ContinuousScanner;
   goog.inherits(ContinuousScanner, goog.ui.Component);
@@ -188,6 +194,15 @@ goog.scope(function() {
    */
   pro.setDecodedCallback = function(callback) {
     this.decodedCallback_ = callback;
+  };
+
+  /**
+   * Set callback that is called when no barcode was found
+   * @param {function()} callback function
+   * @export
+   */
+  pro.setNotFoundCallback = function(callback) {
+    this.notFoundCallback_ = callback;
   };
 
   /**
@@ -381,6 +396,7 @@ goog.scope(function() {
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.NOTFOUND:
+        this.onNotFound();
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.PATTERN:
@@ -395,6 +411,15 @@ goog.scope(function() {
    */
   pro.onDecoded = function(text) {
     this.decodedCallback_(text);
+  };
+
+  /**
+   * No barcode found.
+   */
+  pro.onNotFound = function() {
+    if (!this.stopped_) {
+      this.notFoundCallback_();
+    }
   };
 
   /**
