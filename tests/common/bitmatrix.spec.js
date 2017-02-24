@@ -53,17 +53,28 @@ define(['chai'], function(chai) {
 
     it('testOnBit', function() {
       var matrix = new BitMatrix(5);
+      assert.isNull(matrix.getEnclosingRectangle());
+      matrix.setRegion(1, 1, 1, 1);
+      assert.deepEqual(Int32Array.of(1, 1, 1, 1), matrix.getEnclosingRectangle());
+      matrix.setRegion(1, 1, 3, 2);
+      assert.deepEqual(Int32Array.of(1, 1, 3, 2), matrix.getEnclosingRectangle());
+      matrix.setRegion(0, 0, 5, 5);
+      assert.deepEqual(Int32Array.of(0, 0, 5, 5), matrix.getEnclosingRectangle());
+    });
+
+    it('testOnBit', function() {
+      var matrix = new BitMatrix(5);
       assert.isNull(matrix.getTopLeftOnBit());
       assert.isNull(matrix.getBottomRightOnBit());
       matrix.setRegion(1, 1, 1, 1);
-      assert.deepEqual(new Int32Array([ 1, 1 ]), matrix.getTopLeftOnBit());
-      assert.deepEqual(new Int32Array([ 1, 1 ]), matrix.getBottomRightOnBit());
+      assert.deepEqual(Int32Array.of(1, 1), matrix.getTopLeftOnBit());
+      assert.deepEqual(Int32Array.of(1, 1), matrix.getBottomRightOnBit());
       matrix.setRegion(1, 1, 3, 2);
-      assert.deepEqual(new Int32Array([ 1, 1 ]), matrix.getTopLeftOnBit());
-      assert.deepEqual(new Int32Array([ 3, 2 ]), matrix.getBottomRightOnBit());
+      assert.deepEqual(Int32Array.of(1, 1), matrix.getTopLeftOnBit());
+      assert.deepEqual(Int32Array.of(3, 2), matrix.getBottomRightOnBit());
       matrix.setRegion(0, 0, 5, 5);
-      assert.deepEqual(new Int32Array([ 0, 0 ]), matrix.getTopLeftOnBit());
-      assert.deepEqual(new Int32Array([ 4, 4 ]), matrix.getBottomRightOnBit());
+      assert.deepEqual(Int32Array.of(0, 0), matrix.getTopLeftOnBit());
+      assert.deepEqual(Int32Array.of(4, 4), matrix.getBottomRightOnBit());
     });
 
     it('testRectangularMatrix', function() {
@@ -136,6 +147,28 @@ define(['chai'], function(chai) {
       }
     });
 
+    it('testRotate180Simple', function() {
+      var matrix = new BitMatrix(3, 3);
+      matrix.set(0, 0);
+      matrix.set(0, 1);
+      matrix.set(1, 2);
+      matrix.set(2, 1);
+
+      matrix.rotate180();
+
+      assert.isTrue(matrix.get(2, 2));
+      assert.isTrue(matrix.get(2, 1));
+      assert.isTrue(matrix.get(1, 0));
+      assert.isTrue(matrix.get(0, 1));
+    });
+
+    it('testRotate180', function() {
+      testRotate180(7, 4);
+      testRotate180(7, 5);
+      testRotate180(8, 4);
+      testRotate180(8, 5);
+    });
+
     it('testUnset', function() {
       var emptyMatrix = new BitMatrix(3, 3);
       var matrix = emptyMatrix.clone();
@@ -146,7 +179,82 @@ define(['chai'], function(chai) {
       matrix.unset(1, 1);
       assert.deepEqual(emptyMatrix, matrix);
     });
+
+    it('testXOR', function() {
+      var emptyMatrix = new BitMatrix(3, 3);
+      var fullMatrix = new BitMatrix(3, 3);
+      fullMatrix.setRegion(0, 0, 3, 3);
+      var centerMatrix = new BitMatrix(3, 3);
+      centerMatrix.setRegion(1, 1, 1, 1);
+      var invertedCenterMatrix = fullMatrix.clone();
+      invertedCenterMatrix.unset(1, 1);
+      var badMatrix = new BitMatrix(4, 4);
+
+      testXOR(emptyMatrix, emptyMatrix, emptyMatrix);
+      testXOR(emptyMatrix, centerMatrix, centerMatrix);
+      testXOR(emptyMatrix, fullMatrix, fullMatrix);
+
+      testXOR(centerMatrix, emptyMatrix, centerMatrix);
+      testXOR(centerMatrix, centerMatrix, emptyMatrix);
+      testXOR(centerMatrix, fullMatrix, invertedCenterMatrix);
+
+      testXOR(invertedCenterMatrix, emptyMatrix, invertedCenterMatrix);
+      testXOR(invertedCenterMatrix, centerMatrix, fullMatrix);
+      testXOR(invertedCenterMatrix, fullMatrix, centerMatrix);
+
+      testXOR(fullMatrix, emptyMatrix, fullMatrix);
+      testXOR(fullMatrix, centerMatrix, invertedCenterMatrix);
+      testXOR(fullMatrix, fullMatrix, emptyMatrix);
+
+      try {
+        emptyMatrix.clone().xor(badMatrix);
+        fail();
+      } catch (err) {
+        // good
+      }
+
+      try {
+        badMatrix.clone().xor(emptyMatrix);
+        fail();
+      } catch (err) {
+        // good
+      }
+    });
   });
+
+  function testXOR(dataMatrix, flipMatrix, expectedMatrix) {
+    var matrix = dataMatrix.clone();
+    matrix.xor(flipMatrix);
+    assert.deepEqual(expectedMatrix, matrix);
+  }
+
+  function testRotate180(width, height) {
+    var input = getInput(width, height);
+    input.rotate180();
+    var expected = getExpected(width, height);
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        assert.equal(expected.get(x, y), input.get(x, y), `(${x}, ${y})`);
+      }
+    }
+  }
+
+  function getExpected(width, height) {
+    var result = new BitMatrix(width, height);
+    for (let i = 0; i < BIT_MATRIX_POINTS.length; i += 2) {
+      result.set(width - 1 - BIT_MATRIX_POINTS[i], height - 1 - BIT_MATRIX_POINTS[i + 1]);
+    }
+    return result;
+  }
+
+  function getInput(width, height) {
+    var result = new BitMatrix(width, height);
+    for (let i = 0; i < BIT_MATRIX_POINTS.length; i += 2) {
+      result.set(BIT_MATRIX_POINTS[i], BIT_MATRIX_POINTS[i + 1]);
+    }
+    return result;
+  }
 
   var _ = {};
 

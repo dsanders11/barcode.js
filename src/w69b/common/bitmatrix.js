@@ -112,7 +112,28 @@ goog.scope(function() {
   };
 
   /**
-   * Clear matrix.
+   * Exclusive-or (XOR): Flip the bit in this {@code BitMatrix} if the
+   * corresponding mask bit is set.
+   *
+   * @param {BitMatrix} mask XOR mask
+   */
+  pro.xor = function(mask) {
+    if (this.width !== mask.getWidth() || this.height != mask.getHeight()
+        || this.rowSize != mask.getRowSize()) {
+      throw new IllegalArgumentException("input matrix dimensions do not match");
+    }
+    var rowArray = new BitArray((this.width >> 5) + 1);
+    for (let y = 0; y < this.height; y++) {
+      let offset = y * this.rowSize;
+      let row = mask.getRow(y, rowArray).getBitArray();
+      for (let x = 0; x < this.rowSize; x++) {
+        this.bits[offset + x] ^= row[x];
+      }
+    }
+  };
+
+  /**
+   * Clears all bits (sets to false).
    */
   pro.clear = function() {
     this.bits.fill(0);
@@ -171,6 +192,83 @@ goog.scope(function() {
       row.setBulk(x * 32, this.bits[offset + x]);
     }
     return row;
+  };
+
+  /**
+   * @param {number} y row to set
+   * @param {BitArray} row {@link BitArray} to copy from
+   * @suppress {checkTypes}
+   */
+  pro.setRow = function(y, row) {
+    this.bits.set(row.getBitArray().slice(0, this.rowSize), y * this.rowSize);
+  };
+
+  /**
+   * Modifies this {@code BitMatrix} to represent the same but rotated 180 degrees
+   */
+  pro.rotate180 = function() {
+    var width = this.getWidth();
+    var height = this.getHeight();
+    var topRow = new BitArray(width);
+    var bottomRow = new BitArray(width);
+    for (let i = 0; i < (height + 1) >> 1; i++) {
+      topRow = this.getRow(i, topRow);
+      bottomRow = this.getRow(height - 1 - i, bottomRow);
+      topRow.reverse();
+      bottomRow.reverse();
+      this.setRow(i, bottomRow);
+      this.setRow(height - 1 - i, topRow);
+    }
+  };
+
+  /**
+   * This is useful in detecting the enclosing rectangle of a 'pure' barcode.
+   *
+   * @return {Int32Array} {@code left,top,width,height} enclosing rectangle of all 1 bits, or null if it is all white
+   */
+  pro.getEnclosingRectangle = function() {
+    var left = this.width;
+    var top = this.height;
+    var right = -1;
+    var bottom = -1;
+
+    for (let y = 0; y < this.height; y++) {
+      for (let x32 = 0; x32 < this.rowSize; x32++) {
+        let theBits = this.bits[y * this.rowSize + x32];
+        if (theBits != 0) {
+          if (y < top) {
+            top = y;
+          }
+          if (y > bottom) {
+            bottom = y;
+          }
+          if (x32 * 32 < left) {
+            let bit = 0;
+            while ((theBits << (31 - bit)) == 0) {
+              bit++;
+            }
+            if ((x32 * 32 + bit) < left) {
+              left = x32 * 32 + bit;
+            }
+          }
+          if (x32 * 32 + 31 > right) {
+            let bit = 31;
+            while ((theBits >> bit) == 0) {
+              bit--;
+            }
+            if ((x32 * 32 + bit) > right) {
+              right = x32 * 32 + bit;
+            }
+          }
+        }
+      }
+    }
+
+    if (right < left || bottom < top) {
+      return null;
+    }
+
+    return Int32Array.of(left, top, right - left + 1, bottom - top + 1);
   };
 
   /**
