@@ -18,9 +18,6 @@
       }
     </style>
     <script type="text/javascript" src="../dist/w69b.qrcode.js"></script>
-    <script type="text/javascript">
-      goog.require('w69b.ui.ContinuousScanner');
-    </script>
   </head>
   <body>
     <div id="scanner"></div>
@@ -32,7 +29,6 @@
           '/libs/iconv.js');
 
         function load() {
-          // qrcode.decode('qr_hello.png');
           var scanner = new w69b.ui.ContinuousScanner();
           scanner.setDecodedCallback(function(result) {
             alert('decoded: ' + result);

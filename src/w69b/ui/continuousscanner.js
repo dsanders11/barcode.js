@@ -33,7 +33,7 @@ goog.scope(function() {
     this.birthTime = new Date().getTime();
   };
   var PatternPoint = w69b.ui.PatternPoint;
-  // PatternPoint.prototype.
+
   /**
    * Component that shows visualization of continuous scanning.
    *
@@ -376,8 +376,6 @@ goog.scope(function() {
     }
     switch (type) {
       case WorkerMessageType.DECODED:
-        // this.lastResult_ = value['text'];
-        // this.foundPatterns_ = [];
         opt_value['patterns'].forEach(this.addPattern_, this);
         this.onDecoded(opt_value['text']);
         this.isDecoding_ = false;
@@ -392,7 +390,7 @@ goog.scope(function() {
   };
 
   /**
-   * Found and decoded qr code.
+   * Found and decoded barcode.
    * @param {string} text decoded text.
    */
   pro.onDecoded = function(text) {
@@ -441,7 +439,6 @@ goog.scope(function() {
       window.clearTimeout(this.timerRequestId_);
     }
   };
-
 
   // exports
   goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.render', pro.render);

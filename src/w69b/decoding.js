@@ -121,7 +121,7 @@ goog.scope(function() {
             resolver.resolve(opt_value);
             break;
           case WorkerMessageType.NOTFOUND:
-            resolver.reject(opt_value ? new Error(opt_value) : null);
+            resolver.reject(opt_value ? new Error(opt_value) : "");
             break;
         }
       }
