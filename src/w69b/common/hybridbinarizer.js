@@ -214,6 +214,7 @@ goog.scope(function() {
    */
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
                                     height) {
+    /** @type {Array.<Int32Array>} */
     var blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
     /** @const */
     var maxXOffset = width - BLOCK_SIZE;
