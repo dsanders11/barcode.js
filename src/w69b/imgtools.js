@@ -118,7 +118,7 @@ goog.scope(function() {
    * @export
    */
   w69b.imgtools.binarizeImage = function(image, useWebGL = false, opt_maxSize) {
-    if (!(imageData instanceof ImageData)) {
+    if (!(image instanceof ImageData)) {
       image.style = "image-rendering: pixelated";
     }
     var imageData = image;
