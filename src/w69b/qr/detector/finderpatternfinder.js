@@ -244,7 +244,7 @@ goog.scope(function() {
    * @return {number} position.
    */
   pro.centerFromEnd = function(stateCount, end) {
-    return (end - stateCount[4] - stateCount[3]) - stateCount[2] / 2.;
+    return (end - stateCount[4] - stateCount[3]) - stateCount[2] / 2.0;
   };
 
   /**
@@ -266,7 +266,7 @@ goog.scope(function() {
       return false;
     }
     var moduleSize = Math.floor((totalModuleSize << _.INTEGER_MATH_SHIFT) / 7);
-    var maxVariance = Math.floor(moduleSize / 2);
+    var maxVariance = moduleSize >> 1;
     // Allow less than 50% variance from 1-1-3-1-1 proportions
     return Math.abs(moduleSize - (stateCount[0] << _.INTEGER_MATH_SHIFT)) <
       maxVariance &&

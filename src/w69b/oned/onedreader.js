@@ -242,9 +242,9 @@ goog.scope(function() {
 
     for (let x = 0; x < maxLines; x++) {
       // Scanning from the middle out. Determine which row we're looking at next:
-      let rowStepsAboveOrBelow = (x + 1) / 2;
+      let rowStepsAboveOrBelow = (x + 1) >> 1;
       let isAbove = (x & 0x01) == 0; // i.e. is x even?
-      let rowNumber = middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow);
+      let rowNumber = Math.floor(middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow));
       if (rowNumber < 0 || rowNumber >= height) {
         // Oops, if we run off the top or bottom, stop
         break;

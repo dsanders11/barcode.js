@@ -250,8 +250,8 @@ goog.scope(function() {
       topRight) / moduleSize;
     var tlblCentersDimension = ResultPoint.distance(topLeft,
       bottomLeft) / moduleSize;
-    var dimension = Math.round((
-      tltrCentersDimension + tlblCentersDimension) / 2) + 7;
+    var dimension = ((
+      tltrCentersDimension + tlblCentersDimension) >> 1) + 7;
     switch (dimension % 4) {
       // mod 4
       case 0:

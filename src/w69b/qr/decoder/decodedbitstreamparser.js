@@ -16,6 +16,7 @@
  */
 
 goog.provide('w69b.qr.decoder.DecodedBitStreamParser');
+goog.require('goog.asserts');
 goog.require('goog.string.StringBuffer');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.FormatException');
@@ -23,6 +24,7 @@ goog.require('w69b.common.BitSource');
 goog.require('w69b.common.CharacterSetECI');
 goog.require('w69b.common.DecoderResult');
 goog.require('w69b.common.stringutils');
+goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.qr.decoder.Mode');
 goog.require('w69b.qr.decoder.ModeEnum');
 
@@ -37,6 +39,7 @@ goog.scope(function() {
   var FormatException = w69b.FormatException;
   var CharacterSetECI = w69b.common.CharacterSetECI;
   var DecoderResult = w69b.common.DecoderResult;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * <p>QR Codes can encode text as bits in one of several modes, and can use
@@ -78,69 +81,76 @@ goog.scope(function() {
     var symbolSequence = -1;
     var parityData = -1;
 
-    var currentCharacterSet = null;
-    var fc1InEffect = false;
-    var mode;
-    do {
-      // While still another segment to read...
-      if (bits.available() < 4) {
-        // OK, assume we're done. Really, a TERMINATOR mode should have been
-        // recorded here
-        mode = ModeEnum.TERMINATOR;
-      } else {
-        mode = Mode.forBits(bits.readBits(4)); // mode is encoded by 4 bits
-      }
-      if (mode != ModeEnum.TERMINATOR) {
-        if (mode == ModeEnum.FNC1_FIRST_POSITION ||
-          mode == ModeEnum.FNC1_SECOND_POSITION) {
-          // We do little with FNC1 except alter the parsed result a bit
-          // according to the spec
-          fc1InEffect = true;
-        } else if (mode == ModeEnum.STRUCTURED_APPEND) {
-          if (bits.available() < 16) {
-            throw new FormatException();  // FormatException.getFormatInstance();
-          }
-          // sequence number and parity is added later to the result metadata
-          // Read next 8 bits (symbol sequence #) and 8 bits (parity data), then continue
-          symbolSequence = bits.readBits(8);
-          parityData = bits.readBits(8);
-        } else if (mode == ModeEnum.ECI) {
-          // Count doesn't apply to ECI
-          var value = _.parseECIValue(bits);
-          currentCharacterSet = CharacterSetECI.getCharacterSetECIByValue(value);
-          if (currentCharacterSet == null)
-            throw new FormatException();
+    try {
+      var currentCharacterSet = null;
+      var fc1InEffect = false;
+      var mode;
+      do {
+        // While still another segment to read...
+        if (bits.available() < 4) {
+          // OK, assume we're done. Really, a TERMINATOR mode should have been
+          // recorded here
+          mode = ModeEnum.TERMINATOR;
         } else {
-          // First handle Hanzi mode which does not start with character count
-          if (mode == ModeEnum.HANZI) {
-            //chinese mode contains a sub set indicator right after mode
-            //indicator
-            var subset = bits.readBits(4);
-            var countHanzi = bits.readBits(
-              mode.getCharacterCountBits(version));
-            if (subset == _.GB2312_SUBSET) {
-              _.decodeHanziSegment(bits, result, countHanzi);
+          mode = Mode.forBits(bits.readBits(4)); // mode is encoded by 4 bits
+        }
+        if (mode != ModeEnum.TERMINATOR) {
+          if (mode == ModeEnum.FNC1_FIRST_POSITION ||
+            mode == ModeEnum.FNC1_SECOND_POSITION) {
+            // We do little with FNC1 except alter the parsed result a bit
+            // according to the spec
+            fc1InEffect = true;
+          } else if (mode == ModeEnum.STRUCTURED_APPEND) {
+            if (bits.available() < 16) {
+              throw new FormatException();  // FormatException.getFormatInstance();
             }
+            // sequence number and parity is added later to the result metadata
+            // Read next 8 bits (symbol sequence #) and 8 bits (parity data), then continue
+            symbolSequence = bits.readBits(8);
+            parityData = bits.readBits(8);
+          } else if (mode == ModeEnum.ECI) {
+            // Count doesn't apply to ECI
+            var value = _.parseECIValue(bits);
+            currentCharacterSet = CharacterSetECI.getCharacterSetECIByValue(value);
+            if (currentCharacterSet == null)
+              throw new FormatException();
           } else {
-            // "Normal" QR code modes:
-            // How many characters will follow, encoded in this mode?
-            var count = bits.readBits(mode.getCharacterCountBits(version));
-            if (mode == ModeEnum.NUMERIC) {
-              _.decodeNumericSegment(bits, result, count);
-            } else if (mode == ModeEnum.ALPHANUMERIC) {
-              _.decodeAlphanumericSegment(bits, result, count, fc1InEffect);
-            } else if (mode == ModeEnum.BYTE) {
-              _.decodeByteSegment(bits, result, count,
-                currentCharacterSet, byteSegments, opt_hints);
-            } else if (mode == ModeEnum.KANJI) {
-              _.decodeKanjiSegment(bits, result, count);
+            // First handle Hanzi mode which does not start with character count
+            if (mode == ModeEnum.HANZI) {
+              //chinese mode contains a sub set indicator right after mode
+              //indicator
+              var subset = bits.readBits(4);
+              var countHanzi = bits.readBits(
+                mode.getCharacterCountBits(version));
+              if (subset == _.GB2312_SUBSET) {
+                _.decodeHanziSegment(bits, result, countHanzi);
+              }
             } else {
-              throw new FormatException();  //FormatException.getFormatInstance();
+              // "Normal" QR code modes:
+              // How many characters will follow, encoded in this mode?
+              var count = bits.readBits(mode.getCharacterCountBits(version));
+              if (mode == ModeEnum.NUMERIC) {
+                _.decodeNumericSegment(bits, result, count);
+              } else if (mode == ModeEnum.ALPHANUMERIC) {
+                _.decodeAlphanumericSegment(bits, result, count, fc1InEffect);
+              } else if (mode == ModeEnum.BYTE) {
+                _.decodeByteSegment(bits, result, count,
+                  currentCharacterSet, byteSegments, opt_hints);
+              } else if (mode == ModeEnum.KANJI) {
+                _.decodeKanjiSegment(bits, result, count);
+              } else {
+                throw new FormatException();  //FormatException.getFormatInstance();
+              }
             }
           }
         }
+      } while (mode != ModeEnum.TERMINATOR);
+    } catch (err) {
+      if (err instanceof IllegalArgumentException) {
+        throw new FormatException();
       }
-    } while (mode != ModeEnum.TERMINATOR);
+      throw err;
+    }
 
     return new DecoderResult(bytes,
                              result.toString(),
@@ -263,6 +273,8 @@ goog.scope(function() {
    * @return {string} char.
    */
   _.toAlphaNumericChar = function(value) {
+    goog.asserts.assert(Number.isInteger(value));
+
     if (value >= _.ALPHANUMERIC_CHARS.length) {
       throw new FormatException();  // FormatException.getFormatInstance();
     }
@@ -283,7 +295,7 @@ goog.scope(function() {
         throw new FormatException();  // throw FormatException.getFormatInstance();
       }
       var nextTwoCharsBits = bits.readBits(11);
-      result.append(_.toAlphaNumericChar(nextTwoCharsBits / 45));
+      result.append(_.toAlphaNumericChar(Math.floor(nextTwoCharsBits / 45)));
       result.append(_.toAlphaNumericChar(nextTwoCharsBits % 45));
       count -= 2;
     }
@@ -328,8 +340,8 @@ goog.scope(function() {
       if (threeDigitsBits >= 1000) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
-      result.append(_.toAlphaNumericChar(threeDigitsBits / 100));
-      result.append(_.toAlphaNumericChar((threeDigitsBits / 10) % 10));
+      result.append(_.toAlphaNumericChar(Math.floor(threeDigitsBits / 100)));
+      result.append(_.toAlphaNumericChar(Math.floor(threeDigitsBits / 10) % 10));
       result.append(_.toAlphaNumericChar(threeDigitsBits % 10));
       count -= 3;
     }
@@ -342,7 +354,7 @@ goog.scope(function() {
       if (twoDigitsBits >= 100) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
-      result.append(_.toAlphaNumericChar(twoDigitsBits / 10));
+      result.append(_.toAlphaNumericChar(Math.floor(twoDigitsBits / 10)));
       result.append(_.toAlphaNumericChar(twoDigitsBits % 10));
     } else if (count == 1) {
       // One digit left over to read

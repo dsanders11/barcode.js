@@ -320,7 +320,7 @@ goog.scope(function() {
       let numEcBytes = ecBlocks.getTotalECCodewords();
       // getNumDataBytes = 196 - 130 = 66
       let numDataBytes = numBytes - numEcBytes;
-      let totalInputBytes = Math.floor((numInputBits + 7) / 8);
+      let totalInputBytes = (numInputBits + 7) >> 3;
       if (numDataBytes >= totalInputBytes) {
         return version;
       }

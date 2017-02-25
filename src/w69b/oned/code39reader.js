@@ -250,7 +250,7 @@ goog.scope(function() {
         if (counterPosition == patternLength - 1) {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (Code39Reader.toNarrowWidePattern_(counters) == Code39Reader.ASTERISK_ENCODING &&
-              row.isRange(Math.max(0, patternStart - ((i - patternStart) / 2)), patternStart, false)) {
+              row.isRange(Math.max(0, patternStart - ((i - patternStart) >> 1)), patternStart, false)) {
             return Int32Array.of(patternStart, i);
           }
           patternStart += counters[0] + counters[1];

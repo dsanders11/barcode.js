@@ -453,7 +453,7 @@ goog.scope(function() {
     // to read off. Would be slightly better to properly read. Here we just skip it:
     nextStart = row.getNextUnset(nextStart);
     if (!row.isRange(nextStart,
-                     Math.min(row.getSize(), nextStart + (nextStart - lastStart) / 2),
+                     Math.min(row.getSize(), nextStart + ((nextStart - lastStart) >> 1)),
                      false)) {
       throw new NotFoundException();
     }
@@ -563,7 +563,7 @@ goog.scope(function() {
           }
           // Look for whitespace before start pattern, >= 50% of width of start pattern
           if (bestMatch >= 0 &&
-              row.isRange(Math.max(0, patternStart - (i - patternStart) / 2), patternStart, false)) {
+              row.isRange(Math.max(0, patternStart - ((i - patternStart) >> 1)), patternStart, false)) {
             return Int32Array.of(patternStart, i, bestMatch);
           }
           patternStart += counters[0] + counters[1];

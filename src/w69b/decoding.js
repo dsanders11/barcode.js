@@ -126,6 +126,12 @@ goog.scope(function() {
           case WorkerMessageType.NOTFOUND:
             resolver.reject(opt_value ? new Error(opt_value) : "");
             break;
+          case WorkerMessageType.PATTERN:
+            // Do nothing
+            break;
+          default:
+            resolver.reject();
+            break;
         }
       }
     );

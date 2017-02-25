@@ -182,7 +182,7 @@ goog.scope(function() {
     // Push in the "border" by half the module width so that we start
     // sampling in the middle of the module. Just in case the image is a
     // little off, this will help recover.
-    var nudge = Math.floor(moduleSize / 2.0);
+    var nudge = moduleSize >> 1;
     top += nudge;
     left += nudge;
 

@@ -130,7 +130,7 @@ goog.scope(function() {
     var t = this.field.one;
 
     // Run Euclidean algorithm until r's degree is less than R/2
-    while (r.getDegree() >= Math.floor(R / 2)) {
+    while (r.getDegree() >= R >> 1) {
       let rLastLast = rLast;
       let sLastLast = sLast;
       let tLastLast = tLast;

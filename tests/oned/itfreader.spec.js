@@ -10,13 +10,13 @@ define(['chai', 'tests/testhelper'], function(chai, testhelper) {
   var baseUrl = '../';
   // Expected number of detections with native binarizer.
   var expectedDetections = {
-    'itf-1': 8,
+    'itf-1': 10,
     'itf-2': 12
   };
   // Expected number of detections with WebGl binarizer, slightly worse in some cases, slightly
   // better in others.
   var expectedDetectionsGl = {
-    'itf-1': 8,
+    'itf-1': 10,
     'itf-2': 12
   };
   // If != null, run only specified suites (for debugging).

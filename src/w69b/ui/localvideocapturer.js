@@ -18,10 +18,10 @@ goog.scope(function() {
     goog.base(this);
     this.backCanvas_ = /** @type {HTMLCanvasElement} */ (
       document.createElement('canvas'));
-    this.backCanvas_.style = "image-rendering: pixelated";
+    this.backCanvas_.style['imageRendering'] = "pixelated";
     this.mediaVideo_ = /** @type {HTMLVideoElement} */ (
       document.createElement('video'));
-    this.mediaVideo_.style = "image-rendering: pixelated";
+    this.mediaVideo_.style['imageRendering'] = "pixelated";
     this.mediaVideo_.setAttribute('autoplay', 'true');
     this.backContext_ = /** @type {CanvasRenderingContext2D} */ (
       this.backCanvas_.getContext('2d'));

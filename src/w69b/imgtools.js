@@ -59,7 +59,7 @@ goog.scope(function() {
 
     goog.asserts.assert(size.width > 0 && size.height > 0);
     var canvas = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
-    canvas.style = "image-rendering: pixelated";
+    canvas.style['imageRendering'] = "pixelated";
     if (opt_maxSize) {
       w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
 //      if (goog.isNumber(opt_maxSize)) {
@@ -119,7 +119,7 @@ goog.scope(function() {
    */
   w69b.imgtools.binarizeImage = function(image, useWebGL = false, opt_maxSize) {
     if (!(image instanceof ImageData)) {
-      image.style = "image-rendering: pixelated";
+      image.style['imageRendering'] = "pixelated";
     }
     var imageData = image;
     if (useWebGL) {
