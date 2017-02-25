@@ -40,7 +40,7 @@ goog.scope(function() {
    */
   w69b.qr.decoder.BitMatrixParser = function(bitMatrix) {
     var dimension = bitMatrix.getHeight();
-    if (dimension < 21 || (dimension & 0x03) != 1) {
+    if (dimension < 21 || (dimension & 0x03) !== 1) {
       throw new FormatException();
     }
     /**
@@ -74,7 +74,7 @@ goog.scope(function() {
    * @return {!FormatInformation} format information.
    */
   pro.readFormatInformation = function() {
-    if (this.parsedFormatInfo != null) {
+    if (this.parsedFormatInfo !== null) {
       return this.parsedFormatInfo;
     }
 
@@ -94,7 +94,7 @@ goog.scope(function() {
 
     this.parsedFormatInfo =
       FormatInformation.decodeFormatInformation(formatInfoBits);
-    if (this.parsedFormatInfo != null) {
+    if (this.parsedFormatInfo !== null) {
       return this.parsedFormatInfo;
     }
 
@@ -111,7 +111,7 @@ goog.scope(function() {
 
     this.parsedFormatInfo =
       FormatInformation.decodeFormatInformation(formatInfoBits);
-    if (this.parsedFormatInfo != null) {
+    if (this.parsedFormatInfo !== null) {
       return this.parsedFormatInfo;
     }
     throw new FormatException();
@@ -121,7 +121,7 @@ goog.scope(function() {
    * @return {Version} version.
    */
   pro.readVersion = function() {
-    if (this.parsedVersion != null) {
+    if (this.parsedVersion !== null) {
       return this.parsedVersion;
     }
 
@@ -142,8 +142,8 @@ goog.scope(function() {
     }
 
     this.parsedVersion = Version.decodeVersionInformation(versionBits);
-    if (this.parsedVersion != null &&
-      this.parsedVersion.getDimensionForVersion() == dimension) {
+    if (this.parsedVersion !== null &&
+      this.parsedVersion.getDimensionForVersion() === dimension) {
       return this.parsedVersion;
     }
 
@@ -156,8 +156,8 @@ goog.scope(function() {
     }
 
     this.parsedVersion = Version.decodeVersionInformation(versionBits);
-    if (this.parsedVersion != null &&
-      this.parsedVersion.getDimensionForVersion() == dimension) {
+    if (this.parsedVersion !== null &&
+      this.parsedVersion.getDimensionForVersion() === dimension) {
       return this.parsedVersion;
     }
     throw new FormatException();
@@ -185,7 +185,7 @@ goog.scope(function() {
     var bitsRead = 0;
     // Read columns in pairs, from right to left
     for (let j = dimension - 1; j > 0; j -= 2) {
-      if (j == 6) {
+      if (j === 6) {
         // Skip whole column with vertical alignment pattern;
         // saves time and makes the other code proceed more cleanly
         j--;
@@ -203,7 +203,7 @@ goog.scope(function() {
               currentByte |= 1;
             }
             // If we've made a whole byte, save it off
-            if (bitsRead == 8) {
+            if (bitsRead === 8) {
               result[resultOffset++] = currentByte;
               bitsRead = 0;
               currentByte = 0;
@@ -213,7 +213,7 @@ goog.scope(function() {
       }
       readingUp ^= true; // readingUp = !readingUp; // switch directions
     }
-    if (resultOffset != version.totalCodewords) {
+    if (resultOffset !== version.totalCodewords) {
       throw new FormatException();
     }
     return result;

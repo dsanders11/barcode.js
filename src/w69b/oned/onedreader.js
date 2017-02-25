@@ -152,7 +152,7 @@ goog.scope(function() {
     var numTransitionsLeft = counters.length;
     var last = row.get(start);
     while (start > 0 && numTransitionsLeft >= 0) {
-      if (row.get(--start) != last) {
+      if (row.get(--start) !== last) {
         numTransitionsLeft--;
         last = !last;
       }
@@ -193,7 +193,7 @@ goog.scope(function() {
         counters[counterPosition]++;
       } else {
         counterPosition++;
-        if (counterPosition == numCounters) {
+        if (counterPosition === numCounters) {
           break;
         } else {
           counters[counterPosition] = 1;
@@ -204,7 +204,7 @@ goog.scope(function() {
     }
     // If we read fully the last section of pixels and filled up our counters -- or filled
     // the last counter but ran off the side of the image, OK. Otherwise, a problem.
-    if (!(counterPosition == numCounters || (counterPosition == numCounters - 1 && i == end))) {
+    if (!(counterPosition === numCounters || (counterPosition === numCounters - 1 && i === end))) {
       throw new NotFoundException();
     }
   };
@@ -243,7 +243,7 @@ goog.scope(function() {
     for (let x = 0; x < maxLines; x++) {
       // Scanning from the middle out. Determine which row we're looking at next:
       let rowStepsAboveOrBelow = (x + 1) >> 1;
-      let isAbove = (x & 0x01) == 0; // i.e. is x even?
+      let isAbove = (x & 0x01) === 0; // i.e. is x even?
       let rowNumber = Math.floor(middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow));
       if (rowNumber < 0 || rowNumber >= height) {
         // Oops, if we run off the top or bottom, stop

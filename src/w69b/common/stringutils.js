@@ -43,7 +43,7 @@ goog.scope(function() {
         // try other methods if charset is not supported by native decoder (eg. CP437 on Chrome).
       }
     }
-    if (charset == _.UTF8) {
+    if (charset === _.UTF8) {
       str = utf8.UTF8BytesToString(bytes);
     } else if (iconvlite.isSupported(charset)) {
       str = iconvlite.toString(bytes, charset);
@@ -76,7 +76,7 @@ goog.scope(function() {
     var charset = opt_charset || _.UTF8;
     /** @type {Int8Array} */
     var bytes = null;
-    if (charset == _.UTF8) {
+    if (charset === _.UTF8) {
       bytes = utf8.stringToUTF8Bytes(str);
       if (bytes === null) {
         throw new InvalidCharsetException();
@@ -136,9 +136,9 @@ goog.scope(function() {
     var isoHighOther = 0;
 
     var utf8bom = bytes.length > 3 &&
-      bytes[0] == 0xEF &&
-      bytes[1] == 0xBB &&
-      bytes[2] == 0xBF;
+      bytes[0] === 0xEF &&
+      bytes[1] === 0xBB &&
+      bytes[2] === 0xBF;
 
     for (let i = 0;
          i < length && (canBeISO88591 || canBeShiftJIS || canBeUTF8);
@@ -149,25 +149,25 @@ goog.scope(function() {
       // UTF-8 stuff
       if (canBeUTF8) {
         if (utf8BytesLeft > 0) {
-          if ((value & 0x80) == 0) {
+          if ((value & 0x80) === 0) {
             canBeUTF8 = false;
           } else {
             utf8BytesLeft--;
           }
-        } else if ((value & 0x80) != 0) {
-          if ((value & 0x40) == 0) {
+        } else if ((value & 0x80) !== 0) {
+          if ((value & 0x40) === 0) {
             canBeUTF8 = false;
           } else {
             utf8BytesLeft++;
-            if ((value & 0x20) == 0) {
+            if ((value & 0x20) === 0) {
               utf2BytesChars++;
             } else {
               utf8BytesLeft++;
-              if ((value & 0x10) == 0) {
+              if ((value & 0x10) === 0) {
                 utf3BytesChars++;
               } else {
                 utf8BytesLeft++;
-                if ((value & 0x08) == 0) {
+                if ((value & 0x08) === 0) {
                   utf4BytesChars++;
                 } else {
                   canBeUTF8 = false;
@@ -185,7 +185,7 @@ goog.scope(function() {
         if (value > 0x7F && value < 0xA0) {
           canBeISO88591 = false;
         } else if (value > 0x9F) {
-          if (value < 0xC0 || value == 0xD7 || value == 0xF7) {
+          if (value < 0xC0 || value === 0xD7 || value === 0xF7) {
             isoHighOther++;
           } //else {
           //isoHighChars++;
@@ -198,12 +198,12 @@ goog.scope(function() {
       // Shift_JIS stuff
       if (canBeShiftJIS) {
         if (sjisBytesLeft > 0) {
-          if (value < 0x40 || value == 0x7F || value > 0xFC) {
+          if (value < 0x40 || value === 0x7F || value > 0xFC) {
             canBeShiftJIS = false;
           } else {
             sjisBytesLeft--;
           }
-        } else if (value == 0x80 || value == 0xA0 || value > 0xEF) {
+        } else if (value === 0x80 || value === 0xA0 || value > 0xEF) {
           canBeShiftJIS = false;
         } else if (value > 0xA0 && value < 0xE0) {
           sjisKatakanaChars++;
@@ -255,7 +255,7 @@ goog.scope(function() {
     //   - at least 10% of bytes that could be "upper" not-alphanumeric Latin1,
     // - then we conclude Shift_JIS, else ISO-8859-1
     if (canBeISO88591 && canBeShiftJIS) {
-      return (sjisMaxKatakanaWordLength == 2 && sjisKatakanaChars == 2) ||
+      return (sjisMaxKatakanaWordLength === 2 && sjisKatakanaChars === 2) ||
         isoHighOther * 10 >= length ? _.SHIFT_JIS : _.ISO88591;
     }
 

@@ -86,7 +86,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask000.prototype.isMasked = function(i, j) {
-    return ((i + j) & 0x01) == 0;
+    return ((i + j) & 0x01) === 0;
   };
 
   /**
@@ -114,7 +114,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask001.prototype.isMasked = function(i, j) {
-    return (i & 0x01) == 0;
+    return (i & 0x01) === 0;
   };
 
   /**
@@ -142,7 +142,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask010.prototype.isMasked = function(i, j) {
-    return j % 3 == 0;
+    return j % 3 === 0;
   };
 
   /**
@@ -170,7 +170,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask011.prototype.isMasked = function(i, j) {
-    return (i + j) % 3 == 0;
+    return (i + j) % 3 === 0;
   };
 
   /**
@@ -198,7 +198,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask100.prototype.isMasked = function(i, j) {
-    return (((URShift(i, 1)) + (j / 3)) & 0x01) == 0;
+    return (((URShift(i, 1)) + (j / 3)) & 0x01) === 0;
   };
 
   /**
@@ -227,7 +227,7 @@ goog.scope(function() {
    */
   _.DataMask101.prototype.isMasked = function(i, j) {
     var temp = i * j;
-    return (temp & 0x01) + (temp % 3) == 0;
+    return (temp & 0x01) + (temp % 3) === 0;
   };
 
   /**
@@ -256,7 +256,7 @@ goog.scope(function() {
    */
   _.DataMask110.prototype.isMasked = function(i, j) {
     var temp = i * j;
-    return (((temp & 0x01) + (temp % 3)) & 0x01) == 0;
+    return (((temp & 0x01) + (temp % 3)) & 0x01) === 0;
   };
 
   /**
@@ -284,7 +284,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask111.prototype.isMasked = function(i, j) {
-    return ((((i + j) & 0x01) + ((i * j) % 3)) & 0x01) == 0;
+    return ((((i + j) & 0x01) + ((i * j) % 3)) & 0x01) === 0;
   };
 
   /**

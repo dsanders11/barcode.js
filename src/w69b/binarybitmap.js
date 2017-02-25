@@ -38,7 +38,7 @@ goog.scope(function() {
    * @final
    */
   w69b.BinaryBitmap = function(binarizer) {
-    if (binarizer == null) {
+    if (binarizer === null) {
       throw new IllegalArgumentException('Binarizer must be non-null.');
     }
     this.binarizer = binarizer;

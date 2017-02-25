@@ -78,7 +78,7 @@ goog.scope(function() {
    * @suppress {checkTypes}
    */
   pro.encode = function(toEncode, ecBytes) {
-    if (ecBytes == 0) {
+    if (ecBytes === 0) {
       throw new IllegalArgumentException('No error correction bytes');
     }
     var dataBytes = toEncode.length - ecBytes;

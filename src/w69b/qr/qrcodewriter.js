@@ -59,7 +59,7 @@ goog.scope(function() {
       throw new IllegalArgumentException("Found empty contents");
     }
 
-    if (format != BarcodeFormat.QR_CODE) {
+    if (format !== BarcodeFormat.QR_CODE) {
       throw new IllegalArgumentException("Can only encode QR_CODE, but got " + format);
     }
 

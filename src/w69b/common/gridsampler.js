@@ -150,17 +150,17 @@ goog.scope(function() {
         throw new w69b.NotFoundException();
       }
       nudged = false;
-      if (x == -1) {
+      if (x === -1) {
         points[offset] = 0.;
         nudged = true;
-      } else if (x == width) {
+      } else if (x === width) {
         points[offset] = width - 1;
         nudged = true;
       }
-      if (y == -1) {
+      if (y === -1) {
         points[offset + 1] = 0.;
         nudged = true;
-      } else if (y == height) {
+      } else if (y === height) {
         points[offset + 1] = height - 1;
         nudged = true;
       }
@@ -174,17 +174,17 @@ goog.scope(function() {
         throw new w69b.NotFoundException();
       }
       nudged = false;
-      if (x == -1) {
+      if (x === -1) {
         points[offset] = 0.;
         nudged = true;
-      } else if (x == width) {
+      } else if (x === width) {
         points[offset] = width - 1;
         nudged = true;
       }
-      if (y == -1) {
+      if (y === -1) {
         points[offset + 1] = 0.;
         nudged = true;
-      } else if (y == height) {
+      } else if (y === height) {
         points[offset + 1] = height - 1;
         nudged = true;
       }

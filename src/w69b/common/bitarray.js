@@ -311,7 +311,7 @@ goog.scope(function() {
    * @param {BitArray} other other.
    */
   pro.xor = function(other) {
-    if (this.size_ != other.size_) {
+    if (this.size_ !== other.size_) {
       throw new IllegalArgumentException("Sizes don't match");
     }
     for (let i = 0; i < this.bits_.length; i++) {

@@ -152,13 +152,13 @@ goog.scope(function() {
       for (let j = 0; j < maxJ; j++) {
         if (this.image_.get(j, i)) {
           // Black pixel
-          if ((currentState & 1) == 1) { // Counting white pixels
+          if ((currentState & 1) === 1) { // Counting white pixels
             currentState++;
           }
           stateCount[currentState]++;
         } else { // White pixel
-          if ((currentState & 1) == 0) { // Counting black pixels
-            if (currentState == 4) { // A winner?
+          if ((currentState & 1) === 0) { // Counting black pixels
+            if (currentState === 4) { // A winner?
               if (_.foundPatternCross(stateCount)) { // Yes
                 confirmed = this.handlePossibleCenter(stateCount, i, j, pureBarcode);
                 if (confirmed) {
@@ -257,7 +257,7 @@ goog.scope(function() {
     var totalModuleSize = 0;
     for (let i = 0; i < 5; i++) {
       let count = stateCount[i];
-      if (count == 0) {
+      if (count === 0) {
         return false;
       }
       totalModuleSize += count;
@@ -441,7 +441,7 @@ goog.scope(function() {
       stateCount[2]++;
       i++;
     }
-    if (i == maxI) {
+    if (i === maxI) {
       return NaN;
     }
     while (i < maxI && !image.get(centerJ, i) &&
@@ -449,7 +449,7 @@ goog.scope(function() {
       stateCount[3]++;
       i++;
     }
-    if (i == maxI || stateCount[3] >= maxCount) {
+    if (i === maxI || stateCount[3] >= maxCount) {
       return NaN;
     }
     while (i < maxI && image.get(centerJ, i) &&
@@ -526,7 +526,7 @@ goog.scope(function() {
       stateCount[2]++;
       j++;
     }
-    if (j == maxJ) {
+    if (j === maxJ) {
       return NaN;
     }
     while (j < maxJ && !image.get(j, centerI) &&
@@ -534,7 +534,7 @@ goog.scope(function() {
       stateCount[3]++;
       j++;
     }
-    if (j == maxJ || stateCount[3] >= maxCount) {
+    if (j === maxJ || stateCount[3] >= maxCount) {
       return NaN;
     }
     while (j < maxJ && image.get(j, centerI) &&
@@ -633,7 +633,7 @@ goog.scope(function() {
     for (let i = 0; i < this.possibleCenters_.length; ++i) {
       var center = this.possibleCenters_[i];
       if (center.getCount() >= _.CENTER_QUORUM) {
-        if (firstConfirmedCenter == null) {
+        if (firstConfirmedCenter === null) {
           firstConfirmedCenter = center;
         } else {
           // We have two confirmed centers
@@ -799,7 +799,7 @@ goog.scope(function() {
     function comparator(center1, center2) {
       var dA = Math.abs(center2.getEstimatedModuleSize() - average);
       var dB = Math.abs(center1.getEstimatedModuleSize() - average);
-      return dA < dB ? -1 : dA == dB ? 0 : 1;
+      return dA < dB ? -1 : dA === dB ? 0 : 1;
     }
 
     return comparator;
@@ -817,10 +817,10 @@ goog.scope(function() {
      * @return {number}
      */
     function comparator(center1, center2) {
-      if (center2.getCount() == center1.getCount()) {
+      if (center2.getCount() === center1.getCount()) {
         var dA = Math.abs(center2.getEstimatedModuleSize() - average);
         var dB = Math.abs(center1.getEstimatedModuleSize() - average);
-        return dA < dB ? 1 : dA == dB ? 0 : -1;
+        return dA < dB ? 1 : dA === dB ? 0 : -1;
       } else {
         return center2.getCount() - center1.getCount();
       }

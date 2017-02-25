@@ -153,7 +153,7 @@ goog.scope(function() {
       stateCount[1]++;
       i++;
     }
-    if (i == maxI || stateCount[1] > maxCount) {
+    if (i === maxI || stateCount[1] > maxCount) {
       return NaN;
     }
     while (i < maxI && !image.get(centerJ, i) &&
@@ -206,7 +206,7 @@ goog.scope(function() {
       // Hadn't found this before; save it
       let point = new AlignmentPattern(centerJ, centerI, estimatedModuleSize);
       this.possibleCenters.push(point);
-      if (this.resultPointCallback != null) {
+      if (this.resultPointCallback !== null) {
         this.resultPointCallback(point);
       }
     }
@@ -233,7 +233,7 @@ goog.scope(function() {
     for (let iGen = 0; iGen < height; iGen++) {
       // Search from middle outwards
       let i = middleI +
-        ((iGen & 0x01) == 0 ? ((iGen + 1) >> 1) : -((iGen + 1) >> 1));
+        ((iGen & 0x01) === 0 ? ((iGen + 1) >> 1) : -((iGen + 1) >> 1));
       stateCount[0] = 0;
       stateCount[1] = 0;
       stateCount[2] = 0;
@@ -249,17 +249,17 @@ goog.scope(function() {
       while (j < maxJ) {
         if (image.get(j, i)) {
           // Black pixel
-          if (currentState == 1) {
+          if (currentState === 1) {
             // Counting black pixels
             stateCount[currentState]++;
           } else {
             // Counting white pixels
-            if (currentState == 2) {
+            if (currentState === 2) {
               // A winner?
               if (this.foundPatternCross(stateCount)) {
                 // Yes
                 let confirmed = this.handlePossibleCenter(stateCount, i, j);
-                if (confirmed != null) {
+                if (confirmed !== null) {
                   return confirmed;
                 }
               }
@@ -273,7 +273,7 @@ goog.scope(function() {
           }
         } else {
           // White pixel
-          if (currentState == 1) {
+          if (currentState === 1) {
             // Counting black pixels
             currentState++;
           }
@@ -283,7 +283,7 @@ goog.scope(function() {
       }
       if (this.foundPatternCross(stateCount)) {
         let confirmed = this.handlePossibleCenter(stateCount, i, maxJ);
-        if (confirmed != null) {
+        if (confirmed !== null) {
           return confirmed;
         }
       }

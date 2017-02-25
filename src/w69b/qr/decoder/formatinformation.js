@@ -110,8 +110,8 @@ goog.scope(function() {
    * @return {boolean} are they equal
    */
   pro.Equals = function(other) {
-    return this.errorCorrectionLevel == other.errorCorrectionLevel &&
-      this.dataMask == other.dataMask;
+    return this.errorCorrectionLevel === other.errorCorrectionLevel &&
+      this.dataMask === other.dataMask;
   };
 
   /**
@@ -139,7 +139,7 @@ goog.scope(function() {
   FormatInformation.decodeFormatInformation = function(maskedFormatInfo) {
     var formatInfo = FormatInformation.doDecodeFormatInformation(
       maskedFormatInfo);
-    if (formatInfo != null) {
+    if (formatInfo !== null) {
       return formatInfo;
     }
     // Should return null, but, some QR codes apparently
@@ -161,7 +161,7 @@ goog.scope(function() {
          i++) {
       let decodeInfo = FormatInformation.FORMAT_INFO_DECODE_LOOKUP[i];
       let targetInfo = decodeInfo[0];
-      if (targetInfo == maskedFormatInfo) {
+      if (targetInfo === maskedFormatInfo) {
         // Found an exact match
         return new FormatInformation(decodeInfo[1]);
       }

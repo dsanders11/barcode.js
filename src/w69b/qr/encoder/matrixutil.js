@@ -274,7 +274,7 @@ goog.scope(function() {
     var y = matrix.getHeight() - 1;
     while (x > 0) {
       // Skip the vertical timing pattern.
-      if (x == 6) {
+      if (x === 6) {
         x -= 1;
       }
       while (y >= 0 && y < matrix.getHeight()) {
@@ -295,7 +295,7 @@ goog.scope(function() {
           }
 
           // Skip masking if mask_pattern is -1.
-          if (maskPattern != -1 && MaskUtil.getDataMaskBit(maskPattern, xx,
+          if (maskPattern !== -1 && MaskUtil.getDataMaskBit(maskPattern, xx,
             y)) {
             bit = !bit;
           }
@@ -308,7 +308,7 @@ goog.scope(function() {
       x -= 2;  // Move to the left.
     }
     // All bits should be consumed.
-    if (bitIndex != dataBits.getSize()) {
+    if (bitIndex !== dataBits.getSize()) {
       throw new WriterException('Not all bits consumed: ' +
         bitIndex + '/' + dataBits.getSize());
     }
@@ -326,7 +326,7 @@ goog.scope(function() {
    */
   _.findMSBSet = function(value) {
     var numDigits = 0;
-    while (value != 0) {
+    while (value !== 0) {
       value >>>= 1;
       ++numDigits;
     }
@@ -400,7 +400,7 @@ goog.scope(function() {
     maskBits.appendBits(_.TYPE_INFO_MASK_PATTERN, 15);
     bits.xor(maskBits);
 
-    if (bits.getSize() != 15) {  // Just in case.
+    if (bits.getSize() !== 15) {  // Just in case.
       throw new WriterException('should not happen but we got: ' +
         bits.getSize());
     }
@@ -418,7 +418,7 @@ goog.scope(function() {
       _.VERSION_INFO_POLY);
     bits.appendBits(bchCode, 12);
 
-    if (bits.getSize() != 18) {  // Just in case.
+    if (bits.getSize() !== 18) {  // Just in case.
       throw new WriterException('should not happen but we got: ' +
         bits.getSize());
     }
@@ -429,7 +429,7 @@ goog.scope(function() {
    * @return {boolean} if value is empty.
    */
   _.isEmpty = function(value) {
-    return value == -1;
+    return value === -1;
   };
 
   /**
@@ -456,7 +456,7 @@ goog.scope(function() {
    * @param {ByteMatrix} matrix the matrix.
    */
   _.embedDarkDotAtLeftBottomCorner = function(matrix) {
-    if (matrix.get(8, matrix.getHeight() - 8) == 0) {
+    if (matrix.get(8, matrix.getHeight() - 8) === 0) {
       throw new WriterException();
     }
     matrix.set(8, matrix.getHeight() - 8, 1);
@@ -577,7 +577,7 @@ goog.scope(function() {
       for (let j = 0; j < numCoordinates; ++j) {
         let y = coordinates[i];
         let x = coordinates[j];
-        if (x == -1 || y == -1) {
+        if (x === -1 || y === -1) {
           continue;
         }
         // If the cell is unset, we embed the position adjustment pattern here.

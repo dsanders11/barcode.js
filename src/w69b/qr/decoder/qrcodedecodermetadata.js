@@ -43,7 +43,7 @@ goog.scope(function() {
    * @param {Array.<w69b.ResultPoint>} points Array of points to apply mirror correction to.
    */
   pro.applyMirroredCorrection = function(points) {
-    if (!this.mirrored || points == null || points.length < 3) {
+    if (!this.mirrored || points === null || points.length < 3) {
       return;
     }
     var bottomLeft = points[0];

@@ -190,7 +190,7 @@ goog.scope(function() {
     for (let x = 0; x < max; x++) {
       let i = this.alignmentPatternCenters[x] - 2;
       for (let y = 0; y < max; y++) {
-        if ((x == 0 && (y == 0 || y == max - 1)) || (x == max - 1 && y == 0)) {
+        if ((x === 0 && (y === 0 || y === max - 1)) || (x === max - 1 && y === 0)) {
           // No alignment patterns near the three finder paterns
           continue;
         }
@@ -436,7 +436,7 @@ goog.scope(function() {
    * @throws {FormatException} if dimension is not 1 mod 4
    */
   Version.getProvisionalVersionForDimension = function(dimension) {
-    if (dimension % 4 != 1) {
+    if (dimension % 4 !== 1) {
       throw new FormatException();
     }
     try {
@@ -459,7 +459,7 @@ goog.scope(function() {
     for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
       let targetVersion = Version.VERSION_DECODE_INFO[i];
       // Do the version info bits match exactly? done.
-      if (targetVersion == versionBits) {
+      if (targetVersion === versionBits) {
         return Version.getVersionForNumber(i + 7);
       }
       // Otherwise see if this is the closest to a real version info bit string

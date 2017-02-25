@@ -67,8 +67,8 @@ var _ = w69b.qr.encoder.MaskUtil;
     for (let y = 0; y < height - 1; y++) {
       for (let x = 0; x < width - 1; x++) {
         let value = matrix.get(x, y);
-        if (value == matrix.get(x + 1, y) && value == matrix.get(x, y + 1) &&
-          value == matrix.get(x + 1, y + 1)) {
+        if (value === matrix.get(x + 1, y) && value === matrix.get(x, y + 1) &&
+          value === matrix.get(x + 1, y + 1)) {
           penalty++;
         }
       }
@@ -95,43 +95,43 @@ var _ = w69b.qr.encoder.MaskUtil;
       for (let x = 0; x < width; x++) {
         // Tried to simplify following conditions but failed.
         if (x + 6 < width &&
-            bytes[yOffset + x] == 1 &&
-            bytes[yOffset + x + 1] == 0 &&
-            bytes[yOffset + x + 2] == 1 &&
-            bytes[yOffset + x + 3] == 1 &&
-            bytes[yOffset + x + 4] == 1 &&
-            bytes[yOffset + x + 5] == 0 &&
-            bytes[yOffset + x + 6] == 1 &&
+            bytes[yOffset + x] === 1 &&
+            bytes[yOffset + x + 1] === 0 &&
+            bytes[yOffset + x + 2] === 1 &&
+            bytes[yOffset + x + 3] === 1 &&
+            bytes[yOffset + x + 4] === 1 &&
+            bytes[yOffset + x + 5] === 0 &&
+            bytes[yOffset + x + 6] === 1 &&
             ((x + 10 < width &&
-                bytes[yOffset + x + 7] == 0 &&
-                bytes[yOffset + x + 8] == 0 &&
-                bytes[yOffset + x + 9] == 0 &&
-                bytes[yOffset + x + 10] == 0) ||
+                bytes[yOffset + x + 7] === 0 &&
+                bytes[yOffset + x + 8] === 0 &&
+                bytes[yOffset + x + 9] === 0 &&
+                bytes[yOffset + x + 10] === 0) ||
              (x - 4 >= 0 &&
-                bytes[yOffset + x - 1] == 0 &&
-                bytes[yOffset + x - 2] == 0 &&
-                bytes[yOffset + x - 3] == 0 &&
-                bytes[yOffset + x - 4] == 0))) {
+                bytes[yOffset + x - 1] === 0 &&
+                bytes[yOffset + x - 2] === 0 &&
+                bytes[yOffset + x - 3] === 0 &&
+                bytes[yOffset + x - 4] === 0))) {
           penalty += _.N3;
         }
         if (y + 6 < height &&
-            matrix.get(x, y) == 1 &&
-            matrix.get(x, y + 1) == 0 &&
-            matrix.get(x, y + 2) == 1 &&
-            matrix.get(x, y + 3) == 1 &&
-            matrix.get(x, y + 4) == 1 &&
-            matrix.get(x, y + 5) == 0 &&
-            matrix.get(x, y + 6) == 1 &&
+            matrix.get(x, y) === 1 &&
+            matrix.get(x, y + 1) === 0 &&
+            matrix.get(x, y + 2) === 1 &&
+            matrix.get(x, y + 3) === 1 &&
+            matrix.get(x, y + 4) === 1 &&
+            matrix.get(x, y + 5) === 0 &&
+            matrix.get(x, y + 6) === 1 &&
             ((y + 10 < height &&
-                matrix.get(x, y + 7) == 0 &&
-                matrix.get(x, y + 8) == 0 &&
-                matrix.get(x, y + 9) == 0 &&
-                matrix.get(x, y + 10) == 0) ||
+                matrix.get(x, y + 7) === 0 &&
+                matrix.get(x, y + 8) === 0 &&
+                matrix.get(x, y + 9) === 0 &&
+                matrix.get(x, y + 10) === 0) ||
              (y - 4 >= 0 &&
-                matrix.get(x, y - 1) == 0 &&
-                matrix.get(x, y - 2) == 0 &&
-                matrix.get(x, y - 3) == 0 &&
-                matrix.get(x, y - 4) == 0))) {
+                matrix.get(x, y - 1) === 0 &&
+                matrix.get(x, y - 2) === 0 &&
+                matrix.get(x, y - 3) === 0 &&
+                matrix.get(x, y - 4) === 0))) {
           penalty += _.N3;
         }
       }
@@ -152,7 +152,7 @@ var _ = w69b.qr.encoder.MaskUtil;
     var height = matrix.getHeight();
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        if (matrix.get(x, y) == 1) {
+        if (matrix.get(x, y) === 1) {
           numDarkCells++;
         }
       }
@@ -207,7 +207,7 @@ var _ = w69b.qr.encoder.MaskUtil;
       default:
         throw new IllegalArgumentException('Invalid mask pattern: ' + maskPattern);
     }
-    return intermediate == 0;
+    return intermediate === 0;
   };
 
   /**
@@ -226,7 +226,7 @@ var _ = w69b.qr.encoder.MaskUtil;
       let prevBit = -1;
       for (let j = 0; j < jLimit; j++) {
         let bit = isHorizontal ? matrix.get(j, i) : matrix.get(i, j);
-        if (bit == prevBit) {
+        if (bit === prevBit) {
           numSameBitCells++;
         } else {
           if (numSameBitCells >= 5) {

@@ -50,7 +50,7 @@ goog.scope(function() {
     for (let i = 0; i < 255; i++) {
       this.logTable[this.expTable[i]] = i;
     }
-    // logTable[0] == 0 but this should never be used
+    // logTable[0] === 0 but this should never be used
     this.zero = new GF256Poly(this, new Int32Array(1));
     this.one = new GF256Poly(this, Int32Array.of(1));
   };
@@ -72,7 +72,7 @@ goog.scope(function() {
     if (degree < 0) {
       throw new IllegalArgumentException();
     }
-    if (coefficient == 0) {
+    if (coefficient === 0) {
       return this.zero;
     }
     var coefficients = new Int32Array(degree + 1);
@@ -93,7 +93,7 @@ goog.scope(function() {
    * @return {number} base 2 log of a
    */
   pro.log = function(a) {
-    if (a == 0) {
+    if (a === 0) {
       throw new IllegalArgumentException();
     }
     return this.logTable[a];
@@ -104,7 +104,7 @@ goog.scope(function() {
    * @return {number} multiplicative inverse of a
    */
   pro.inverse = function(a) {
-    if (a == 0) {
+    if (a === 0) {
       throw new ArithmeticException();
     }
     return this.expTable[255 - this.logTable[a]];
@@ -116,13 +116,13 @@ goog.scope(function() {
    * @return {number} product of a and b
    */
   pro.multiply = function(a, b) {
-    if (a == 0 || b == 0) {
+    if (a === 0 || b === 0) {
       return 0;
     }
-    if (a == 1) {
+    if (a === 1) {
       return b;
     }
-    if (b == 1) {
+    if (b === 1) {
       return a;
     }
     return this.expTable[(this.logTable[a] + this.logTable[b]) % 255];

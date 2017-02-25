@@ -305,7 +305,7 @@ goog.scope(function() {
             switch (code) {
               case CODE_FNC_1:
                 if (convertFNC1) {
-                  if (result.length == 0) {
+                  if (result.length === 0) {
                     // GS1 specification 5.4.3.7. and 5.4.6.4. If the first char after the start code
                     // is FNC1 then this is GS1-128. We add the symbology identifier.
                     result += "]C1";
@@ -355,7 +355,7 @@ goog.scope(function() {
             }
             shiftUpperMode = false;
           } else {
-            if (code != CODE_STOP) {
+            if (code !== CODE_STOP) {
               lastCharacterWasPrintable = false;
             }
             switch (code) {
@@ -409,7 +409,7 @@ goog.scope(function() {
             }
             result += code;
           } else {
-            if (code != CODE_STOP) {
+            if (code !== CODE_STOP) {
               lastCharacterWasPrintable = false;
             }
             switch (code) {
@@ -441,7 +441,7 @@ goog.scope(function() {
 
       // Unshift back to another code set if we were shifted
       if (unshift) {
-        codeSet = codeSet == CODE_CODE_A ? CODE_CODE_B : CODE_CODE_A;
+        codeSet = codeSet === CODE_CODE_A ? CODE_CODE_B : CODE_CODE_A;
       }
     }
 

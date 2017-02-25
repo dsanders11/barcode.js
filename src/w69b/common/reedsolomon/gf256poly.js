@@ -56,17 +56,17 @@ goog.scope(function() {
    * @param {Int32Array} coefficients coefficients.
    */
   w69b.common.reedsolomon.GF256Poly = function(field, coefficients) {
-    goog.asserts.assert(coefficients != null && coefficients.length != 0);
+    goog.asserts.assert(coefficients !== null && coefficients.length !== 0);
     this.field = field;
     var coefficientsLength = coefficients.length;
-    if (coefficientsLength > 1 && coefficients[0] == 0) {
+    if (coefficientsLength > 1 && coefficients[0] === 0) {
       // Leading term must be non-zero for anything except the constant
       // polynomial "0"
       let firstNonZero = 1;
-      while (firstNonZero < coefficientsLength && coefficients[firstNonZero] == 0) {
+      while (firstNonZero < coefficientsLength && coefficients[firstNonZero] === 0) {
         firstNonZero++;
       }
-      if (firstNonZero == coefficientsLength) {
+      if (firstNonZero === coefficientsLength) {
         this.coefficients = field.zero.coefficients;
       } else {
         this.coefficients = new Int32Array(coefficientsLength - firstNonZero);
@@ -98,7 +98,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   pro.isZero = function() {
-    return this.coefficients[0] == 0;
+    return this.coefficients[0] === 0;
   };
 
   /**
@@ -121,12 +121,12 @@ goog.scope(function() {
    * @return {number} evaluation of this polynomial at a given point
    */
   pro.evaluateAt = function(a) {
-    if (a == 0) {
+    if (a === 0) {
       // Just return the x^0 coefficient
       return this.getCoefficient(0);
     }
     var size = this.coefficients.length;
-    if (a == 1) {
+    if (a === 1) {
       // Just the sum of the coefficients
       let result = 0;
       for (let i = 0; i < size; i++) {
@@ -148,7 +148,7 @@ goog.scope(function() {
    * @return {!w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.addOrSubtract = function(other) {
-    if (this.field != other.field) {
+    if (this.field !== other.field) {
       throw new WrongFieldError();
     }
     if (this.isZero()) {
@@ -187,7 +187,7 @@ goog.scope(function() {
    * @return {!w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiply1 = function(other) {
-    if (this.field != other.field) {
+    if (this.field !== other.field) {
       throw new WrongFieldError();
     }
     if (this.isZero() || other.isZero()) {
@@ -214,10 +214,10 @@ goog.scope(function() {
    * @return {w69b.common.reedsolomon.GF256Poly} result.
    */
   pro.multiply2 = function(scalar) {
-    if (scalar == 0) {
+    if (scalar === 0) {
       return this.field.zero;
     }
-    if (scalar == 1) {
+    if (scalar === 1) {
       return this;
     }
     var size = this.coefficients.length;
@@ -236,7 +236,7 @@ goog.scope(function() {
    */
   pro.multiplyByMonomial = function(degree, coefficient) {
     goog.asserts.assert(degree >= 0);
-    if (coefficient == 0) {
+    if (coefficient === 0) {
       return this.field.zero;
     }
     var size = this.coefficients.length;
@@ -253,7 +253,7 @@ goog.scope(function() {
    * @return {Array.<w69b.common.reedsolomon.GF256Poly>} result (quotient, remainder).
    */
   pro.divide = function(other) {
-    if (this.field != other.field) {
+    if (this.field !== other.field) {
       throw new WrongFieldError();
     }
     goog.asserts.assert(!other.isZero());
@@ -287,7 +287,7 @@ goog.scope(function() {
     var result = [];
     for (let degree = this.getDegree(); degree >= 0; degree--) {
       let coefficient = this.getCoefficient(degree);
-      if (coefficient != 0) {
+      if (coefficient !== 0) {
         if (coefficient < 0) {
           result.push(' - ');
           coefficient = -coefficient;
@@ -296,19 +296,19 @@ goog.scope(function() {
             result.push(' + ');
           }
         }
-        if (degree == 0 || coefficient != 1) {
+        if (degree === 0 || coefficient !== 1) {
           let alphaPower = this.field.log(coefficient);
-          if (alphaPower == 0) {
+          if (alphaPower === 0) {
             result.push('1');
-          } else if (alphaPower == 1) {
+          } else if (alphaPower === 1) {
             result.push('a');
           } else {
             result.push('a^');
             result.push(alphaPower);
           }
         }
-        if (degree != 0) {
-          if (degree == 1) {
+        if (degree !== 0) {
+          if (degree === 1) {
             result.push('x');
           } else {
             result.push('x^');

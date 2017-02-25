@@ -127,7 +127,7 @@ goog.scope(function() {
           totalWideCountersWidth += counter;
         }
       }
-      if (wideCounters == 3) {
+      if (wideCounters === 3) {
         // Found 3 wide counters, but are they close enough in width?
         // We can perform a cheap, conservative check to see if any individual
         // counter is more than 1.5 times the average:
@@ -179,7 +179,7 @@ goog.scope(function() {
       }
       // Read off white space
       nextStart = row.getNextSet(nextStart);
-    } while (decodedChar != '*');
+    } while (decodedChar !== '*');
     result = result.slice(0, -1); // remove asterisk
 
     // Look for whitespace after pattern:
@@ -190,7 +190,7 @@ goog.scope(function() {
     var whiteSpaceAfterEnd = nextStart - lastStart - lastPatternSize;
     // If 50% of last pattern size, following last pattern, is not whitespace, fail
     // (but if it's whitespace to the very end of the image, that's OK)
-    if (nextStart != end && (whiteSpaceAfterEnd * 2) < lastPatternSize) {
+    if (nextStart !== end && (whiteSpaceAfterEnd * 2) < lastPatternSize) {
       throw new NotFoundException();
     }
 
@@ -200,7 +200,7 @@ goog.scope(function() {
       for (let i = 0; i < max; i++) {
         total += Code39Reader.CHECK_DIGIT_STRING.indexOf(result.charAt(i));
       }
-      if (result.charAt(max) != Code39Reader.CHECK_DIGIT_STRING.charAt(total % 43)) {
+      if (result.charAt(max) !== Code39Reader.CHECK_DIGIT_STRING.charAt(total % 43)) {
         throw new ChecksumException();
       }
       result = result.slice(0, max);
@@ -247,9 +247,9 @@ goog.scope(function() {
       if (row.get(i) ^ isWhite) {
         counters[counterPosition]++;
       } else {
-        if (counterPosition == patternLength - 1) {
+        if (counterPosition === patternLength - 1) {
           // Look for whitespace before start pattern, >= 50% of width of start pattern
-          if (Code39Reader.toNarrowWidePattern_(counters) == Code39Reader.ASTERISK_ENCODING &&
+          if (Code39Reader.toNarrowWidePattern_(counters) === Code39Reader.ASTERISK_ENCODING &&
               row.isRange(Math.max(0, patternStart - ((i - patternStart) >> 1)), patternStart, false)) {
             return Int32Array.of(patternStart, i);
           }
@@ -280,7 +280,7 @@ goog.scope(function() {
     var decoded = '';
     for (let i = 0; i < length; i++) {
       let c = encoded.charAt(i);
-      if (c == '+' || c == '$' || c == '%' || c == '/') {
+      if (c === '+' || c === '$' || c === '%' || c === '/') {
         let next = encoded.charAt(i + 1);
         let decodedChar = '\0';
         switch (c) {
@@ -314,7 +314,7 @@ goog.scope(function() {
             // /A to /O map to ! to , and /Z maps to :
             if (next >= 'A' && next <= 'O') {
               decodedChar = String.fromCharCode(next.charCodeAt(0) - 32);
-            } else if (next == 'Z') {
+            } else if (next === 'Z') {
               decodedChar = ':';
             } else {
               throw new FormatException();

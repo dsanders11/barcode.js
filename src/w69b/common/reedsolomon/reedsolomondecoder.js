@@ -83,7 +83,7 @@ goog.scope(function() {
       // Thanks to sanfordsquires for this fix:
       let val = poly.evaluateAt(this.field.exp(dataMatrix ? i + 1 : i));
       syndromeCoefficients[syndromeCoefficients.length - 1 - i] = val;
-      if (val != 0) {
+      if (val !== 0) {
         noError = false;
       }
     }
@@ -161,7 +161,7 @@ goog.scope(function() {
     }
 
     var sigmaTildeAtZero = t.getCoefficient(0);
-    if (sigmaTildeAtZero == 0) {
+    if (sigmaTildeAtZero === 0) {
       throw new ReedSolomonException('sigmaTilde(0) was zero');
     }
 
@@ -184,12 +184,12 @@ goog.scope(function() {
     var result = new Int32Array(numErrors);
     var e = 0;
     for (let i = 1; i < 256 && e < numErrors; i++) {
-      if (errorLocator.evaluateAt(i) == 0) {
+      if (errorLocator.evaluateAt(i) === 0) {
         result[e] = this.field.inverse(i);
         e++;
       }
     }
-    if (e != numErrors) {
+    if (e !== numErrors) {
       throw new ReedSolomonException('locator degree does not match ' +
         'number of roots');
     }
@@ -210,7 +210,7 @@ goog.scope(function() {
         let xiInverse = this.field.inverse(errorLocations[i]);
         let denominator = 1;
         for (let j = 0; j < s; j++) {
-          if (i != j) {
+          if (i !== j) {
             denominator =
               this.field.multiply(denominator, GF256Poly.addOrSubtractScalar(1,
                 this.field.multiply(errorLocations[j], xiInverse)));

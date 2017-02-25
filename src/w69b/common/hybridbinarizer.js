@@ -85,7 +85,7 @@ goog.scope(function() {
    * @override
    */
   pro.getBlackMatrix = function() {
-    if (this.matrix_ != null) {
+    if (this.matrix_ !== null) {
       return this.matrix_;
     }
     var source = this.getLuminanceSource();
@@ -96,11 +96,11 @@ goog.scope(function() {
       // dived by 8
       var subWidth = width >> BLOCK_SIZE_POWER;
       // only even numbers
-      if ((width & BLOCK_SIZE_MASK) != 0) {
+      if ((width & BLOCK_SIZE_MASK) !== 0) {
         subWidth++;
       }
       var subHeight = height >> BLOCK_SIZE_POWER;
-      if ((height & BLOCK_SIZE_MASK) != 0) {
+      if ((height & BLOCK_SIZE_MASK) !== 0) {
         subHeight++;
       }
       var blackPoints = _.calculateBlackPoints(luminances, subWidth,

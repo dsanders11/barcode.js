@@ -83,7 +83,7 @@ goog.scope(function() {
       result = (this.bytes_[this.byteOffset_] & mask) >> bitsToNotRead;
       numBits -= toRead;
       this.bitOffset_ += toRead;
-      if (this.bitOffset_ == 8) {
+      if (this.bitOffset_ === 8) {
         this.bitOffset_ = 0;
         this.byteOffset_++;
       }

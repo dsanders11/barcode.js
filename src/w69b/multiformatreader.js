@@ -87,7 +87,7 @@ goog.scope(function() {
    */
   pro.decodeWithState = function(image) {
     // Make sure to set up the default state so we don't crash
-    if (this.readers_ == null) {
+    if (this.readers_ === null) {
       this.setHints(null);
     }
     return this.decodeInternal_(image);

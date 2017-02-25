@@ -116,7 +116,7 @@ goog.scope(function() {
     // any
     var encoding = opt_hints ? opt_hints[EncodeHintType.CHARACTER_SET] : null;
     var forceECI = opt_hints ? opt_hints[EncodeHintType.FORCE_ADD_ECI] : false;
-    if (encoding == null) {
+    if (encoding === null) {
       encoding = _.DEFAULT_BYTE_MODE_ENCODING;
     }
 
@@ -132,7 +132,7 @@ goog.scope(function() {
     // Append ECI segment if applicable
     // Disabled in compat mode as some scanners seem to have problems with it.
     if (forceECI ||
-      (mode == ModeEnum.BYTE && _.DEFAULT_BYTE_MODE_ENCODING != encoding)) {
+      (mode === ModeEnum.BYTE && _.DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
       var eci = CharacterSetECI.getCharacterSetECIByName(encoding);
       if (eci) {
         _.appendECI(eci, headerBits);
@@ -168,7 +168,7 @@ goog.scope(function() {
     headerAndDataBits.appendBitArray(headerBits);
     // Find "length" of main segment and write it
     var numLetters =
-      (mode == ModeEnum.BYTE ? dataBits.getSizeInBytes() : content.length);
+      (mode === ModeEnum.BYTE ? dataBits.getSizeInBytes() : content.length);
     _.appendLengthInfo(numLetters, version, mode, headerAndDataBits);
     // Put data together into the overall payload
     headerAndDataBits.appendBitArray(dataBits);
@@ -229,7 +229,7 @@ goog.scope(function() {
    * @return {Mode} best mode
    */
   _.chooseMode = function(content, opt_encoding) {
-    if ('Shift_JIS' == opt_encoding) {
+    if ('Shift_JIS' === opt_encoding) {
       // Choose Kanji mode if all input are double-byte characters
       return _.isOnlyDoubleByteKanji(content) ? ModeEnum.KANJI : ModeEnum.BYTE;
     }
@@ -241,7 +241,7 @@ goog.scope(function() {
       let c = content.charCodeAt(i);
       if (c >= zeroChar && c <= nineChar) {
         hasNumeric = true;
-      } else if (_.getAlphanumericCode(c) != -1) {
+      } else if (_.getAlphanumericCode(c) !== -1) {
         hasAlphanumeric = true;
       } else {
         return ModeEnum.BYTE;
@@ -268,7 +268,7 @@ goog.scope(function() {
       return false;
     }
     var length = bytes.length;
-    if (length % 2 != 0) {
+    if (length % 2 !== 0) {
       return false;
     }
     for (let i = 0; i < length; i += 2) {
@@ -354,9 +354,9 @@ goog.scope(function() {
     // defined in 8.4.9 (p.24).
     var numPaddingBytes = numDataBytes - bits.getSizeInBytes();
     for (let i = 0; i < numPaddingBytes; ++i) {
-      bits.appendBits((i & 0x01) == 0 ? 0xEC : 0x11, 8);
+      bits.appendBits((i & 0x01) === 0 ? 0xEC : 0x11, 8);
     }
-    if (bits.getSize() != capacity) {
+    if (bits.getSize() !== capacity) {
       throw new WriterException('Bits size does not equal capacity');
     }
   };
@@ -399,15 +399,15 @@ goog.scope(function() {
     var numEcBytesInGroup2 = numTotalBytesInGroup2 - numDataBytesInGroup2;
     // Sanity checks.
     // 26 = 26
-    if (numEcBytesInGroup1 != numEcBytesInGroup2) {
+    if (numEcBytesInGroup1 !== numEcBytesInGroup2) {
       throw new WriterException('EC bytes mismatch');
     }
     // 5 = 4 + 1.
-    if (numRSBlocks != numRsBlocksInGroup1 + numRsBlocksInGroup2) {
+    if (numRSBlocks !== numRsBlocksInGroup1 + numRsBlocksInGroup2) {
       throw new WriterException('RS blocks mismatch');
     }
     // 196 = (13 + 26) * 4 + (14 + 26) * 1
-    if (numTotalBytes !=
+    if (numTotalBytes !==
       ((numDataBytesInGroup1 + numEcBytesInGroup1) *
         numRsBlocksInGroup1) +
         ((numDataBytesInGroup2 + numEcBytesInGroup2) *
@@ -439,7 +439,7 @@ goog.scope(function() {
                                      numRSBlocks) {
 
     // "bits" must have "getNumDataBytes" bytes of data.
-    if (bits.getSizeInBytes() != numDataBytes) {
+    if (bits.getSizeInBytes() !== numDataBytes) {
       throw new WriterException('Number of bits and data bytes does not match');
     }
 
@@ -471,7 +471,7 @@ goog.scope(function() {
       maxNumEcBytes = Math.max(maxNumEcBytes, ecBytes.length);
       dataBytesOffset += numDataBytesInBlock[0];
     }
-    if (numDataBytes != dataBytesOffset) {
+    if (numDataBytes !== dataBytesOffset) {
       throw new WriterException('Data bytes does not match offset');
     }
 
@@ -501,7 +501,7 @@ goog.scope(function() {
         }
       );
     }
-    if (numTotalBytes != result.getSizeInBytes()) {  // Should be same.
+    if (numTotalBytes !== result.getSizeInBytes()) {  // Should be same.
       throw new WriterException('Interleaving error: ' + numTotalBytes +
         ' and ' + result.getSizeInBytes() + ' differ.');
     }
@@ -622,12 +622,12 @@ goog.scope(function() {
     var i = 0;
     while (i < length) {
       let code1 = _.getAlphanumericCode(content.charCodeAt(i));
-      if (code1 == -1) {
+      if (code1 === -1) {
         throw new WriterException();
       }
       if (i + 1 < length) {
         let code2 = _.getAlphanumericCode(content.charCodeAt(i + 1));
-        if (code2 == -1) {
+        if (code2 === -1) {
           throw new WriterException();
         }
         // Encode two alphanumeric letters in 11 bits.
@@ -681,7 +681,7 @@ goog.scope(function() {
       } else if (code >= 0xe040 && code <= 0xebbf) {
         subtracted = code - 0xc140;
       }
-      if (subtracted == -1) {
+      if (subtracted === -1) {
         throw new WriterException('Invalid byte sequence');
       }
       let encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);

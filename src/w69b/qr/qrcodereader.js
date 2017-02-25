@@ -233,8 +233,8 @@ goog.scope(function() {
     var inBlack = true;
     var transitions = 0;
     while (x < width && y < height) {
-      if (inBlack != image.get(x, y)) {
-        if (++transitions == 5) {
+      if (inBlack !== image.get(x, y)) {
+        if (++transitions === 5) {
           break;
         }
         inBlack = !inBlack;
@@ -242,7 +242,7 @@ goog.scope(function() {
       x++;
       y++;
     }
-    if (x == width || y == height) {
+    if (x === width || y === height) {
       throw new NotFoundException();
     }
     return (x - leftTopBlack[0]) / 7.0;

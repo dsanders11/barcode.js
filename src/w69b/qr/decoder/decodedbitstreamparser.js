@@ -94,13 +94,13 @@ goog.scope(function() {
         } else {
           mode = Mode.forBits(bits.readBits(4)); // mode is encoded by 4 bits
         }
-        if (mode != ModeEnum.TERMINATOR) {
-          if (mode == ModeEnum.FNC1_FIRST_POSITION ||
-            mode == ModeEnum.FNC1_SECOND_POSITION) {
+        if (mode !== ModeEnum.TERMINATOR) {
+          if (mode === ModeEnum.FNC1_FIRST_POSITION ||
+            mode === ModeEnum.FNC1_SECOND_POSITION) {
             // We do little with FNC1 except alter the parsed result a bit
             // according to the spec
             fc1InEffect = true;
-          } else if (mode == ModeEnum.STRUCTURED_APPEND) {
+          } else if (mode === ModeEnum.STRUCTURED_APPEND) {
             if (bits.available() < 16) {
               throw new FormatException();  // FormatException.getFormatInstance();
             }
@@ -108,35 +108,35 @@ goog.scope(function() {
             // Read next 8 bits (symbol sequence #) and 8 bits (parity data), then continue
             symbolSequence = bits.readBits(8);
             parityData = bits.readBits(8);
-          } else if (mode == ModeEnum.ECI) {
+          } else if (mode === ModeEnum.ECI) {
             // Count doesn't apply to ECI
             var value = _.parseECIValue(bits);
             currentCharacterSet = CharacterSetECI.getCharacterSetECIByValue(value);
-            if (currentCharacterSet == null)
+            if (currentCharacterSet === null)
               throw new FormatException();
           } else {
             // First handle Hanzi mode which does not start with character count
-            if (mode == ModeEnum.HANZI) {
+            if (mode === ModeEnum.HANZI) {
               //chinese mode contains a sub set indicator right after mode
               //indicator
               var subset = bits.readBits(4);
               var countHanzi = bits.readBits(
                 mode.getCharacterCountBits(version));
-              if (subset == _.GB2312_SUBSET) {
+              if (subset === _.GB2312_SUBSET) {
                 _.decodeHanziSegment(bits, result, countHanzi);
               }
             } else {
               // "Normal" QR code modes:
               // How many characters will follow, encoded in this mode?
               var count = bits.readBits(mode.getCharacterCountBits(version));
-              if (mode == ModeEnum.NUMERIC) {
+              if (mode === ModeEnum.NUMERIC) {
                 _.decodeNumericSegment(bits, result, count);
-              } else if (mode == ModeEnum.ALPHANUMERIC) {
+              } else if (mode === ModeEnum.ALPHANUMERIC) {
                 _.decodeAlphanumericSegment(bits, result, count, fc1InEffect);
-              } else if (mode == ModeEnum.BYTE) {
+              } else if (mode === ModeEnum.BYTE) {
                 _.decodeByteSegment(bits, result, count,
                   currentCharacterSet, byteSegments, opt_hints);
-              } else if (mode == ModeEnum.KANJI) {
+              } else if (mode === ModeEnum.KANJI) {
                 _.decodeKanjiSegment(bits, result, count);
               } else {
                 throw new FormatException();  //FormatException.getFormatInstance();
@@ -144,7 +144,7 @@ goog.scope(function() {
             }
           }
         }
-      } while (mode != ModeEnum.TERMINATOR);
+      } while (mode !== ModeEnum.TERMINATOR);
     } catch (err) {
       if (err instanceof IllegalArgumentException) {
         throw new FormatException();
@@ -299,7 +299,7 @@ goog.scope(function() {
       result.append(_.toAlphaNumericChar(nextTwoCharsBits % 45));
       count -= 2;
     }
-    if (count == 1) {
+    if (count === 1) {
       // special case: one character left
       if (bits.available() < 6) {
         throw new FormatException();  // FormatException.getFormatInstance();
@@ -311,8 +311,8 @@ goog.scope(function() {
     //   // We need to massage the result a bit if in an FNC1 mode:
     //   // TODO: subclass stringbuffer and add required methods.
     //   for (let i = start; i < result.getLength(); i++) {
-    //     if (result.charAt(i) == '%') {
-    //       if (i < result.length() - 1 && result.charAt(i + 1) == '%') {
+    //     if (result.charAt(i) === '%') {
+    //       if (i < result.length() - 1 && result.charAt(i + 1) === '%') {
     //         // %% is rendered as %
     //         result.deleteCharAt(i + 1);
     //       } else {
@@ -345,7 +345,7 @@ goog.scope(function() {
       result.append(_.toAlphaNumericChar(threeDigitsBits % 10));
       count -= 3;
     }
-    if (count == 2) {
+    if (count === 2) {
       // Two digits left over to read, encoded in 7 bits
       if (bits.available() < 7) {
         throw new FormatException();  // FormatException.getFormatInstance();
@@ -356,7 +356,7 @@ goog.scope(function() {
       }
       result.append(_.toAlphaNumericChar(Math.floor(twoDigitsBits / 10)));
       result.append(_.toAlphaNumericChar(twoDigitsBits % 10));
-    } else if (count == 1) {
+    } else if (count === 1) {
       // One digit left over to read
       if (bits.available() < 4) {
         throw new FormatException();  // FormatException.getFormatInstance();
@@ -375,16 +375,16 @@ goog.scope(function() {
    */
   _.parseECIValue = function(bits) {
     var firstByte = bits.readBits(8);
-    if ((firstByte & 0x80) == 0) {
+    if ((firstByte & 0x80) === 0) {
       // just one byte
       return firstByte & 0x7F;
     }
-    if ((firstByte & 0xC0) == 0x80) {
+    if ((firstByte & 0xC0) === 0x80) {
       // two bytes
       var secondByte = bits.readBits(8);
       return ((firstByte & 0x3F) << 8) | secondByte;
     }
-    if ((firstByte & 0xE0) == 0xC0) {
+    if ((firstByte & 0xE0) === 0xC0) {
       // three bytes
       var secondThirdBytes = bits.readBits(16);
       return ((firstByte & 0x1F) << 16) | secondThirdBytes;

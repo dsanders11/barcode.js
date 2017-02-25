@@ -58,7 +58,7 @@ goog.scope(function() {
    *                             representation in the QR Code
    */
   DataBlock.getDataBlocks = function(rawCodewords, version, ecLevel) {
-    if (rawCodewords.length != version.totalCodewords) {
+    if (rawCodewords.length !== version.totalCodewords) {
       throw new w69b.exceptions.IllegalArgumentException();
     }
 
@@ -94,7 +94,7 @@ goog.scope(function() {
     var longerBlocksStartAt = result.length - 1;
     while (longerBlocksStartAt >= 0) {
       let numCodewords = result[longerBlocksStartAt].codewords.length;
-      if (numCodewords == shorterBlocksTotalCodewords) {
+      if (numCodewords === shorterBlocksTotalCodewords) {
         break;
       }
       longerBlocksStartAt--;

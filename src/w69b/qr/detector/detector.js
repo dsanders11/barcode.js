@@ -105,9 +105,9 @@ goog.scope(function() {
 
     // In black pixels, looking for white, first or second time.
     var state = 0;
-    // Loop up until x == toX, but not beyond
+    // Loop up until x === toX, but not beyond
     var xLimit = toX + xstep;
-    for (let x = fromX, y = fromY; x != xLimit; x += xstep) {
+    for (let x = fromX, y = fromY; x !== xLimit; x += xstep) {
       let realX = steep ? y : x;
       let realY = steep ? x : y;
 
@@ -115,8 +115,8 @@ goog.scope(function() {
       // Scanning black in state 0,2 and white in state 1, so if we find
       // the wrong
       // color, advance to next state or end if we are in state 2 already
-      if ((state == 1) == !!this.image.get(realX, realY)) {
-        if (state == 2) {
+      if ((state === 1) === !!this.image.get(realX, realY)) {
+        if (state === 2) {
           return MathUtils.distance(x, y, fromX, fromY);
         }
         state++;
@@ -124,7 +124,7 @@ goog.scope(function() {
 
       error += dy;
       if (error > 0) {
-        if (y == toY) {
+        if (y === toY) {
           break;
         }
         y += ystep;
@@ -137,7 +137,7 @@ goog.scope(function() {
     // This is really a
     // small approximation; (toX+xStep,toY+yStep) might be really correct.
     // Ignore this.
-    if (state == 2) {
+    if (state === 2) {
       return MathUtils.distance(toX + xstep, toY, fromX, fromY);
     }
     // else we didn't find even black-white-black; no estimate is really
@@ -326,7 +326,7 @@ goog.scope(function() {
     var bottomRightY;
     var sourceBottomRightX;
     var sourceBottomRightY;
-    if (alignmentPattern != null) {
+    if (alignmentPattern !== null) {
       bottomRightX = alignmentPattern.x;
       bottomRightY = alignmentPattern.y;
       sourceBottomRightX = sourceBottomRightY = dimMinusThree - 3.0;
@@ -420,7 +420,7 @@ goog.scope(function() {
     var bits = this.sampleGrid(this.image, transform, dimension);
 
     var points;
-    if (alignmentPattern == null) {
+    if (alignmentPattern === null) {
       points = [bottomLeft, topLeft, topRight];
     } else {
       points = [bottomLeft, topLeft, topRight, alignmentPattern];
