@@ -18,8 +18,10 @@ goog.scope(function() {
     goog.base(this);
     this.backCanvas_ = /** @type {HTMLCanvasElement} */ (
       document.createElement('canvas'));
+    this.backCanvas_.style = "image-rendering: pixelated";
     this.mediaVideo_ = /** @type {HTMLVideoElement} */ (
       document.createElement('video'));
+    this.mediaVideo_.style = "image-rendering: pixelated";
     this.mediaVideo_.setAttribute('autoplay', 'true');
     this.backContext_ = /** @type {CanvasRenderingContext2D} */ (
       this.backCanvas_.getContext('2d'));
@@ -160,6 +162,7 @@ goog.scope(function() {
     // Smallest scale that scales video to desired size.
     var scale = Math.max(height / video.videoHeight, width / video.videoWidth);
     // draw image cropping what does not fit on the right/bottom edges.
+    context.imageSmoothingEnabled = false;
     context.drawImage(video, 0, 0,
       video.videoWidth * scale, video.videoHeight * scale);
   };

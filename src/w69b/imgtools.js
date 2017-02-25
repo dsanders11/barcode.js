@@ -59,6 +59,7 @@ goog.scope(function() {
 
     goog.asserts.assert(size.width > 0 && size.height > 0);
     var canvas = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
+    canvas.style = "image-rendering: pixelated";
     if (opt_maxSize) {
       w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
 //      if (goog.isNumber(opt_maxSize)) {
@@ -93,6 +94,7 @@ goog.scope(function() {
       document.body.appendChild(svgHolder);
       context.filter = 'url(#grayscale)';
     }
+    context.imageSmoothingEnabled = false;
     context.drawImage(img, 0, 0, size.width, size.height);
     var imageData = context.getImageData(0, 0, size.width, size.height);
     canvas.remove();
@@ -116,6 +118,9 @@ goog.scope(function() {
    * @export
    */
   w69b.imgtools.binarizeImage = function(image, useWebGL = false, opt_maxSize) {
+    if (!(imageData instanceof ImageData)) {
+      image.style = "image-rendering: pixelated";
+    }
     var imageData = image;
     if (useWebGL) {
       if (!WebGLBinarizer.isSupported()) {
