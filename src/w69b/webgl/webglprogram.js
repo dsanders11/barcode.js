@@ -21,7 +21,7 @@ goog.scope(function() {
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-      throw Error('Could not link shader program: ' +
+      throw new Error('Could not link shader program: ' +
         gl.getProgramInfoLog(shaderProgram));
     }
     this.glProgram = shaderProgram;
@@ -140,7 +140,7 @@ goog.scope(function() {
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      throw Error('Could not compile shader: ' +
+      throw new Error('Could not compile shader: ' +
         gl.getShaderInfoLog(shader));
     }
     return shader;

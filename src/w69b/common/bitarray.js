@@ -16,8 +16,13 @@
  */
 
 goog.provide('w69b.common.BitArray');
+goog.require('goog.asserts');
+goog.require('w69b.exceptions.IllegalArgumentException');
+
 
 goog.scope(function() {
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+
   /**
    * A simple, fast array of bits, represented compactly by an array of ints
    * internally.
@@ -177,8 +182,11 @@ goog.scope(function() {
    * @param {number} end end of range, exclusive.
    */
   pro.setRange = function(start, end) {
-    if (end < start) {
-      throw new Error();
+    goog.asserts.assert(Number.isInteger(start));
+    goog.asserts.assert(Number.isInteger(end));
+
+    if (end < start || start < 0 || end > this.size_) {
+      throw new IllegalArgumentException();
     }
     if (end === start) {
       return;
@@ -221,8 +229,11 @@ goog.scope(function() {
    * to value argument.
    */
   pro.isRange = function(start, end, value) {
-    if (end < start) {
-      throw new Error();
+    goog.asserts.assert(Number.isInteger(start));
+    goog.asserts.assert(Number.isInteger(end));
+
+    if (end < start || start < 0 || end > this.size_) {
+      throw new IllegalArgumentException();
     }
     if (end === start) {
       return true; // empty range matches
@@ -273,8 +284,11 @@ goog.scope(function() {
    * @param {number} numBits bits from value to append
    */
   pro.appendBits = function(value, numBits) {
+    goog.asserts.assert(Number.isInteger(value));
+    goog.asserts.assert(Number.isInteger(numBits));
+
     if (numBits < 0 || numBits > 32) {
-      throw new Error();
+      throw new IllegalArgumentException("Num bits must be between 0 and 32");
     }
     this.ensureCapacity(this.size_ + numBits);
     for (let numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
@@ -297,8 +311,8 @@ goog.scope(function() {
    * @param {BitArray} other other.
    */
   pro.xor = function(other) {
-    if (this.bits_.length !== other.bits_.length) {
-      throw new Error();
+    if (this.size_ != other.size_) {
+      throw new IllegalArgumentException("Sizes don't match");
     }
     for (let i = 0; i < this.bits_.length; i++) {
       // The last byte could be incomplete (i.e. not have 8 this.bits_ in

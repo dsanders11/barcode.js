@@ -17,8 +17,12 @@
 
 goog.provide('w69b.qr.decoder.Mode');
 goog.provide('w69b.qr.decoder.ModeEnum');
+goog.require('w69b.exceptions.IllegalArgumentException');
+
 
 goog.scope(function() {
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+
   /**
    * See ISO 18004:2006, 6.4.1, Tables 2 and 3. This enum encapsulates the
    * various modes in which data can be encoded to bits in the QR code
@@ -120,7 +124,7 @@ goog.scope(function() {
         // country
         return ModeEnum.HANZI;
       default:
-        throw new Error();
+        throw new IllegalArgumentException();
     }
   };
 });

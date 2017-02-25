@@ -121,7 +121,7 @@ goog.scope(function() {
       let isBinary = data['isBinary'] || false;
       let isGrayscale = data['isGrayscale'];
       if (!buffer.byteLength) {
-        throw Error('worker commmunication failed');
+        throw new Error('worker commmunication failed');
       }
       let imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
       imageData.grayscale_ = isGrayscale;

@@ -18,10 +18,13 @@
 goog.provide('w69b.common.reedsolomon.ReedSolomonEncoder');
 goog.require('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.GF256Poly');
+goog.require('w69b.exceptions.IllegalArgumentException');
+
 
 goog.scope(function() {
   var GF256 = w69b.common.reedsolomon.GF256;
   var GF256Poly = w69b.common.reedsolomon.GF256Poly;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * <p>Implements Reed-Solomon enbcoding, as the name implies.</p>
@@ -76,11 +79,11 @@ goog.scope(function() {
    */
   pro.encode = function(toEncode, ecBytes) {
     if (ecBytes == 0) {
-      throw new Error('No error correction bytes');
+      throw new IllegalArgumentException('No error correction bytes');
     }
     var dataBytes = toEncode.length - ecBytes;
     if (dataBytes <= 0) {
-      throw new Error('No data bytes provided');
+      throw new IllegalArgumentException('No data bytes provided');
     }
     var generator = this.buildGenerator(ecBytes);
     var infoCoefficients = toEncode.slice(0, dataBytes);

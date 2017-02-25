@@ -116,7 +116,7 @@ goog.scope(function() {
     if (this.enableWorker_) {
       var url = w69b.worker.DecodeInWorkerHelper.workerUrl_;
       if (!url)
-        throw Error('missing worker url setup');
+        throw new Error('missing worker url setup');
       this.worker_ = new Worker(url);
       this.useWorker_ = this.shallUseWorker();
       if (this.useWorker_) {

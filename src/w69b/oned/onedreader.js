@@ -22,7 +22,7 @@ goog.require('w69b.DecodeHintType');
 goog.require('w69b.FormatException');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
-//goog.require('w69b.ReaderException');
+goog.require('w69b.ReaderException');
 goog.require('w69b.Result');
 goog.require('w69b.ResultMetadataType');
 goog.require('w69b.ResultPoint');
@@ -36,7 +36,7 @@ goog.scope(function() {
   var FormatException = w69b.FormatException;
   var NotFoundException = w69b.NotFoundException;
   var Reader = w69b.Reader;
-  //var ReaderException = w69b.ReaderException;
+  var ReaderException = w69b.ReaderException;
   var Result = w69b.Result;
   var ResultMetadataType = w69b.ResultMetadataType;
   var ResultPoint = w69b.ResultPoint;
@@ -59,28 +59,32 @@ goog.scope(function() {
   pro.decode = function(image, opt_hints) {
     try {
       return this.doDecode_(image, opt_hints ? opt_hints : null);
-    } catch (/*NotFoundException nfe*/ err) {
-      var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
-      if (tryHarder && image.isRotateSupported()) {
-        let rotatedImage = image.rotateCounterClockwise();
-        let result = this.doDecode_(rotatedImage, opt_hints ? opt_hints : null);
-        // Record that we found it rotated 90 degrees CCW / 270 degrees CW
-        let metadata = result.getResultMetadata();
-        let orientation = 270;
-        if (metadata !== null && !!metadata[ResultMetadataType.ORIENTATION]) {
-          // But if we found it reversed in doDecode(), add in that result here:
-          orientation = (orientation + metadata[ResultMetadataType.ORIENTATION]) % 360;
-        }
-        result.putMetadata(ResultMetadataType.ORIENTATION, orientation);
-        // Update result points
-        let points = result.getResultPoints();
-        if (points !== null) {
-          let height = rotatedImage.getHeight();
-          for (let i = 0; i < points.length; i++) {
-            points[i] = new ResultPoint(height - points[i].getY() - 1, points[i].getX());
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
+        if (tryHarder && image.isRotateSupported()) {
+          let rotatedImage = image.rotateCounterClockwise();
+          let result = this.doDecode_(rotatedImage, opt_hints ? opt_hints : null);
+          // Record that we found it rotated 90 degrees CCW / 270 degrees CW
+          let metadata = result.getResultMetadata();
+          let orientation = 270;
+          if (metadata !== null && !!metadata[ResultMetadataType.ORIENTATION]) {
+            // But if we found it reversed in doDecode(), add in that result here:
+            orientation = (orientation + metadata[ResultMetadataType.ORIENTATION]) % 360;
           }
+          result.putMetadata(ResultMetadataType.ORIENTATION, orientation);
+          // Update result points
+          let points = result.getResultPoints();
+          if (points !== null) {
+            let height = rotatedImage.getHeight();
+            for (let i = 0; i < points.length; i++) {
+              points[i] = new ResultPoint(height - points[i].getY() - 1, points[i].getX());
+            }
+          }
+          return result;
+        } else {
+          throw err;
         }
-        return result;
       } else {
         throw err;
       }
@@ -249,8 +253,11 @@ goog.scope(function() {
       // Estimate black point for this row and load it:
       try {
         row = image.getBlackRow(rowNumber, row);
-      } catch (/*NotFoundException ignored*/ err) {
-        continue;
+      } catch (err) {
+        if (err instanceof NotFoundException) {
+          continue;
+        }
+        throw err;
       }
 
       // While we have the image data in a BitArray, it's fairly cheap to reverse it in place to
@@ -284,8 +291,12 @@ goog.scope(function() {
             }
           }
           return result;
-        } catch (/*ReaderException re*/ err) {
-          // continue -- just couldn't decode this row
+        } catch (err) {
+          if (err instanceof ReaderException) {
+            // continue -- just couldn't decode this row
+          } else {
+            throw err;
+          }
         }
       }
     }

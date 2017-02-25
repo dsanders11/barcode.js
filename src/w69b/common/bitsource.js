@@ -17,8 +17,12 @@
  */
 
 goog.provide('w69b.common.BitSource');
+goog.require('w69b.exceptions.IllegalArgumentException');
+
 
 goog.scope(function() {
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+
   /**
    * This provides an easy abstraction to read bits at a time from a
    * sequence of bytes, where the number of bits read is not often a multiple
@@ -65,7 +69,7 @@ goog.scope(function() {
    */
   pro.readBits = function(numBits) {
     if (numBits < 1 || numBits > 32 || numBits > this.available()) {
-      throw new Error();
+      throw new IllegalArgumentException(numBits.toString());
     }
 
     var result = 0;

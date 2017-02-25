@@ -23,9 +23,14 @@
 
 goog.provide('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.GF256Poly');
+goog.require('w69b.exceptions.ArithmeticException');
+goog.require('w69b.exceptions.IllegalArgumentException');
+
 
 goog.scope(function() {
   var GF256Poly = w69b.common.reedsolomon.GF256Poly;
+  var ArithmeticException = w69b.exceptions.ArithmeticException;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * @param {number} primitive number.
@@ -65,7 +70,7 @@ goog.scope(function() {
    */
   pro.buildMonomial = function(degree, coefficient) {
     if (degree < 0) {
-      throw Error();
+      throw new IllegalArgumentException();
     }
     if (coefficient == 0) {
       return this.zero;
@@ -89,7 +94,7 @@ goog.scope(function() {
    */
   pro.log = function(a) {
     if (a == 0) {
-      throw Error();
+      throw new IllegalArgumentException();
     }
     return this.logTable[a];
   };
@@ -100,7 +105,7 @@ goog.scope(function() {
    */
   pro.inverse = function(a) {
     if (a == 0) {
-      throw Error();
+      throw new ArithmeticException();
     }
     return this.expTable[255 - this.logTable[a]];
   };

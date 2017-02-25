@@ -56,7 +56,7 @@ goog.scope(function() {
    */
   _.forReference = function(reference) {
     if (reference < 0 || reference > 7) {
-      throw Error();
+      throw new Error();
     }
     return _.DATA_MASKS_[reference];
   };

@@ -16,10 +16,13 @@
  */
 
 goog.provide('w69b.qr.encoder.MaskUtil');
+goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.qr.encoder.ByteMatrix');
+
 
 goog.scope(function() {
   var ByteMatrix = w69b.qr.encoder.ByteMatrix;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
 /**
  * @author Satoru Takabayashi
@@ -202,7 +205,7 @@ var _ = w69b.qr.encoder.MaskUtil;
         intermediate = ((temp % 3) + ((y + x) & 0x1)) & 0x1;
         break;
       default:
-        throw new Error('Invalid mask pattern: ' + maskPattern);
+        throw new IllegalArgumentException('Invalid mask pattern: ' + maskPattern);
     }
     return intermediate == 0;
   };

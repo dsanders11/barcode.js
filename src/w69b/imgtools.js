@@ -33,13 +33,13 @@ goog.scope(function() {
       var url = canvas.toDataURL();
       var prefix = 'data:image/png;base64,';
       if (!goog.string.startsWith(url, prefix))
-        throw Error();
+        throw new Error();
       var data = url.substring(prefix.length);
       data = new Uint8Array(base64.decodeStringToByteArray(data));
       var blob = new Blob([data], {'type': 'image/png'});
       callback(blob);
     } else {
-      throw Error();
+      throw new Error();
     }
   };
 

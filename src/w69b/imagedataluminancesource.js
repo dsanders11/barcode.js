@@ -170,6 +170,11 @@ goog.scope(function() {
    * @override
    */
   pro.crop = function(left, top, width, height) {
+    goog.asserts.assert(Number.isInteger(left));
+    goog.asserts.assert(Number.isInteger(top));
+    goog.asserts.assert(Number.isInteger(width));
+    goog.asserts.assert(Number.isInteger(height));
+
     var luminances = this.luminances_;
     luminances.width = this.dataWidth_;
     luminances.height = this.dataWidth_;

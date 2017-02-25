@@ -21,6 +21,7 @@ goog.require('w69b.BinaryBitmap');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
+goog.require('w69b.ReaderException');
 goog.require('w69b.Result');
 goog.require('w69b.oned.MultiFormatOneDReader');
 goog.require('w69b.qr.QRCodeReader');
@@ -31,6 +32,7 @@ goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
   var NotFoundException = w69b.NotFoundException;
   var Reader = w69b.Reader;
+  var ReaderException = w69b.ReaderException;
   var Result = w69b.Result;
   var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
   var QRCodeReader = w69b.qr.QRCodeReader;
@@ -162,7 +164,11 @@ goog.scope(function() {
         try {
           return reader.decode(image, this.hints_);
         } catch (err) {
-          // continue
+          if (err instanceof ReaderException) {
+            // continue
+          } else {
+            throw err;
+          }
         }
       }
     }

@@ -26,11 +26,14 @@ goog.provide('w69b.qr.decoder.ECBlocks');
 goog.provide('w69b.qr.decoder.Version');
 goog.require('w69b.FormatException');
 goog.require('w69b.common.BitMatrix');
+goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
+
 
 goog.scope(function() {
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   var FormatException = w69b.FormatException;
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var BitMatrix = w69b.common.BitMatrix;
 
   /**
@@ -420,7 +423,7 @@ goog.scope(function() {
    */
   Version.getVersionForNumber = function(versionNumber) {
     if (versionNumber < 1 || versionNumber > 40) {
-      throw new FormatException();
+      throw new IllegalArgumentException();
     }
     return Version.VERSIONS[versionNumber - 1];
   };
@@ -436,7 +439,14 @@ goog.scope(function() {
     if (dimension % 4 != 1) {
       throw new FormatException();
     }
-    return Version.getVersionForNumber((dimension - 17) >> 2);
+    try {
+      return Version.getVersionForNumber((dimension - 17) >> 2);
+    } catch (err) {
+      if (err instanceof IllegalArgumentException) {
+        throw new FormatException();
+      }
+      throw err;
+    }
   };
 
   /**

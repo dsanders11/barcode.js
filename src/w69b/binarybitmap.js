@@ -17,6 +17,7 @@
 
 goog.provide('w69b.BinaryBitmap');
 goog.require('w69b.Binarizer');
+goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.exceptions.IllegalArgumentException');
@@ -24,6 +25,7 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 goog.scope(function() {
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  var NotFoundException = w69b.NotFoundException;
   var BitArray = w69b.common.BitArray;
   var BitMatrix = w69b.common.BitMatrix;
 
@@ -166,7 +168,10 @@ goog.scope(function() {
     try {
       return this.getBlackMatrix().toString();
     } catch (err) {
-      return '';
+      if (err instanceof NotFoundException) {
+        return '';
+      }
+      throw err;
     }
   };
 });

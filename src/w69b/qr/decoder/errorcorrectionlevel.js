@@ -16,8 +16,12 @@
  */
 
 goog.provide('w69b.qr.decoder.ErrorCorrectionLevel');
+goog.require('w69b.exceptions.IllegalArgumentException');
+
 
 goog.scope(function() {
+  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+
   /**
    * See ISO 18004:2006, 6.5.1. This enum encapsulates the four error
    * correction levels defined by the QR code standard.
@@ -88,7 +92,7 @@ goog.scope(function() {
    */
   ErrorCorrectionLevel.forBits = function(bits) {
     if (bits < 0 || bits >= ErrorCorrectionLevel.FOR_BITS.length) {
-      throw new Error();
+      throw new IllegalArgumentException();
     }
     return ErrorCorrectionLevel.FOR_BITS[bits];
   };
