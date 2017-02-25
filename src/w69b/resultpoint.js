@@ -113,6 +113,15 @@ goog.scope(function() {
     return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));
   };
 
+  /**
+   * @return {Object} JSON object for pattern.
+   */
+  pro['toJSON'] = function() {
+    return {
+      'x': this.getX(),
+      'y': this.getY()};
+  };
+
   /** @typedef {function(ResultPoint)} */
   w69b.ResultPointCallback;
 });
