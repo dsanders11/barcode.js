@@ -56,14 +56,14 @@ goog.scope(function() {
     this.lastFrameTime_ = null;
     /**
      * Size of visualization.
-     * @type {Size}
+     * @type {!Size}
      * @private
      */
     this.size_ = new Size(200, 200);
 
     /**
      * Size of decoding image.
-     * @type {Size}
+     * @type {!Size}
      * @private
      */
     this.decodeSize_ = new Size(200, 200);
