@@ -92,8 +92,8 @@ goog.scope(function() {
   _.toBytes = function(string, charset) {
     var map = _.getReverseMap_(charset);
     var bytes = [];
-    for (var i = 0; i < string.length; ++i) {
-      var b = map[string[i]];
+    for (let i = 0; i < string.length; ++i) {
+      let b = map[string[i]];
       if (b === undefined) return null;
       bytes.push(b);
     }
@@ -109,10 +109,10 @@ goog.scope(function() {
     var map = _.REVERSE_MAPS_[charset];
     if (!map) {
       map = {};
-      var chars = _.ASCII + _.SINGLEBYTES[charset];
+      let chars = _.ASCII + _.SINGLEBYTES[charset];
       if (!chars)
         throw new Error();
-      for (var i = 0; i < chars.length; ++i) {
+      for (let i = 0; i < chars.length; ++i) {
         map[chars[i]] = i;
       }
     }

@@ -209,9 +209,9 @@ goog.scope(function() {
 
     // Now just read off the bits
     var bits = new BitMatrix(matrixWidth, matrixHeight);
-    for (var y = 0; y < matrixHeight; y++) {
-      var iOffset = top + Math.floor(y * moduleSize);
-      for (var x = 0; x < matrixWidth; x++) {
+    for (let y = 0; y < matrixHeight; y++) {
+      let iOffset = top + Math.floor(y * moduleSize);
+      for (let x = 0; x < matrixWidth; x++) {
         if (image.get(left + Math.floor(x * moduleSize), iOffset)) {
           bits.set(x, y);
         }

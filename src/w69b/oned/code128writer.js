@@ -103,8 +103,8 @@ goog.scope(function() {
           "Contents length should be between 1 and 80 characters, but got " + length);
     }
     // Check content
-    for (var i = 0; i < length; i++) {
-      var c = contents.charAt(i);
+    for (let i = 0; i < length; i++) {
+      let c = contents.charAt(i);
       if (c < ' ' || c > '~') {
         switch (c) {
           case ESCAPE_FNC_1:
@@ -127,10 +127,10 @@ goog.scope(function() {
 
     while (position < length) {
       //Select code to use
-      var newCodeSet = chooseCode(contents, position, codeSet);
+      let newCodeSet = chooseCode(contents, position, codeSet);
 
       //Get the pattern index
-      var patternIndex;
+      let patternIndex;
       if (newCodeSet === codeSet) {
         // Encode the current character
         // First handle escapes
@@ -194,8 +194,8 @@ goog.scope(function() {
 
     // Compute code width
     var codeWidth = 0;
-    for (var pattern of patterns) {
-      for (var width of pattern) {
+    for (let pattern of patterns) {
+      for (let width of pattern) {
         codeWidth += width;
       }
     }
@@ -204,7 +204,7 @@ goog.scope(function() {
     /** @type {Array.<boolean>} */
     var result = new Array(codeWidth);
     var pos = 0;
-    for (var pattern of patterns) {
+    for (let pattern of patterns) {
       pos += OneDimensionalCodeWriter.appendPattern(result, pos, pattern, true);
     }
 
@@ -273,7 +273,7 @@ goog.scope(function() {
       }
       // At this point, there are at least 4 consecutive digits.
       // Look ahead to choose whether to switch now or on the next round.
-      var index = start + 4;
+      let index = start + 4;
       while ((lookahead = findCType(value, index)) === CType.TWO_DIGITS) {
         index += 2;
       }

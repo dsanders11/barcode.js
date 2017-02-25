@@ -63,11 +63,11 @@ goog.scope(function() {
     }
 
     var prevTextureId = inTextureId;
-    for (var i = 0; i < numPasses; ++i) {
-      var pass = this.passes_[i];
+    for (let i = 0; i < numPasses; ++i) {
+      let pass = this.passes_[i];
       if (pass.length) {
-        var program = /** @type {WebGLProgram} */ (pass[0]);
-        var params = /** @type {WebGLParams} */ (pass[1]);
+        let program = /** @type {WebGLProgram} */ (pass[0]);
+        let params = /** @type {WebGLParams} */ (pass[1]);
         if (program != prevProgarm) {
           program.use();
           program.initCommonAttributes();
@@ -78,11 +78,11 @@ goog.scope(function() {
         if (i == numPasses - 1 && opt_resultOnScreen) {
           filter.unbindFramebuffer();
         } else {
-          var texId = pingPongTextureIds[i % 2];
+          let texId = pingPongTextureIds[i % 2];
           filter.attachTextureToFB(texId);
           prevTextureId = texId;
         }
-        var offset = params.getValue('outOffset');
+        let offset = params.getValue('outOffset');
         filter.setViewport(
           offset ? offset[0] : 0,
           offset ? offset[1] : 0,
@@ -91,8 +91,8 @@ goog.scope(function() {
         program.drawRect();
       } else {
         // custom pass
-        var outTex = pingPongTextureIds[i % 2];
-        var workTex = pingPongTextureIds[(i + 1) % 2];
+        let outTex = pingPongTextureIds[i % 2];
+        let workTex = pingPongTextureIds[(i + 1) % 2];
         pass(prevTextureId, outTex, workTex);
         prevTextureId = outTex;
       }

@@ -96,7 +96,7 @@ goog.scope(function() {
   pro.foundPatternCross = function(stateCount) {
     var moduleSize = this.moduleSize;
     var maxVariance = moduleSize / 2.0;
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       if (Math.abs(moduleSize - stateCount[i]) >= maxVariance) {
         return false;
       }
@@ -193,18 +193,18 @@ goog.scope(function() {
     var centerI = this.crossCheckVertical(i, Math.floor(centerJ),
       2 * stateCount[1], stateCountTotal);
     if (!isNaN(centerI)) {
-      var estimatedModuleSize = (stateCount[0] + stateCount[1] +
+      let estimatedModuleSize = (stateCount[0] + stateCount[1] +
         stateCount[2]) / 3.0;
-      var max = this.possibleCenters.length;
-      for (var index = 0; index < max; index++) {
-        var center = this.possibleCenters[index];
+      let max = this.possibleCenters.length;
+      for (let index = 0; index < max; index++) {
+        let center = this.possibleCenters[index];
         // Look for about the same center and module size:
         if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
           return center.combineEstimate(centerI, centerJ, estimatedModuleSize);
         }
       }
       // Hadn't found this before; save it
-      var point = new AlignmentPattern(centerJ, centerI, estimatedModuleSize);
+      let point = new AlignmentPattern(centerJ, centerI, estimatedModuleSize);
       this.possibleCenters.push(point);
       if (this.resultPointCallback != null) {
         this.resultPointCallback(point);
@@ -230,14 +230,14 @@ goog.scope(function() {
     // We are looking for black/white/black modules in 1:1:1 ratio;
     // this tracks the number of black/white/black modules seen so far
     var stateCount = new Int32Array(3);
-    for (var iGen = 0; iGen < height; iGen++) {
+    for (let iGen = 0; iGen < height; iGen++) {
       // Search from middle outwards
-      var i = middleI +
+      let i = middleI +
         ((iGen & 0x01) == 0 ? ((iGen + 1) >> 1) : -((iGen + 1) >> 1));
       stateCount[0] = 0;
       stateCount[1] = 0;
       stateCount[2] = 0;
-      var j = startX;
+      let j = startX;
       // Burn off leading white pixels before anything else; if we start in the
       // middle of a white run, it doesn't make sense to count its length,
       // since we don't know if the white run continued to the left of the
@@ -245,7 +245,7 @@ goog.scope(function() {
       while (j < maxJ && image.get(j, i)) {
         j++;
       }
-      var currentState = 0;
+      let currentState = 0;
       while (j < maxJ) {
         if (image.get(j, i)) {
           // Black pixel
@@ -258,7 +258,7 @@ goog.scope(function() {
               // A winner?
               if (this.foundPatternCross(stateCount)) {
                 // Yes
-                var confirmed = this.handlePossibleCenter(stateCount, i, j);
+                let confirmed = this.handlePossibleCenter(stateCount, i, j);
                 if (confirmed != null) {
                   return confirmed;
                 }
@@ -282,7 +282,7 @@ goog.scope(function() {
         j++;
       }
       if (this.foundPatternCross(stateCount)) {
-        var confirmed = this.handlePossibleCenter(stateCount, i, maxJ);
+        let confirmed = this.handlePossibleCenter(stateCount, i, maxJ);
         if (confirmed != null) {
           return confirmed;
         }

@@ -78,18 +78,18 @@ goog.scope(function() {
    * @suppress {checkTypes}
    */
   (function() {
-    for (var eci in CharacterSetECIEnum) {
+    for (let eci in CharacterSetECIEnum) {
       /** @type {!CharacterSetECI} */
-      var enumValue = CharacterSetECIEnum[eci];
+      let enumValue = CharacterSetECIEnum[eci];
       enumValue.name = eci.toString();
 
       CharacterSetECI.namesToEnum_[eci] = enumValue;
 
-      for (var name of enumValue.otherEncodingNames) {
+      for (let name of enumValue.otherEncodingNames) {
         CharacterSetECI.namesToEnum_[name] = enumValue;
       }
 
-      for (var value of enumValue.values) {
+      for (let value of enumValue.values) {
         CharacterSetECI.valuesToEnum_[value] = enumValue;
       }
     }

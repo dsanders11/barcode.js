@@ -80,7 +80,7 @@ goog.scope(function() {
     var leftPadding = (outputWidth - (inputWidth * multiple)) >> 1;
 
     var output = new BitMatrix(outputWidth, outputHeight);
-    for (var inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
+    for (let inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
       if (code[inputX]) {
         output.setRegion(outputX, 0, multiple, outputHeight);
       }
@@ -100,8 +100,8 @@ goog.scope(function() {
   OneDimensionalCodeWriter.appendPattern = function(target, pos, pattern, startColor) {
     var color = startColor;
     var numAdded = 0;
-    for (var len of pattern) {
-      for (var j = 0; j < len; j++) {
+    for (let len of pattern) {
+      for (let j = 0; j < len; j++) {
         target[pos++] = color;
       }
       numAdded += len;

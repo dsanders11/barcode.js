@@ -115,9 +115,9 @@ goog.scope(function() {
 
     var output = new BitMatrix(outputWidth, outputHeight);
 
-    for (var inputY = 0, outputY = topPadding; inputY < inputHeight; inputY++, outputY += multiple) {
+    for (let inputY = 0, outputY = topPadding; inputY < inputHeight; inputY++, outputY += multiple) {
       // Write the contents of this row of the barcode
-      for (var inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
+      for (let inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
         if (input.get(inputX, inputY) === 1) {
           output.setRegion(outputX, outputY, multiple, multiple);
         }

@@ -61,9 +61,9 @@ var _ = w69b.qr.encoder.MaskUtil;
     var penalty = 0;
     var width = matrix.getWidth();
     var height = matrix.getHeight();
-    for (var y = 0; y < height - 1; y++) {
-      for (var x = 0; x < width - 1; x++) {
-        var value = matrix.get(x, y);
+    for (let y = 0; y < height - 1; y++) {
+      for (let x = 0; x < width - 1; x++) {
+        let value = matrix.get(x, y);
         if (value == matrix.get(x + 1, y) && value == matrix.get(x, y + 1) &&
           value == matrix.get(x + 1, y + 1)) {
           penalty++;
@@ -87,9 +87,9 @@ var _ = w69b.qr.encoder.MaskUtil;
     var width = matrix.getWidth();
     var height = matrix.getHeight();
     var bytes = matrix.getBytes();
-    for (var y = 0; y < height; y++) {
-      var yOffset = width * y;
-      for (var x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      let yOffset = width * y;
+      for (let x = 0; x < width; x++) {
         // Tried to simplify following conditions but failed.
         if (x + 6 < width &&
             bytes[yOffset + x] == 1 &&
@@ -147,8 +147,8 @@ var _ = w69b.qr.encoder.MaskUtil;
     var numDarkCells = 0;
     var width = matrix.getWidth();
     var height = matrix.getHeight();
-    for (var y = 0; y < height; y++) {
-      for (var x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
         if (matrix.get(x, y) == 1) {
           numDarkCells++;
         }
@@ -218,11 +218,11 @@ var _ = w69b.qr.encoder.MaskUtil;
     var penalty = 0;
     var iLimit = isHorizontal ? matrix.getHeight() : matrix.getWidth();
     var jLimit = isHorizontal ? matrix.getWidth() : matrix.getHeight();
-    for (var i = 0; i < iLimit; i++) {
-      var numSameBitCells = 0;
-      var prevBit = -1;
-      for (var j = 0; j < jLimit; j++) {
-        var bit = isHorizontal ? matrix.get(j, i) : matrix.get(i, j);
+    for (let i = 0; i < iLimit; i++) {
+      let numSameBitCells = 0;
+      let prevBit = -1;
+      for (let j = 0; j < jLimit; j++) {
+        let bit = isHorizontal ? matrix.get(j, i) : matrix.get(i, j);
         if (bit == prevBit) {
           numSameBitCells++;
         } else {

@@ -85,7 +85,7 @@ goog.scope(function() {
     }
     var bits = new BitMatrix(dimensionX, dimensionY);
     var points = new Float32Array(dimensionX << 1);
-    for (var y = 0; y < dimensionY; y++) {
+    for (let y = 0; y < dimensionY; y++) {
       let max = points.length;
       let iValue = y + 0.5;
       for (let x = 0; x < max; x += 2) {

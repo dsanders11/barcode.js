@@ -238,7 +238,7 @@ goog.scope(function() {
     }
 
     var readBytes = new Int8Array(count);
-    for (var i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
       readBytes[i] = bits.readBits(8);
     }
     // var encoding = stringutils.guessEncoding(readBytes);
@@ -298,7 +298,7 @@ goog.scope(function() {
     // if (fc1InEffect) {
     //   // We need to massage the result a bit if in an FNC1 mode:
     //   // TODO: subclass stringbuffer and add required methods.
-    //   for (var i = start; i < result.getLength(); i++) {
+    //   for (let i = start; i < result.getLength(); i++) {
     //     if (result.charAt(i) == '%') {
     //       if (i < result.length() - 1 && result.charAt(i + 1) == '%') {
     //         // %% is rendered as %

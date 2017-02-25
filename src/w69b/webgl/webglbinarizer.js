@@ -264,10 +264,10 @@ goog.scope(function() {
   _.createSupportCheckImage = function(width, height) {
     var imgdata = new Uint8ClampedArray(4 * width * height);
     // build gradient
-    for (var y = 0; y < height; ++y) {
-      for (var x = 0; x < width; ++x) {
-        var pos = 4 * (width * y + x);
-        var gray = x;
+    for (let y = 0; y < height; ++y) {
+      for (let x = 0; x < width; ++x) {
+        let pos = 4 * (width * y + x);
+        let gray = x;
         imgdata[pos] = gray;
         imgdata[pos + 1] = gray;
         imgdata[pos + 2] = gray;
@@ -283,14 +283,15 @@ goog.scope(function() {
   _.isSupported = function() {
     // create test image
     if (_.isSupported_ === null) {
-      var width = 100;
-      var height = 20;
-      var img = _.createSupportCheckImage(width, height);
+      let binarizer = null;
+      let width = 100;
+      let height = 20;
+      let img = _.createSupportCheckImage(width, height);
       // set contrast on some pixels.
       setPixelGray(img, 30, 4, 18);
       setPixelGray(img, 90, 4, 50);
       try {
-        var binarizer = new w69b.webgl.WebGLBinarizer();
+        binarizer = new w69b.webgl.WebGLBinarizer();
         binarizer.setFlipInput(false);
         binarizer.setup(width, height);
         binarizer.render(new ImageData(img.data, width, height));
@@ -299,7 +300,7 @@ goog.scope(function() {
         _.isSupported_ = false;
         return false;
       }
-      var binary = binarizer.getImageData();
+      let binary = binarizer.getImageData();
       // Check some black and white values.
       _.isSupported_ = (getPixel(binary, 30, 4)[0] == 0 &&
       getPixel(binary, 90, 4)[0] == 0 &&

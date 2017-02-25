@@ -62,7 +62,7 @@ goog.scope(function() {
     if (coefficientsLength > 1 && coefficients[0] == 0) {
       // Leading term must be non-zero for anything except the constant
       // polynomial "0"
-      var firstNonZero = 1;
+      let firstNonZero = 1;
       while (firstNonZero < coefficientsLength && coefficients[firstNonZero] == 0) {
         firstNonZero++;
       }
@@ -70,7 +70,7 @@ goog.scope(function() {
         this.coefficients = field.zero.coefficients;
       } else {
         this.coefficients = new Int32Array(coefficientsLength - firstNonZero);
-        for (var ci = 0; ci < this.coefficients.length; ci++) {
+        for (let ci = 0; ci < this.coefficients.length; ci++) {
           this.coefficients[ci] = coefficients[firstNonZero + ci];
         }
       }
@@ -128,14 +128,14 @@ goog.scope(function() {
     var size = this.coefficients.length;
     if (a == 1) {
       // Just the sum of the coefficients
-      var result = 0;
-      for (var i = 0; i < size; i++) {
+      let result = 0;
+      for (let i = 0; i < size; i++) {
         result = GF256Poly.addOrSubtractScalar(result, this.coefficients[i]);
       }
       return result;
     }
     var result2 = this.coefficients[0];
-    for (var i = 1; i < size; i++) {
+    for (let i = 1; i < size; i++) {
       result2 = GF256Poly.addOrSubtractScalar(this.field.multiply(a, result2),
         this.coefficients[i]);
     }
@@ -161,7 +161,7 @@ goog.scope(function() {
     var smallerCoefficients = this.coefficients;
     var largerCoefficients = other.coefficients;
     if (smallerCoefficients.length > largerCoefficients.length) {
-      var temp = smallerCoefficients;
+      let temp = smallerCoefficients;
       smallerCoefficients = largerCoefficients;
       largerCoefficients = temp;
     }
@@ -169,10 +169,10 @@ goog.scope(function() {
     var lengthDiff = largerCoefficients.length - smallerCoefficients.length;
     // Copy high-order terms only found in higher-degree polynomial's
     // coefficients
-    for (var ci = 0; ci < lengthDiff; ci++)sumDiff[ci] =
+    for (let ci = 0; ci < lengthDiff; ci++)sumDiff[ci] =
       largerCoefficients[ci];
 
-    for (var i = lengthDiff; i < largerCoefficients.length; i++) {
+    for (let i = lengthDiff; i < largerCoefficients.length; i++) {
       sumDiff[i] = GF256Poly.addOrSubtractScalar(
         smallerCoefficients[i - lengthDiff],
         largerCoefficients[i]);
@@ -198,9 +198,9 @@ goog.scope(function() {
     var bCoefficients = other.coefficients;
     var bLength = bCoefficients.length;
     var product = new Int32Array(aLength + bLength - 1);
-    for (var i = 0; i < aLength; i++) {
-      var aCoeff = aCoefficients[i];
-      for (var j = 0; j < bLength; j++) {
+    for (let i = 0; i < aLength; i++) {
+      let aCoeff = aCoefficients[i];
+      for (let j = 0; j < bLength; j++) {
         product[i + j] = GF256Poly.addOrSubtractScalar(product[i + j],
           this.field.multiply(aCoeff, bCoefficients[j]));
       }
@@ -222,7 +222,7 @@ goog.scope(function() {
     }
     var size = this.coefficients.length;
     var product = new Int32Array(size);
-    for (var i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       product[i] = this.field.multiply(this.coefficients[i], scalar);
     }
     return new GF256Poly(this.field, product);
@@ -241,7 +241,7 @@ goog.scope(function() {
     }
     var size = this.coefficients.length;
     var product = new Int32Array(size + degree);
-    for (var i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       product[i] = this.field.multiply(this.coefficients[i], coefficient);
     }
     return new GF256Poly(this.field, product);
@@ -266,12 +266,12 @@ goog.scope(function() {
       denominatorLeadingTerm);
 
     while (remainder.getDegree() >= other.getDegree() && !remainder.isZero()) {
-      var degreeDifference = remainder.getDegree() - other.getDegree();
-      var scale = this.field.multiply(
+      let degreeDifference = remainder.getDegree() - other.getDegree();
+      let scale = this.field.multiply(
         remainder.getCoefficient(remainder.getDegree()),
         inverseDenominatorLeadingTerm);
-      var term = other.multiplyByMonomial(degreeDifference, scale);
-      var iterationQuotient = this.field.buildMonomial(degreeDifference,
+      let term = other.multiplyByMonomial(degreeDifference, scale);
+      let iterationQuotient = this.field.buildMonomial(degreeDifference,
         scale);
       quotient = quotient.addOrSubtract(iterationQuotient);
       remainder = remainder.addOrSubtract(term);
@@ -285,8 +285,8 @@ goog.scope(function() {
    */
   pro.toString = function() {
     var result = [];
-    for (var degree = this.getDegree(); degree >= 0; degree--) {
-      var coefficient = this.getCoefficient(degree);
+    for (let degree = this.getDegree(); degree >= 0; degree--) {
+      let coefficient = this.getCoefficient(degree);
       if (coefficient != 0) {
         if (coefficient < 0) {
           result.push(' - ');
@@ -297,7 +297,7 @@ goog.scope(function() {
           }
         }
         if (degree == 0 || coefficient != 1) {
-          var alphaPower = this.field.log(coefficient);
+          let alphaPower = this.field.log(coefficient);
           if (alphaPower == 0) {
             result.push('1');
           } else if (alphaPower == 1) {

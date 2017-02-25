@@ -35,14 +35,14 @@ goog.scope(function() {
     this.expTable = new Int32Array(256);
     this.logTable = new Int32Array(256);
     var x = 1;
-    for (var i = 0; i < 256; i++) {
+    for (let i = 0; i < 256; i++) {
       this.expTable[i] = x;
       x <<= 1; // x = x * 2; we're assuming the generator alpha is 2
       if (x >= 0x100) {
         x ^= primitive;
       }
     }
-    for (var i = 0; i < 255; i++) {
+    for (let i = 0; i < 255; i++) {
       this.logTable[this.expTable[i]] = i;
     }
     // logTable[0] == 0 but this should never be used

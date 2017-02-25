@@ -164,9 +164,9 @@ goog.scope(function() {
     if (bottom > this.height || right > this.width) {
       throw new IllegalArgumentException("The region must fit inside the matrix");
     }
-    for (var y = top; y < bottom; y++) {
+    for (let y = top; y < bottom; y++) {
       var offset = y * this.rowSize;
-      for (var x = left; x < right; x++) {
+      for (let x = left; x < right; x++) {
         this.bits[offset + (x >> 5)] |= 1 << (x & 0x1f);
       }
     }
@@ -188,7 +188,7 @@ goog.scope(function() {
       row.clear();
     }
     var offset = y * this.rowSize;
-    for (var x = 0; x < this.rowSize; x++) {
+    for (let x = 0; x < this.rowSize; x++) {
       row.setBulk(x * 32, this.bits[offset + x]);
     }
     return row;
@@ -347,8 +347,8 @@ goog.scope(function() {
    */
   pro.toString = function() {
     var result = [];
-    for (var y = 0; y < this.height; y++) {
-      for (var x = 0; x < this.width; x++) {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
         result.push(this.get(x, y) ? 'X ' : '  ');
       }
       result.push('\n');

@@ -113,17 +113,17 @@ goog.scope(function() {
       _.iconvPath = data['setIconvUrl'];
     } else {
       // decode
-      var width = data['width'];
-      var height = data['height'];
-      var buffer = data['buffer'];
-      var formats = data['formats'];
-      var isFirefox = data['isFirefox'];
-      var isBinary = data['isBinary'] || false;
-      var isGrayscale = data['isGrayscale'];
+      let width = data['width'];
+      let height = data['height'];
+      let buffer = data['buffer'];
+      let formats = data['formats'];
+      let isFirefox = data['isFirefox'];
+      let isBinary = data['isBinary'] || false;
+      let isGrayscale = data['isGrayscale'];
       if (!buffer.byteLength) {
         throw Error('worker commmunication failed');
       }
-      var imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
+      let imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
       imageData.grayscale_ = isGrayscale;
       _.decode(imageData, isBinary, formats);
       // Hack for FF memory leak - if webgl is used, we tranfer back the

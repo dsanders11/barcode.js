@@ -79,9 +79,9 @@ goog.scope(function() {
     var syndromeCoefficients = new Int32Array(twoS);
     var dataMatrix = false;//this.field.Equals(GF256.DATA_MATRIX_FIELD);
     var noError = true;
-    for (var i = 0; i < twoS; i++) {
+    for (let i = 0; i < twoS; i++) {
       // Thanks to sanfordsquires for this fix:
-      var val = poly.evaluateAt(this.field.exp(dataMatrix ? i + 1 : i));
+      let val = poly.evaluateAt(this.field.exp(dataMatrix ? i + 1 : i));
       syndromeCoefficients[syndromeCoefficients.length - 1 - i] = val;
       if (val != 0) {
         noError = false;
@@ -98,8 +98,8 @@ goog.scope(function() {
     var errorLocations = this.findErrorLocations(sigma);
     var errorMagnitudes = this.findErrorMagnitudes(omega, errorLocations,
       dataMatrix);
-    for (var i = 0; i < errorLocations.length; i++) {
-      var position = received.length - 1 - this.field.log(errorLocations[i]);
+    for (let i = 0; i < errorLocations.length; i++) {
+      let position = received.length - 1 - this.field.log(errorLocations[i]);
       if (position < 0) {
         throw new ReedSolomonException('bad error location');
       }
@@ -131,9 +131,9 @@ goog.scope(function() {
 
     // Run Euclidean algorithm until r's degree is less than R/2
     while (r.getDegree() >= Math.floor(R / 2)) {
-      var rLastLast = rLast;
-      var sLastLast = sLast;
-      var tLastLast = tLast;
+      let rLastLast = rLast;
+      let sLastLast = sLast;
+      let tLastLast = tLast;
       rLast = r;
       sLast = s;
       tLast = t;
@@ -144,12 +144,12 @@ goog.scope(function() {
         throw new ReedSolomonException('r_{i-1} was zero');
       }
       r = rLastLast;
-      var q = this.field.zero;
-      var denominatorLeadingTerm = rLast.getCoefficient(rLast.getDegree());
-      var dltInverse = this.field.inverse(denominatorLeadingTerm);
+      let q = this.field.zero;
+      let denominatorLeadingTerm = rLast.getCoefficient(rLast.getDegree());
+      let dltInverse = this.field.inverse(denominatorLeadingTerm);
       while (r.getDegree() >= rLast.getDegree() && !r.isZero()) {
-        var degreeDiff = r.getDegree() - rLast.getDegree();
-        var scale = this.field.multiply(r.getCoefficient(r.getDegree()),
+        let degreeDiff = r.getDegree() - rLast.getDegree();
+        let scale = this.field.multiply(r.getCoefficient(r.getDegree()),
           dltInverse);
         q = q.addOrSubtract(this.field.buildMonomial(degreeDiff, scale));
         r = r.addOrSubtract(rLast.multiplyByMonomial(degreeDiff, scale));
@@ -183,7 +183,7 @@ goog.scope(function() {
     }
     var result = new Int32Array(numErrors);
     var e = 0;
-    for (var i = 1; i < 256 && e < numErrors; i++) {
+    for (let i = 1; i < 256 && e < numErrors; i++) {
       if (errorLocator.evaluateAt(i) == 0) {
         result[e] = this.field.inverse(i);
         e++;
@@ -206,10 +206,10 @@ goog.scope(function() {
       // This is directly applying Forney's Formula
       var s = errorLocations.length;
       var result = new Int32Array(s);
-      for (var i = 0; i < s; i++) {
-        var xiInverse = this.field.inverse(errorLocations[i]);
-        var denominator = 1;
-        for (var j = 0; j < s; j++) {
+      for (let i = 0; i < s; i++) {
+        let xiInverse = this.field.inverse(errorLocations[i]);
+        let denominator = 1;
+        for (let j = 0; j < s; j++) {
           if (i != j) {
             denominator =
               this.field.multiply(denominator, GF256Poly.addOrSubtractScalar(1,

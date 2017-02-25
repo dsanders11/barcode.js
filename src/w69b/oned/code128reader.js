@@ -245,7 +245,7 @@ goog.scope(function() {
     var shiftUpperMode = false;
 
     while (!done) {
-      var unshift = isNextShifted;
+      let unshift = isNextShifted;
       isNextShifted = false;
 
       // Save off last code
@@ -269,7 +269,7 @@ goog.scope(function() {
 
       // Advance to where the next code will to start
       lastStart = nextStart;
-      for (var counter of counters) {
+      for (let counter of counters) {
         nextStart += counter;
       }
 
@@ -489,7 +489,7 @@ goog.scope(function() {
 
     var rawCodesSize = rawCodes.length;
     var rawBytes = new Int8Array(rawCodesSize);
-    for (var i = 0; i < rawCodesSize; i++) {
+    for (let i = 0; i < rawCodesSize; i++) {
       rawBytes[i] = rawCodes[i];
     }
 
@@ -513,9 +513,9 @@ goog.scope(function() {
     OneDReader.recordPattern(row, rowOffset, counters);
     var bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
     var bestMatch = -1;
-    for (var d = 0; d < Code128Reader.CODE_PATTERNS.length; d++) {
-      var pattern = Code128Reader.CODE_PATTERNS[d];
-      var variance = OneDReader.patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
+    for (let d = 0; d < Code128Reader.CODE_PATTERNS.length; d++) {
+      let pattern = Code128Reader.CODE_PATTERNS[d];
+      let variance = OneDReader.patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
       if (variance < bestVariance) {
         bestVariance = variance;
         bestMatch = d;
@@ -546,15 +546,15 @@ goog.scope(function() {
     var isWhite = false;
     var patternLength = counters.length;
 
-    for (var i = rowOffset; i < width; i++) {
+    for (let i = rowOffset; i < width; i++) {
       if (row.get(i) ^ isWhite) {
         counters[counterPosition]++;
       } else {
         if (counterPosition === patternLength - 1) {
-          var bestVariance = MAX_AVG_VARIANCE;
-          var bestMatch = -1;
-          for (var startCode = CODE_START_A; startCode <= CODE_START_C; startCode++) {
-            var variance = OneDReader.patternMatchVariance(counters, Code128Reader.CODE_PATTERNS[startCode],
+          let bestVariance = MAX_AVG_VARIANCE;
+          let bestMatch = -1;
+          for (let startCode = CODE_START_A; startCode <= CODE_START_C; startCode++) {
+            let variance = OneDReader.patternMatchVariance(counters, Code128Reader.CODE_PATTERNS[startCode],
                 MAX_INDIVIDUAL_VARIANCE);
             if (variance < bestVariance) {
               bestVariance = variance;

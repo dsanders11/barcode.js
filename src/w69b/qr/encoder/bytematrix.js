@@ -99,8 +99,9 @@ goog.scope(function() {
    * @param {number} value
    */
   pro.clear = function(value) {
-    for (var i = 0; i < this.bytes_.length; ++i)
+    for (let i = 0; i < this.bytes_.length; ++i) {
       this.bytes_[i] = value;
+    }
   };
 
   /**
@@ -108,8 +109,8 @@ goog.scope(function() {
    */
   pro.toString = function() {
     var result = [];
-    for (var y = 0; y < this.height_; ++y) {
-      for (var x = 0; x < this.width_; ++x) {
+    for (let y = 0; y < this.height_; ++y) {
+      for (let x = 0; x < this.width_; ++x) {
         switch (this.get(x, y)) {
           case 0:
             result.push(' 0');

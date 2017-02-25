@@ -59,10 +59,10 @@ goog.scope(function() {
     var a31 = this.a31;
     var a32 = this.a32;
     var a33 = this.a33;
-    for (var i = 0; i < max; i += 2) {
-      var x = points[i];
-      var y = points[i + 1];
-      var denominator = a13 * x + a23 * y + a33;
+    for (let i = 0; i < max; i += 2) {
+      let x = points[i];
+      let y = points[i + 1];
+      let denominator = a13 * x + a23 * y + a33;
       points[i] = (a11 * x + a21 * y + a31) / denominator;
       points[i + 1] = (a12 * x + a22 * y + a32) / denominator;
     }
@@ -74,10 +74,10 @@ goog.scope(function() {
    */
   pro.transformPoints2 = function(xValues, yValues) {
     var n = xValues.length;
-    for (var i = 0; i < n; i++) {
-      var x = xValues[i];
-      var y = yValues[i];
-      var denominator = this.a13 * x + this.a23 * y + this.a33;
+    for (let i = 0; i < n; i++) {
+      let x = xValues[i];
+      let y = yValues[i];
+      let denominator = this.a13 * x + this.a23 * y + this.a33;
       xValues[i] = (this.a11 * x + this.a21 * y + this.a31) / denominator;
       yValues[i] = (this.a12 * x + this.a22 * y + this.a32) / denominator;
     }

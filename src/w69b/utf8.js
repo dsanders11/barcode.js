@@ -65,8 +65,8 @@ goog.provide('w69b.utf8');
   function stringToUTF8Bytes(str) {
     /** @type {Array.<number>} */
     var bytes = [];
-    for (var i = 0; i < str.length; ++i) {
-      var codePoint = fixedCharCodeAt(str, i);
+    for (let i = 0; i < str.length; ++i) {
+      let codePoint = fixedCharCodeAt(str, i);
       // already handeled
       if (!codePoint) continue;
       if (codePoint <= 0x7F) {
@@ -121,10 +121,10 @@ goog.provide('w69b.utf8');
     };
     var codePoints = [];
     try {
-      for (var i = 0; i < length; ++i) {
-        var b = bytes[i];
+      for (let i = 0; i < length; ++i) {
+        let b = bytes[i];
         if (b > 0xFF) return null;
-        var code;
+        let code;
         if ((b & 0x80) === 0x00) {
           // First bit not set, so it is a 1-byte char.
           code = b;

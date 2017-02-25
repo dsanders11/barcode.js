@@ -202,8 +202,8 @@ goog.scope(function() {
      */
     function gotSources(sources) {
       var constraint = true;
-      for (var i = 0; i < sources.length; ++i) {
-        var source = sources[i];
+      for (let i = 0; i < sources.length; ++i) {
+        let source = sources[i];
         if (source['kind'] === 'video' && source['facing'] == 'environment') {
           constraint = {'optional': [{'sourceId': source.id}]};
           break;

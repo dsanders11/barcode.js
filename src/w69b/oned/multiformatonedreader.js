@@ -77,7 +77,7 @@ goog.scope(function() {
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    for (var reader of this.readers_) {
+    for (let reader of this.readers_) {
       try {
         return reader.decodeRow(rowNumber, row, hints);
       } catch (/* ReaderException re*/ err) {
@@ -92,7 +92,7 @@ goog.scope(function() {
    * @override
    */
   pro.reset = function() {
-    for (var reader of this.readers_) {
+    for (let reader of this.readers_) {
       reader.reset();
     }
   };

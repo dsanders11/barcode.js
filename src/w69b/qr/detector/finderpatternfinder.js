@@ -141,15 +141,15 @@ goog.scope(function() {
     var done = false;
     var stateCount = new Int32Array(5);
     var confirmed;
-    for (var i = iSkip - 1; i < maxI && !done; i += iSkip) {
+    for (let i = iSkip - 1; i < maxI && !done; i += iSkip) {
       // Get a row of black/white values
       stateCount[0] = 0;
       stateCount[1] = 0;
       stateCount[2] = 0;
       stateCount[3] = 0;
       stateCount[4] = 0;
-      var currentState = 0;
-      for (var j = 0; j < maxJ; j++) {
+      let currentState = 0;
+      for (let j = 0; j < maxJ; j++) {
         if (this.image_.get(j, i)) {
           // Black pixel
           if ((currentState & 1) == 1) { // Counting white pixels
@@ -169,7 +169,7 @@ goog.scope(function() {
                   if (this.hasSkipped_) {
                     done = this.haveMultiplyConfirmedCenters();
                   } else {
-                    var rowSkip = this.findRowSkip();
+                    let rowSkip = this.findRowSkip();
                     if (rowSkip > stateCount[2]) {
                       // Skip rows between row of lower confirmed center
                       // and top of presumed third confirmed center
@@ -255,8 +255,8 @@ goog.scope(function() {
    */
   _.foundPatternCross = function(stateCount) {
     var totalModuleSize = 0;
-    for (var i = 0; i < 5; i++) {
-      var count = stateCount[i];
+    for (let i = 0; i < 5; i++) {
+      let count = stateCount[i];
       if (count == 0) {
         return false;
       }
@@ -593,10 +593,10 @@ goog.scope(function() {
           (!pureBarcode || this.crossCheckDiagonal_(
             Math.floor(centerI), Math.floor(centerJ), stateCount[2],
             stateCountTotal))) {
-        var estimatedModuleSize = stateCountTotal / 7.0;
-        var found = false;
-        for (var index = 0; index < this.possibleCenters_.length; index++) {
-          var center = this.possibleCenters_[index];
+        let estimatedModuleSize = stateCountTotal / 7.0;
+        let found = false;
+        for (let index = 0; index < this.possibleCenters_.length; index++) {
+          let center = this.possibleCenters_[index];
           // Look for about the same center and module size:
           if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
             this.possibleCenters_[index] =
@@ -606,7 +606,7 @@ goog.scope(function() {
           }
         }
         if (!found) {
-          var point = new FinderPattern(centerJ, centerI, estimatedModuleSize);
+          let point = new FinderPattern(centerJ, centerI, estimatedModuleSize);
           this.possibleCenters_.push(point);
           if (this.resultPointCallback_ !== null) {
             this.resultPointCallback_(point);
@@ -630,7 +630,7 @@ goog.scope(function() {
       return 0;
     }
     var firstConfirmedCenter = null;
-    for (var i = 0; i < this.possibleCenters_.length; ++i) {
+    for (let i = 0; i < this.possibleCenters_.length; ++i) {
       var center = this.possibleCenters_[i];
       if (center.getCount() >= _.CENTER_QUORUM) {
         if (firstConfirmedCenter == null) {
@@ -660,7 +660,7 @@ goog.scope(function() {
     var confirmedCount = 0;
     var totalModuleSize = 0.0;
     var max = this.possibleCenters_.length;
-    for (var pattern of this.possibleCenters_) {
+    for (let pattern of this.possibleCenters_) {
       if (pattern.getCount() >= _.CENTER_QUORUM) {
         confirmedCount++;
         totalModuleSize += pattern.getEstimatedModuleSize();
@@ -680,11 +680,12 @@ goog.scope(function() {
     // only those with >= CENTER_QUORUM.
     var average = totalModuleSize / max;
     var totalDeviation = 0.0;
-    for (var pattern of this.possibleCenters_) {
+    for (let pattern of this.possibleCenters_) {
       totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
     }
-    if (totalDeviation > 0.05 * totalModuleSize)
+    if (totalDeviation > 0.05 * totalModuleSize) {
       return false;
+    }
 
     // Check skew of best patterns.
     var centers = this.selectBestPatterns();
@@ -706,30 +707,29 @@ goog.scope(function() {
       // Couldn't find enough finder patterns
       throw new w69b.NotFoundException();
     }
-    var average;
     var centers = goog.array.clone(this.possibleCenters_);
 
     // Filter outlier possibilities whose module size is too different
     if (startSize > 3) {
       // But we can only afford to do so if we have at least 4 possibilities
       // to choose from
-      var totalModuleSize = 0.0;
-      var square = 0.0;
-      for (var center of centers) {
-        var size = center.getEstimatedModuleSize();
+      let totalModuleSize = 0.0;
+      let square = 0.0;
+      for (let center of centers) {
+        let size = center.getEstimatedModuleSize();
         totalModuleSize += size;
         square += size * size;
       }
-      average = totalModuleSize / startSize;
-      var stdDev = Math.sqrt(square / startSize - average * average);
+      let average = totalModuleSize / startSize;
+      let stdDev = Math.sqrt(square / startSize - average * average);
 
       centers.sort(_.FurthestFromAverageComparator(average));
 
-      var limit = Math.max(0.2 * average, stdDev);
+      let limit = Math.max(0.2 * average, stdDev);
 
-      for (var i = 0; i < centers.length &&
+      for (let i = 0; i < centers.length &&
         centers.length > 3; i++) {
-        var pattern = centers[i];
+        let pattern = centers[i];
         if (Math.abs(pattern.getEstimatedModuleSize() - average) > limit) {
           goog.array.removeAt(centers, i);
           i--;
@@ -740,18 +740,18 @@ goog.scope(function() {
     if (centers.length > 3) {
       // Throw away all but those first size candidate points we found.
 
-      totalModuleSize = 0.0;
-      for (var possibleCenter of centers) {
+      let totalModuleSize = 0.0;
+      for (let possibleCenter of centers) {
         totalModuleSize += possibleCenter.getEstimatedModuleSize();
       }
 
-      average = totalModuleSize / centers.length;
+      let average = totalModuleSize / centers.length;
 
       centers.sort(_.CenterComparator(average));
 
       if (opt_checkSkew) {
         // check skew error of first few sets.
-        var withSkew = _.getCombinations(centers).map(function(combination) {
+        let withSkew = _.getCombinations(centers).map(function(combination) {
           return {centers: combination,
             skew: _.computeSkew(combination)};
         });

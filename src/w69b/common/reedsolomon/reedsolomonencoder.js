@@ -57,9 +57,9 @@ goog.scope(function() {
   pro.buildGenerator = function(degree) {
     var cachedGenerators = this.cachedGenerators_;
     if (degree >= cachedGenerators.length) {
-      var lastGenerator = cachedGenerators[cachedGenerators.length - 1];
-      for (var d = cachedGenerators.length; d <= degree; d++) {
-        var nextGenerator = lastGenerator.multiply1(
+      let lastGenerator = cachedGenerators[cachedGenerators.length - 1];
+      for (let d = cachedGenerators.length; d <= degree; d++) {
+        let nextGenerator = lastGenerator.multiply1(
           new GF256Poly(this.field_, Int32Array.of(1, this.field_.exp(d - 1))));
         cachedGenerators.push(nextGenerator);
         lastGenerator = nextGenerator;

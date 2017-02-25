@@ -71,8 +71,8 @@ goog.scope(function() {
    * @override
    */
   _.DataMask000.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -99,8 +99,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask001.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -127,8 +127,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask010.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -155,8 +155,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask011.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -183,8 +183,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask100.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -211,8 +211,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask101.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -240,8 +240,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask110.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }
@@ -269,8 +269,8 @@ goog.scope(function() {
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMask111.prototype.unmaskBitMatrix = function(bits, dimension) {
-    for (var i = 0; i < dimension; i++) {
-      for (var j = 0; j < dimension; j++) {
+    for (let i = 0; i < dimension; i++) {
+      for (let j = 0; j < dimension; j++) {
         if (this.isMasked(i, j)) {
           bits.flip(j, i);
         }

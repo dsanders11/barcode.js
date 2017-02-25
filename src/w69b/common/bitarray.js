@@ -187,15 +187,15 @@ goog.scope(function() {
     end--;
     var firstInt = start >> 5;
     var lastInt = end >> 5;
-    for (var i = firstInt; i <= lastInt; i++) {
-      var firstBit = i > firstInt ? 0 : start & 0x1F;
-      var lastBit = i < lastInt ? 31 : end & 0x1F;
-      var mask;
+    for (let i = firstInt; i <= lastInt; i++) {
+      let firstBit = i > firstInt ? 0 : start & 0x1F;
+      let lastBit = i < lastInt ? 31 : end & 0x1F;
+      let mask;
       if (firstBit === 0 && lastBit === 31) {
         mask = -1;
       } else {
         mask = 0;
-        for (var j = firstBit; j <= lastBit; j++) {
+        for (let j = firstBit; j <= lastBit; j++) {
           mask |= 1 << j;
         }
       }
@@ -231,15 +231,15 @@ goog.scope(function() {
     end--;
     var firstInt = start >> 5;
     var lastInt = end >> 5;
-    for (var i = firstInt; i <= lastInt; i++) {
-      var firstBit = i > firstInt ? 0 : start & 0x1F;
-      var lastBit = i < lastInt ? 31 : end & 0x1F;
-      var mask;
+    for (let i = firstInt; i <= lastInt; i++) {
+      let firstBit = i > firstInt ? 0 : start & 0x1F;
+      let lastBit = i < lastInt ? 31 : end & 0x1F;
+      let mask;
       if (firstBit === 0 && lastBit === 31) {
         mask = -1;
       } else {
         mask = 0;
-        for (var j = firstBit; j <= lastBit; j++) {
+        for (let j = firstBit; j <= lastBit; j++) {
           mask |= 1 << j;
         }
       }
@@ -277,7 +277,7 @@ goog.scope(function() {
       throw new Error();
     }
     this.ensureCapacity(this.size_ + numBits);
-    for (var numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
+    for (let numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
       this.appendBit(((value >> (numBitsLeft - 1)) & 0x01) === 1);
     }
   };
@@ -288,7 +288,7 @@ goog.scope(function() {
   pro.appendBitArray = function(other) {
     var otherSize = other.size_;
     this.ensureCapacity(this.size_ + otherSize);
-    for (var i = 0; i < otherSize; i++) {
+    for (let i = 0; i < otherSize; i++) {
       this.appendBit(other.get(i));
     }
   };
@@ -300,7 +300,7 @@ goog.scope(function() {
     if (this.bits_.length !== other.bits_.length) {
       throw new Error();
     }
-    for (var i = 0; i < this.bits_.length; i++) {
+    for (let i = 0; i < this.bits_.length; i++) {
       // The last byte could be incomplete (i.e. not have 8 this.bits_ in
       // it) but there is no problem since 0 XOR 0 == 0.
       this.bits_[i] ^= other.bits_[i];
@@ -317,9 +317,9 @@ goog.scope(function() {
    * @param {number} numBytes how many bytes to write.
    */
   pro.toBytes = function(bitOffset, array, offset, numBytes) {
-    for (var i = 0; i < numBytes; i++) {
-      var theByte = 0;
-      for (var j = 0; j < 8; j++) {
+    for (let i = 0; i < numBytes; i++) {
+      let theByte = 0;
+      for (let j = 0; j < 8; j++) {
         if (this.get(bitOffset)) {
           theByte |= 1 << (7 - j);
         }
@@ -343,7 +343,7 @@ goog.scope(function() {
   pro.reverse = function() {
     var newBits = new Int32Array(this.bits_.length);
     var size = this.size_;
-    for (var i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       if (this.get(size - i - 1)) {
         newBits[i >> 5] |= 1 << (i & 0x1F);
       }
@@ -364,7 +364,7 @@ goog.scope(function() {
    */
   pro.toString = function() {
     var result = [];
-    for (var i = 0; i < this.size_; i++) {
+    for (let i = 0; i < this.size_; i++) {
       if ((i & 0x07) === 0) {
         result.push(' ');
       }

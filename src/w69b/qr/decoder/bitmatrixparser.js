@@ -80,7 +80,7 @@ goog.scope(function() {
 
     // Read top-left format info bits
     var formatInfoBits = 0;
-    for (var i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
       formatInfoBits = this.copyBit(i, 8, formatInfoBits);
     }
     // .. and skip a bit in the timing pattern ...
@@ -88,7 +88,7 @@ goog.scope(function() {
     formatInfoBits = this.copyBit(8, 8, formatInfoBits);
     formatInfoBits = this.copyBit(8, 7, formatInfoBits);
     // .. and skip a bit in the timing pattern ...
-    for (var j = 5; j >= 0; j--) {
+    for (let j = 5; j >= 0; j--) {
       formatInfoBits = this.copyBit(8, j, formatInfoBits);
     }
 
@@ -102,10 +102,10 @@ goog.scope(function() {
     var dimension = this.bitMatrix.getHeight();
     formatInfoBits = 0;
     var iMin = dimension - 8;
-    for (var i = dimension - 1; i >= iMin; i--) {
+    for (let i = dimension - 1; i >= iMin; i--) {
       formatInfoBits = this.copyBit(i, 8, formatInfoBits);
     }
-    for (var j = dimension - 7; j < dimension; j++) {
+    for (let j = dimension - 7; j < dimension; j++) {
       formatInfoBits = this.copyBit(8, j, formatInfoBits);
     }
 
@@ -135,8 +135,8 @@ goog.scope(function() {
     // Read top-right version info: 3 wide by 6 tall
     var versionBits = 0;
     var ijMin = dimension - 11;
-    for (var j = 5; j >= 0; j--) {
-      for (var i = dimension - 9; i >= ijMin; i--) {
+    for (let j = 5; j >= 0; j--) {
+      for (let i = dimension - 9; i >= ijMin; i--) {
         versionBits = this.copyBit(i, j, versionBits);
       }
     }
@@ -149,8 +149,8 @@ goog.scope(function() {
 
     // Hmm, failed. Try bottom left: 6 wide by 3 tall
     versionBits = 0;
-    for (var i = 5; i >= 0; i--) {
-      for (var j = dimension - 9; j >= ijMin; j--) {
+    for (let i = 5; i >= 0; i--) {
+      for (let j = dimension - 9; j >= ijMin; j--) {
         versionBits = this.copyBit(i, j, versionBits);
       }
     }
@@ -184,16 +184,16 @@ goog.scope(function() {
     var currentByte = 0;
     var bitsRead = 0;
     // Read columns in pairs, from right to left
-    for (var j = dimension - 1; j > 0; j -= 2) {
+    for (let j = dimension - 1; j > 0; j -= 2) {
       if (j == 6) {
         // Skip whole column with vertical alignment pattern;
         // saves time and makes the other code proceed more cleanly
         j--;
       }
       // Read alternatingly from bottom to top then top to bottom
-      for (var count = 0; count < dimension; count++) {
+      for (let count = 0; count < dimension; count++) {
         var i = readingUp ? dimension - 1 - count : count;
-        for (var col = 0; col < 2; col++) {
+        for (let col = 0; col < 2; col++) {
           // Ignore bits covered by the function pattern
           if (!functionPattern.get(j - col, i)) {
             // Read a bit

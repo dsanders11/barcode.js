@@ -81,7 +81,7 @@ goog.scope(function() {
     // we want for A, B, C. If it's negative, then we've got it flipped around and
     // should swap A and C.
     if (ResultPoint.crossProductZ(pointA, pointB, pointC) < 0.0) {
-      var temp = pointA;
+      let temp = pointA;
       pointA = pointC;
       pointC = temp;
     }

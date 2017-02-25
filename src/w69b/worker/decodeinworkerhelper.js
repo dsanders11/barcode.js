@@ -191,7 +191,7 @@ goog.scope(function() {
       }
       // binarize
       if (this.webGLBinarizer_) {
-        var coverSize = new goog.math.Size(
+        let coverSize = new goog.math.Size(
           /** @type {number} */ (imgdata.width || imgdata.videoWidth),
           /** @type {number} */ (imgdata.height || imgdata.videoHeight));
         if (coverSize.fitsInside(size)) {
@@ -210,8 +210,8 @@ goog.scope(function() {
       imgDataOrMatrix = w69b.imgtools.getImageData(imgDataOrMatrix, size);
     }
     if (this.useWorker_) {
-      var buffer = (/** @type {Uint8ClampedArray}  */ (imgDataOrMatrix.data)).buffer;
-      var msg = {
+      let buffer = (/** @type {Uint8ClampedArray}  */ (imgDataOrMatrix.data)).buffer;
+      let msg = {
         'width': imgDataOrMatrix.width,
         'height': imgDataOrMatrix.height,
         'buffer': buffer,
@@ -253,7 +253,7 @@ goog.scope(function() {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         DecodeInWorkerHelper.iconvUrl_) {
         // load iconv. importScripts(_.iconvPath);
-        var url = DecodeInWorkerHelper.iconvUrl_;
+        let url = DecodeInWorkerHelper.iconvUrl_;
         if (!goog.string.startsWith(url,
             'http://') && !goog.string.startsWith(url, 'https://')) {
           // path is relative to worker, so resolve it first.

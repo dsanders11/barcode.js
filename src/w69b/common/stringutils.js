@@ -37,7 +37,7 @@ goog.scope(function() {
     // try native TextDecoder first
     if (self.TextDecoder && self.Uint8Array && self.Uint8Array['from']) {
       try {
-        var decoder = new self.TextDecoder(charset);
+        let decoder = new self.TextDecoder(charset);
         return decoder.decode(self.Uint8Array['from'](bytes));
       } catch (ignored) {
         // try other methods if charset is not supported by native decoder (eg. CP437 on Chrome).
@@ -52,7 +52,7 @@ goog.scope(function() {
         throw new InvalidCharsetException(
           'iconv not loaded, cannot handle ' + charset);
       /** @type {Int8Array} */
-      var utf8Bytes = iconv.convert(bytes, charset, _.UTF8);
+      let utf8Bytes = iconv.convert(bytes, charset, _.UTF8);
       if (utf8Bytes === null)
         throw new InvalidCharsetException(
           'toStr ' + charset + ' to UTF-8 ' + bytes);
@@ -140,11 +140,11 @@ goog.scope(function() {
       bytes[1] == 0xBB &&
       bytes[2] == 0xBF;
 
-    for (var i = 0;
+    for (let i = 0;
          i < length && (canBeISO88591 || canBeShiftJIS || canBeUTF8);
          i++) {
 
-      var value = bytes[i] & 0xFF;
+      let value = bytes[i] & 0xFF;
 
       // UTF-8 stuff
       if (canBeUTF8) {

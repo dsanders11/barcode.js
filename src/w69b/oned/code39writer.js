@@ -63,13 +63,13 @@ goog.scope(function() {
 
     var widths = new Int32Array(9);
     var codeWidth = 24 + 1 + length;
-    for (var i = 0; i < length; i++) {
-      var indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
+    for (let i = 0; i < length; i++) {
+      let indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
       if (indexInString < 0) {
         throw new IllegalArgumentException("Bad contents: " + contents);
       }
       toIntArray(Code39Reader.CHARACTER_ENCODINGS[indexInString], widths);
-      for (var width of widths) {
+      for (let width of widths) {
         codeWidth += width;
       }
     }
@@ -80,8 +80,8 @@ goog.scope(function() {
     var narrowWhite = Int32Array.of(1);
     pos += OneDimensionalCodeWriter.appendPattern(result, pos, narrowWhite, false);
     //append next character to byte matrix
-    for (var i = 0; i < length; i++) {
-      var indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
+    for (let i = 0; i < length; i++) {
+      let indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
       toIntArray(Code39Reader.CHARACTER_ENCODINGS[indexInString], widths);
       pos += OneDimensionalCodeWriter.appendPattern(result, pos, widths, true);
       pos += OneDimensionalCodeWriter.appendPattern(result, pos, narrowWhite, false);
@@ -97,8 +97,8 @@ goog.scope(function() {
    * @private
    */
   function toIntArray(a, toReturn) {
-    for (var i = 0; i < 9; i++) {
-      var temp = a & (1 << (8 - i));
+    for (let i = 0; i < 9; i++) {
+      let temp = a & (1 << (8 - i));
       toReturn[i] = temp == 0 ? 1 : 2;
     }
   }

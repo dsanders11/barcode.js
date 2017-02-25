@@ -95,7 +95,9 @@ goog.scope(function() {
    * @export
    */
   _.Decoder.prototype.decode = function(img) {
-    if (this.busy_) throw new Error('Decoder is still busy');
+    if (this.busy_) {
+      throw new Error('Decoder is still busy');
+    }
     this.busy_ = true;
     var opt = this.options_;
     var worker = this.worker_;
@@ -105,7 +107,7 @@ goog.scope(function() {
       /** @type {number} */ (img.width || img.videoWidth),
       /** @type {number} */ (img.height || img.videoHeight));
     if (opt['maxSize']) {
-      var maxSize = new goog.math.Size(opt['maxSize'], opt['maxSize']);
+      let maxSize = new goog.math.Size(opt['maxSize'], opt['maxSize']);
       if (!size.fitsInside(maxSize)) {
         size = size.scaleToFit(maxSize);
         size.floor();

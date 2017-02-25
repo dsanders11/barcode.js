@@ -131,7 +131,7 @@ goog.scope(function() {
   pro.createTextures = function(num) {
     var width = this.getWidth();
     var height = this.getHeight();
-    for (var i = 0; i < num; ++i)
+    for (let i = 0; i < num; ++i)
       this.textures[i] = this.createTexture(i, width, height);
   };
 

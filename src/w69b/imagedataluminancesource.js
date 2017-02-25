@@ -63,9 +63,9 @@ goog.scope(function() {
       // ImageData may have already been made grayscale using WebGL
       if (image.grayscale_) {
         // Move the RGBA data to a single-byte representation
-        var data = image.data;
+        let data = image.data;
         let luminances = this.luminances_;
-        for (var i = 0, dlength = data.length; i < dlength; i += 4) {
+        for (let i = 0, dlength = data.length; i < dlength; i += 4) {
           luminances[i/4] = data[i];
         }
       } else {
@@ -149,9 +149,9 @@ goog.scope(function() {
     }
 
     // Otherwise copy one cropped row at a time.
-    for (var y = 0; y < height; y++) {
-      var outputOffset = y * width;
-      var slice = this.luminances_.slice(inputOffset, inputOffset + width)
+    for (let y = 0; y < height; y++) {
+      let outputOffset = y * width;
+      let slice = this.luminances_.slice(inputOffset, inputOffset + width)
       matrix.set(slice, outputOffset);
       inputOffset += this.dataWidth_;
     }

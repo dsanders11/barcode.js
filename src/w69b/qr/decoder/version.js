@@ -104,7 +104,7 @@ goog.scope(function() {
   ECBlocks.prototype.getNumBlocks = function() {
     /** @type {number} */
     var total = 0;
-    for (var i = 0; i < this.ecBlocks.length; i++) {
+    for (let i = 0; i < this.ecBlocks.length; i++) {
       total += this.ecBlocks[i].getCount();
     }
     return total;
@@ -131,8 +131,8 @@ goog.scope(function() {
     var total = 0;
     var ecCodewords = ecBlocks1.ecCodewordsPerBlock;
     var ecbArray = ecBlocks1.getECBlocks();
-    for (var i = 0; i < ecbArray.length; i++) {
-      var ecBlock = ecbArray[i];
+    for (let i = 0; i < ecbArray.length; i++) {
+      let ecBlock = ecbArray[i];
       total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
     }
     this.totalCodewords = total;
@@ -184,9 +184,9 @@ goog.scope(function() {
 
     // Alignment patterns
     var max = this.alignmentPatternCenters.length;
-    for (var x = 0; x < max; x++) {
-      var i = this.alignmentPatternCenters[x] - 2;
-      for (var y = 0; y < max; y++) {
+    for (let x = 0; x < max; x++) {
+      let i = this.alignmentPatternCenters[x] - 2;
+      for (let y = 0; y < max; y++) {
         if ((x == 0 && (y == 0 || y == max - 1)) || (x == max - 1 && y == 0)) {
           // No alignment patterns near the three finder paterns
           continue;
@@ -446,15 +446,15 @@ goog.scope(function() {
   Version.decodeVersionInformation = function(versionBits) {
     var bestDifference = 0xffffffff;
     var bestVersion = 0;
-    for (var i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
-      var targetVersion = Version.VERSION_DECODE_INFO[i];
+    for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
+      let targetVersion = Version.VERSION_DECODE_INFO[i];
       // Do the version info bits match exactly? done.
       if (targetVersion == versionBits) {
         return Version.getVersionForNumber(i + 7);
       }
       // Otherwise see if this is the closest to a real version info bit string
       // we have seen so far
-      var bitsDifference = w69b.qr.decoder.FormatInformation.numBitsDiffering(
+      let bitsDifference = w69b.qr.decoder.FormatInformation.numBitsDiffering(
         versionBits, targetVersion);
       if (bitsDifference < bestDifference) {
         bestVersion = i + 7;

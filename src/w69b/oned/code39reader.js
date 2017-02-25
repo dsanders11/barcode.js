@@ -109,18 +109,18 @@ goog.scope(function() {
     var maxNarrowCounter = 0;
     var wideCounters;
     do {
-      var minCounter = Number.MAX_VALUE;
-      for (var counter of counters) {
+      let minCounter = Number.MAX_VALUE;
+      for (let counter of counters) {
         if (counter < minCounter && counter > maxNarrowCounter) {
           minCounter = counter;
         }
       }
       maxNarrowCounter = minCounter;
       wideCounters = 0;
-      var totalWideCountersWidth = 0;
-      var pattern = 0;
-      for (var i = 0; i < numCounters; i++) {
-        var counter = counters[i];
+      let totalWideCountersWidth = 0;
+      let pattern = 0;
+      for (let i = 0; i < numCounters; i++) {
+        let counter = counters[i];
         if (counter > maxNarrowCounter) {
           pattern |= 1 << (numCounters - 1 - i);
           wideCounters++;
@@ -131,8 +131,8 @@ goog.scope(function() {
         // Found 3 wide counters, but are they close enough in width?
         // We can perform a cheap, conservative check to see if any individual
         // counter is more than 1.5 times the average:
-        for (var i = 0; i < numCounters && wideCounters > 0; i++) {
-          var counter = counters[i];
+        for (let i = 0; i < numCounters && wideCounters > 0; i++) {
+          let counter = counters[i];
           if (counter > maxNarrowCounter) {
             wideCounters--;
             // totalWideCountersWidth = 3 * average, so this checks if counter >= 3/2 * average
@@ -167,14 +167,14 @@ goog.scope(function() {
     var lastStart;
     do {
       OneDReader.recordPattern(row, nextStart, theCounters);
-      var pattern = Code39Reader.toNarrowWidePattern_(theCounters);
+      let pattern = Code39Reader.toNarrowWidePattern_(theCounters);
       if (pattern < 0) {
         throw new NotFoundException();
       }
       decodedChar = Code39Reader.patternToChar_(pattern);
       result += decodedChar;
       lastStart = nextStart;
-      for (var counter of theCounters) {
+      for (let counter of theCounters) {
         nextStart += counter;
       }
       // Read off white space
@@ -184,7 +184,7 @@ goog.scope(function() {
 
     // Look for whitespace after pattern:
     var lastPatternSize = 0;
-    for (var counter of theCounters) {
+    for (let counter of theCounters) {
       lastPatternSize += counter;
     }
     var whiteSpaceAfterEnd = nextStart - lastStart - lastPatternSize;
@@ -195,9 +195,9 @@ goog.scope(function() {
     }
 
     if (this.usingCheckDigit_) {
-      var max = result.length - 1;
-      var total = 0;
-      for (var i = 0; i < max; i++) {
+      let max = result.length - 1;
+      let total = 0;
+      for (let i = 0; i < max; i++) {
         total += Code39Reader.CHECK_DIGIT_STRING.indexOf(result.charAt(i));
       }
       if (result.charAt(max) != Code39Reader.CHECK_DIGIT_STRING.charAt(total % 43)) {
@@ -243,7 +243,7 @@ goog.scope(function() {
     var isWhite = false;
     var patternLength = counters.length;
 
-    for (var i = rowOffset; i < width; i++) {
+    for (let i = rowOffset; i < width; i++) {
       if (row.get(i) ^ isWhite) {
         counters[counterPosition]++;
       } else {
@@ -278,11 +278,11 @@ goog.scope(function() {
   Code39Reader.decodeExtended_ = function(encoded) {
     var length = encoded.length;
     var decoded = '';
-    for (var i = 0; i < length; i++) {
-      var c = encoded.charAt(i);
+    for (let i = 0; i < length; i++) {
+      let c = encoded.charAt(i);
       if (c == '+' || c == '$' || c == '%' || c == '/') {
-        var next = encoded.charAt(i + 1);
-        var decodedChar = '\0';
+        let next = encoded.charAt(i + 1);
+        let decodedChar = '\0';
         switch (c) {
           case '+':
             // +A to +Z map to a to z
@@ -338,7 +338,7 @@ goog.scope(function() {
    * @private
    */
   Code39Reader.patternToChar_ = function(pattern) {
-    for (var i = 0; i < Code39Reader.CHARACTER_ENCODINGS.length; i++) {
+    for (let i = 0; i < Code39Reader.CHARACTER_ENCODINGS.length; i++) {
       if (Code39Reader.CHARACTER_ENCODINGS[i] === pattern) {
         return Code39Reader.ALPHABET_STRING.charAt(i);
       }

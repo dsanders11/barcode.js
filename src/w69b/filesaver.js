@@ -30,7 +30,7 @@ goog.scope(function() {
     if (saveBlob) {
       saveBlob.call(navigator, blob, name);
     } else {
-      var saver = new FileSaver(blob, name);
+      let saver = new FileSaver(blob, name);
       saver.save();
       window.setTimeout(function() {
         saver.dispose();

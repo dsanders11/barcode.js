@@ -205,25 +205,25 @@ goog.scope(function() {
     var typeInfoBits = new BitArray();
     _.makeTypeInfoBits(ecLevel, maskPattern, typeInfoBits);
 
-    for (var i = 0; i < typeInfoBits.getSize(); ++i) {
+    for (let i = 0; i < typeInfoBits.getSize(); ++i) {
       // Place bits in LSB to MSB order.  LSB (least significant bit) is the
       // last value in "typeInfoBits".
-      var bit = typeInfoBits.get(typeInfoBits.getSize() - 1 - i);
+      let bit = typeInfoBits.get(typeInfoBits.getSize() - 1 - i);
 
       // Type info bits at the left top corner. See 8.9 of JISX0510:2004 (p.46).
-      var x1 = _.TYPE_INFO_COORDINATES[i][0];
-      var y1 = _.TYPE_INFO_COORDINATES[i][1];
+      let x1 = _.TYPE_INFO_COORDINATES[i][0];
+      let y1 = _.TYPE_INFO_COORDINATES[i][1];
       matrix.set(x1, y1, bit);
 
       if (i < 8) {
         // Right top corner.
-        var x2 = matrix.getWidth() - i - 1;
-        var y2 = 8;
+        let x2 = matrix.getWidth() - i - 1;
+        let y2 = 8;
         matrix.set(x2, y2, bit);
       } else {
         // Left bottom corner.
-        var x2 = 8;
-        var y2 = matrix.getHeight() - 7 + (i - 8);
+        let x2 = 8;
+        let y2 = matrix.getHeight() - 7 + (i - 8);
         matrix.set(x2, y2, bit);
       }
     }
@@ -244,10 +244,10 @@ goog.scope(function() {
     _.makeVersionInfoBits(version, versionInfoBits);
 
     var bitIndex = 6 * 3 - 1;  // It will decrease from 17 to 0.
-    for (var i = 0; i < 6; ++i) {
-      for (var j = 0; j < 3; ++j) {
+    for (let i = 0; i < 6; ++i) {
+      for (let j = 0; j < 3; ++j) {
         // Place bits in LSB (least significant bit) to MSB order.
-        var bit = versionInfoBits.get(bitIndex);
+        let bit = versionInfoBits.get(bitIndex);
         bitIndex--;
         // Left bottom corner.
         matrix.set(i, matrix.getHeight() - 11 + j, bit);
@@ -278,13 +278,13 @@ goog.scope(function() {
         x -= 1;
       }
       while (y >= 0 && y < matrix.getHeight()) {
-        for (var i = 0; i < 2; ++i) {
-          var xx = x - i;
+        for (let i = 0; i < 2; ++i) {
+          let xx = x - i;
           // Skip the cell if it's not empty.
           if (!_.isEmpty(matrix.get(xx, y))) {
             continue;
           }
-          var bit;
+          let bit;
           if (bitIndex < dataBits.getSize()) {
             bit = dataBits.get(bitIndex);
             ++bitIndex;
@@ -438,8 +438,8 @@ goog.scope(function() {
   _.embedTimingPatterns = function(matrix) {
     // -8 is for skipping position detection patterns (size 7), and two
     // horizontal/vertical separation patterns (size 1). Thus, 8 = 7 + 1.
-    for (var i = 8; i < matrix.getWidth() - 8; ++i) {
-      var bit = (i + 1) % 2;
+    for (let i = 8; i < matrix.getWidth() - 8; ++i) {
+      let bit = (i + 1) % 2;
       // Horizontal line.
       if (_.isEmpty(matrix.get(i, 6))) {
         matrix.set(i, 6, bit);
@@ -469,7 +469,7 @@ goog.scope(function() {
    * @throws {WriterException}
    */
   _.embedHorizontalSeparationPattern = function(xStart, yStart, matrix) {
-    for (var x = 0; x < 8; ++x) {
+    for (let x = 0; x < 8; ++x) {
       if (!_.isEmpty(matrix.get(xStart + x, yStart))) {
         throw new WriterException();
       }
@@ -484,7 +484,7 @@ goog.scope(function() {
    * @throws {WriterException}
    */
   _.embedVerticalSeparationPattern = function(xStart, yStart, matrix) {
-    for (var y = 0; y < 7; ++y) {
+    for (let y = 0; y < 7; ++y) {
       if (!_.isEmpty(matrix.get(xStart, yStart + y))) {
         throw new WriterException();
       }
@@ -499,8 +499,8 @@ goog.scope(function() {
    * @throws {WriterException}
    */
   _.embedPositionAdjustmentPattern = function(xStart, yStart, matrix) {
-    for (var y = 0; y < 5; ++y) {
-      for (var x = 0; x < 5; ++x) {
+    for (let y = 0; y < 5; ++y) {
+      for (let x = 0; x < 5; ++x) {
         matrix.set(xStart + x, yStart + y,
           _.POSITION_ADJUSTMENT_PATTERN[y][x]);
       }
@@ -514,8 +514,8 @@ goog.scope(function() {
    * @throws {WriterException}
    */
   _.embedPositionDetectionPattern = function(xStart, yStart, matrix) {
-    for (var y = 0; y < 7; ++y) {
-      for (var x = 0; x < 7; ++x) {
+    for (let y = 0; y < 7; ++y) {
+      for (let x = 0; x < 7; ++x) {
         matrix.set(xStart + x, yStart + y, _.POSITION_DETECTION_PATTERN[y][x]);
       }
     }
@@ -573,10 +573,10 @@ goog.scope(function() {
     var coordinates = _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index];
     var numCoordinates =
       _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index].length;
-    for (var i = 0; i < numCoordinates; ++i) {
-      for (var j = 0; j < numCoordinates; ++j) {
-        var y = coordinates[i];
-        var x = coordinates[j];
+    for (let i = 0; i < numCoordinates; ++i) {
+      for (let j = 0; j < numCoordinates; ++j) {
+        let y = coordinates[i];
+        let x = coordinates[j];
         if (x == -1 || y == -1) {
           continue;
         }

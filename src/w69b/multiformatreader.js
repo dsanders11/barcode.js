@@ -108,7 +108,7 @@ goog.scope(function() {
     /** @type {Array.<Reader>} */
     var readers = new Array();
     if (formats !== null) {
-      var addOneDReader = Boolean(
+      let addOneDReader = Boolean(
           formats.includes(BarcodeFormat.CODE_39) ||
           formats.includes(BarcodeFormat.CODE_128) ||
           formats.includes(BarcodeFormat.ITF));
@@ -144,7 +144,7 @@ goog.scope(function() {
    */
   pro.reset = function() {
     if (this.readers_ !== null) {
-      for (var reader of this.readers_) {
+      for (let reader of this.readers_) {
         reader.reset();
       }
     }
@@ -158,7 +158,7 @@ goog.scope(function() {
    */
   pro.decodeInternal_ = function(image) {
     if (this.readers_ !== null) {
-      for (var reader of this.readers_) {
+      for (let reader of this.readers_) {
         try {
           return reader.decode(image, this.hints_);
         } catch (err) {

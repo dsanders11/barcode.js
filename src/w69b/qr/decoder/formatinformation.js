@@ -158,15 +158,15 @@ goog.scope(function() {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
     var bestDifference = 0xffffffff;
     var bestFormatInfo = 0;
-    for (var i = 0; i < FormatInformation.FORMAT_INFO_DECODE_LOOKUP.length;
+    for (let i = 0; i < FormatInformation.FORMAT_INFO_DECODE_LOOKUP.length;
          i++) {
-      var decodeInfo = FormatInformation.FORMAT_INFO_DECODE_LOOKUP[i];
-      var targetInfo = decodeInfo[0];
+      let decodeInfo = FormatInformation.FORMAT_INFO_DECODE_LOOKUP[i];
+      let targetInfo = decodeInfo[0];
       if (targetInfo == maskedFormatInfo) {
         // Found an exact match
         return new FormatInformation(decodeInfo[1]);
       }
-      var bitsDifference = FormatInformation.numBitsDiffering(
+      let bitsDifference = FormatInformation.numBitsDiffering(
         maskedFormatInfo, targetInfo);
       if (bitsDifference < bestDifference) {
         bestFormatInfo = decodeInfo[1];

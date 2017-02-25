@@ -237,8 +237,8 @@ goog.scope(function() {
     var hasAlphanumeric = false;
     var zeroChar = '0'.charCodeAt(0);
     var nineChar = '9'.charCodeAt(0);
-    for (var i = 0; i < content.length; ++i) {
-      var c = content.charCodeAt(i);
+    for (let i = 0; i < content.length; ++i) {
+      let c = content.charCodeAt(i);
       if (c >= zeroChar && c <= nineChar) {
         hasNumeric = true;
       } else if (_.getAlphanumericCode(c) != -1) {
@@ -271,8 +271,8 @@ goog.scope(function() {
     if (length % 2 != 0) {
       return false;
     }
-    for (var i = 0; i < length; i += 2) {
-      var byte1 = bytes[i] & 0xFF;
+    for (let i = 0; i < length; i += 2) {
+      let byte1 = bytes[i] & 0xFF;
       if ((byte1 < 0x81 || byte1 > 0x9F) && (byte1 < 0xE0 || byte1 > 0xEB)) {
         return false;
       }
@@ -292,10 +292,10 @@ goog.scope(function() {
     var minPenalty = Number.MAX_VALUE;  // Lower penalty is better.
     var bestMaskPattern = -1;
     // We try all mask patterns to choose the best one.
-    for (var maskPattern = 0; maskPattern < QRCode.NUM_MASK_PATTERNS;
+    for (let maskPattern = 0; maskPattern < QRCode.NUM_MASK_PATTERNS;
          maskPattern++) {
       MatrixUtil.buildMatrix(bits, ecLevel, version, maskPattern, matrix);
-      var penalty = _.calculateMaskPenalty(matrix);
+      let penalty = _.calculateMaskPenalty(matrix);
       if (penalty < minPenalty) {
         minPenalty = penalty;
         bestMaskPattern = maskPattern;
@@ -311,16 +311,16 @@ goog.scope(function() {
    */
   _.chooseVersion = function(numInputBits, ecLevel) {
     // In the following comments, we use numbers of Version 7-H.
-    for (var versionNum = 1; versionNum <= 40; versionNum++) {
-      var version = Version.getVersionForNumber(versionNum);
+    for (let versionNum = 1; versionNum <= 40; versionNum++) {
+      let version = Version.getVersionForNumber(versionNum);
       // numBytes = 196
-      var numBytes = version.getTotalCodewords();
+      let numBytes = version.getTotalCodewords();
       // getNumECBytes = 130
-      var ecBlocks = version.getECBlocksForLevel(ecLevel);
-      var numEcBytes = ecBlocks.getTotalECCodewords();
+      let ecBlocks = version.getECBlocksForLevel(ecLevel);
+      let numEcBytes = ecBlocks.getTotalECCodewords();
       // getNumDataBytes = 196 - 130 = 66
-      var numDataBytes = numBytes - numEcBytes;
-      var totalInputBytes = Math.floor((numInputBits + 7) / 8);
+      let numDataBytes = numBytes - numEcBytes;
+      let totalInputBytes = Math.floor((numInputBits + 7) / 8);
       if (numDataBytes >= totalInputBytes) {
         return version;
       }
@@ -455,16 +455,16 @@ goog.scope(function() {
     var blocks = [];
 
     for (let i = 0; i < numRSBlocks; ++i) {
-      var numDataBytesInBlock = new Int32Array(1);
-      var numEcBytesInBlock = new Int32Array(1);
+      let numDataBytesInBlock = new Int32Array(1);
+      let numEcBytesInBlock = new Int32Array(1);
       _.getNumDataBytesAndNumECBytesForBlockID(
         numTotalBytes, numDataBytes, numRSBlocks, i,
         numDataBytesInBlock, numEcBytesInBlock);
 
-      var size = numDataBytesInBlock[0];
-      var dataBytes = new Int8Array(size);
+      let size = numDataBytesInBlock[0];
+      let dataBytes = new Int8Array(size);
       bits.toBytes(8 * dataBytesOffset, dataBytes, 0, size);
-      var ecBytes = _.generateECBytes(dataBytes, numEcBytesInBlock[0]);
+      let ecBytes = _.generateECBytes(dataBytes, numEcBytesInBlock[0]);
       blocks.push(new BlockPair(dataBytes, ecBytes));
 
       maxNumDataBytes = Math.max(maxNumDataBytes, size);
@@ -621,12 +621,12 @@ goog.scope(function() {
     var length = content.length;
     var i = 0;
     while (i < length) {
-      var code1 = _.getAlphanumericCode(content.charCodeAt(i));
+      let code1 = _.getAlphanumericCode(content.charCodeAt(i));
       if (code1 == -1) {
         throw new WriterException();
       }
       if (i + 1 < length) {
-        var code2 = _.getAlphanumericCode(content.charCodeAt(i + 1));
+        let code2 = _.getAlphanumericCode(content.charCodeAt(i + 1));
         if (code2 == -1) {
           throw new WriterException();
         }
@@ -671,11 +671,11 @@ goog.scope(function() {
       throw new WriterException(uee);
     }
     var length = bytes.length;
-    for (var i = 0; i < length; i += 2) {
-      var byte1 = bytes[i] & 0xFF;
-      var byte2 = bytes[i + 1] & 0xFF;
-      var code = (byte1 << 8) | byte2;
-      var subtracted = -1;
+    for (let i = 0; i < length; i += 2) {
+      let byte1 = bytes[i] & 0xFF;
+      let byte2 = bytes[i + 1] & 0xFF;
+      let code = (byte1 << 8) | byte2;
+      let subtracted = -1;
       if (code >= 0x8140 && code <= 0x9ffc) {
         subtracted = code - 0x8140;
       } else if (code >= 0xe040 && code <= 0xebbf) {
@@ -684,7 +684,7 @@ goog.scope(function() {
       if (subtracted == -1) {
         throw new WriterException('Invalid byte sequence');
       }
-      var encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
+      let encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
       bits.appendBits(encoded, 13);
     }
   };

@@ -71,11 +71,11 @@ goog.scope(function() {
     /** @type {!Array.<boolean>} */
     var result = new Array(9 + 9 * length);
     var pos = OneDimensionalCodeWriter.appendPattern(result, 0, START_PATTERN, true);
-    for (var i = 0; i < length; i += 2) {
-      var one = parseInt(contents.charAt(i), 10);
-      var two = parseInt(contents.charAt(i + 1), 10);
-      var encoding = new Int32Array(10);
-      for (var j = 0; j < 5; j++) {
+    for (let i = 0; i < length; i += 2) {
+      let one = parseInt(contents.charAt(i), 10);
+      let two = parseInt(contents.charAt(i + 1), 10);
+      let encoding = new Int32Array(10);
+      for (let j = 0; j < 5; j++) {
         encoding[2 * j] = ITFReader.PATTERNS[one][j];
         encoding[2 * j + 1] = ITFReader.PATTERNS[two][j];
       }

@@ -153,11 +153,11 @@ goog.scope(function() {
   LuminanceSource.prototype.toString = function() {
     var row = new Int8Array(this.width_);
     var result = '';
-    for (var y = 0; y < this.height_; y++) {
+    for (let y = 0; y < this.height_; y++) {
       row = this.getRow(y, row);
-      for (var x = 0; x < this.width_; x++) {
-        var luminance = row[x] & 0xFF;
-        var c;
+      for (let x = 0; x < this.width_; x++) {
+        let luminance = row[x] & 0xFF;
+        let c;
         if (luminance < 0x40) {
           c = '#';
         } else if (luminance < 0x80) {

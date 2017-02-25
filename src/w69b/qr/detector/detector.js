@@ -107,9 +107,9 @@ goog.scope(function() {
     var state = 0;
     // Loop up until x == toX, but not beyond
     var xLimit = toX + xstep;
-    for (var x = fromX, y = fromY; x != xLimit; x += xstep) {
-      var realX = steep ? y : x;
-      var realY = steep ? x : y;
+    for (let x = fromX, y = fromY; x != xLimit; x += xstep) {
+      let realX = steep ? y : x;
+      let realY = steep ? x : y;
 
       // Does current pixel mean we have moved white to black or vice versa?
       // Scanning black in state 0,2 and white in state 1, so if we find
@@ -386,19 +386,19 @@ goog.scope(function() {
     if (provisionalVersion.alignmentPatternCenters.length > 0) {
 
       // Guess where a "bottom right" finder pattern would have been
-      var bottomRightX = topRight.x - topLeft.x + bottomLeft.x;
-      var bottomRightY = topRight.y - topLeft.y + bottomLeft.y;
+      let bottomRightX = topRight.x - topLeft.x + bottomLeft.x;
+      let bottomRightY = topRight.y - topLeft.y + bottomLeft.y;
 
       // Estimate that alignment pattern is closer by 3 modules
       // from "bottom right" to known top left location
-      var correctionToTopLeft = 1.0 - 3.0 / modulesBetweenFPCenters;
-      var estAlignmentX = Math.floor(topLeft.x +
+      let correctionToTopLeft = 1.0 - 3.0 / modulesBetweenFPCenters;
+      let estAlignmentX = Math.floor(topLeft.x +
         correctionToTopLeft * (bottomRightX - topLeft.x));
-      var estAlignmentY = Math.floor(topLeft.y +
+      let estAlignmentY = Math.floor(topLeft.y +
         correctionToTopLeft * (bottomRightY - topLeft.y));
 
       // Kind of arbitrary -- expand search radius before giving up
-      for (var i = 4; i <= 16; i *= 2) {
+      for (let i = 4; i <= 16; i *= 2) {
         try {
           alignmentPattern =
             this.findAlignmentInRegion(moduleSize, estAlignmentX,

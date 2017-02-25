@@ -62,21 +62,21 @@ goog.scope(function() {
     } catch (/*NotFoundException nfe*/ err) {
       var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
       if (tryHarder && image.isRotateSupported()) {
-        var rotatedImage = image.rotateCounterClockwise();
-        var result = this.doDecode_(rotatedImage, opt_hints ? opt_hints : null);
+        let rotatedImage = image.rotateCounterClockwise();
+        let result = this.doDecode_(rotatedImage, opt_hints ? opt_hints : null);
         // Record that we found it rotated 90 degrees CCW / 270 degrees CW
-        var metadata = result.getResultMetadata();
-        var orientation = 270;
+        let metadata = result.getResultMetadata();
+        let orientation = 270;
         if (metadata !== null && !!metadata[ResultMetadataType.ORIENTATION]) {
           // But if we found it reversed in doDecode(), add in that result here:
           orientation = (orientation + metadata[ResultMetadataType.ORIENTATION]) % 360;
         }
         result.putMetadata(ResultMetadataType.ORIENTATION, orientation);
         // Update result points
-        var points = result.getResultPoints();
+        let points = result.getResultPoints();
         if (points !== null) {
-          var height = rotatedImage.getHeight();
-          for (var i = 0; i < points.length; i++) {
+          let height = rotatedImage.getHeight();
+          for (let i = 0; i < points.length; i++) {
             points[i] = new ResultPoint(height - points[i].getY() - 1, points[i].getX());
           }
         }
@@ -110,7 +110,7 @@ goog.scope(function() {
     var numCounters = counters.length;
     var total = 0;
     var patternLength = 0;
-    for (var i = 0; i < numCounters; i++) {
+    for (let i = 0; i < numCounters; i++) {
       total += counters[i];
       patternLength += pattern[i];
     }
@@ -124,10 +124,10 @@ goog.scope(function() {
     maxIndividualVariance *= unitBarWidth;
 
     var totalVariance = 0.0;
-    for (var x = 0; x < numCounters; x++) {
-      var counter = counters[x];
-      var scaledPattern = pattern[x] * unitBarWidth;
-      var variance = counter > scaledPattern ? counter - scaledPattern : scaledPattern - counter;
+    for (let x = 0; x < numCounters; x++) {
+      let counter = counters[x];
+      let scaledPattern = pattern[x] * unitBarWidth;
+      let variance = counter > scaledPattern ? counter - scaledPattern : scaledPattern - counter;
       if (variance > maxIndividualVariance) {
         return Number.POSITIVE_INFINITY;
       }
@@ -236,11 +236,11 @@ goog.scope(function() {
       maxLines = 15; // 15 rows spaced 1/32 apart is roughly the middle half of the image
     }
 
-    for (var x = 0; x < maxLines; x++) {
+    for (let x = 0; x < maxLines; x++) {
       // Scanning from the middle out. Determine which row we're looking at next:
-      var rowStepsAboveOrBelow = (x + 1) / 2;
-      var isAbove = (x & 0x01) == 0; // i.e. is x even?
-      var rowNumber = middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow);
+      let rowStepsAboveOrBelow = (x + 1) / 2;
+      let isAbove = (x & 0x01) == 0; // i.e. is x even?
+      let rowNumber = middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow);
       if (rowNumber < 0 || rowNumber >= height) {
         // Oops, if we run off the top or bottom, stop
         break;
@@ -255,7 +255,7 @@ goog.scope(function() {
 
       // While we have the image data in a BitArray, it's fairly cheap to reverse it in place to
       // handle decoding upside down barcodes.
-      for (var attempt = 0; attempt < 2; attempt++) {
+      for (let attempt = 0; attempt < 2; attempt++) {
         if (attempt === 1) { // trying again?
           row.reverse(); // reverse the row and continue
           // This means we will only ever draw result points *once* in the life of this method
@@ -264,20 +264,20 @@ goog.scope(function() {
           // that start on the center line.
           if (hints !== null && !!hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]) {
             //Map<DecodeHintType,Object> newHints = new EnumMap<>(DecodeHintType.class);
-            var newHints = Object.assign({}, hints);
+            let newHints = Object.assign({}, hints);
             delete newHints[DecodeHintType.NEED_RESULT_POINT_CALLBACK];
             hints = newHints;
           }
         }
         try {
           // Look for a barcode
-          var result = this.decodeRow(rowNumber, row, hints);
+          let result = this.decodeRow(rowNumber, row, hints);
           // We found our barcode
           if (attempt === 1) {
             // But it was upside down, so note that
             result.putMetadata(ResultMetadataType.ORIENTATION, 180);
             // And remember to flip the result points horizontally.
-            var points = result.getResultPoints();
+            let points = result.getResultPoints();
             if (points !== null) {
               points[0] = new ResultPoint(width - points[0].getX() - 1, points[0].getY());
               points[1] = new ResultPoint(width - points[1].getX() - 1, points[1].getY());

@@ -341,15 +341,15 @@ goog.scope(function() {
     var scale = this.size_.width / this.decodeSize_.width;
     var maxAge = this.maxPatternAge_;
     var now = new Date().getTime();
-    for (var i = 0; i < this.foundPatterns_.length; ++i) {
-      var pattern = this.foundPatterns_[i];
-      var age = now - pattern.birthTime;
+    for (let i = 0; i < this.foundPatterns_.length; ++i) {
+      let pattern = this.foundPatterns_[i];
+      let age = now - pattern.birthTime;
       if (age >= maxAge)
         continue;
-      var alpha = (maxAge - age) / maxAge;
-      var x = pattern.x * scale;
-      var y = pattern.y * scale;
-      var radius = pattern.size * scale * alpha;
+      let alpha = (maxAge - age) / maxAge;
+      let x = pattern.x * scale;
+      let y = pattern.y * scale;
+      let radius = pattern.size * scale * alpha;
       context.fillStyle = 'rgba(200,255,50,' + alpha + ')';
       context.beginPath();
       context.arc(x, y, radius, 0, 2 * Math.PI, false);
@@ -368,8 +368,8 @@ goog.scope(function() {
       this.animFrameRequestId_ = animFrame.call(
         window, this.onAnimationFrame.bind(this));
     } else {
-      var timeSinceLastFrame = new Date().getTime() - this.lastFrameTime_;
-      var waitTime = 0;
+      let timeSinceLastFrame = new Date().getTime() - this.lastFrameTime_;
+      let waitTime = 0;
       // Draw at 25 fps max
       if (timeSinceLastFrame < 40) {
         waitTime = 40 - timeSinceLastFrame;
@@ -456,7 +456,7 @@ goog.scope(function() {
     this.capturer_.dispose();
     this.worker_.dispose();
     if (this.animFrameRequestId_) {
-      var cancel = (window.cancelAnimationFrame ||
+      let cancel = (window.cancelAnimationFrame ||
       window.mozCancelRequestAnimationFrame ||
       window.oCancelRequestAnimationFrame);
       if (cancel)
