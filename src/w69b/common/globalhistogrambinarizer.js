@@ -56,15 +56,18 @@ goog.scope(function() {
      * @type {Uint8Array}
      * @private
      */
-    this.buckets_ = new Uint8Array(_.LUMINANCE_BUCKETS);
+    this.buckets_ = new Uint8Array(LUMINANCE_BUCKETS);
   };
   var _ = w69b.common.GlobalHistogramBinarizer;
   goog.inherits(_, w69b.Binarizer);
   var pro = _.prototype;
 
-  _.LUMINANCE_BITS = 5;
-  _.LUMINANCE_SHIFT = 8 - _.LUMINANCE_BITS;
-  _.LUMINANCE_BUCKETS = 1 << _.LUMINANCE_BITS;
+  /** @const */
+  var LUMINANCE_BITS = 5;
+  /** @const */
+  var LUMINANCE_SHIFT = 8 - LUMINANCE_BITS;
+  /** @const */
+  var LUMINANCE_BUCKETS = 1 << LUMINANCE_BITS;
 
   /**
    * Applies simple sharpening to the row data to improve performance of the 1D
@@ -85,7 +88,7 @@ goog.scope(function() {
     var localBuckets = this.buckets_;
     for (let x = 0; x < width; x++) {
       let pixel = localLuminances[x] & 0xff;
-      localBuckets[pixel >> _.LUMINANCE_SHIFT]++;
+      localBuckets[pixel >> LUMINANCE_SHIFT]++;
     }
     var blackPoint = _.estimateBlackPoint(localBuckets);
 
@@ -126,7 +129,7 @@ goog.scope(function() {
       let right = (width << 2) / 5;
       for (let x = width / 5; x < right; x++) {
         let pixel = localLuminances[x] & 0xff;
-        localBuckets[pixel >> _.LUMINANCE_SHIFT]++;
+        localBuckets[pixel >> LUMINANCE_SHIFT]++;
       }
     }
     var blackPoint = _.estimateBlackPoint(localBuckets);
@@ -228,6 +231,6 @@ goog.scope(function() {
       }
     }
 
-    return bestValley << _.LUMINANCE_SHIFT;
+    return bestValley << LUMINANCE_SHIFT;
   };
 });

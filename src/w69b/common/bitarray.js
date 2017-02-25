@@ -114,19 +114,20 @@ goog.scope(function() {
    * @see #getNextUnset(int)
    */
   pro.getNextSet = function(from) {
+    var bits = this.bits_;
     var size = this.size_;
     if (from >= size) {
       return size;
     }
     var bitsOffset = from >> 5;
-    var currentBits = this.bits_[bitsOffset];
+    var currentBits = bits[bitsOffset];
     // mask off lesser bits first
     currentBits &= ~((1 << (from & 0x1F)) - 1);
     while (currentBits === 0) {
-      if (++bitsOffset === this.bits_.length) {
+      if (++bitsOffset === bits.length) {
         return size;
       }
-      currentBits = this.bits_[bitsOffset];
+      currentBits = bits[bitsOffset];
     }
     var result = (bitsOffset << 5) + BitArray.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
@@ -138,19 +139,20 @@ goog.scope(function() {
    * @return {number}
    */
   pro.getNextUnset = function(from) {
+    var bits = this.bits_;
     var size = this.size_;
     if (from >= size) {
       return size;
     }
     var bitsOffset = from >> 5;
-    var currentBits = ~this.bits_[bitsOffset];
+    var currentBits = ~bits[bitsOffset];
     // mask off lesser bits first
     currentBits &= ~((1 << (from & 0x1F)) - 1);
     while (currentBits === 0) {
-      if (++bitsOffset === this.bits_.length) {
+      if (++bitsOffset === bits.length) {
         return size;
       }
-      currentBits = ~this.bits_[bitsOffset];
+      currentBits = ~bits[bitsOffset];
     }
     var result = (bitsOffset << 5) + BitArray.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;

@@ -64,12 +64,17 @@ goog.scope(function() {
   pro.matrix_;
 
   // This class uses 5x5 blocks to compute local luminance, where each block is
-  // 8x8 pixels.  So this is the smallest dimension in each axis we can accept.
-  _.BLOCK_SIZE_POWER = 3;
-  _.BLOCK_SIZE = 1 << _.BLOCK_SIZE_POWER; // ...0100...00
-  _.BLOCK_SIZE_MASK = _.BLOCK_SIZE - 1;   // ...0011...11
-  _.MINIMUM_DIMENSION = _.BLOCK_SIZE * 5;
-  _.MIN_DYNAMIC_RANGE = 24;
+  // 8x8 pixels. So this is the smallest dimension in each axis we can accept.
+  /** @const */
+  var BLOCK_SIZE_POWER = 3;
+  /** @const */
+  var BLOCK_SIZE = 1 << BLOCK_SIZE_POWER; // ...0100...00
+  /** @const */
+  var BLOCK_SIZE_MASK = BLOCK_SIZE - 1;   // ...0011...11
+  /** @const */
+  var MINIMUM_DIMENSION = BLOCK_SIZE * 5;
+  /** @const */
+  var MIN_DYNAMIC_RANGE = 24;
 
 
   /**
@@ -86,16 +91,16 @@ goog.scope(function() {
     var source = this.getLuminanceSource();
     var width = source.getWidth();
     var height = source.getHeight();
-    if (width >= _.MINIMUM_DIMENSION && height >= _.MINIMUM_DIMENSION) {
+    if (width >= MINIMUM_DIMENSION && height >= MINIMUM_DIMENSION) {
       var luminances = source.getMatrix();
       // dived by 8
-      var subWidth = width >> _.BLOCK_SIZE_POWER;
+      var subWidth = width >> BLOCK_SIZE_POWER;
       // only even numbers
-      if ((width & _.BLOCK_SIZE_MASK) != 0) {
+      if ((width & BLOCK_SIZE_MASK) != 0) {
         subWidth++;
       }
-      var subHeight = height >> _.BLOCK_SIZE_POWER;
-      if ((height & _.BLOCK_SIZE_MASK) != 0) {
+      var subHeight = height >> BLOCK_SIZE_POWER;
+      if ((height & BLOCK_SIZE_MASK) != 0) {
         subHeight++;
       }
       var blackPoints = _.calculateBlackPoints(luminances, subWidth,
@@ -134,27 +139,29 @@ goog.scope(function() {
    */
   _.calculateThresholdForBlock = function(luminances, subWidth, subHeight,
                                           width, height, blackPoints, matrix) {
-    for (var y = 0; y < subHeight; y++) {
-      var yoffset = y << _.BLOCK_SIZE_POWER;
-      var maxYOffset = height - _.BLOCK_SIZE;
+    /** @const */
+    var maxYOffset = height - BLOCK_SIZE;
+    /** @const */
+    var maxXOffset = width - BLOCK_SIZE;
+    for (let y = 0; y < subHeight; y++) {
+      let top = _.cap(y, 2, subHeight - 3);
+      let yoffset = y << BLOCK_SIZE_POWER;
       if (yoffset > maxYOffset) {
         yoffset = maxYOffset;
       }
-      for (var x = 0; x < subWidth; x++) {
-        var xoffset = x << _.BLOCK_SIZE_POWER;
-        var maxXOffset = width - _.BLOCK_SIZE;
+      for (let x = 0; x < subWidth; x++) {
+        let xoffset = x << BLOCK_SIZE_POWER;
         if (xoffset > maxXOffset) {
           xoffset = maxXOffset;
         }
-        var left = _.cap(x, 2, subWidth - 3);
-        var top = _.cap(y, 2, subHeight - 3);
-        var sum = 0;
-        for (var z = -2; z <= 2; z++) {
-          var blackRow = blackPoints[top + z];
+        let left = _.cap(x, 2, subWidth - 3);
+        let sum = 0;
+        for (let z = -2; z <= 2; z++) {
+          let blackRow = blackPoints[top + z];
           sum += blackRow[left - 2] + blackRow[left - 1] +
             blackRow[left] + blackRow[left + 1] + blackRow[left + 2];
         }
-        var average = sum / 25;
+        let average = Math.floor(sum / 25);
         _.thresholdBlock(luminances, xoffset, yoffset, average, width, matrix);
       }
     }
@@ -181,13 +188,14 @@ goog.scope(function() {
    */
   _.thresholdBlock = function(luminances, xoffset, yoffset, threshold, stride,
                               matrix) {
-    for (var y = 0, offset = yoffset * stride + xoffset; y < _.BLOCK_SIZE;
+    for (let y = 0, offset = yoffset * stride + xoffset; y < BLOCK_SIZE;
          y++, offset += stride) {
-      for (var x = 0; x < _.BLOCK_SIZE; x++) {
+      let yCoord = yoffset + y
+      for (let x = 0; x < BLOCK_SIZE; x++) {
         // Comparison needs to be <= so that black == 0 pixels are
         // black even if the threshold is 0.
         if ((luminances[offset + x] & 0xFF) <= threshold) {
-          matrix.set(xoffset + x, yoffset + y);
+          matrix.set(xoffset + x, yCoord);
         }
       }
     }
@@ -207,15 +215,17 @@ goog.scope(function() {
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
                                     height) {
     var blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
+    /** @const */
+    var maxXOffset = width - BLOCK_SIZE;
+    /** @const */
+    var maxYOffset = height - BLOCK_SIZE;
     for (let y = 0; y < subHeight; y++) {
-      let yoffset = y << _.BLOCK_SIZE_POWER;
-      let maxYOffset = height - _.BLOCK_SIZE;
+      let yoffset = y << BLOCK_SIZE_POWER;
       if (yoffset > maxYOffset) {
         yoffset = maxYOffset;
       }
       for (let x = 0; x < subWidth; x++) {
-        let xoffset = x << _.BLOCK_SIZE_POWER;
-        let maxXOffset = width - _.BLOCK_SIZE;
+        let xoffset = x << BLOCK_SIZE_POWER;
         if (xoffset > maxXOffset) {
           xoffset = maxXOffset;
         }
@@ -223,8 +233,8 @@ goog.scope(function() {
         let min = 0xFF;
         let max = 0;
         for (let yy = 0, offset = yoffset * width + xoffset;
-             yy < _.BLOCK_SIZE; yy++, offset += width) {
-          for (let xx = 0; xx < _.BLOCK_SIZE; xx++) {
+             yy < BLOCK_SIZE; yy++, offset += width) {
+          for (let xx = 0; xx < BLOCK_SIZE; xx++) {
             let pixel = luminances[offset + xx] & 0xFF;
             sum += pixel;
             // still looking for good contrast
@@ -236,11 +246,11 @@ goog.scope(function() {
             }
           }
           // short-circuit min/max tests once dynamic range is met
-          if (max - min > _.MIN_DYNAMIC_RANGE) {
+          if (max - min > MIN_DYNAMIC_RANGE) {
             // finish the rest of the rows quickly
             for (yy++, offset += width;
-                 yy < _.BLOCK_SIZE; yy++, offset += width) {
-              for (let xx = 0; xx < _.BLOCK_SIZE; xx++) {
+                 yy < BLOCK_SIZE; yy++, offset += width) {
+              for (let xx = 0; xx < BLOCK_SIZE; xx++) {
                 sum += luminances[offset + xx] & 0xFF;
               }
             }
@@ -248,8 +258,8 @@ goog.scope(function() {
         }
 
         // The default estimate is the average of the values in the block.
-        let average = sum >> (_.BLOCK_SIZE_POWER * 2);
-        if (max - min <= _.MIN_DYNAMIC_RANGE) {
+        let average = sum >> (BLOCK_SIZE_POWER * 2);
+        if (max - min <= MIN_DYNAMIC_RANGE) {
           // If variation within the block is low, assume this is a block with
           // only light or only dark pixels. In that case we do not want to use
           // the average, as it would divide this low contrast area into black
