@@ -48,7 +48,7 @@ goog.scope(function() {
   var QRCodeWriter = w69b.qr.QRCodeWriter;
   var pro = QRCodeWriter.prototype;
 
-  /** @final */
+  /** @const {number} */
   var QUIET_ZONE_SIZE = 4;
 
   /**

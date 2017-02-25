@@ -50,8 +50,7 @@ goog.scope(function() {
   var pro = Code128Reader.prototype;
 
   /**
-   * @type {!Array.<!Int32Array>}
-   * @final
+   * @const {!Array.<!Int32Array>}
    */
   Code128Reader.CODE_PATTERNS = [
     Int32Array.of(2, 1, 2, 2, 2, 2), // 0
@@ -163,39 +162,39 @@ goog.scope(function() {
     Int32Array.of(2, 3, 3, 1, 1, 1, 2)
   ];
 
-  /** @final */
+  /** @const {number} */
   var MAX_AVG_VARIANCE = 0.25;
-  /** @final */
+  /** @const {number} */
   var MAX_INDIVIDUAL_VARIANCE = 0.7;
 
-  /** @final */
+  /** @const {number} */
   var CODE_SHIFT = 98;
 
-  /** @final */
+  /** @const {number} */
   var CODE_CODE_C = 99;
-  /** @final */
+  /** @const {number} */
   var CODE_CODE_B = 100;
-  /** @final */
+  /** @const {number} */
   var CODE_CODE_A = 101;
 
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_1 = 102;
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_2 = 97;
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_3 = 96;
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_4_A = 101;
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_4_B = 100;
 
-  /** @final */
+  /** @const {number} */
   var CODE_START_A = 103;
-  /** @final */
+  /** @const {number} */
   var CODE_START_B = 104;
-  /** @final */
+  /** @const {number} */
   var CODE_START_C = 105;
-  /** @final */
+  /** @const {number} */
   var CODE_STOP = 106;
 
   /**

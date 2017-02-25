@@ -37,13 +37,13 @@ goog.scope(function() {
   w69b.LuminanceSource = function(width, height) {
     /**
      * @private
-     * @final
+     * @const {number}
      */
     this.width_ = width;
 
     /**
      * @private
-     * @final
+     * @const {number}
      */
     this.height_ = height;
   };

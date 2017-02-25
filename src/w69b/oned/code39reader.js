@@ -69,13 +69,13 @@ goog.scope(function() {
   goog.inherits(Code39Reader, OneDReader);
   var pro = Code39Reader.prototype;
 
-  /** @final */
+  /** @const {string} */
   Code39Reader.ALPHABET_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. *$/+%";
 
   /**
    * Note this lacks '*' compared to ALPHABET_STRING
    * @private
-   * @final
+   * @const {string}
    */
   Code39Reader.CHECK_DIGIT_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%";
 
@@ -83,7 +83,7 @@ goog.scope(function() {
    * These represent the encodings of characters, as patterns of wide and narrow
    * bars. The 9 least-significant bits of each int correspond to the pattern of
    * wide and narrow, with 1s representing "wide" and 0s representing narrow.
-   * @final
+   * @const {!Int32Array}
    */
   Code39Reader.CHARACTER_ENCODINGS = Int32Array.of(
     0x034, 0x121, 0x061, 0x160, 0x031, 0x130, 0x070, 0x025, 0x124, 0x064, // 0-9
@@ -93,7 +93,7 @@ goog.scope(function() {
     0x0A8, 0x0A2, 0x08A, 0x02A // $-%
   );
 
-  /** @final */
+  /** @const {number} */
   Code39Reader.ASTERISK_ENCODING = Code39Reader.CHARACTER_ENCODINGS[39];
 
   /**

@@ -55,15 +55,13 @@ goog.scope(function() {
   var pro = QRCodeReader.prototype;
 
   /**
-   * @type {Array.<ResultPoint>}
-   * @final
+   * @const {!Array.<!ResultPoint>}
    */
   var NO_POINTS = [];
 
   /**
-   * @type {Decoder}
+   * @const {!Decoder}
    * @private
-   * @final
    */
   var decoder = new Decoder();
 

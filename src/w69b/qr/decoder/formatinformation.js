@@ -54,8 +54,7 @@ goog.scope(function() {
   FormatInformation.FORMAT_INFO_MASK_QR = 0x5412;
 
   /**
-   * @type {Array.<Int32Array>}
-   * @final
+   * @const {!Array.<!Int32Array>}
    */
   FormatInformation.FORMAT_INFO_DECODE_LOOKUP = [
     Int32Array.of(0x5412, 0x00),

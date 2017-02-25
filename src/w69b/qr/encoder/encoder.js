@@ -60,7 +60,7 @@ goog.scope(function() {
 
   /**
    * The original table is defined in the table 5 of JISX0510:2004 (p.19).
-   * @final
+   * @const {!Int32Array}
    */
   _.ALPHANUMERIC_TABLE = Int32Array.of(
     // 0x00-0x0f

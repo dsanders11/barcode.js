@@ -39,34 +39,34 @@ goog.scope(function() {
   goog.inherits(Code128Writer, OneDimensionalCodeWriter);
   var pro = Code128Writer.prototype;
 
-  /** @final */
+  /** @const {number} */
   var CODE_START_B = 104;
-  /** @final */
+  /** @const {number} */
   var CODE_START_C = 105;
-  /** @final */
+  /** @const {number} */
   var CODE_CODE_B = 100;
-  /** @final */
+  /** @const {number} */
   var CODE_CODE_C = 99;
-  /** @final */
+  /** @const {number} */
   var CODE_STOP = 106;
 
   // Dummy characters used to specify control characters in input
-  /** @final */
+  /** @const {string} */
   var ESCAPE_FNC_1 = '\u00f1';
-  /** @final */
+  /** @const {string} */
   var ESCAPE_FNC_2 = '\u00f2';
-  /** @final */
+  /** @const {string} */
   var ESCAPE_FNC_3 = '\u00f3';
-  /** @final */
+  /** @const {string} */
   var ESCAPE_FNC_4 = '\u00f4';
 
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_1 = 102;   // Code A, Code B, Code C
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_2 = 97;    // Code A, Code B
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_3 = 96;    // Code A, Code B
-  /** @final */
+  /** @const {number} */
   var CODE_FNC_4_B = 100; // Code B
 
   /**
