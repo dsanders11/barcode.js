@@ -48,7 +48,7 @@ goog.scope(function() {
       this.rowSize = opt_rowSize;
     } else {
       var rowSize = width >> 5;
-      if ((width & 0x1f) != 0) {
+      if ((width & 0x1f) !== 0) {
         rowSize++;
       }
       this.rowSize = rowSize;
@@ -69,7 +69,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(y));
 
     var offset = y * this.rowSize + (x >> 5);
-    return ((this.bits[offset] >> (x & 0x1f)) & 1) != 0;
+    return ((this.bits[offset] >> (x & 0x1f)) & 1) !== 0;
   };
 
   /**
@@ -118,8 +118,8 @@ goog.scope(function() {
    * @param {BitMatrix} mask XOR mask
    */
   pro.xor = function(mask) {
-    if (this.width !== mask.getWidth() || this.height != mask.getHeight()
-        || this.rowSize != mask.getRowSize()) {
+    if (this.width !== mask.getWidth() || this.height !== mask.getHeight()
+        || this.rowSize !== mask.getRowSize()) {
       throw new IllegalArgumentException("input matrix dimensions do not match");
     }
     var rowArray = new BitArray((this.width >> 5) + 1);
@@ -235,7 +235,7 @@ goog.scope(function() {
     for (let y = 0; y < this.height; y++) {
       for (let x32 = 0; x32 < this.rowSize; x32++) {
         let theBits = this.bits[y * this.rowSize + x32];
-        if (theBits != 0) {
+        if (theBits !== 0) {
           if (y < top) {
             top = y;
           }
@@ -244,7 +244,7 @@ goog.scope(function() {
           }
           if (x32 * 32 < left) {
             let bit = 0;
-            while ((theBits << (31 - bit)) == 0) {
+            while ((theBits << (31 - bit)) === 0) {
               bit++;
             }
             if ((x32 * 32 + bit) < left) {
@@ -253,7 +253,7 @@ goog.scope(function() {
           }
           if (x32 * 32 + 31 > right) {
             let bit = 31;
-            while ((theBits >> bit) == 0) {
+            while ((theBits >> bit) === 0) {
               bit--;
             }
             if ((x32 * 32 + bit) > right) {
@@ -278,10 +278,10 @@ goog.scope(function() {
    */
   pro.getTopLeftOnBit = function() {
     var bitsOffset = 0;
-    while (bitsOffset < this.bits.length && this.bits[bitsOffset] == 0) {
+    while (bitsOffset < this.bits.length && this.bits[bitsOffset] === 0) {
       bitsOffset++;
     }
-    if (bitsOffset == this.bits.length) {
+    if (bitsOffset === this.bits.length) {
       return null;
     }
     var y = Math.floor(bitsOffset / this.rowSize);
@@ -289,7 +289,7 @@ goog.scope(function() {
 
     var theBits = this.bits[bitsOffset];
     var bit = 0;
-    while ((theBits << (31 - bit)) == 0) {
+    while ((theBits << (31 - bit)) === 0) {
       bit++;
     }
     x += bit;
@@ -301,7 +301,7 @@ goog.scope(function() {
    */
   pro.getBottomRightOnBit = function() {
     var bitsOffset = this.bits.length - 1;
-    while (bitsOffset >= 0 && this.bits[bitsOffset] == 0) {
+    while (bitsOffset >= 0 && this.bits[bitsOffset] === 0) {
       bitsOffset--;
     }
     if (bitsOffset < 0) {
@@ -313,7 +313,7 @@ goog.scope(function() {
 
     var theBits = this.bits[bitsOffset];
     var bit = 31;
-    while ((theBits >>> bit) == 0) {
+    while ((theBits >>> bit) === 0) {
       bit--;
     }
     x += bit;

@@ -47,12 +47,12 @@ goog.scope(function() {
   BitArray.numberOfTrailingZeros = function(i) {
     // HD, Figure 5-14
     var y;
-    if (i == 0) return 32;
+    if (i === 0) return 32;
     var n = 31;
-    y = i << 16; if (y != 0) { n = n - 16; i = y; }
-    y = i << 8; if (y != 0) { n = n - 8; i = y; }
-    y = i << 4; if (y != 0) { n = n - 4; i = y; }
-    y = i << 2; if (y != 0) { n = n - 2; i = y; }
+    y = i << 16; if (y !== 0) { n = n - 16; i = y; }
+    y = i << 8; if (y !== 0) { n = n - 8; i = y; }
+    y = i << 4; if (y !== 0) { n = n - 4; i = y; }
+    y = i << 2; if (y !== 0) { n = n - 2; i = y; }
     return n - ((i << 1) >>> 31);
   };
 
@@ -87,7 +87,7 @@ goog.scope(function() {
    * @return {boolean} true iff bit i is set.
    */
   pro.get = function(i) {
-    return (this.bits_[i >> 5] & (1 << (i & 0x1F))) != 0;
+    return (this.bits_[i >> 5] & (1 << (i & 0x1F))) !== 0;
   };
 
   /**
@@ -122,8 +122,8 @@ goog.scope(function() {
     var currentBits = this.bits_[bitsOffset];
     // mask off lesser bits first
     currentBits &= ~((1 << (from & 0x1F)) - 1);
-    while (currentBits == 0) {
-      if (++bitsOffset == this.bits_.length) {
+    while (currentBits === 0) {
+      if (++bitsOffset === this.bits_.length) {
         return size;
       }
       currentBits = this.bits_[bitsOffset];
@@ -146,8 +146,8 @@ goog.scope(function() {
     var currentBits = ~this.bits_[bitsOffset];
     // mask off lesser bits first
     currentBits &= ~((1 << (from & 0x1F)) - 1);
-    while (currentBits == 0) {
-      if (++bitsOffset == this.bits_.length) {
+    while (currentBits === 0) {
+      if (++bitsOffset === this.bits_.length) {
         return size;
       }
       currentBits = ~this.bits_[bitsOffset];
@@ -178,7 +178,7 @@ goog.scope(function() {
     if (end < start) {
       throw new Error();
     }
-    if (end == start) {
+    if (end === start) {
       return;
     }
     // will be easier to treat this as the last actually set bit -- inclusive
@@ -189,7 +189,7 @@ goog.scope(function() {
       var firstBit = i > firstInt ? 0 : start & 0x1F;
       var lastBit = i < lastInt ? 31 : end & 0x1F;
       var mask;
-      if (firstBit == 0 && lastBit == 31) {
+      if (firstBit === 0 && lastBit === 31) {
         mask = -1;
       } else {
         mask = 0;
@@ -222,7 +222,7 @@ goog.scope(function() {
     if (end < start) {
       throw new Error();
     }
-    if (end == start) {
+    if (end === start) {
       return true; // empty range matches
     }
     // will be easier to treat this as the last actually set bit -- inclusive
@@ -233,7 +233,7 @@ goog.scope(function() {
       var firstBit = i > firstInt ? 0 : start & 0x1F;
       var lastBit = i < lastInt ? 31 : end & 0x1F;
       var mask;
-      if (firstBit == 0 && lastBit == 31) {
+      if (firstBit === 0 && lastBit === 31) {
         mask = -1;
       } else {
         mask = 0;
@@ -245,7 +245,7 @@ goog.scope(function() {
       // Return false if we're looking for 1s and the masked bits[i] isn't all
       // 1s (that is, equals the mask, or we're looking for 0s and the masked
       // portion is not all 0s
-      if ((this.bits_[i] & mask) != (value ? mask : 0)) {
+      if ((this.bits_[i] & mask) !== (value ? mask : 0)) {
         return false;
       }
     }
@@ -276,7 +276,7 @@ goog.scope(function() {
     }
     this.ensureCapacity(this.size_ + numBits);
     for (var numBitsLeft = numBits; numBitsLeft > 0; numBitsLeft--) {
-      this.appendBit(((value >> (numBitsLeft - 1)) & 0x01) == 1);
+      this.appendBit(((value >> (numBitsLeft - 1)) & 0x01) === 1);
     }
   };
 
@@ -295,7 +295,7 @@ goog.scope(function() {
    * @param {BitArray} other other.
    */
   pro.xor = function(other) {
-    if (this.bits_.length != other.bits_.length) {
+    if (this.bits_.length !== other.bits_.length) {
       throw new Error();
     }
     for (var i = 0; i < this.bits_.length; i++) {
@@ -363,7 +363,7 @@ goog.scope(function() {
   pro.toString = function() {
     var result = [];
     for (var i = 0; i < this.size_; i++) {
-      if ((i & 0x07) == 0) {
+      if ((i & 0x07) === 0) {
         result.push(' ');
       }
       result.push(this.get(i) ? 'X' : '.');
