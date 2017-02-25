@@ -5,6 +5,7 @@ goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
 goog.require('goog.userAgent.product');
+goog.require('w69b.ImageSource');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.imgtools');
@@ -172,7 +173,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(HTMLCanvasElement|ImageData|Image|HTMLImageElement|HTMLVideoElement)} imgdata frame to process.
+   * @param {!(w69b.ImageSource|ImageData)} imgdata frame to process.
    * @param {!goog.math.Size} size of image data, or desired size of binarizer output in
    * case webGl is used. If aspect ratio is different from input espect ratio, we only use the
    * top-left rectange of the input image that covers the desired size.
@@ -180,6 +181,7 @@ goog.scope(function() {
    */
   pro.decode = function(imgdata, size, callback) {
     var isBinary = false;
+    // TODO - Rename
     var imgDataOrMatrix = imgdata;
     size.round();
     if (this.enableWebGl_) {

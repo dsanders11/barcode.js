@@ -5,6 +5,7 @@ goog.provide('w69b.decoding');
 goog.require('goog.Promise');
 goog.require('goog.math.Size');
 goog.require('goog.object');
+goog.require('w69b.ImageSource');
 goog.require('w69b.webgl.WebGLBinarizer');
 goog.require('w69b.worker.DecodeInWorkerHelper');
 
@@ -87,8 +88,8 @@ goog.scope(function() {
   /**
    * Decode image that contains a barcode. It can handle image/video and imagedata objects.
    * Note that image conversion is expensive, so pass your image as-is whenever possible.
-   * @param {Image|HTMLVideoElement|ImageData} img image to decode.
-   * @return {Promise} result. Resolves to an object
+   * @param {!(w69b.ImageSource|ImageData)} img image to decode.
+   * @return {!Promise} result. Resolves to an object
    * with a text property that contains the decoded string on success.
    * Rejects if no barcode could be found or decoding failed.
    * @export

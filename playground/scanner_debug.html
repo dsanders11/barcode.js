@@ -23,10 +23,8 @@
     <div id="scanner"></div>
     <script type="text/javascript">
       (function() {
-        w69b.qr.DecodeInWorkerHelper.setWorkerUrl(
-          '/dist/w69b.qrcode.decodeworker.min.js');
-        w69b.qr.DecodeInWorkerHelper.setIconvUrl(
-          '/libs/iconv.js');
+        w69b.decoding.setWorkerUrl('../dist/w69b.qrcode.decodeworker.js');
+        w69b.decoding.setIconvUrl('../libs/iconv.js');
 
         function load() {
           var scanner = new w69b.ui.ContinuousScanner();

@@ -313,12 +313,14 @@ goog.scope(function() {
    * @private
    */
   pro.ensureMaxResolutions_ = function() {
-    if (this.maxVisualizationResolution_)
-      imgtools.scaleIfLarger(this.size_, this.maxVisualizationResolution_);
-    if (this.maxDecodeResolution_)
-      imgtools.scaleIfLarger(this.decodeSize_, this.maxDecodeResolution_);
-
+    if (this.maxVisualizationResolution_) {
+      imgtools.scaleToMaxSize(this.size_, this.maxVisualizationResolution_);
+    }
+    if (this.maxDecodeResolution_) {
+      imgtools.scaleToMaxSize(this.decodeSize_, this.maxDecodeResolution_);
+    }
   };
+
   /**
    * Draws visualization of scanning to canvas.
    * @private

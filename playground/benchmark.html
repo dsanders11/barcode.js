@@ -10,10 +10,6 @@
       }
     </style>
     <script type="text/javascript" src="../dist/w69b.qrcode.min.js"></script>
-    <script type="text/javascript">
-      if (window.goog)
-        goog.require('main');
-    </script>
   </head>
   <body>
     <h1>Decoding Benchmark</h1>
@@ -28,7 +24,7 @@
           {webgl: true, worker: true},
           {webgl: false, worker: true}
         ].filter(function(opt) {
-            return !opt.webgl || w69b.qr.decoding.isWebGlSupported()
+            return !opt.webgl || w69b.decoding.isWebGlSupported()
           });
 
         function log() {
@@ -63,7 +59,7 @@
           return runSequentially(ALL_OPTIONS.map(function(opt) {
             return function() {
               log('starting benchmark for', opt);
-              var decoder = new w69b.qr.decoding.Decoder(opt);
+              var decoder = new w69b.decoding.Decoder(opt);
               var benchmark = buildBenchmark(function() {
                 return decoder.decode(img).then(null, function() {
                   return null;
@@ -114,9 +110,9 @@
         }
 
         function init() {
-          log('WebGL supported: ', w69b.qr.decoding.isWebGlSupported());
+          log('WebGL supported: ', w69b.decoding.isWebGlSupported());
           var startBtn = document.getElementById('startBtn');
-          w69b.qr.decoding.setWorkerUrl(
+          w69b.decoding.setWorkerUrl(
             '../dist/w69b.qrcode.decodeworker.min.js');
 
           Promise.all([loadImg(), loadVideo()]).then(function(all) {
