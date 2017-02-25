@@ -255,7 +255,7 @@ goog.scope(function() {
           }
           patternStart += counters[0] + counters[1];
           //System.arraycopy(counters, 2, counters, 0, patternLength - 2);
-          counters.copyWithin(0, 2, patternLength - 2);
+          counters.copyWithin(0, 2, patternLength);
           counters[patternLength - 2] = 0;
           counters[patternLength - 1] = 0;
           counterPosition--;
