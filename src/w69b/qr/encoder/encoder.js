@@ -62,7 +62,7 @@ goog.scope(function() {
    * The original table is defined in the table 5 of JISX0510:2004 (p.19).
    * @const {!Int32Array}
    */
-  _.ALPHANUMERIC_TABLE = Int32Array.of(
+  var ALPHANUMERIC_TABLE = Int32Array.of(
     // 0x00-0x0f
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     // 0x10-0x1f
@@ -77,7 +77,8 @@ goog.scope(function() {
     25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1
   );
 
-  _.DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
+  /** @const {string} */
+  var DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
 
   /**
    * The mask penalty calculation is complicated.  See Table 21 of
@@ -117,7 +118,7 @@ goog.scope(function() {
     var encoding = opt_hints ? opt_hints[EncodeHintType.CHARACTER_SET] : null;
     var forceECI = opt_hints ? opt_hints[EncodeHintType.FORCE_ADD_ECI] : false;
     if (encoding === null) {
-      encoding = _.DEFAULT_BYTE_MODE_ENCODING;
+      encoding = DEFAULT_BYTE_MODE_ENCODING;
     }
 
     // Pick an encoding mode appropriate for the content. Note that this will
@@ -132,7 +133,7 @@ goog.scope(function() {
     // Append ECI segment if applicable
     // Disabled in compat mode as some scanners seem to have problems with it.
     if (forceECI ||
-      (mode === ModeEnum.BYTE && _.DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
+      (mode === ModeEnum.BYTE && DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
       var eci = CharacterSetECI.getCharacterSetECIByName(encoding);
       if (eci) {
         _.appendECI(eci, headerBits);
@@ -212,8 +213,8 @@ goog.scope(function() {
    */
   _.getAlphanumericCode = function(code) {
     code = Number(code);
-    if (code < _.ALPHANUMERIC_TABLE.length) {
-      return _.ALPHANUMERIC_TABLE[code];
+    if (code < ALPHANUMERIC_TABLE.length) {
+      return ALPHANUMERIC_TABLE[code];
     }
     return -1;
   };

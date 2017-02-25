@@ -78,19 +78,24 @@ goog.scope(function() {
   var _ = w69b.qr.detector.FinderPatternFinder;
   var pro = w69b.qr.detector.FinderPatternFinder.prototype;
 
-  // manu: changed from 2 to 3 for more robustness.
-  _.CENTER_QUORUM = 2;
-  _.MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
-  _.MAX_MODULES = 57; // support up to version 10 for mobile clients
-  _.INTEGER_MATH_SHIFT = 8;
+  /** @const {number} */
+  var CENTER_QUORUM = 2;
+  /** @const {number} */
+  var MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
+  /** @const {number} */
+  var MAX_MODULES = 57; // support up to version 10 for mobile clients
+  /** @const {number} */
+  var INTEGER_MATH_SHIFT = 8;
 
   // Maximum skew error to skip scanning soon.
-  _.SKEW_THRESHOLD = 0.05;
+  /** @const {number} */
+  var SKEW_THRESHOLD = 0.05;
+
   /**
    * Precomputed combinations for 3 out of 6.
-   * @type {Array.<Array.<number>>}
+   * @const {!Array.<!Array.<!number>>}
    */
-  _.SKEW_COMBINATIONS = [
+  var SKEW_COMBINATIONS = [
     [0, 1, 2],
     [0, 1, 3],
     [0, 1, 4],
@@ -133,9 +138,9 @@ goog.scope(function() {
     // number of pixels the center could be, so skip this often. When trying
     // harder, look for all
     // QR versions regardless of how dense they are.
-    var iSkip = Math.floor((3 * maxI) / (4 * _.MAX_MODULES));
-    if (iSkip < _.MIN_SKIP || tryHarder) {
-      iSkip = _.MIN_SKIP;
+    var iSkip = Math.floor((3 * maxI) / (4 * MAX_MODULES));
+    if (iSkip < MIN_SKIP || tryHarder) {
+      iSkip = MIN_SKIP;
     }
 
     var done = false;
@@ -265,18 +270,18 @@ goog.scope(function() {
     if (totalModuleSize < 7) {
       return false;
     }
-    var moduleSize = Math.floor((totalModuleSize << _.INTEGER_MATH_SHIFT) / 7);
+    var moduleSize = Math.floor((totalModuleSize << INTEGER_MATH_SHIFT) / 7);
     var maxVariance = moduleSize >> 1;
     // Allow less than 50% variance from 1-1-3-1-1 proportions
-    return Math.abs(moduleSize - (stateCount[0] << _.INTEGER_MATH_SHIFT)) <
+    return Math.abs(moduleSize - (stateCount[0] << INTEGER_MATH_SHIFT)) <
       maxVariance &&
-      Math.abs(moduleSize - (stateCount[1] << _.INTEGER_MATH_SHIFT)) <
+      Math.abs(moduleSize - (stateCount[1] << INTEGER_MATH_SHIFT)) <
         maxVariance &&
-      Math.abs(3 * moduleSize - (stateCount[2] << _.INTEGER_MATH_SHIFT)) <
+      Math.abs(3 * moduleSize - (stateCount[2] << INTEGER_MATH_SHIFT)) <
         3 * maxVariance &&
-      Math.abs(moduleSize - (stateCount[3] << _.INTEGER_MATH_SHIFT)) <
+      Math.abs(moduleSize - (stateCount[3] << INTEGER_MATH_SHIFT)) <
         maxVariance &&
-      Math.abs(moduleSize - (stateCount[4] << _.INTEGER_MATH_SHIFT)) <
+      Math.abs(moduleSize - (stateCount[4] << INTEGER_MATH_SHIFT)) <
         maxVariance;
   };
 
@@ -632,7 +637,7 @@ goog.scope(function() {
     var firstConfirmedCenter = null;
     for (let i = 0; i < this.possibleCenters_.length; ++i) {
       var center = this.possibleCenters_[i];
-      if (center.getCount() >= _.CENTER_QUORUM) {
+      if (center.getCount() >= CENTER_QUORUM) {
         if (firstConfirmedCenter === null) {
           firstConfirmedCenter = center;
         } else {
@@ -661,7 +666,7 @@ goog.scope(function() {
     var totalModuleSize = 0.0;
     var max = this.possibleCenters_.length;
     for (let pattern of this.possibleCenters_) {
-      if (pattern.getCount() >= _.CENTER_QUORUM) {
+      if (pattern.getCount() >= CENTER_QUORUM) {
         confirmedCount++;
         totalModuleSize += pattern.getEstimatedModuleSize();
       }
@@ -691,7 +696,7 @@ goog.scope(function() {
     var centers = this.selectBestPatterns();
     var skew = _.computeSkew(centers);
 
-    return skew < _.SKEW_THRESHOLD;
+    return skew < SKEW_THRESHOLD;
   };
 
   /**
@@ -776,7 +781,7 @@ goog.scope(function() {
   _.getCombinations = function(centers) {
     var len = centers.length;
     var result = [];
-    _.SKEW_COMBINATIONS.forEach(function(indices) {
+    SKEW_COMBINATIONS.forEach(function(indices) {
       if (indices[0] < len && indices[1] && len && indices[2] < len) {
         result.push([centers[indices[0]], centers[indices[1]],
           centers[indices[2]]]);

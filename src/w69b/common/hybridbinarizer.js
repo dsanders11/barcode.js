@@ -52,6 +52,12 @@ goog.scope(function() {
    */
   w69b.common.HybridBinarizer = function(source) {
     goog.base(this, source);
+
+    /**
+     * @type {BitMatrix}
+     * @private
+     */
+    this.matrix_ = null;
   };
   goog.inherits(w69b.common.HybridBinarizer, w69b.common.GlobalHistogramBinarizer);
   var _ = w69b.common.HybridBinarizer;

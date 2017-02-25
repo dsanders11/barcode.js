@@ -33,10 +33,14 @@ goog.scope(function() {
 var _ = w69b.qr.encoder.MaskUtil;
 
   // Penalty weights from section 6.8.2.1
-  _.N1 = 3;
-  _.N2 = 3;
-  _.N3 = 40;
-  _.N4 = 10;
+  /** @const {number} */
+  var N1 = 3;
+  /** @const {number} */
+  var N2 = 3;
+  /** @const {number} */
+  var N3 = 40;
+  /** @const {number} */
+  var N4 = 10;
 
   /**
    * Apply mask penalty rule 1 and return the penalty.
@@ -73,7 +77,7 @@ var _ = w69b.qr.encoder.MaskUtil;
         }
       }
     }
-    return _.N2 * penalty;
+    return N2 * penalty;
   };
 
   /**
@@ -112,7 +116,7 @@ var _ = w69b.qr.encoder.MaskUtil;
                 bytes[yOffset + x - 2] === 0 &&
                 bytes[yOffset + x - 3] === 0 &&
                 bytes[yOffset + x - 4] === 0))) {
-          penalty += _.N3;
+          penalty += N3;
         }
         if (y + 6 < height &&
             matrix.get(x, y) === 1 &&
@@ -132,7 +136,7 @@ var _ = w69b.qr.encoder.MaskUtil;
                 matrix.get(x, y - 2) === 0 &&
                 matrix.get(x, y - 3) === 0 &&
                 matrix.get(x, y - 4) === 0))) {
-          penalty += _.N3;
+          penalty += N3;
         }
       }
     }
@@ -161,7 +165,7 @@ var _ = w69b.qr.encoder.MaskUtil;
     var darkRatio = numDarkCells / numTotalCells;
     // * 100.0 / 5.0
     var fivePercentVariances = Math.floor(Math.abs(darkRatio - 0.5) * 20.0);
-    return fivePercentVariances * _.N4;
+    return fivePercentVariances * N4;
   };
 
   /**
@@ -230,17 +234,16 @@ var _ = w69b.qr.encoder.MaskUtil;
           numSameBitCells++;
         } else {
           if (numSameBitCells >= 5) {
-            penalty += _.N1 + (numSameBitCells - 5);
+            penalty += N1 + (numSameBitCells - 5);
           }
           numSameBitCells = 1;  // Include the cell itself.
           prevBit = bit;
         }
       }
       if (numSameBitCells > 5) {
-        penalty += _.N1 + (numSameBitCells - 5);
+        penalty += N1 + (numSameBitCells - 5);
       }
     }
     return penalty;
   };
-
 });
