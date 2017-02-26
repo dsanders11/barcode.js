@@ -62,15 +62,6 @@ goog.scope(function() {
     canvas.style['imageRendering'] = "pixelated";
     if (opt_maxSize) {
       w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
-//      if (goog.isNumber(opt_maxSize)) {
-//        opt_maxSize = new Size(opt_maxSize, opt_maxSize);
-//        if (!size.fitsInside(opt_maxSize))
-//          size = size.scaleToFit(opt_maxSize);
-//      } else {
-//        if (!size.fitsInside(opt_maxSize))
-//          size = size.scaleToCover(opt_maxSize);
-//      }
-//      size.floor();
     }
     canvas.width = size.width;
     canvas.height = size.height;
