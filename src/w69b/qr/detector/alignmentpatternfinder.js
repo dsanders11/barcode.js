@@ -1,8 +1,5 @@
 // javascript (closure) port (c) 2013 Manuel Braun (mb@w69b.com)
-/*
- Ported to JavaScript by Lazar Laszlo 2011
- lazarsoft@gmail.com, www.lazarsoft.info
- */
+// javascript port (c) 2011 Lazar Laszlo (lazarsoft@gmail.com)
 /*
  * Copyright 2007 ZXing authors
  *
