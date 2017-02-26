@@ -19,6 +19,47 @@ goog.scope(function() {
   var UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
   var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
 
+  var _ = w69b.imgtools;
+
+  /** @type {HTMLCanvasElement} */
+  _.canvas_ = null;
+
+  /** @type {CanvasRenderingContext2D} */
+  _.context_ = null;
+
+  /**
+   * @return {!Array}
+   */
+  function getOrCreateCanvas_() {
+    if (_.canvas_ === null) {
+      _.canvas_ = document.createElement('canvas');
+      _.canvas_.style['imageRendering'] = "pixelated";
+      _.context_ = _.canvas_.getContext('2d');
+      if (_.context_.filter) {
+        let svgHolder = document.createElement('div');
+        svgHolder.style['display'] = "none";
+        svgHolder.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg"
+               xmlns:xlink="http://www.w3.org/1999/xlink"
+               viewBox="0 0 204 224">
+            <defs>
+              <filter id="grayscale">
+                <feColorMatrix type="matrix"values="0.25 0.5 0.25 0 0
+                                                    0.25 0.5 0.25 0 0
+                                                    0.25 0.5 0.25 0 0
+                                                    0 0 0 0 1"/>
+              </filter>
+            </defs>
+          </svg>`;
+        document.body.appendChild(svgHolder);
+        _.context_.filter = 'url(#grayscale)';
+      }
+      _.context_.imageSmoothingEnabled = false;
+    }
+
+    return [_.canvas_, _.context_];
+  }
+
   /**
    * Get content of canvas as png stored in a blob.
    * @param {HTMLCanvasElement} canvas canvas element.
@@ -58,39 +99,16 @@ goog.scope(function() {
       /** @type {number} */ (img.height || img.videoHeight));
 
     goog.asserts.assert(size.width > 0 && size.height > 0);
-    var canvas = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
-    canvas.style['imageRendering'] = "pixelated";
     if (opt_maxSize) {
       w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
     }
+    var [canvas, context] = getOrCreateCanvas_();
     canvas.width = size.width;
     canvas.height = size.height;
-    var context = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
-    var canvasFiltersSupported = Boolean(context.filter);
-    if (canvasFiltersSupported) {
-      var svgHolder = document.createElement('div');
-      svgHolder.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg"
-             xmlns:xlink="http://www.w3.org/1999/xlink"
-             viewBox="0 0 204 224">
-          <defs>
-            <filter id="grayscale">
-              <feColorMatrix type="matrix"values="0.25 0.5 0.25 0 0
-                                                  0.25 0.5 0.25 0 0
-                                                  0.25 0.5 0.25 0 0
-                                                  0 0 0 0 1"/>
-            </filter>
-          </defs>
-        </svg>`;
-      document.body.appendChild(svgHolder);
-      context.filter = 'url(#grayscale)';
-    }
-    context.imageSmoothingEnabled = false;
-    context.drawImage(img, 0, 0, size.width, size.height);
-    var imageData = context.getImageData(0, 0, size.width, size.height);
-    canvas.remove();
-    if (canvasFiltersSupported) {
-      svgHolder.remove();
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+    var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    if (context.filter) {
       imageData.grayscale_ = true;
     }
     return imageData;
