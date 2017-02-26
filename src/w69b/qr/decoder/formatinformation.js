@@ -25,6 +25,8 @@ goog.provide('w69b.qr.decoder.URShift');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 goog.scope(function() {
+  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+
   /**
    * @param {number} number todo.
    * @param {number} bits todo.
@@ -44,8 +46,10 @@ goog.scope(function() {
    * @constructor
    */
   w69b.qr.decoder.FormatInformation = function(formatInfo) {
+    /** @private */
     this.errorCorrectionLevel =
       w69b.qr.decoder.ErrorCorrectionLevel.forBits((formatInfo >> 3) & 0x03);
+    /** @private */
     this.dataMask = (formatInfo & 0x07);
   };
   var FormatInformation = w69b.qr.decoder.FormatInformation;
@@ -178,5 +182,19 @@ goog.scope(function() {
       return new FormatInformation(bestFormatInfo);
     }
     return null;
+  };
+
+  /**
+   * @return {ErrorCorrectionLevel}
+   */
+  pro.getErrorCorrectionLevel = function() {
+    return this.errorCorrectionLevel;
+  };
+
+  /**
+   * @return {number}
+   */
+  pro.getDataMask = function() {
+    return this.dataMask;
   };
 });

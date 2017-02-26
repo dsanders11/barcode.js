@@ -22,19 +22,30 @@
  */
 
 goog.provide('w69b.qr.decoder.Decoder');
+goog.require('w69b.ChecksumException');
 goog.require('w69b.DecodeHintType');
+goog.require('w69b.FormatException');
 goog.require('w69b.common.DecoderResult');
 goog.require('w69b.common.reedsolomon.GF256');
 goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
+goog.require('w69b.common.reedsolomon.ReedSolomonException');
 goog.require('w69b.qr.decoder.BitMatrixParser');
 goog.require('w69b.qr.decoder.DataBlock');
 goog.require('w69b.qr.decoder.DecodedBitStreamParser');
+goog.require('w69b.qr.decoder.QRCodeDecoderMetaData');
+
 
 goog.scope(function() {
+  var ChecksumException = w69b.ChecksumException;
   var DecodeHintType = w69b.DecodeHintType;
+  var FormatException = w69b.FormatException;
   var DecoderResult = w69b.common.DecoderResult;
   var GF256 = w69b.common.reedsolomon.GF256;
+  var ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
+  var BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
   var DataBlock = w69b.qr.decoder.DataBlock;
+  var DecodedBitStreamParser = w69b.qr.decoder.DecodedBitStreamParser;
+  var QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
 
   /**
    * The main class which implements QR Code decoding -- as opposed to locating
@@ -52,7 +63,7 @@ goog.scope(function() {
    * Given data and error-correction codewords received, possibly corrupted by errors, attempts to
    * correct the errors in-place using Reed-Solomon error correction.
    *
-   * @param {Int8Array} codewordBytes data and error correction codewords
+   * @param {!Int8Array} codewordBytes data and error correction codewords
    * @param {number} numDataCodewords number of codewords that are data bytes
    * @private
    */
@@ -63,10 +74,15 @@ goog.scope(function() {
     for (let i = 0; i < numCodewords; i++) {
       codewordsInts[i] = codewordBytes[i] & 0xFF;
     }
-    var numECCodewords = codewordBytes.length - numDataCodewords;
-    this.rsDecoder_.decode(codewordsInts, numECCodewords);
-      //var corrector = new ReedSolomon(codewordsInts, numECCodewords);
-      //corrector.correct();
+    try {
+      this.rsDecoder_.decode(
+        codewordsInts, codewordBytes.length - numDataCodewords);
+    } catch (err) {
+      if (err instanceof ReedSolomonException) {
+        throw new ChecksumException();
+      }
+      throw err;
+    }
     // Copy back into array of bytes -- only need to worry about the bytes that
     // were data We don't care about errors in the error-correction codewords
     for (let i = 0; i < numDataCodewords; i++) {
@@ -75,34 +91,100 @@ goog.scope(function() {
   };
 
   /**
-   * @param {w69b.common.BitMatrix} bits booleans representing white/black QR Code modules
+   * @param {!w69b.common.BitMatrix} bits booleans representing white/black QR Code modules
    * @param {Object<DecodeHintType,*>=} opt_hints decoding hints that should be used to influence decoding
-   * @return {DecoderResult} text and bytes encoded within the QR Code
+   * @return {!DecoderResult} text and bytes encoded within the QR Code
+   * @throws {FormatException}
+   * @throws {ChecksumException}
    */
   pro.decode = function(bits, opt_hints) {
-    var parser = new w69b.qr.decoder.BitMatrixParser(bits);
+    // Construct a parser and read version, error-correction level
+    var parser = new BitMatrixParser(bits);
+    var fe = null;
+    var ce = null;
+    try {
+      return this.decodeParser_(parser, opt_hints ? opt_hints : null);
+    } catch (err) {
+      if (err instanceof FormatException) {
+        fe = err;
+      }
+      if (err instanceof ChecksumException) {
+        ce = err;
+      }
+    }
+
+    try {
+      // Revert the bit matrix
+      parser.remask();
+
+      // Will be attempting a mirrored reading of the version and format info.
+      parser.setMirror(true);
+
+      // Preemptively read the version.
+      parser.readVersion();
+
+      // Preemptively read the format information.
+      parser.readFormatInformation();
+
+      /*
+       * Since we're here, this means we have successfully detected some kind
+       * of version and format information when mirrored. This is a good sign,
+       * that the QR code may be mirrored, and we should try once more with a
+       * mirrored content.
+       */
+      // Prepare for a mirrored reading.
+      parser.mirror();
+
+      var result = this.decodeParser_(parser, opt_hints ? opt_hints : null);
+
+      // Success! Notify the caller that the code was mirrored.
+      result.setOther(new QRCodeDecoderMetaData(true));
+
+      return result;
+    } catch (err) {
+      if (err instanceof FormatException || err instanceof ChecksumException) {
+        // Throw the exception from the original reading
+        if (fe != null) {
+          throw fe;
+        }
+        if (ce != null) {
+          throw ce;
+        }
+      }
+      throw err;
+    }
+  };
+
+  /**
+   * @param {!BitMatrixParser} parser
+   * @param {Object<DecodeHintType,*>} hints
+   * @return {!DecoderResult}
+   * @throws {FormatException}
+   * @throws {ChecksumException}
+   * @private
+   * @suppress {checkTypes}
+   */
+  pro.decodeParser_ = function(parser, hints) {
     var version = parser.readVersion();
-    var ecLevel = parser.readFormatInformation().errorCorrectionLevel;
+    var ecLevel = parser.readFormatInformation().getErrorCorrectionLevel();
 
     // Read codewords
     var codewords = parser.readCodewords();
-
     // Separate into data blocks
     var dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
 
     // Count total number of data bytes
     var totalBytes = 0;
-    for (let i = 0; i < dataBlocks.length; i++) {
-      totalBytes += dataBlocks[i].numDataCodewords;
+    for (let dataBlock of dataBlocks) {
+      totalBytes += dataBlock.getNumDataCodewords();
     }
     var resultBytes = new Int8Array(totalBytes);
     var resultOffset = 0;
 
     // Error-correct and copy data blocks together into a stream of bytes
-    for (let j = 0; j < dataBlocks.length; j++) {
-      let dataBlock = dataBlocks[j];
-      let codewordBytes = dataBlock.codewords;
-      let numDataCodewords = dataBlock.numDataCodewords;
+    for (let dataBlock of dataBlocks) {
+      let codewordBytes = dataBlock.getCodewords();
+      let numDataCodewords = dataBlock.getNumDataCodewords();
       this.correctErrors_(codewordBytes, numDataCodewords);
       for (let i = 0; i < numDataCodewords; i++) {
         resultBytes[resultOffset++] = codewordBytes[i];
@@ -110,8 +192,7 @@ goog.scope(function() {
     }
 
     // Decode the contents of that stream of bytes
-    return w69b.qr.decoder.DecodedBitStreamParser.decode(resultBytes,
-      version, ecLevel);
-    //return DecodedBitStreamParserOld.decode(resultBytes, version, ecLevel);
-  };
+    return DecodedBitStreamParser.decode(
+      resultBytes, version, ecLevel, hints ? hints : undefined);
+  }
 });

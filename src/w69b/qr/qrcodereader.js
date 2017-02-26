@@ -132,8 +132,8 @@ goog.scope(function() {
    * exceptionally fast in this special case.
    *
    * @see com.google.zxing.datamatrix.DataMatrixReader#extractPureBits(BitMatrix)
-   * @param {BitMatrix} image
-   * @return {BitMatrix}
+   * @param {!BitMatrix} image
+   * @return {!BitMatrix}
    * @throws {NotFoundException}
    * @private
    */

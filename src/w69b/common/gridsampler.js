@@ -93,7 +93,7 @@ goog.scope(function() {
    * @param {number} p3FromY point 3 image Y
    * @param {number} p4FromX point 4 image X
    * @param {number} p4FromY point 4 image Y
-   * @return {w69b.common.BitMatrix} representing a grid of points sampled from
+   * @return {!w69b.common.BitMatrix} representing a grid of points sampled from
    * the image within a region defined by the "from" parameters by the given
    * points is invalid or results in sampling outside the image boundaries.
    */
@@ -113,7 +113,7 @@ goog.scope(function() {
    * @param {number} dimensionY height of BitMatrix to sample from
    * image.
    * @param {w69b.common.PerspectiveTransform} transform transformation matrix.
-   * @return {w69b.common.BitMatrix} representing a grid of points sampled from
+   * @return {!w69b.common.BitMatrix} representing a grid of points sampled from
    * the image within a region defined by the "from" parameters by the given
    * points is invalid or results in sampling outside the image boundaries.
    */

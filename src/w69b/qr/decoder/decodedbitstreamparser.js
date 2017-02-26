@@ -70,7 +70,7 @@ goog.scope(function() {
    * @param {w69b.qr.decoder.Version} version qr code version.
    * @param {w69b.qr.decoder.ErrorCorrectionLevel} ecLevel error correction level.
    * @param {Object<DecodeHintType,*>=} opt_hints
-   * @return {DecoderResult} decoded string.
+   * @return {!DecoderResult} decoded string.
    */
   _.decode = function(bytes, version, ecLevel, opt_hints) {
     var bits = new BitSource(bytes);

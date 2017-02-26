@@ -57,7 +57,7 @@ goog.scope(function() {
    * @param {number} p3FromY
    * @param {number} p4FromX
    * @param {number} p4FromY
-   * @return {BitMatrix}
+   * @return {!BitMatrix}
    */
   pro.sampleGrid = function(image, dimensionX, dimensionY, p1ToX, p1ToY, p2ToX,
                             p2ToY, p3ToX, p3ToY, p4ToX, p4ToY, p1FromX,
@@ -76,7 +76,7 @@ goog.scope(function() {
    * @param {number} dimensionX
    * @param {number} dimensionY
    * @param {PerspectiveTransform} transform
-   * @return {BitMatrix}
+   * @return {!BitMatrix}
    */
   pro.sampleGridTransform = function(image, dimensionX, dimensionY,
                                      transform) {

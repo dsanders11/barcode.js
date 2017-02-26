@@ -351,7 +351,7 @@ goog.scope(function() {
    * @param {BitMatrix} image
    * @param {PerspectiveTransform} transform
    * @param {number} dimension
-   * @return {BitMatrix}
+   * @return {!BitMatrix}
    */
   pro.sampleGrid = function(image, transform, dimension) {
     var sampler = GridSampler.getInstance();

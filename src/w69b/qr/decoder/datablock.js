@@ -38,13 +38,16 @@ goog.scope(function() {
    *
    * @constructor
    * @param {number} numDataCodewords
-   * @param {Int8Array} codewords
+   * @param {!Int8Array} codewords
    */
   w69b.qr.decoder.DataBlock = function(numDataCodewords, codewords) {
+    /** @private */
     this.numDataCodewords = numDataCodewords;
+    /** @private */
     this.codewords = codewords;
   };
   var DataBlock = w69b.qr.decoder.DataBlock;
+  var pro = DataBlock.prototype;
 
   /**
    * When QR Codes use multiple data blocks, they are actually interleaved.
@@ -125,5 +128,19 @@ goog.scope(function() {
       }
     }
     return result;
+  };
+
+  /**
+   * @return {number}
+   */
+  pro.getNumDataCodewords = function() {
+    return this.numDataCodewords;
+  };
+
+  /**
+   * @return {!Int8Array}
+   */
+  pro.getCodewords = function() {
+    return this.codewords;
   };
 });

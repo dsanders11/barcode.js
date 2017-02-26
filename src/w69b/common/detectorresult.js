@@ -22,7 +22,7 @@ goog.require('w69b.common.BitMatrix');
 goog.scope(function() {
   /**
    * @constructor
-   * @param {w69b.common.BitMatrix} bits raw barcode bits
+   * @param {!w69b.common.BitMatrix} bits raw barcode bits
    * @param {Array.<w69b.ResultPoint>} points points of interest
    */
   w69b.common.DetectorResult = function(bits, points) {
@@ -33,7 +33,7 @@ goog.scope(function() {
   var pro = DetectorResult.prototype;
 
   /**
-   * @return {w69b.common.BitMatrix} raw barcode bits
+   * @return {!w69b.common.BitMatrix} raw barcode bits
    */
   pro.getBits = function() {
     return this.bits;

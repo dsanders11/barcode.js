@@ -35,7 +35,7 @@ goog.scope(function() {
   var FormatException = w69b.FormatException;
 
   /**
-   * @param {BitMatrix} bitMatrix matrix.
+   * @param {!BitMatrix} bitMatrix matrix.
    * @constructor
    */
   w69b.qr.decoder.BitMatrixParser = function(bitMatrix) {
@@ -43,9 +43,6 @@ goog.scope(function() {
     if (dimension < 21 || (dimension & 0x03) !== 1) {
       throw new FormatException();
     }
-    /**
-     * @type {BitMatrix}
-     */
     this.bitMatrix = bitMatrix;
     /**
      * @type {Version}
@@ -55,6 +52,7 @@ goog.scope(function() {
      * @type {FormatInformation}
      */
     this.parsedFormatInfo = null;
+    this.mirror_ = false;
   };
   var BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
   var pro = BitMatrixParser.prototype;
@@ -66,8 +64,8 @@ goog.scope(function() {
    * @return {number}
    */
   pro.copyBit = function(i, j, versionBits) {
-    return this.bitMatrix.get(i,
-      j) ? (versionBits << 1) | 0x1 : versionBits << 1;
+    var bit = this.mirror_ ? this.bitMatrix.get(j, i) : this.bitMatrix.get(i, j);
+    return bit ? (versionBits << 1) | 0x1 : versionBits << 1;
   };
 
   /**
@@ -172,7 +170,7 @@ goog.scope(function() {
 
     // Get the data mask for the format used in this QR Code. This will exclude
     // some bits from reading as we wind through the bit matrix.
-    var dataMask = DataMask.forReference(formatInfo.dataMask);
+    var dataMask = DataMask.forReference(formatInfo.getDataMask());
     var dimension = this.bitMatrix.getHeight();
     dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
 
@@ -217,5 +215,47 @@ goog.scope(function() {
       throw new FormatException();
     }
     return result;
+  };
+
+
+  /**
+   * Revert the mask removal done while reading the code words. The bit matrix
+   * should revert to its original state.
+   */
+  pro.remask = function() {
+    if (this.parsedFormatInfo == null) {
+      return; // We have no format information, and have no data mask
+    }
+    var dataMask = DataMask.forReference(this.parsedFormatInfo.getDataMask());
+    var dimension = this.bitMatrix.getHeight();
+    dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
+  };
+
+  /**
+   * Prepare the parser for a mirrored operation.
+   * This flag has effect only on the {@link #readFormatInformation()} and the
+   * {@link #readVersion()}. Before proceeding with {@link #readCodewords()}
+   * the {@link #mirror()} method should be called.
+   *
+   * @param {boolean} mirror Whether to read version and format information
+   *                         mirrored.
+   */
+  pro.setMirror = function(mirror) {
+    this.parsedVersion = null;
+    this.parsedFormatInfo = null;
+    this.mirror_ = mirror;
+  };
+
+  /** Mirror the bit matrix in order to attempt a second reading. */
+  pro.mirror = function() {
+    var bitMatrix = this.bitMatrix;
+    for (let x = 0; x < bitMatrix.getWidth(); x++) {
+      for (let y = x + 1; y < bitMatrix.getHeight(); y++) {
+        if (bitMatrix.get(x, y) != bitMatrix.get(y, x)) {
+          bitMatrix.flip(y, x);
+          bitMatrix.flip(x, y)
+        }
+      }
+    }
   };
 });
