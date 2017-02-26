@@ -362,21 +362,24 @@ goog.scope(function() {
    */
   pro.scheduleNextFrame = function() {
     var animFrame = (window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.oRequestAnimationFrame);
-    if (animFrame) {
-      this.animFrameRequestId_ = animFrame.call(
-        window, this.onAnimationFrame.bind(this));
-    } else {
-      let timeSinceLastFrame = new Date().getTime() - this.lastFrameTime_;
-      let waitTime = 0;
-      // Draw at 25 fps max
-      if (timeSinceLastFrame < 40) {
-        waitTime = 40 - timeSinceLastFrame;
-      }
-      this.timerRequestId_ = window.setTimeout(
-        this.onAnimationFrame.bind(this), waitTime);
+      window.mozRequestAnimationFrame || window.oRequestAnimationFrame);
+    var timeSinceLastFrame = new Date().getTime() - this.lastFrameTime_;
+    var waitTime = 0;
+    // Draw at 25 fps max
+    if (timeSinceLastFrame < 40) {
+      waitTime = 40 - timeSinceLastFrame;
     }
+    var updateFunc = null;
+    var that = this;
+    if (animFrame) {
+      updateFunc = function() {
+        that.animFrameRequestId_ = animFrame.call(
+          window, that.onAnimationFrame.bind(that));
+      };
+    } else {
+      updateFunc = this.onAnimationFrame.bind(this);
+    }
+    this.timerRequestId_ = window.setTimeout(updateFunc, waitTime);
   };
 
   /**
