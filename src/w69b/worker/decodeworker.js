@@ -26,10 +26,16 @@ goog.scope(function() {
 
   /**
    * @param {string} msgType messsage type.
-   * @param {*=} opt_result value.
+   * @param {*} result value.
+   * @param {boolean=} returnBuffer
    */
-  _.send = function(msgType, opt_result) {
-    host.postMessage([msgType, host['JSON'].stringify(opt_result)]);
+  _.send = function(msgType, result, returnBuffer = false) {
+    // As a work around to a memory leak in Firefox and Chrome, always transfer
+    // the buffer back to the main thread once we are done using it
+    var buffer = _.buffer_;
+    host.postMessage([msgType, host['JSON'].stringify(result)],
+      returnBuffer && buffer ? [buffer] : undefined);
+    _.buffer = null;
   };
 
   /**
@@ -52,13 +58,13 @@ goog.scope(function() {
         _.decode(imgdata, true);
         return;
       } else if (err instanceof w69b.NotFoundException) {
-        _.send(WorkerMessageType.NOTFOUND, err && err.message);
+        _.send(WorkerMessageType.NOTFOUND, err && err.message, true);
         return;
       } else {
         throw err;
       }
     }
-    _.send(WorkerMessageType.DECODED, result);
+    _.send(WorkerMessageType.DECODED, result, true);
   };
 
   /**
@@ -117,7 +123,6 @@ goog.scope(function() {
       let height = data['height'];
       let buffer = data['buffer'];
       let formats = data['formats'];
-      let isFirefox = data['isFirefox'];
       let isBinary = data['isBinary'] || false;
       let isGrayscale = data['isGrayscale'];
       if (!buffer.byteLength) {
@@ -125,14 +130,8 @@ goog.scope(function() {
       }
       let imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
       imageData.grayscale_ = isGrayscale;
+      _.buffer_ = buffer;
       _.decode(imageData, isBinary, formats);
-      // Hack for FF memory leak - if webgl is used, we tranfer back the
-      // buffer as a workaround.
-      if (isFirefox) {
-        host.postMessage(['ffmemoryhack', null], [buffer]);
-        event.data['buffer'] = null;
-        // event.data = null;
-      }
     }
   };
 });

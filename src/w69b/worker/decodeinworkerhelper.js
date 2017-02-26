@@ -4,7 +4,6 @@ goog.require('goog.math.Size');
 goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
-goog.require('goog.userAgent.product');
 goog.require('w69b.ImageSource');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.NotFoundException');
@@ -162,12 +161,10 @@ goog.scope(function() {
   pro.onMessage_ = function(event) {
     if (this.callback_) {
       var type = event.data[0];
-      // Hack for FF memory leak with webgl + worker.
-      if (type == 'ffmemoryhack')
-        return;
       var value = event.data[1];
-      if (value)
+      if (value) {
         value = window.JSON.parse(/** @type {string} */ (value));
+      }
       this.callback_(type, value);
     }
   };
@@ -216,12 +213,12 @@ goog.scope(function() {
         'height': imgDataOrMatrix.height,
         'buffer': buffer,
         'formats': this.formats_,
-        'isFirefox': Boolean(goog.userAgent.product.FIREFOX),
         'isBinary': isBinary,
         'isGrayscale': imgDataOrMatrix.grayscale_
       };
       this.callback_ = callback;
       this.worker_.postMessage(msg, [buffer]);
+      imgDataOrMatrix = null;
     } else {
       // local fallback
       this.decodeLocalFallback_(imgDataOrMatrix, isBinary, callback);
