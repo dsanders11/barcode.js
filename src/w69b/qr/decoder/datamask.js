@@ -226,8 +226,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask101.prototype.isMasked = function(i, j) {
-    var temp = i * j;
-    return (temp & 0x01) + (temp % 3) === 0;
+    return (i * j) % 6 === 0;
   };
 
   /**
@@ -256,7 +255,7 @@ goog.scope(function() {
    */
   _.DataMask110.prototype.isMasked = function(i, j) {
     var temp = i * j;
-    return (((temp & 0x01) + (temp % 3)) & 0x01) === 0;
+    return ((temp + (temp % 3)) & 0x01) === 0;
   };
 
   /**
@@ -284,7 +283,7 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.DataMask111.prototype.isMasked = function(i, j) {
-    return ((((i + j) & 0x01) + ((i * j) % 3)) & 0x01) === 0;
+    return ((i + j + ((i * j) % 3)) & 0x01) === 0;
   };
 
   /**
