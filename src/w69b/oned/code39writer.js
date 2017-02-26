@@ -99,7 +99,7 @@ goog.scope(function() {
   function toIntArray(a, toReturn) {
     for (let i = 0; i < 9; i++) {
       let temp = a & (1 << (8 - i));
-      toReturn[i] = temp == 0 ? 1 : 2;
+      toReturn[i] = temp === 0 ? 1 : 2;
     }
   }
 });

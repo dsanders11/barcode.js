@@ -21,6 +21,7 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Writer');
 goog.require('w69b.oned.Code128Writer');
 goog.require('w69b.oned.Code39Writer');
+goog.require('w69b.oned.Code93Writer');
 goog.require('w69b.oned.ITFWriter');
 goog.require('w69b.qr.QRCodeWriter');
 
@@ -30,6 +31,7 @@ goog.scope(function() {
   var Writer = w69b.Writer;
   var Code39Writer = w69b.oned.Code39Writer;
   var Code128Writer = w69b.oned.Code128Writer;
+  var Code93Writer = w69b.oned.Code93Writer;
   var ITFWriter = w69b.oned.ITFWriter;
   var QRCodeWriter = w69b.qr.QRCodeWriter;
 
@@ -56,6 +58,9 @@ goog.scope(function() {
         break;
       case BarcodeFormat.CODE_39:
         writer = new Code39Writer();
+        break;
+      case BarcodeFormat.CODE_93:
+        writer = new Code93Writer();
         break;
       case BarcodeFormat.CODE_128:
         writer = new Code128Writer();
