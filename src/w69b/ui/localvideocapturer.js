@@ -174,8 +174,9 @@ goog.scope(function() {
    */
   pro.onGetMediaSuccess = function(stream) {
     // If disposed since, dont do anything.
-    if (this.mediaVideo_ === null)
+    if (this.mediaVideo_ === null) {
       return;
+    }
     this.mediaVideo_.src = window.URL.createObjectURL(stream);
     this.mediaVideo_.play();
     this.stream_ = stream;
