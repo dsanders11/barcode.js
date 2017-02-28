@@ -90,20 +90,6 @@ goog.scope(function() {
   };
 
   /**
-   * @return {number} x pos.
-   */
-  pro.getX = function() {
-    return this.x;
-  };
-
-  /**
-   * @return {number} y pos.
-   */
-  pro.getY = function() {
-    return this.y;
-  };
-
-  /**
    * @return {Object} JSON object for pattern.
    */
   pro['toJSON'] = function() {
