@@ -374,7 +374,7 @@ goog.scope(function() {
   }
 
   /**
-   * @return {string}
+   * @override
    */
   pro.toString = function() {
     var result = [];

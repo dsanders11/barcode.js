@@ -160,9 +160,7 @@ goog.scope(function() {
   };
 
   /**
-   * Get svg source.
    * @override
-   * @return {string} svg as string.
    */
   pro.toString = function() {
     try {

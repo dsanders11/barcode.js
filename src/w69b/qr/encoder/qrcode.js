@@ -110,7 +110,7 @@ goog.scope(function() {
 
 
   /**
-   * @return {string} debug string.
+   * @override
    */
   pro.toString = function() {
     var result = [];
