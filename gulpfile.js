@@ -60,18 +60,28 @@ var CLOSURE_CONFIG = {
     output_wrapper: '// barcode.js Copyright 2012 mb@w69b.com\n(function() { %output% }).call(this);',
     warning_level: 'VERBOSE',
     jscomp_warning: [
+      'const',
       'constantProperty',
+      'deprecatedAnnotations',
       'extraRequire',
+      'functionParams',
+      'globalThis',
       'lintChecks',
       'missingProperties',
       'missingProvide',
       'missingOverride',
       'missingRequire',
       'missingReturn',
-      'unusedLocalVariables',
+      'nonStandardJsDocs',
+      // 'reportUnknownTypes',
       'undefinedNames',
-      'visibility',
-      'underscore'
+      'undefinedVars',
+      'unknownDefines',
+      'unusedLocalVariables',
+      'unusedPrivateMembers',
+      'uselessCode',
+      'underscore',
+      'visibility'
     ]
   }
 };
