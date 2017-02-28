@@ -189,5 +189,5 @@ goog.scope(function() {
     // Decode the contents of that stream of bytes
     return DecodedBitStreamParser.decode(
       resultBytes, version, ecLevel, hints ? hints : undefined);
-  }
+  };
 });

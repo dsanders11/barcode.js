@@ -248,7 +248,7 @@ goog.scope(function() {
       for (let y = x + 1; y < bitMatrix.getHeight(); y++) {
         if (bitMatrix.get(x, y) != bitMatrix.get(y, x)) {
           bitMatrix.flip(y, x);
-          bitMatrix.flip(x, y)
+          bitMatrix.flip(x, y);
         }
       }
     }

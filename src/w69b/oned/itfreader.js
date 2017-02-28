@@ -346,7 +346,7 @@ goog.scope(function() {
           }
           patternStart += counters[0] + counters[1];
           //System.arraycopy(counters, 2, counters, 0, counterPosition - 1);
-          counters.copyWithin(0, 2, 2 + counterPosition - 1)
+          counters.copyWithin(0, 2, 2 + counterPosition - 1);
           counters[counterPosition - 1] = 0;
           counters[counterPosition] = 0;
           counterPosition--;

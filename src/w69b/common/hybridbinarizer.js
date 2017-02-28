@@ -196,7 +196,7 @@ goog.scope(function() {
                               matrix) {
     for (let y = 0, offset = yoffset * stride + xoffset; y < BLOCK_SIZE;
          y++, offset += stride) {
-      let yCoord = yoffset + y
+      let yCoord = yoffset + y;
       for (let x = 0; x < BLOCK_SIZE; x++) {
         // Comparison needs to be <= so that black == 0 pixels are
         // black even if the threshold is 0.

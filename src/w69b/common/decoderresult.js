@@ -63,7 +63,7 @@ goog.scope(function() {
    */
   pro.setNumBits = function(numBits) {
     this.numBits_ = numBits;
-  }
+  };
 
   /**
    * @return {string} text representation of the result
@@ -91,7 +91,7 @@ goog.scope(function() {
    */
   pro.getErrorsCorrected = function() {
     return this.errorsCorrected_;
-  }
+  };
 
   /**
    * @param {number} errorsCorrected

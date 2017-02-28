@@ -151,7 +151,7 @@ goog.scope(function() {
     // Otherwise copy one cropped row at a time.
     for (let y = 0; y < height; y++) {
       let outputOffset = y * width;
-      let slice = this.luminances_.slice(inputOffset, inputOffset + width)
+      let slice = this.luminances_.slice(inputOffset, inputOffset + width);
       matrix.set(slice, outputOffset);
       inputOffset += this.dataWidth_;
     }
