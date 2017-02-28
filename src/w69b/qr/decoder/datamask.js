@@ -76,9 +76,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask000.prototype.isMasked = function(i, j) {
     return ((i + j) & 0x01) === 0;
@@ -86,12 +84,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask001 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask001.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -104,9 +102,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask001.prototype.isMasked = function(i, j) {
     return (i & 0x01) === 0;
@@ -114,12 +110,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask010 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask010.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -132,9 +128,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask010.prototype.isMasked = function(i, j) {
     return j % 3 === 0;
@@ -142,12 +136,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask011 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask011.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -160,9 +154,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask011.prototype.isMasked = function(i, j) {
     return (i + j) % 3 === 0;
@@ -170,12 +162,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask100 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask100.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -188,9 +180,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask100.prototype.isMasked = function(i, j) {
     return (((URShift(i, 1)) + (j / 3)) & 0x01) === 0;
@@ -198,12 +188,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask101 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask101.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -216,9 +206,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask101.prototype.isMasked = function(i, j) {
     return (i * j) % 6 === 0;
@@ -226,12 +214,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask110 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask110.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -244,9 +232,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask110.prototype.isMasked = function(i, j) {
     var temp = i * j;
@@ -255,12 +241,12 @@ goog.scope(function() {
 
   /**
    * @constructor
+   * @implements {_.DataMaskInterface}
    */
   _.DataMask111 = function() { };
 
   /**
-   * @param {BitMatrix} bits representation of QR Code bits
-   * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
+   * @override
    */
   _.DataMask111.prototype.unmaskBitMatrix = function(bits, dimension) {
     for (let i = 0; i < dimension; i++) {
@@ -273,9 +259,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {number} i
-   * @param {number} j
-   * @return {boolean}
+   * @override
    */
   _.DataMask111.prototype.isMasked = function(i, j) {
     return ((i + j + ((i * j) % 3)) & 0x01) === 0;
