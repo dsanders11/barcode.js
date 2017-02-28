@@ -13,12 +13,12 @@ var sort = require('gulp-sort');
 var through = require('through2');
 var shader2js = require('./tasks/shader2js');
 var webserver = require('gulp-webserver');
+var closure = require('gulp-closure-compiler');
 var closureDeps = require('gulp-closure-deps');
 var closureList = require('gulp-closure-builder-list');
 var wrap = require('gulp-wrap');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
-var plovr = require('gulp-plovr');
 var gulp = require('gulp');
 // Adds gulp tag, and gulp bump tasks,
 // see https://github.com/lfender6445/gulp-release-tasks
@@ -38,10 +38,41 @@ var PATHS = {
       'node_modules/google-closure-library/third_party/**/*.js',
       'src/**/*.js'
     ],
-    plovr: ['plovr-decodeworker-productive.json', 'plovr-productive.json'],
   },
   dst: {
     shaders: 'src/w69b/webgl/shaders/'
+  }
+};
+
+var CLOSURE_CONFIG = {
+  compilerPath: 'node_modules/google-closure-compiler/compiler.jar',
+  tieredCompilation: true,
+  continueWithWarnings: true,
+  compilerFlags: {
+    externs: [
+      'externs/iconv.js'
+    ],
+    generate_exports: true,
+    compilation_level: 'ADVANCED_OPTIMIZATIONS',
+    language_in: 'ECMASCRIPT6_STRICT',
+    language_out: 'ECMASCRIPT5_STRICT',
+    dependency_mode: 'STRICT',
+    output_wrapper: '// barcode.js Copyright 2012 mb@w69b.com\n(function() { %output% }).call(this);',
+    warning_level: 'VERBOSE',
+    jscomp_warning: [
+      'constantProperty',
+      'extraRequire',
+      'lintChecks',
+      'missingProperties',
+      'missingProvide',
+      'missingOverride',
+      'missingRequire',
+      'missingReturn',
+      'unusedLocalVariables',
+      'undefinedNames',
+      'visibility',
+      'underscore'
+    ]
   }
 };
 
@@ -158,16 +189,25 @@ gulp.task('buildDebug:worker', ['shader2js'], function() {
 gulp.task('buildDebug', ['buildDebug:main', 'buildDebug:worker']);
 
 
-gulp.task('compile', function() {
-  // It might look odd to use plovr instead of using closure compiler directly here.
-  // However there is no easy way to disable some advanced compilation options that degrate
-  // performance significantly with closure compiler directy.
-  return gulp.src(PATHS.src.plovr)
-    .pipe(plovr({
-      plovr_path: 'node_modules/plovr/bin/plovr.jar',
-      debug: true
-    }));
+gulp.task('compile:main', function() {
+  var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
+  config['fileName'] = 'dist/w69b.qrcode.min.js';
+  config['compilerFlags']['entry_point'] = 'main';
+
+  return gulp.src(PATHS.src.closure)
+    .pipe(closure(config));
 });
+
+gulp.task('compile:worker', function() {
+  var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
+  config['fileName'] = 'dist/w69b.qrcode.decodeworker.min.js';
+  config['compilerFlags']['entry_point'] = 'worker';
+
+  return gulp.src(PATHS.src.closure)
+    .pipe(closure(config));
+});
+
+gulp.task('compile', ['compile:main', 'compile:worker']);
 
 gulp.task('all', function(cb) {
   runSequence('shader2js', 'compile', 'test', cb);

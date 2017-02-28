@@ -1,6 +1,0 @@
-{
-  "output-file": "dist/w69b.qrcode.min.js",
-  "inherits": "plovr-root.json",
-  // Fix for wrapper as per - https://github.com/google/closure-library/issues/393#issuecomment-68908521
-  "output-wrapper": "// barcode.js Copyright 2012 mb@w69b.com\n(function() { %output% }).call(this);"
-}
