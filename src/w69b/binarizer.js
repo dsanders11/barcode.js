@@ -35,6 +35,7 @@ goog.scope(function() {
    *
    * @constructor
    * @param {LuminanceSource} source gray values
+   * @abstract
    */
   w69b.Binarizer = function(source) {
     /**

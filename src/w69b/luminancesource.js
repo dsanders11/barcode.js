@@ -33,6 +33,7 @@ goog.scope(function() {
    * @constructor
    * @param {number} width
    * @param {number} height
+   * @abstract
    */
   w69b.LuminanceSource = function(width, height) {
     /**

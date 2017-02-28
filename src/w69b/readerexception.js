@@ -27,6 +27,7 @@ goog.scope(function() {
    * @constructor
    * @param {string=} opt_msg message.
    * @extends {goog.debug.Error}
+   * @abstract
    */
   w69b.ReaderException = function(opt_msg) {
     goog.base(this, opt_msg);
