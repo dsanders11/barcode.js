@@ -201,20 +201,22 @@ gulp.task('buildDebug', ['buildDebug:main', 'buildDebug:worker']);
 
 gulp.task('compile:main', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
-  config['fileName'] = 'dist/w69b.qrcode.min.js';
+  config['fileName'] = 'w69b.qrcode.min.js';
   config['compilerFlags']['entry_point'] = 'main';
 
   return gulp.src(PATHS.src.closure)
-    .pipe(closure(config));
+    .pipe(closure(config))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('compile:worker', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
-  config['fileName'] = 'dist/w69b.qrcode.decodeworker.min.js';
+  config['fileName'] = 'w69b.qrcode.decodeworker.min.js';
   config['compilerFlags']['entry_point'] = 'worker';
 
   return gulp.src(PATHS.src.closure)
-    .pipe(closure(config));
+    .pipe(closure(config))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('compile', ['compile:main', 'compile:worker']);
