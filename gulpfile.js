@@ -57,6 +57,7 @@ var CLOSURE_CONFIG = {
     language_in: 'ECMASCRIPT6_STRICT',
     language_out: 'ECMASCRIPT5_STRICT',
     dependency_mode: 'STRICT',
+    hide_warnings_for: 'node_modules/',
     output_wrapper: '// barcode.js Copyright 2012 mb@w69b.com\n(function() { %output% }).call(this);',
     warning_level: 'VERBOSE',
     jscomp_warning: [
@@ -87,7 +88,7 @@ var CLOSURE_CONFIG = {
 };
 
 gulp.task('clean', function() {
-  return del(['dist']);
+  return del(['dist', 'build', 'coverage']);
 });
 
 gulp.task('check-format', function() {
@@ -203,6 +204,7 @@ gulp.task('compile:main', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
   config['fileName'] = 'w69b.qrcode.min.js';
   config['compilerFlags']['entry_point'] = 'main';
+  config['compilerFlags']['assume_function_wrapper'] = true;
 
   return gulp.src(PATHS.src.closure)
     .pipe(closure(config))
@@ -213,6 +215,7 @@ gulp.task('compile:worker', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
   config['fileName'] = 'w69b.qrcode.decodeworker.min.js';
   config['compilerFlags']['entry_point'] = 'worker';
+  config['compilerFlags']['assume_function_wrapper'] = true;
 
   return gulp.src(PATHS.src.closure)
     .pipe(closure(config))
