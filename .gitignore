@@ -10,5 +10,5 @@ coverage/
 dist/
 tmp/
 bower_components/
-src/w69b/shaders/compiled.js
+src/w69b/webgl/shaders/compiled.js
 
