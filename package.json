@@ -29,7 +29,6 @@
     "gulp-util": "^3.0.6",
     "gulp-webserver": "^0.9.1",
     "gulp-wrap": "^0.13.0",
-    "harmonize": "^2.0.0",
     "iconv.js": "git+https://github.com/Schibum/iconv.js.git",
     "karma": "~1.4.1",
     "karma-chrome-launcher": "~2.0.0",
@@ -52,6 +51,6 @@
     "test": "gulp test"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=6.0.0"
   }
 }

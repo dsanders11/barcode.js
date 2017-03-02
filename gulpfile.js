@@ -1,6 +1,5 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 'use strict';
-require('harmonize')();
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var del = require('del');
