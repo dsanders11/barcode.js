@@ -7,7 +7,6 @@ var format = require('gulp-clang-format');
 var karma = require('karma');
 var concat = require('gulp-concat');
 var sort = require('gulp-sort');
-var through = require('through2');
 var shader2js = require('./tasks/shader2js');
 var sourcemaps = require('gulp-sourcemaps');
 var webserver = require('gulp-webserver');
