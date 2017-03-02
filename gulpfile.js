@@ -32,10 +32,11 @@ var PATHS = {
       'src/**/*.js'
     ],
     shaders: ['src/w69b/webgl/shaders/*.{vs,fs}'],
-    closureBase: 'node_modules/google-closure-library/closure/goog/base.js',
     closure: [
       'node_modules/google-closure-library/closure/goog/**/*.js',
+      '!node_modules/google-closure-library/closure/goog/**/*_test.js',
       'node_modules/google-closure-library/third_party/**/*.js',
+      '!node_modules/google-closure-library/third_party/**/*_test.js',
       'src/**/*.js'
     ],
   },
@@ -58,7 +59,7 @@ var CLOSURE_CONFIG = {
     language_out: 'ECMASCRIPT5_STRICT',
     dependency_mode: 'STRICT',
     hide_warnings_for: 'node_modules/',
-    output_wrapper: '// barcode.js Copyright 2012 mb@w69b.com\n(function() { %output% }).call(this);',
+    isolation_mode: 'IIFE',
     warning_level: 'VERBOSE',
     jscomp_warning: [
       'const',
