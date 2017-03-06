@@ -149,6 +149,7 @@ goog.scope(function() {
   pro['toJSON'] = function() {
     return {
       'text': this.getText(),
+      'format': this.getBarcodeFormat(),
       'patterns': this.getResultPoints().map(pattern => pattern['toJSON']())};
   };
 });

@@ -7,6 +7,7 @@ goog.require('goog.string');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 goog.require('goog.userAgent');
+goog.require('w69b.BarcodeFormat');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.imgtools');
 goog.require('w69b.ui.LocalVideoCapturer');
@@ -188,7 +189,7 @@ goog.scope(function() {
 
   /**
    * Set callback that is called when a text was decoded.
-   * @param {function(string)} callback function that takes the decoded
+   * @param {function(string, w69b.BarcodeFormat)} callback function that takes the decoded
    * string as argument.
    * @export
    */
@@ -397,7 +398,7 @@ goog.scope(function() {
     switch (type) {
       case WorkerMessageType.DECODED:
         opt_value['patterns'].forEach(this.addPattern_, this);
-        this.onDecoded(opt_value['text']);
+        this.onDecoded(opt_value['text'], opt_value['format']);
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.NOTFOUND:
@@ -413,9 +414,10 @@ goog.scope(function() {
   /**
    * Found and decoded barcode.
    * @param {string} text decoded text.
+   * @param {!w69b.BarcodeFormat} format barcode format detected.
    */
-  pro.onDecoded = function(text) {
-    this.decodedCallback_(text);
+  pro.onDecoded = function(text, format) {
+    this.decodedCallback_(text, format);
   };
 
   /**
