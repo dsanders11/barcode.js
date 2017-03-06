@@ -50,7 +50,7 @@ define(function() {
 
   _.setupWorkerUrls = function() {
     w69b.worker.DecodeInWorkerHelper.setWorkerUrl(
-      '/base/dist/w69b.qrcode.decodeworker.js');
+      '/base/dist/w69b.barcode.decodeworker.js');
     w69b.worker.DecodeInWorkerHelper.setIconvUrl(
       '/base/node_modules/iconv.js/iconv.js');
   };

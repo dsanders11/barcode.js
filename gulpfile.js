@@ -137,7 +137,7 @@ gulp.task('watch', ['buildDebug'], function() {
 
 gulp.task('buildDebug:main', ['shader2js'], function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
-  config['js_output_file'] = 'w69b.qrcode.js';
+  config['js_output_file'] = 'w69b.barcode.js';
   config['entry_point'] = 'main';
 
   return gulp.src(PATHS.src.closure)
@@ -149,7 +149,7 @@ gulp.task('buildDebug:main', ['shader2js'], function() {
 
 gulp.task('buildDebug:worker', ['shader2js'], function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
-  config['js_output_file'] = 'w69b.qrcode.decodeworker.js';
+  config['js_output_file'] = 'w69b.barcode.decodeworker.js';
   config['entry_point'] = 'worker';
 
   return gulp.src(PATHS.src.closure)
@@ -163,7 +163,7 @@ gulp.task('buildDebug', ['buildDebug:main', 'buildDebug:worker']);
 
 gulp.task('compile:main', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
-  config['js_output_file'] = 'w69b.qrcode.min.js';
+  config['js_output_file'] = 'w69b.barcode.min.js';
   config['entry_point'] = 'main';
 
   return gulp.src(PATHS.src.closure)
@@ -173,7 +173,7 @@ gulp.task('compile:main', function() {
 
 gulp.task('compile:worker', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
-  config['js_output_file'] = 'w69b.qrcode.decodeworker.min.js';
+  config['js_output_file'] = 'w69b.barcode.decodeworker.min.js';
   config['entry_point'] = 'worker';
 
   return gulp.src(PATHS.src.closure)

@@ -9,7 +9,7 @@
         white-space: pre;
       }
     </style>
-    <script type="text/javascript" src="../dist/w69b.qrcode.min.js"></script>
+    <script type="text/javascript" src="../dist/w69b.barcode.min.js"></script>
   </head>
   <body>
     <h1>Decoding Benchmark</h1>
@@ -113,7 +113,7 @@
           log('WebGL supported: ', w69b.decoding.isWebGlSupported());
           var startBtn = document.getElementById('startBtn');
           w69b.decoding.setWorkerUrl(
-            '../dist/w69b.qrcode.decodeworker.min.js');
+            '../dist/w69b.barcode.decodeworker.min.js');
 
           Promise.all([loadImg(), loadVideo()]).then(function(all) {
             startBtn.removeAttribute('disabled');

@@ -17,13 +17,13 @@
         height: 100%;
       }
     </style>
-    <script type="text/javascript" src="../dist/w69b.qrcode.js"></script>
+    <script type="text/javascript" src="../dist/w69b.barcode.js"></script>
   </head>
   <body>
     <div id="scanner"></div>
     <script type="text/javascript">
       (function() {
-        w69b.decoding.setWorkerUrl('../dist/w69b.qrcode.decodeworker.js');
+        w69b.decoding.setWorkerUrl('../dist/w69b.barcode.decodeworker.js');
         w69b.decoding.setIconvUrl('../libs/iconv.js');
 
         function load() {

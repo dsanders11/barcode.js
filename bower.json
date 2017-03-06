@@ -9,7 +9,7 @@
     "qrcode"
   ],
   "main": [
-    "dist/w69b.qrcode.min.js"
+    "dist/w69b.barcode.min.js"
   ],
   "license": "APACHE-2.0",
   "ignore": [
