@@ -42,6 +42,7 @@ goog.scope(function() {
    * @return {boolean} weather saveAs is supported.
   */
   FileSaver.checkSupport_ = function() {
+    if (!self.document) return false;
     var a = document.createElement('a');
     /** @type {function(*, string=): boolean} */
     var saveBlob = navigator['msSaveBlob'];
