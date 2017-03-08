@@ -46,7 +46,10 @@ var CLOSURE_CONFIG = {
   language_in: 'ECMASCRIPT6_STRICT',
   language_out: 'ECMASCRIPT5_STRICT',
   dependency_mode: 'STRICT',
-  hide_warnings_for: 'node_modules/',
+  hide_warnings_for: [
+    'node_modules/',
+    '[synthetic'
+  ],
   isolation_mode: 'IIFE',
   warning_level: 'VERBOSE',
   jscomp_warning: [
