@@ -50,7 +50,7 @@ goog.scope(function() {
     };
     object.extend(opt, opt_options || {});
     this.capturer_ = new w69b.ui.LocalVideoCapturer();
-    this.worker_ = new w69b.worker.DecodeInWorkerHelper();
+    this.worker_ = new w69b.worker.DecodeInWorkerHelper(opt['formats']);
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();
     this.foundPatterns_ = [];

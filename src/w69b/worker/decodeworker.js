@@ -1,5 +1,6 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.worker.DecodeWorker');
+goog.require('w69b.BarcodeFormat');
 goog.require('w69b.BinaryBitmap');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.ImageDataLuminanceSource');
@@ -41,7 +42,7 @@ goog.scope(function() {
   /**
    * @param {!ImageData} imgdata image to
    * @param {boolean} isBinary
-   * @param {Array=} opt_formats
+   * @param {Array.<w69b.BarcodeFormat>=} opt_formats
    * @param {boolean=} opt_failOnCharset immediately fail on charset error if
    *                                     true, do not try to load iconv. decode.
    */
@@ -71,7 +72,7 @@ goog.scope(function() {
    * Decode barcode from ImageData.
    * @param {!ImageData} imgdata from canvas.
    * @param {boolean} isBinary
-   * @param {Array=} opt_formats
+   * @param {Array.<w69b.BarcodeFormat>=} opt_formats
    * @param {?w69b.ResultPointCallback=} opt_callback callback.
    * @return {w69b.Result} decoded barcode.
    * @throws {w69b.NotFoundException} if nothing found

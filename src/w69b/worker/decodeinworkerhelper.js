@@ -4,6 +4,7 @@ goog.require('goog.math.Size');
 goog.require('goog.net.jsloader');
 goog.require('goog.string');
 goog.require('goog.string.path');
+goog.require('w69b.BarcodeFormat');
 goog.require('w69b.ImageSource');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.NotFoundException');
@@ -22,7 +23,7 @@ goog.scope(function() {
    * Helper class that decodes in worker if available and reasonable
    * and falls back to main thread decoding if not.
    * @constructor
-   * @param {Array=} opt_formats Formats to decode for
+   * @param {Array.<w69b.BarcodeFormat>=} opt_formats Formats to decode for
    */
   w69b.worker.DecodeInWorkerHelper = function(opt_formats) {
     this.callback_ = null;
