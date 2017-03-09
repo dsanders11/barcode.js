@@ -52,8 +52,8 @@ module.exports = function(karma) {
       {pattern: 'test_data/**/*.*', included: false, served: true, watched: true},
       // {pattern: 'tests/**/*.js', included: false, served: true, watched: true},
       {pattern: 'tests/**/*.js', included: false},
-      'dist/w69b.qrcode.js',
-      {pattern: 'dist/w69b.qrcode.decodeworker.*', included: false},
+      'dist/w69b.barcode.js',
+      {pattern: 'dist/w69b.barcode.decodeworker.*', included: false},
       'tests/main-test.js'
     ],
 
