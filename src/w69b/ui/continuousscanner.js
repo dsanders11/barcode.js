@@ -188,6 +188,15 @@ goog.scope(function() {
   pro.stopped_ = false;
 
   /**
+   * Is the scanner currently capturing video
+   * @return {boolean}
+   * @export
+   */
+  pro.isCapturing = function() {
+    return this.capturer_.isCapturing();
+  };
+
+  /**
    * Set callback that is called when a text was decoded.
    * @param {function(string, w69b.BarcodeFormat)} callback function that takes the decoded
    * string as argument.
