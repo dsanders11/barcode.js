@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 goog.provide('w69b.ResultPoint');
+goog.provide('w69b.ResultPointCallback');
 goog.require('w69b.common.detector.MathUtils');
 
 goog.scope(function() {
