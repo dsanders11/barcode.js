@@ -49,7 +49,7 @@ goog.scope(function() {
       'webgl': true
     };
     object.extend(opt, opt_options || {});
-    this.capturer_ = new w69b.ui.LocalVideoCapturer();
+    this.capturer_ = new w69b.ui.LocalVideoCapturer(opt['videoConstraints']);
     this.worker_ = new w69b.worker.DecodeInWorkerHelper(opt['formats']);
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();

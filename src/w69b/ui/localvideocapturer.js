@@ -14,7 +14,7 @@ goog.scope(function() {
    * @extends {goog.Disposable}
    * @export
    */
-  w69b.ui.LocalVideoCapturer = function() {
+  w69b.ui.LocalVideoCapturer = function(constraints) {
     goog.base(this);
     this.backCanvas_ = /** @type {HTMLCanvasElement} */ (
       document.createElement('canvas'));
@@ -25,6 +25,7 @@ goog.scope(function() {
     this.mediaVideo_.setAttribute('autoplay', 'true');
     this.backContext_ = /** @type {CanvasRenderingContext2D} */ (
       this.backCanvas_.getContext('2d'));
+    this.constraints_ = constraints || { 'facingMode': 'environment' };
   };
   var LocalVideoCapturer = w69b.ui.LocalVideoCapturer;
   goog.inherits(LocalVideoCapturer, goog.Disposable);
@@ -73,6 +74,13 @@ goog.scope(function() {
    * @private
    */
   pro.mediaVideo_ = null;
+
+  /**
+   * Constraints to use when calling getUserMedia.
+   * @type {Object}
+   * @private
+   */
+  pro.constraints_ = null;
 
   /**
    * @type {boolean}
@@ -212,29 +220,9 @@ goog.scope(function() {
    */
   pro.getUserMedia = function() {
     var self = this;
-
-    /**
-     * @param {Array.<Object<string, string>>} sources
-     */
-    function gotSources(sources) {
-      var constraint = true;
-      for (let i = 0; i < sources.length; ++i) {
-        let source = sources[i];
-        if (source['kind'] === 'video' && source['facing'] == 'environment') {
-          constraint = {'optional': [{'sourceId': source.id}]};
-          break;
-        }
-      }
-      LocalVideoCapturer.getMedia({'video': constraint},
-        self.onGetMediaSuccess.bind(self),
-        self.onGetMediaError.bind(self));
-    }
-    if (window['MediaStreamTrack'] && window['MediaStreamTrack']['getSources']) {
-      window['MediaStreamTrack']['getSources'](gotSources);
-    }
-    else {
-      gotSources([]);
-    }
+    LocalVideoCapturer.getMedia({'video': self.constraints_},
+      self.onGetMediaSuccess.bind(self),
+      self.onGetMediaError.bind(self));
   };
 
   /**
