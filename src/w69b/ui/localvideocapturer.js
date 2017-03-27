@@ -252,4 +252,7 @@ goog.scope(function() {
       }
     }
   };
+
+  // exports
+  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.dispose', pro.dispose);
 });
