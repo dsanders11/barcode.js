@@ -149,6 +149,25 @@ goog.scope(function() {
   };
 
   /**
+   * Get blob of current frame from local video stream.
+   * Image is scaled down to opt_maxSize if its width or height is larger.
+   * @param {Size} size desired size of image.
+   * @param {string=} format format to capture
+   * @return {!Promise} Resolves to the blob
+   * @export
+   */
+  pro.getBlob = function(size, format = "image/jpeg") {
+    this.drawAndGetCanvas(size);
+    var backCanvas = this.backCanvas_;
+    return new Promise(function(resolve, reject) {
+      backCanvas.toBlob(function(blob) {
+        resolve(blob);
+      }, format);
+    });
+  };
+
+
+  /**
    * Get canvas with current frame from local video stream.
    * Image is scaled down to opt_maxSize if its width or height is larger.
    * @param {Size} size desired size of image.
