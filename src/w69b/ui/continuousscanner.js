@@ -46,7 +46,8 @@ goog.scope(function() {
   w69b.ui.ContinuousScanner = function(opt_options) {
     goog.base(this);
     var opt = {
-      'webgl': true
+      'webgl': true,
+      'maxFPS': 25,
     };
     object.extend(opt, opt_options || {});
     this.capturer_ = new w69b.ui.LocalVideoCapturer(opt['videoConstraints']);
@@ -55,6 +56,7 @@ goog.scope(function() {
     this.worker_.init();
     this.foundPatterns_ = [];
     this.lastFrameTime_ = null;
+    this.timeBetweenFrames_ = 1000/opt['maxFPS'];
     /**
      * Size of visualization.
      * @type {!Size}
@@ -375,9 +377,9 @@ goog.scope(function() {
       window.mozRequestAnimationFrame || window.oRequestAnimationFrame);
     var timeSinceLastFrame = new Date().getTime() - this.lastFrameTime_;
     var waitTime = 0;
-    // Draw at 25 fps max
-    if (timeSinceLastFrame < 40) {
-      waitTime = 40 - timeSinceLastFrame;
+    // Draw at capped FPS
+    if (timeSinceLastFrame < this.timeBetweenFrames_) {
+      waitTime = this.timeBetweenFrames_ - timeSinceLastFrame;
     }
     var updateFunc = null;
     var that = this;
