@@ -220,6 +220,7 @@ goog.scope(function() {
   /**
    * @param {number} width visualization width.
    * @param {number} height visualization height.
+   * @export
    */
   pro.setSize = function(width, height) {
     this.size_.width = width;
