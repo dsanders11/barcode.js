@@ -222,14 +222,12 @@ goog.scope(function() {
     return pipeline;
   };
 
-
   /**
    * @return {!ImageData} image data.
    */
   pro.getImageData = function() {
     return this.filter_.getImageData();
   };
-
 
   /**
    * @param {!(w69b.ImageSource|ImageData)} image image
