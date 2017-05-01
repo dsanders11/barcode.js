@@ -114,9 +114,6 @@ goog.scope(function() {
     return imageData;
   };
 
-  /** @type {Object<string, WebGLBinarizer>} cache of WebGLBinarizer */
-  w69b.imgtools.binarizerCache_ = {};
-
   /**
    * @param {!(w69b.ImageSource|ImageData)} image image to binarize.
    * @param {boolean=} useWebGL should WebGL be used to binarize.
@@ -126,54 +123,55 @@ goog.scope(function() {
    * @return {!ImageData} binary data.
    * @export
    */
-  w69b.imgtools.binarizeImage = function(image, useWebGL = false, opt_maxSize) {
-    if (!(image instanceof ImageData)) {
-      image.style['imageRendering'] = "pixelated";
-    }
-    var imageData = image;
-    if (useWebGL) {
-      if (!WebGLBinarizer.isSupported()) {
-        throw new UnsupportedOperationException("WebGL not supported");
+  w69b.imgtools.binarizeImage = function() {
+    var webGLBinarizer = null;
+
+    return function(image, useWebGL = false, opt_maxSize) {
+      if (!(image instanceof ImageData)) {
+        image.style['imageRendering'] = "pixelated";
       }
-      let width = /** @type {number} */ (image.width || image.videoWidth);
-      let height = /** @type {number} */ (image.height || image.videoHeight);
-      let size = new Size(width, height);
-      if (opt_maxSize) {
-        w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
-      }
-      let binarizerArgs = [size.width, size.height, width, height];
-      let cacheKey = JSON.stringify(binarizerArgs);
-      let binarizer = w69b.imgtools.binarizerCache_[cacheKey];
-      if (!binarizer) {
-        binarizer = new WebGLBinarizer();
-        binarizer.setup(...binarizerArgs);
-        w69b.imgtools.binarizerCache_[cacheKey] = binarizer;
-      }
-      binarizer.render(imageData);
-      return binarizer.getImageData();
-    } else {
-      if (!(imageData instanceof ImageData)) {
-        imageData = w69b.imgtools.getImageData(imageData, opt_maxSize);
-      }
-      let luminanceSource = new ImageDataLuminanceSource(imageData);
-      let binarizer = new w69b.common.HybridBinarizer(luminanceSource);
-      let matrix = binarizer.getBlackMatrix();
-      let width = matrix.getWidth();
-      let height = matrix.getHeight();
-      let data = new Uint8ClampedArray(width * height * 4);
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          let idx = (y * width + x) * 4;
-          let val = matrix.get(x, y) ? 0 : 255;
-          data[idx] = val;
-          data[idx + 1] = val;
-          data[idx + 2] = val;
-          data[idx + 3] = 255;
+      var imageData = image;
+      if (useWebGL) {
+        if (!WebGLBinarizer.isSupported()) {
+          throw new UnsupportedOperationException("WebGL not supported");
         }
+        let width = /** @type {number} */ (image.width || image.videoWidth);
+        let height = /** @type {number} */ (image.height || image.videoHeight);
+        let size = new Size(width, height);
+        if (opt_maxSize) {
+          w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
+        }
+        if (webGLBinarizer === null) {
+          webGLBinarizer = new WebGLBinarizer();
+        }
+        let binarizer = webGLBinarizer;
+        binarizer.setup(size.width, size.height, width, height);
+        binarizer.render(imageData);
+        return binarizer.getImageData();
+      } else {
+        if (!(imageData instanceof ImageData)) {
+          imageData = w69b.imgtools.getImageData(imageData, opt_maxSize);
+        }
+        let luminanceSource = new ImageDataLuminanceSource(imageData);
+        let binarizer = new w69b.common.HybridBinarizer(luminanceSource);
+        let matrix = binarizer.getBlackMatrix();
+        let width = matrix.getWidth();
+        let height = matrix.getHeight();
+        let data = new Uint8ClampedArray(width * height * 4);
+        for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+            let idx = (y * width + x) * 4;
+            let val = matrix.get(x, y) ? 0 : 255;
+            data[idx] = val;
+            data[idx + 1] = val;
+            data[idx + 2] = val;
+            data[idx + 3] = 255;
+          }
+        }
+        return new ImageData(data, width, height);
       }
-      return new ImageData(data, width, height);
-    }
-  };
+    };
+  }();
 
   /**
    * @param {!w69b.common.BitMatrix} matrix the matrix to render
