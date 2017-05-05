@@ -129,10 +129,18 @@ goog.scope(function() {
    * @param {number} num
    */
   pro.createTextures = function(num) {
+    var gl = this.context_;
     var width = this.getWidth();
     var height = this.getHeight();
-    for (let i = 0; i < num; ++i)
+
+    // Delete current textures first
+    for (let texture of this.textures) {
+      gl.deleteTexture(texture);
+    }
+
+    for (let i = 0; i < num; ++i) {
       this.textures[i] = this.createTexture(i, width, height);
+    }
   };
 
   /**
