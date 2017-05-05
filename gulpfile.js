@@ -48,7 +48,9 @@ var CLOSURE_CONFIG = {
   dependency_mode: 'STRICT',
   hide_warnings_for: [
     'node_modules/',
-    '[synthetic'
+    '[synthetic',
+    'spellcheck',
+    'ui'
   ],
   isolation_mode: 'IIFE',
   warning_level: 'VERBOSE',
@@ -80,7 +82,9 @@ var CLOSURE_CONFIG = {
 
 var CLOSURE_DEBUG_CONFIG = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
 delete CLOSURE_DEBUG_CONFIG['isolation_mode'];
-CLOSURE_DEBUG_CONFIG['compilation_level'] = 'SIMPLE';
+CLOSURE_DEBUG_CONFIG['compilation_level'] = 'WHITESPACE_ONLY';
+CLOSURE_DEBUG_CONFIG['force_inject_library'] = ['es6_runtime'];
+CLOSURE_DEBUG_CONFIG['language_out'] = 'ECMASCRIPT5';
 CLOSURE_DEBUG_CONFIG['formatting'] = 'PRETTY_PRINT';
 CLOSURE_DEBUG_CONFIG['output_wrapper'] = 'self.CLOSURE_NO_DEPS = true;\n%output%';
 
