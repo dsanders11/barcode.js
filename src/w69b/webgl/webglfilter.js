@@ -64,8 +64,8 @@ goog.scope(function() {
    */
   pro.context_ = null;
 
-  /** @type {Array.<WebGLTexture>} */
-  pro.textures = null;
+  /** @type {!Array.<WebGLTexture>} */
+  pro.textures = [];
 
   /**
    * @param {number} width canvas width.
