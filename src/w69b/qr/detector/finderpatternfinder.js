@@ -55,7 +55,7 @@ goog.scope(function() {
      */
     this.image_ = image;
     /**
-     * @type {Array.<FinderPattern>}
+     * @type {!Array.<FinderPattern>}
      */
     this.possibleCenters_ = [];
     /**
@@ -870,7 +870,7 @@ goog.scope(function() {
     var diff01 = _.diff(patterns[0], patterns[1]);
     var diff02 = _.diff(patterns[0], patterns[2]);
     var diff12 = _.diff(patterns[1], patterns[2]);
-    /** @type {Array.<number>} */
+    /** @type {!Array.<number>} */
     var scalars = [Math.abs(_.scalarProduct(diff01, diff02)),
       Math.abs(_.scalarProduct(diff01, diff12)),
       Math.abs(_.scalarProduct(diff02, diff12))

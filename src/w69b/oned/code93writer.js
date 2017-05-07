@@ -68,7 +68,7 @@ goog.scope(function() {
     //start character (*)
     toIntArray(Code93Reader.CHARACTER_ENCODINGS[47], widths);
 
-    /** @type {Array.<boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(codeWidth);
     var pos = Code93Writer.appendPattern(result, 0, widths);
 

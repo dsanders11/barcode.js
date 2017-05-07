@@ -107,8 +107,8 @@ goog.scope(function() {
 
     var tryHarder = hints && !!hints[DecodeHintType.TRY_HARDER];
     var formats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
-    /** @type {Array.<Reader>} */
-    var readers = new Array();
+    /** @type {!Array.<Reader>} */
+    var readers = [];
     if (formats !== null) {
       let addOneDReader = Boolean(
           formats.includes(BarcodeFormat.CODE_39) ||

@@ -127,7 +127,7 @@ goog.scope(function() {
     var startRange = this.decodeStart_(row);
     var endRange = this.decodeEnd_(row);
 
-    /** @type {Array.<string>} */
+    /** @type {!Array.<string>} */
     var result = [];
     ITFReader.decodeMiddle_(row, startRange[1], endRange[0], result);
     var resultString = result.join('');
@@ -135,7 +135,7 @@ goog.scope(function() {
     /** @type {Int32Array} */
     var allowedLengths = null;
     if (hints !== null) {
-      allowedLengths = hints[DecodeHintType.ALLOWED_LENGTHS] || null;
+      allowedLengths = /** @type {Int32Array} */ (hints[DecodeHintType.ALLOWED_LENGTHS] || null);
 
     }
     if (allowedLengths === null) {

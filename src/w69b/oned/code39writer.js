@@ -72,7 +72,7 @@ goog.scope(function() {
         codeWidth += width;
       }
     }
-    /** @type {Array.<boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(codeWidth);
     toIntArray(Code39Reader.ASTERISK_ENCODING, widths);
     var pos = OneDimensionalCodeWriter.appendPattern(result, 0, widths, true);

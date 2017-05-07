@@ -124,7 +124,7 @@ goog.scope(function() {
    * not be included.
    *
    * @param {string} contents barcode contents to encode
-   * @return {Array.<boolean>} of horizontal pixels (false = white, true = black)
+   * @return {!Array.<boolean>} of horizontal pixels (false = white, true = black)
    * @abstract
    */
   OneDimensionalCodeWriter.prototype.encodeBoolean = function(contents) { };

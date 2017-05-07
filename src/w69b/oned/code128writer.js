@@ -117,7 +117,7 @@ goog.scope(function() {
       }
     }
 
-    /** @type {Array.<!Int32Array>} */
+    /** @type {!Array.<!Int32Array>} */
     var patterns = []; // temporary storage for patterns
     var checkSum = 0;
     var checkWeight = 1;
@@ -200,7 +200,7 @@ goog.scope(function() {
     }
 
     // Compute result
-    /** @type {Array.<boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(codeWidth);
     var pos = 0;
     for (let pattern of patterns) {
