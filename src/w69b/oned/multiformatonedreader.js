@@ -45,6 +45,7 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.MultiFormatOneDReader = function(hints) {
+    /** @type {Array.<BarcodeFormat>} */
     var possibleFormats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
     var useCode39CheckDigit = Boolean(hints !== null && hints[DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT]);
     /** @type {!Array.<OneDReader>} */
