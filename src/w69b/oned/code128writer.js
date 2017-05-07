@@ -39,35 +39,22 @@ goog.scope(function() {
   goog.inherits(Code128Writer, OneDimensionalCodeWriter);
   var pro = Code128Writer.prototype;
 
-  /** @const {number} */
-  var CODE_START_B = 104;
-  /** @const {number} */
-  var CODE_START_C = 105;
-  /** @const {number} */
-  var CODE_CODE_B = 100;
-  /** @const {number} */
-  var CODE_CODE_C = 99;
-  /** @const {number} */
-  var CODE_STOP = 106;
+  const CODE_START_B = 104;
+  const CODE_START_C = 105;
+  const CODE_CODE_B = 100;
+  const CODE_CODE_C = 99;
+  const CODE_STOP = 106;
 
   // Dummy characters used to specify control characters in input
-  /** @const {string} */
-  var ESCAPE_FNC_1 = '\u00f1';
-  /** @const {string} */
-  var ESCAPE_FNC_2 = '\u00f2';
-  /** @const {string} */
-  var ESCAPE_FNC_3 = '\u00f3';
-  /** @const {string} */
-  var ESCAPE_FNC_4 = '\u00f4';
+  const ESCAPE_FNC_1 = '\u00f1';
+  const ESCAPE_FNC_2 = '\u00f2';
+  const ESCAPE_FNC_3 = '\u00f3';
+  const ESCAPE_FNC_4 = '\u00f4';
 
-  /** @const {number} */
-  var CODE_FNC_1 = 102;   // Code A, Code B, Code C
-  /** @const {number} */
-  var CODE_FNC_2 = 97;    // Code A, Code B
-  /** @const {number} */
-  var CODE_FNC_3 = 96;    // Code A, Code B
-  /** @const {number} */
-  var CODE_FNC_4_B = 100; // Code B
+  const CODE_FNC_1 = 102;   // Code A, Code B, Code C
+  const CODE_FNC_2 = 97;    // Code A, Code B
+  const CODE_FNC_3 = 96;    // Code A, Code B
+  const CODE_FNC_4_B = 100; // Code B
 
   /**
    * Results of minimal lookahead for code C

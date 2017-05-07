@@ -59,48 +59,40 @@ goog.scope(function() {
   var pro = ITFReader.prototype;
 
   /**
-   * @const {number}
    * @private
    */
-  var MAX_AVG_VARIANCE = 0.38;
+  const MAX_AVG_VARIANCE = 0.38;
 
   /**
-   * @const {number}
    * @private
    */
-  var MAX_INDIVIDUAL_VARIANCE = 0.78;
+  const MAX_INDIVIDUAL_VARIANCE = 0.78;
 
   /**
    * Pixel width of a wide line
-   * @const {number}
    * @private
    */
-  var W = 3;
+  const W = 3;
 
   /**
    * Pixed width of a narrow line
-   * @const {number}
    * @private
    */
-  var N = 1;
+  const N = 1;
 
   /**
    * Valid ITF lengths. Anything longer than the largest value is also allowed.
-   * @const {!Int32Array}
    */
-  var DEFAULT_ALLOWED_LENGTHS = Int32Array.of(6, 8, 10, 12, 14);
+  const DEFAULT_ALLOWED_LENGTHS = Int32Array.of(6, 8, 10, 12, 14);
 
   /**
    * Start/end guard pattern.
    *
    * Note: The end pattern is reversed because the row is reversed before
    * searching for the END_PATTERN
-   *
-   * @const {!Int32Array}
    */
-  var START_PATTERN = Int32Array.of(N, N, N, N);
-  /** * @const {!Int32Array} */
-  var END_PATTERN_REVERSED = Int32Array.of(N, N, W);
+  const START_PATTERN = Int32Array.of(N, N, N, N);
+  const END_PATTERN_REVERSED = Int32Array.of(N, N, W);
 
   /**
    * Patterns of Wide / Narrow lines to indicate each digit

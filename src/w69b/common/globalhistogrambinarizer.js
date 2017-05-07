@@ -62,12 +62,9 @@ goog.scope(function() {
   goog.inherits(_, w69b.Binarizer);
   var pro = _.prototype;
 
-  /** @const */
-  var LUMINANCE_BITS = 5;
-  /** @const */
-  var LUMINANCE_SHIFT = 8 - LUMINANCE_BITS;
-  /** @const */
-  var LUMINANCE_BUCKETS = 1 << LUMINANCE_BITS;
+  const LUMINANCE_BITS = 5;
+  const LUMINANCE_SHIFT = 8 - LUMINANCE_BITS;
+  const LUMINANCE_BUCKETS = 1 << LUMINANCE_BITS;
 
   /**
    * Applies simple sharpening to the row data to improve performance of the 1D

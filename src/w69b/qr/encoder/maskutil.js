@@ -33,14 +33,10 @@ goog.scope(function() {
 var _ = w69b.qr.encoder.MaskUtil;
 
   // Penalty weights from section 6.8.2.1
-  /** @const {number} */
-  var N1 = 3;
-  /** @const {number} */
-  var N2 = 3;
-  /** @const {number} */
-  var N3 = 40;
-  /** @const {number} */
-  var N4 = 10;
+  const N1 = 3;
+  const N2 = 3;
+  const N3 = 40;
+  const N4 = 10;
 
   /**
    * Apply mask penalty rule 1 and return the penalty.

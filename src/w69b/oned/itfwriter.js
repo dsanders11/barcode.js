@@ -39,11 +39,8 @@ goog.scope(function() {
   goog.inherits(ITFWriter, OneDimensionalCodeWriter);
   var pro = ITFWriter.prototype;
 
-  /** @const {!Int32Array} */
-  var START_PATTERN = Int32Array.of(1, 1, 1, 1);
-
-  /** @const {!Int32Array} */
-  var END_PATTERN = Int32Array.of(3, 1, 1);
+  const START_PATTERN = Int32Array.of(1, 1, 1, 1);
+  const END_PATTERN = Int32Array.of(3, 1, 1);
 
   /**
    * @override

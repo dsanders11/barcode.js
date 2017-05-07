@@ -60,9 +60,8 @@ goog.scope(function() {
 
   /**
    * The original table is defined in the table 5 of JISX0510:2004 (p.19).
-   * @const {!Int32Array}
    */
-  var ALPHANUMERIC_TABLE = Int32Array.of(
+  const ALPHANUMERIC_TABLE = Int32Array.of(
     // 0x00-0x0f
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     // 0x10-0x1f
@@ -77,8 +76,7 @@ goog.scope(function() {
     25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1, -1, -1, -1, -1
   );
 
-  /** @const {string} */
-  var DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
+  const DEFAULT_BYTE_MODE_ENCODING = 'UTF-8';
 
   /**
    * The mask penalty calculation is complicated.  See Table 21 of

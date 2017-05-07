@@ -78,24 +78,19 @@ goog.scope(function() {
   var _ = w69b.qr.detector.FinderPatternFinder;
   var pro = w69b.qr.detector.FinderPatternFinder.prototype;
 
-  /** @const {number} */
-  var CENTER_QUORUM = 2;
-  /** @const {number} */
-  var MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
-  /** @const {number} */
-  var MAX_MODULES = 57; // support up to version 10 for mobile clients
-  /** @const {number} */
-  var INTEGER_MATH_SHIFT = 8;
+  const CENTER_QUORUM = 2;
+  const MIN_SKIP = 3; // 1 pixel/module times 3 modules/center
+  const MAX_MODULES = 57; // support up to version 10 for mobile clients
+  const INTEGER_MATH_SHIFT = 8;
 
   // Maximum skew error to skip scanning soon.
-  /** @const {number} */
-  var SKEW_THRESHOLD = 0.05;
+  const SKEW_THRESHOLD = 0.05;
 
   /**
    * Precomputed combinations for 3 out of 6.
-   * @const {!Array.<!Array.<!number>>}
+   * @type {!Array.<!Array.<!number>>}
    */
-  var SKEW_COMBINATIONS = [
+  const SKEW_COMBINATIONS = [
     [0, 1, 2],
     [0, 1, 3],
     [0, 1, 4],

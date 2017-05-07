@@ -53,16 +53,15 @@ goog.scope(function() {
 
   /**
    * See ISO 18004:2006, 6.4.4 Table 5
-   * @const {Array.<string>}
+   * @type {Array.<string>}
    */
-  var ALPHANUMERIC_CHARS = [
+  const ALPHANUMERIC_CHARS = [
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B',
     'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     ' ', '$', '%', '*', '+', '-', '.', '/', ':'
   ];
-  /** @const {number} */
-  var GB2312_SUBSET = 1;
+  const GB2312_SUBSET = 1;
 
 
   /**

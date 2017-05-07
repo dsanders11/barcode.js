@@ -71,16 +71,11 @@ goog.scope(function() {
 
   // This class uses 5x5 blocks to compute local luminance, where each block is
   // 8x8 pixels. So this is the smallest dimension in each axis we can accept.
-  /** @const */
-  var BLOCK_SIZE_POWER = 3;
-  /** @const */
-  var BLOCK_SIZE = 1 << BLOCK_SIZE_POWER; // ...0100...00
-  /** @const */
-  var BLOCK_SIZE_MASK = BLOCK_SIZE - 1;   // ...0011...11
-  /** @const */
-  var MINIMUM_DIMENSION = BLOCK_SIZE * 5;
-  /** @const */
-  var MIN_DYNAMIC_RANGE = 24;
+  const BLOCK_SIZE_POWER = 3;
+  const BLOCK_SIZE = 1 << BLOCK_SIZE_POWER; // ...0100...00
+  const BLOCK_SIZE_MASK = BLOCK_SIZE - 1;   // ...0011...11
+  const MINIMUM_DIMENSION = BLOCK_SIZE * 5;
+  const MIN_DYNAMIC_RANGE = 24;
 
 
   /**
@@ -145,10 +140,8 @@ goog.scope(function() {
    */
   _.calculateThresholdForBlock = function(luminances, subWidth, subHeight,
                                           width, height, blackPoints, matrix) {
-    /** @const */
-    var maxYOffset = height - BLOCK_SIZE;
-    /** @const */
-    var maxXOffset = width - BLOCK_SIZE;
+    const maxYOffset = height - BLOCK_SIZE;
+    const maxXOffset = width - BLOCK_SIZE;
     for (let y = 0; y < subHeight; y++) {
       let top = _.cap(y, 2, subHeight - 3);
       let yoffset = y << BLOCK_SIZE_POWER;
@@ -222,10 +215,8 @@ goog.scope(function() {
                                     height) {
     /** @type {Array.<Int32Array>} */
     var blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
-    /** @const */
-    var maxXOffset = width - BLOCK_SIZE;
-    /** @const */
-    var maxYOffset = height - BLOCK_SIZE;
+    const maxXOffset = width - BLOCK_SIZE;
+    const maxYOffset = height - BLOCK_SIZE;
     for (let y = 0; y < subHeight; y++) {
       let yoffset = y << BLOCK_SIZE_POWER;
       if (yoffset > maxYOffset) {

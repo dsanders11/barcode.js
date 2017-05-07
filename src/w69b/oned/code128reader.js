@@ -162,40 +162,25 @@ goog.scope(function() {
     Int32Array.of(2, 3, 3, 1, 1, 1, 2)
   ];
 
-  /** @const {number} */
-  var MAX_AVG_VARIANCE = 0.25;
-  /** @const {number} */
-  var MAX_INDIVIDUAL_VARIANCE = 0.7;
+  const MAX_AVG_VARIANCE = 0.25;
+  const MAX_INDIVIDUAL_VARIANCE = 0.7;
 
-  /** @const {number} */
-  var CODE_SHIFT = 98;
+  const CODE_SHIFT = 98;
 
-  /** @const {number} */
-  var CODE_CODE_C = 99;
-  /** @const {number} */
-  var CODE_CODE_B = 100;
-  /** @const {number} */
-  var CODE_CODE_A = 101;
+  const CODE_CODE_C = 99;
+  const CODE_CODE_B = 100;
+  const CODE_CODE_A = 101;
 
-  /** @const {number} */
-  var CODE_FNC_1 = 102;
-  /** @const {number} */
-  var CODE_FNC_2 = 97;
-  /** @const {number} */
-  var CODE_FNC_3 = 96;
-  /** @const {number} */
-  var CODE_FNC_4_A = 101;
-  /** @const {number} */
-  var CODE_FNC_4_B = 100;
+  const CODE_FNC_1 = 102;
+  const CODE_FNC_2 = 97;
+  const CODE_FNC_3 = 96;
+  const CODE_FNC_4_A = 101;
+  const CODE_FNC_4_B = 100;
 
-  /** @const {number} */
-  var CODE_START_A = 103;
-  /** @const {number} */
-  var CODE_START_B = 104;
-  /** @const {number} */
-  var CODE_START_C = 105;
-  /** @const {number} */
-  var CODE_STOP = 106;
+  const CODE_START_A = 103;
+  const CODE_START_B = 104;
+  const CODE_START_C = 105;
+  const CODE_STOP = 106;
 
   /**
    * @override
