@@ -75,7 +75,6 @@ goog.scope(function() {
    * @param {Int32Array} toEncode data to encode, including pre-allocated
    * space for ecc bytes.
    * @param {number} ecBytes number of ec bytes.
-   * @suppress {checkTypes}
    */
   pro.encode = function(toEncode, ecBytes) {
     if (ecBytes === 0) {

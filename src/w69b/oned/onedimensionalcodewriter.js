@@ -95,7 +95,6 @@ goog.scope(function() {
    * @param {boolean} startColor starting color - false for white, true for black
    * @return {number} the number of elements added to target.
    * @protected
-   * @suppress {checkTypes}
    */
   OneDimensionalCodeWriter.appendPattern = function(target, pos, pattern, startColor) {
     var color = startColor;

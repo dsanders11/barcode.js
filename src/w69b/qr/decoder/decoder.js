@@ -157,7 +157,6 @@ goog.scope(function() {
    * @throws {FormatException}
    * @throws {ChecksumException}
    * @private
-   * @suppress {checkTypes}
    */
   pro.decodeParser_ = function(parser, hints) {
     var version = parser.readVersion();

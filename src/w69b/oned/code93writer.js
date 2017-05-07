@@ -52,7 +52,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.encodeBoolean = function(contents) {
     var length = contents.length;
@@ -119,7 +118,6 @@ goog.scope(function() {
    * @param {!Int32Array} pattern pattern to append
    * @return {number}
    * @private
-   * @suppress {checkTypes}
    */
   Code93Writer.appendPattern = function(target, pos, pattern) {
     for (let bit of pattern) {

@@ -192,7 +192,6 @@ goog.scope(function() {
   /**
    * @param {number} y row to set
    * @param {BitArray} row {@link BitArray} to copy from
-   * @suppress {checkTypes}
    */
   pro.setRow = function(y, row) {
     this.bits.set(row.getBitArray().slice(0, this.rowSize), y * this.rowSize);
@@ -353,7 +352,6 @@ goog.scope(function() {
 
   /**
    * @return {!BitMatrix} cloned matrix
-   * @suppress {checkTypes}
    */
   pro.clone = function() {
     return new BitMatrix(this.width, this.height, this.rowSize, this.bits.slice());

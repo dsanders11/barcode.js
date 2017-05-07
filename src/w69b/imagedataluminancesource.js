@@ -96,7 +96,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.getRow = function(y, row) {
     goog.asserts.assert(Number.isInteger(y));
@@ -124,7 +123,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.getMatrix = function() {
     var width = this.getWidth();

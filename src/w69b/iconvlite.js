@@ -65,7 +65,6 @@ goog.scope(function() {
    * @param {Int8Array} bytes sequence of given charset.
    * @param {string} charset name of charset.
    * @return {string} decoded string.
-   * @suppress {checkTypes}
    */
   _.toString = function(bytes, charset) {
     var chars = _.ASCII + _.SINGLEBYTES[charset];

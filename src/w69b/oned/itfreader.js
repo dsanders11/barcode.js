@@ -121,7 +121,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     // Find out where the Middle section (payload) starts & ends
@@ -178,7 +177,6 @@ goog.scope(function() {
    * @param {number} payloadEnd
    * @param {Array.<string>} resultString string array to add decoded chars to
    * @throws {NotFoundException} if decoding could not complete successfully
-   * @suppress {checkTypes}
    */
   ITFReader.decodeMiddle_ = function(row, payloadStart, payloadEnd, resultString) {
     // Digits are interleaved in pairs - 5 black lines for one digit, and the

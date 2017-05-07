@@ -30,7 +30,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.getBlackRow = function(y, row) {
     var source = this.getLuminanceSource();

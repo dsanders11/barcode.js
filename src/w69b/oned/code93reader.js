@@ -77,7 +77,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     var start = this.findAsteriskPattern_(row);
@@ -184,7 +183,6 @@ goog.scope(function() {
    * @param {!Int32Array} counters
    * @return {number}
    * @private
-   * @suppress {checkTypes}
    */
   function toPattern(counters) {
     var sum = 0;

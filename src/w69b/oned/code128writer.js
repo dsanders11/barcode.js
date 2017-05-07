@@ -93,7 +93,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.encodeBoolean = function(contents) {
     var length = contents.length;

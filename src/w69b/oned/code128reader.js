@@ -199,7 +199,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     var convertFNC1 = hints !== null && !!hints[DecodeHintType.ASSUME_GS1];

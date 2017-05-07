@@ -74,9 +74,6 @@ goog.scope(function() {
   /** @type {Object<number, CharacterSetECI>} */
   CharacterSetECI.valuesToEnum_ = {};
 
-  /**
-   * @suppress {checkTypes}
-   */
   (function() {
     for (let eci in CharacterSetECIEnum) {
       /** @type {!CharacterSetECI} */

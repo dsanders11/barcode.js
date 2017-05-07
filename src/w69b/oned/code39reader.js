@@ -102,7 +102,6 @@ goog.scope(function() {
    * @param {Int32Array} counters
    * @return {number}
    * @private
-   * @suppress {checkTypes}
    */
   Code39Reader.toNarrowWidePattern_ = function(counters) {
     var numCounters = counters.length;
@@ -149,7 +148,6 @@ goog.scope(function() {
 
   /**
    * @override
-   * @suppress {checkTypes}
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     var theCounters = this.counters_;

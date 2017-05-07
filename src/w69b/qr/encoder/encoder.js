@@ -646,7 +646,6 @@ goog.scope(function() {
    * @param {string} content
    * @param {BitArray} bits
    * @param {string} encoding
-   * @suppress {checkTypes}
    */
   _.append8BitBytes = function(content, bits, encoding) {
     var bytes;
