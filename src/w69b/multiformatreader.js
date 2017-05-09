@@ -111,7 +111,9 @@ goog.scope(function() {
     var readers = [];
     if (formats !== null) {
       let addOneDReader = Boolean(
+          formats.includes(BarcodeFormat.CODABAR) ||
           formats.includes(BarcodeFormat.CODE_39) ||
+          formats.includes(BarcodeFormat.CODE_93) ||
           formats.includes(BarcodeFormat.CODE_128) ||
           formats.includes(BarcodeFormat.ITF));
 
