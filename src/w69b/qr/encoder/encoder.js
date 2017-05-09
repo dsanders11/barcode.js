@@ -20,7 +20,7 @@ goog.require('w69b.EncodeHintType');
 goog.require('w69b.WriterException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.CharacterSetECI');
-goog.require('w69b.common.reedsolomon.GF256');
+goog.require('w69b.common.reedsolomon.GenericGF');
 goog.require('w69b.common.reedsolomon.ReedSolomonEncoder');
 goog.require('w69b.common.stringutils');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
@@ -47,6 +47,7 @@ goog.scope(function() {
   var ModeEnum = w69b.qr.decoder.ModeEnum;
   var EncodeHintType = w69b.EncodeHintType;
   var CharacterSetECI = w69b.common.CharacterSetECI;
+  var GenericGF = w69b.common.reedsolomon.GenericGF;
   var ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;
   var stringutils = w69b.common.stringutils;
 
@@ -519,7 +520,7 @@ goog.scope(function() {
     for (let i = 0; i < numDataBytes; i++) {
       toEncode[i] = dataBytes[i] & 0xFF;
     }
-    new ReedSolomonEncoder(w69b.common.reedsolomon.GF256.QR_CODE_FIELD).encode(toEncode,
+    new ReedSolomonEncoder(GenericGF.QR_CODE_FIELD_256).encode(toEncode,
       numEcBytesInBlock);
 
     var ecBytes = new Int8Array(numEcBytesInBlock);

@@ -17,8 +17,10 @@
  */
 
 goog.provide('w69b.common.reedsolomon.ReedSolomonDecoder');
-goog.require('w69b.common.reedsolomon.GF256Poly');
+goog.require('w69b.common.reedsolomon.GenericGF');
+goog.require('w69b.common.reedsolomon.GenericGFPoly');
 goog.require('w69b.common.reedsolomon.ReedSolomonException');
+goog.require('w69b.exceptions.IllegalStateException');
 
 
 /**
@@ -48,89 +50,85 @@ goog.require('w69b.common.reedsolomon.ReedSolomonException');
 
 
 goog.scope(function() {
-  var GF256Poly = w69b.common.reedsolomon.GF256Poly;
+  var GenericGF = w69b.common.reedsolomon.GenericGF;
+  var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
   var ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
+  var IllegalStateException = w69b.exceptions.IllegalStateException;
   /**
    * @constructor
-   * @param {!w69b.common.reedsolomon.GF256} field field.
+   * @param {!GenericGF} field field.
    */
   w69b.common.reedsolomon.ReedSolomonDecoder = function(field) {
-    this.field = field;
+    this.field_ = field;
   };
   var ReedSolomonDecoder = w69b.common.reedsolomon.ReedSolomonDecoder;
   var pro = ReedSolomonDecoder.prototype;
 
   /**
-   * <p>Decodes given set of received codewords, which include both data and
+   * Decodes given set of received codewords, which include both data and
    * error-correction codewords.
    * Really, this means it uses Reed-Solomon to detect and correct  errors,
-   * in-place, in the input.</p>
+   * in-place, in the input.
    *
-   * @param {Int32Array} received data and error-correction codewords.
+   * @param {!Int32Array} received data and error-correction codewords.
    * @param {number} twoS number of error-correction codewords available.
+   * @throws {ReedSolomonException}
    */
   pro.decode = function(received, twoS) {
-    var poly = new GF256Poly(this.field, received);
+    var poly = new GenericGFPoly(this.field_, received);
     var syndromeCoefficients = new Int32Array(twoS);
-    var dataMatrix = false;//this.field.Equals(GF256.DATA_MATRIX_FIELD);
     var noError = true;
     for (let i = 0; i < twoS; i++) {
-      // Thanks to sanfordsquires for this fix:
-      let val = poly.evaluateAt(this.field.exp(dataMatrix ? i + 1 : i));
-      syndromeCoefficients[syndromeCoefficients.length - 1 - i] = val;
-      if (val !== 0) {
+      let eval = poly.evaluateAt(this.field_.exp(i + this.field_.getGeneratorBase()));
+      syndromeCoefficients[syndromeCoefficients.length - 1 - i] = eval;
+      if (eval != 0) {
         noError = false;
       }
     }
     if (noError) {
       return;
     }
-    var syndrome = new GF256Poly(this.field, syndromeCoefficients);
-    var sigmaOmega = this.runEuclideanAlgorithm(this.field.buildMonomial(twoS,
+    var syndrome = new GenericGFPoly(this.field_, syndromeCoefficients);
+    var sigmaOmega = this.runEuclideanAlgorithm(this.field_.buildMonomial(twoS,
       1), syndrome, twoS);
     var sigma = sigmaOmega[0];
     var omega = sigmaOmega[1];
     var errorLocations = this.findErrorLocations(sigma);
-    var errorMagnitudes = this.findErrorMagnitudes(omega, errorLocations,
-      dataMatrix);
+    var errorMagnitudes = this.findErrorMagnitudes(omega, errorLocations);
     for (let i = 0; i < errorLocations.length; i++) {
-      let position = received.length - 1 - this.field.log(errorLocations[i]);
+      let position = received.length - 1 - this.field_.log(errorLocations[i]);
       if (position < 0) {
-        throw new ReedSolomonException('bad error location');
+        throw new ReedSolomonException('Bad error location');
       }
-      received[position] = GF256Poly.addOrSubtractScalar(received[position],
-        errorMagnitudes[i]);
+      received[position] = GenericGF.addOrSubtract(received[position], errorMagnitudes[i]);
     }
   };
 
   /**
-   * @param {GF256Poly} a
-   * @param {GF256Poly} b
+   * @param {!GenericGFPoly} a
+   * @param {!GenericGFPoly} b
    * @param {number} R
-   * @return {Array.<GF256Poly>}
+   * @return {!Array.<!GenericGFPoly>}
+   * @throws {ReedSolomonException}
    */
   pro.runEuclideanAlgorithm = function(a, b, R) {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {
-      var temp = a;
+      let temp = a;
       a = b;
       b = temp;
     }
 
     var rLast = a;
     var r = b;
-    var sLast = this.field.one;
-    var s = this.field.zero;
-    var tLast = this.field.zero;
-    var t = this.field.one;
+    var tLast = this.field_.getZero();
+    var t = this.field_.getOne();
 
     // Run Euclidean algorithm until r's degree is less than R/2
     while (r.getDegree() >= R >> 1) {
       let rLastLast = rLast;
-      let sLastLast = sLast;
       let tLastLast = tLast;
       rLast = r;
-      sLast = s;
       tLast = t;
 
       // Divide rLastLast by rLast, with quotient in q and remainder in r
@@ -139,20 +137,21 @@ goog.scope(function() {
         throw new ReedSolomonException('r_{i-1} was zero');
       }
       r = rLastLast;
-      let q = this.field.zero;
+      let q = this.field_.getZero();
       let denominatorLeadingTerm = rLast.getCoefficient(rLast.getDegree());
-      let dltInverse = this.field.inverse(denominatorLeadingTerm);
+      let dltInverse = this.field_.inverse(denominatorLeadingTerm);
       while (r.getDegree() >= rLast.getDegree() && !r.isZero()) {
         let degreeDiff = r.getDegree() - rLast.getDegree();
-        let scale = this.field.multiply(r.getCoefficient(r.getDegree()),
-          dltInverse);
-        q = q.addOrSubtract(this.field.buildMonomial(degreeDiff, scale));
+        let scale = this.field_.multiply(r.getCoefficient(r.getDegree()), dltInverse);
+        q = q.addOrSubtract(this.field_.buildMonomial(degreeDiff, scale));
         r = r.addOrSubtract(rLast.multiplyByMonomial(degreeDiff, scale));
-        //r.EXE();
       }
 
-      s = q.multiply1(sLast).addOrSubtract(sLastLast);
       t = q.multiply1(tLast).addOrSubtract(tLastLast);
+
+      if (r.getDegree() >= rLast.getDegree()) {
+        throw new IllegalStateException('Division algorithm failed to reduce polynomial?');
+      }
     }
 
     var sigmaTildeAtZero = t.getCoefficient(0);
@@ -160,15 +159,16 @@ goog.scope(function() {
       throw new ReedSolomonException('sigmaTilde(0) was zero');
     }
 
-    var inverse = this.field.inverse(sigmaTildeAtZero);
+    var inverse = this.field_.inverse(sigmaTildeAtZero);
     var sigma = t.multiply2(inverse);
     var omega = r.multiply2(inverse);
-    return new Array(sigma, omega);
+    return [sigma, omega];
   };
 
   /**
-   * @param {GF256Poly} errorLocator
+   * @param {!GenericGFPoly} errorLocator
    * @return {!Int32Array}
+   * @throws {ReedSolomonException}
    */
   pro.findErrorLocations = function(errorLocator) {
     // This is a direct application of Chien's search
@@ -178,9 +178,9 @@ goog.scope(function() {
     }
     var result = new Int32Array(numErrors);
     var e = 0;
-    for (let i = 1; i < 256 && e < numErrors; i++) {
-      if (errorLocator.evaluateAt(i) === 0) {
-        result[e] = this.field.inverse(i);
+    for (let i = 1; i < this.field_.getSize() && e < numErrors; i++) {
+      if (errorLocator.evaluateAt(i) == 0) {
+        result[e] = this.field_.inverse(i);
         e++;
       }
     }
@@ -192,32 +192,36 @@ goog.scope(function() {
   };
 
   /**
-   * @param {GF256Poly} errorEvaluator
-   * @param {Int32Array} errorLocations
-   * @param {boolean} dataMatrix
-   * @return {Int32Array}
+   * @param {!GenericGFPoly} errorEvaluator
+   * @param {!Int32Array} errorLocations
+   * @return {!Int32Array}
    */
-  pro.findErrorMagnitudes = function(errorEvaluator, errorLocations, dataMatrix) {
-      // This is directly applying Forney's Formula
-      var s = errorLocations.length;
-      var result = new Int32Array(s);
-      for (let i = 0; i < s; i++) {
-        let xiInverse = this.field.inverse(errorLocations[i]);
-        let denominator = 1;
-        for (let j = 0; j < s; j++) {
-          if (i !== j) {
-            denominator =
-              this.field.multiply(denominator, GF256Poly.addOrSubtractScalar(1,
-                this.field.multiply(errorLocations[j], xiInverse)));
-          }
-        }
-        result[i] = this.field.multiply(errorEvaluator.evaluateAt(xiInverse),
-          this.field.inverse(denominator));
-        // Thanks to sanfordsquires for this fix:
-        if (dataMatrix) {
-          result[i] = this.field.multiply(result[i], xiInverse);
+  pro.findErrorMagnitudes = function(errorEvaluator, errorLocations) {
+    var field = this.field_;
+
+    // This is directly applying Forney's Formula
+    var s = errorLocations.length;
+    var result = new Int32Array(s);
+    for (let i = 0; i < s; i++) {
+      let xiInverse = field.inverse(errorLocations[i]);
+      let denominator = 1;
+      for (let j = 0; j < s; j++) {
+        if (i !== j) {
+          //denominator = field.multiply(denominator,
+          //    GenericGF.addOrSubtract(1, field.multiply(errorLocations[j], xiInverse)));
+          // Above should work but fails on some Apple and Linux JDKs due to a Hotspot bug.
+          // Below is a funny-looking workaround from Steven Parkes
+          let term = field.multiply(errorLocations[j], xiInverse);
+          let termPlus1 = (term & 0x1) === 0 ? term | 1 : term & ~1;
+          denominator = field.multiply(denominator, termPlus1);
         }
       }
-      return result;
-    };
+      result[i] = field.multiply(errorEvaluator.evaluateAt(xiInverse),
+          field.inverse(denominator));
+      if (field.getGeneratorBase() !== 0) {
+        result[i] = field.multiply(result[i], xiInverse);
+      }
+    }
+    return result;
+  };
 });

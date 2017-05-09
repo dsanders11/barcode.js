@@ -27,11 +27,22 @@ goog.scope(function() {
   };
 
   /**
-   * @param {string} str string to append
+   * @param {(string|number)} value value to append
    * @return {!StringBuilder}
    */
-  pro.append = function(str) {
-    this.string_ += str;
+  pro.append = function(value) {
+    this.string_ += value;
+    return this;
+  };
+
+  /**
+   * @param {number} index
+   * @param {string} str
+   * @return {!StringBuilder}
+   */
+  pro.insert = function(index, str) {
+    this.string_ = this.string_.slice(0, index) + str + this.string_.slice(index + 1);
+
     return this;
   };
 

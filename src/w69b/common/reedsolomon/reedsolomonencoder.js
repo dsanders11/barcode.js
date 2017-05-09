@@ -16,54 +16,47 @@
  */
 
 goog.provide('w69b.common.reedsolomon.ReedSolomonEncoder');
-goog.require('w69b.common.reedsolomon.GF256');
-goog.require('w69b.common.reedsolomon.GF256Poly');
+goog.require('w69b.common.reedsolomon.GenericGF');
+goog.require('w69b.common.reedsolomon.GenericGFPoly');
 goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var GF256 = w69b.common.reedsolomon.GF256;
-  var GF256Poly = w69b.common.reedsolomon.GF256Poly;
+  var GenericGF = w69b.common.reedsolomon.GenericGF;
+  var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
-   * <p>Implements Reed-Solomon enbcoding, as the name implies.</p>
-   *
-   * @author Sean Owen
-   * @author William Rucklidge
-   * @author mb@w69b.com (Mahuel Braun) ported to js.
-   */
-
-  /**
-   *
-   * @param {!GF256} field to use.
+   * Implements Reed-Solomon enbcoding, as the name implies.
+   * @param {!GenericGF} field to use.
    * @constructor
    */
   w69b.common.reedsolomon.ReedSolomonEncoder = function(field) {
     /**
      * @private
-     * @type {!GF256}
+     * @type {!GenericGF}
      */
     this.field_ = field;
     /**
      * @private
-     * @type {Array.<!GF256Poly>}
+     * @type {Array.<!GenericGFPoly>}
      */
-    this.cachedGenerators_ = [new GF256Poly(field, Int32Array.of(1))];
+    this.cachedGenerators_ = [new GenericGFPoly(field, Int32Array.of(1))];
   };
   var pro = w69b.common.reedsolomon.ReedSolomonEncoder.prototype;
 
   /**
    * @param {number} degree degree.
-   * @return {!GF256Poly} generator.
+   * @return {!GenericGFPoly} generator.
    */
-  pro.buildGenerator = function(degree) {
+  pro.buildGenerator_ = function(degree) {
+    var field = this.field_;
     var cachedGenerators = this.cachedGenerators_;
     if (degree >= cachedGenerators.length) {
       let lastGenerator = cachedGenerators[cachedGenerators.length - 1];
       for (let d = cachedGenerators.length; d <= degree; d++) {
         let nextGenerator = lastGenerator.multiply1(
-          new GF256Poly(this.field_, Int32Array.of(1, this.field_.exp(d - 1))));
+            new GenericGFPoly(field, Int32Array.of(1, field.exp(d - 1 + field.getGeneratorBase()))));
         cachedGenerators.push(nextGenerator);
         lastGenerator = nextGenerator;
       }
@@ -72,7 +65,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Int32Array} toEncode data to encode, including pre-allocated
+   * @param {!Int32Array} toEncode data to encode, including pre-allocated
    * space for ecc bytes.
    * @param {number} ecBytes number of ec bytes.
    */
@@ -84,21 +77,16 @@ goog.scope(function() {
     if (dataBytes <= 0) {
       throw new IllegalArgumentException('No data bytes provided');
     }
-    var generator = this.buildGenerator(ecBytes);
+    var generator = this.buildGenerator_(ecBytes);
     var infoCoefficients = toEncode.slice(0, dataBytes);
-    var info = new GF256Poly(this.field_, infoCoefficients);
+    var info = new GenericGFPoly(this.field_, infoCoefficients);
     info = info.multiplyByMonomial(ecBytes, 1);
     var remainder = info.divide(generator)[1];
-    var coefficients = remainder.coefficients;
+    var coefficients = remainder.getCoefficients();
     var numZeroCoefficients = ecBytes - coefficients.length;
     for (let i = 0; i < numZeroCoefficients; i++) {
       toEncode[dataBytes + i] = 0;
     }
-    for (let i = 0; i < coefficients.length; ++i) {
-      toEncode[dataBytes + numZeroCoefficients + i] = coefficients[i];
-    }
-    // System.arraycopy(coefficients, 0, toEncode,
-    //   dataBytes + numZeroCoefficients, coefficients.length);
+    toEncode.set(coefficients, dataBytes + numZeroCoefficients);
   };
-
 });

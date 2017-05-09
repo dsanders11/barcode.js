@@ -21,7 +21,7 @@ goog.require('w69b.ChecksumException');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.FormatException');
 goog.require('w69b.common.DecoderResult');
-goog.require('w69b.common.reedsolomon.GF256');
+goog.require('w69b.common.reedsolomon.GenericGF');
 goog.require('w69b.common.reedsolomon.ReedSolomonDecoder');
 goog.require('w69b.common.reedsolomon.ReedSolomonException');
 goog.require('w69b.qr.decoder.BitMatrixParser');
@@ -35,7 +35,7 @@ goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
   var FormatException = w69b.FormatException;
   var DecoderResult = w69b.common.DecoderResult;
-  var GF256 = w69b.common.reedsolomon.GF256;
+  var GenericGF = w69b.common.reedsolomon.GenericGF;
   var ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
   var BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
   var DataBlock = w69b.qr.decoder.DataBlock;
@@ -49,7 +49,7 @@ goog.scope(function() {
    * @final
    */
   w69b.qr.decoder.Decoder = function() {
-    this.rsDecoder_ = new w69b.common.reedsolomon.ReedSolomonDecoder(GF256.QR_CODE_FIELD);
+    this.rsDecoder_ = new w69b.common.reedsolomon.ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
   };
   var Decoder = w69b.qr.decoder.Decoder;
   var pro = Decoder.prototype;
