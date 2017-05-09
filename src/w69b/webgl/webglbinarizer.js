@@ -2,7 +2,6 @@
 
 goog.provide('w69b.webgl.WebGLBinarizer');
 goog.require('goog.math.Size');
-goog.require('w69b.ImageSource');
 goog.require('w69b.webgl.WebGLFilter');
 goog.require('w69b.webgl.WebGLParams');
 goog.require('w69b.webgl.WebGLPipeline');
@@ -230,7 +229,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(w69b.ImageSource|ImageData)} image image
+   * @param {!(CanvasImageSource|ImageData)} image image
    * to render.
    */
   pro.render = function(image) {

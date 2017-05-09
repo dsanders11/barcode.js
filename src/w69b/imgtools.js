@@ -4,7 +4,6 @@ goog.require('goog.asserts');
 goog.require('goog.crypt.base64');
 goog.require('goog.math.Size');
 goog.require('w69b.ImageDataLuminanceSource');
-goog.require('w69b.ImageSource');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.HybridBinarizer');
 goog.require('w69b.exceptions.UnsupportedOperationException');
@@ -88,7 +87,7 @@ goog.scope(function() {
    * Get Image data of given Image object. Same origin policy applies to
    * image src. Image has to be loaded. Image is scaled down to opt_maxSize if
    * its width or height is larger. Will be grayscaled if browser supports it.
-   * @param {!w69b.ImageSource} img image.
+   * @param {!CanvasImageSource} img image.
    * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or Size object
    * that img data should cover (cropping bottom-right corners).
    * @return {!ImageData} image data.
@@ -115,7 +114,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(w69b.ImageSource|ImageData)} image image to binarize.
+   * @param {!(CanvasImageSource|ImageData)} image image to binarize.
    * @param {boolean=} useWebGL should WebGL be used to binarize.
    * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or
    *                                     Size object that img data should cover
