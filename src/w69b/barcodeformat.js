@@ -23,6 +23,7 @@ goog.provide('w69b.BarcodeFormat');
  * @enum {number}
  */
 w69b.BarcodeFormat = {
+  CODABAR: 0,
   CODE_39: 1,
   CODE_93: 2,
   CODE_128: 3,
@@ -30,6 +31,7 @@ w69b.BarcodeFormat = {
   QR_CODE: 5
 };
 
+goog.exportSymbol('w69b.BarcodeFormat.CODABAR', w69b.BarcodeFormat.CODABAR);
 goog.exportSymbol('w69b.BarcodeFormat.CODE_39', w69b.BarcodeFormat.CODE_39);
 goog.exportSymbol('w69b.BarcodeFormat.CODE_93', w69b.BarcodeFormat.CODE_93);
 goog.exportSymbol('w69b.BarcodeFormat.CODE_128', w69b.BarcodeFormat.CODE_128);

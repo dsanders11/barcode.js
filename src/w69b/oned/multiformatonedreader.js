@@ -20,6 +20,7 @@ goog.require('w69b.BarcodeFormat');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.ReaderException');
+goog.require('w69b.oned.CodaBarReader');
 goog.require('w69b.oned.Code128Reader');
 goog.require('w69b.oned.Code39Reader');
 goog.require('w69b.oned.Code93Reader');
@@ -32,6 +33,7 @@ goog.scope(function() {
   var DecodeHintType = w69b.DecodeHintType;
   var NotFoundException = w69b.NotFoundException;
   var ReaderException = w69b.ReaderException;
+  var CodaBarReader = w69b.oned.CodaBarReader;
   var Code128Reader = w69b.oned.Code128Reader;
   var Code39Reader = w69b.oned.Code39Reader;
   var Code93Reader = w69b.oned.Code93Reader;
@@ -64,9 +66,13 @@ goog.scope(function() {
       if (possibleFormats.includes(BarcodeFormat.ITF)) {
         readers.push(new ITFReader());
       }
+      if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
+         readers.push(new CodaBarReader());
+      }
     }
     if (readers.length === 0) {
       readers.push(new Code39Reader());
+      readers.push(new CodaBarReader());
       readers.push(new Code93Reader());
       readers.push(new Code128Reader());
       readers.push(new ITFReader());

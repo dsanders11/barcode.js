@@ -19,6 +19,7 @@ goog.provide('w69b.MultiFormatWriter');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Writer');
+goog.require('w69b.oned.CodaBarWriter');
 goog.require('w69b.oned.Code128Writer');
 goog.require('w69b.oned.Code39Writer');
 goog.require('w69b.oned.Code93Writer');
@@ -29,6 +30,7 @@ goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
   var NotFoundException = w69b.NotFoundException;
   var Writer = w69b.Writer;
+  var CodaBarWriter = w69b.oned.CodaBarWriter;
   var Code39Writer = w69b.oned.Code39Writer;
   var Code128Writer = w69b.oned.Code128Writer;
   var Code93Writer = w69b.oned.Code93Writer;
@@ -67,6 +69,9 @@ goog.scope(function() {
         break;
       case BarcodeFormat.ITF:
         writer = new ITFWriter();
+        break;
+      case BarcodeFormat.CODABAR:
+        writer = new CodaBarWriter();
         break;
       default:
         throw new NotFoundException("No encoder available for format " + format);
