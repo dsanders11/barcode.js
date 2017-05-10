@@ -42,17 +42,81 @@ goog.scope(function() {
     if (opt_rowSize) {
       this.rowSize = opt_rowSize;
     } else {
-      var rowSize = width >> 5;
+      let rowSize = width >> 5;
       if ((width & 0x1f) !== 0) {
         rowSize++;
       }
       this.rowSize = rowSize;
     }
-    this.bits = opt_bits ? opt_bits : new Int32Array(rowSize * height);
+    this.bits = opt_bits ? opt_bits : new Int32Array(this.rowSize * height);
   };
 
   var BitMatrix = w69b.common.BitMatrix;
   var pro = BitMatrix.prototype;
+
+  /**
+   * @param {string} stringRepresentation
+   * @param {string} setString
+   * @param {string} unsetString
+   * @return {!BitMatrix}
+   */
+  BitMatrix.parse = function(stringRepresentation, setString, unsetString) {
+    if (stringRepresentation === null) {
+      throw new IllegalArgumentException();
+    }
+
+    /** @type {!Array.<!boolean>} */
+    var bits = new Array(stringRepresentation.length);
+    var bitsPos = 0;
+    var rowStartPos = 0;
+    var rowLength = -1;
+    var nRows = 0;
+    var pos = 0;
+    while (pos < stringRepresentation.length) {
+      if (stringRepresentation.charAt(pos) === '\n' ||
+          stringRepresentation.charAt(pos) === '\r') {
+        if (bitsPos > rowStartPos) {
+          if (rowLength === -1) {
+            rowLength = bitsPos - rowStartPos;
+          } else if (bitsPos - rowStartPos !== rowLength) {
+            throw new IllegalArgumentException("row lengths do not match");
+          }
+          rowStartPos = bitsPos;
+          nRows++;
+        }
+        pos++;
+      } else if (stringRepresentation.substring(pos, pos + setString.length) === setString) {
+        pos += setString.length;
+        bits[bitsPos] = true;
+        bitsPos++;
+      } else if (stringRepresentation.substring(pos, pos + unsetString.length) === unsetString) {
+        pos += unsetString.length;
+        bits[bitsPos] = false;
+        bitsPos++;
+      } else {
+        throw new IllegalArgumentException(
+            "illegal character encountered: " + stringRepresentation.substring(pos));
+      }
+    }
+
+    // no EOL at end?
+    if (bitsPos > rowStartPos) {
+      if (rowLength === -1) {
+        rowLength = bitsPos - rowStartPos;
+      } else if (bitsPos - rowStartPos !== rowLength) {
+        throw new IllegalArgumentException("row lengths do not match");
+      }
+      nRows++;
+    }
+
+    var matrix = new BitMatrix(rowLength, nRows);
+    for (let i = 0; i < bitsPos; i++) {
+      if (bits[i]) {
+        matrix.set(i % rowLength, Math.floor(i / rowLength));
+      }
+    }
+    return matrix;
+  };
 
   /**
    * @param {number} x x pos.
@@ -63,7 +127,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(x));
     goog.asserts.assert(Number.isInteger(y));
 
-    var offset = y * this.rowSize + (x >> 5);
+    const offset = y * this.rowSize + (x >> 5);
     return ((this.bits[offset] >> (x & 0x1f)) & 1) !== 0;
   };
 
@@ -76,7 +140,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(x));
     goog.asserts.assert(Number.isInteger(y));
 
-    var offset = y * this.rowSize + (x >> 5);
+    const offset = y * this.rowSize + (x >> 5);
     this.bits[offset] |= 1 << (x & 0x1f);
   };
 
@@ -89,7 +153,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(x));
     goog.asserts.assert(Number.isInteger(y));
 
-    var offset = y * this.rowSize + (x >> 5);
+    const offset = y * this.rowSize + (x >> 5);
     this.bits[offset] &= ~(1 << (x & 0x1f));
   };
 
@@ -102,7 +166,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(x));
     goog.asserts.assert(Number.isInteger(y));
 
-    var offset = y * this.rowSize + (x >> 5);
+    const offset = y * this.rowSize + (x >> 5);
     this.bits[offset] ^= 1 << (x & 0x1f);
   };
 
@@ -154,13 +218,13 @@ goog.scope(function() {
     if (height < 1 || width < 1) {
       throw new IllegalArgumentException("Height and width must be at least 1");
     }
-    var right = left + width;
-    var bottom = top + height;
+    const right = left + width;
+    const bottom = top + height;
     if (bottom > this.height || right > this.width) {
       throw new IllegalArgumentException("The region must fit inside the matrix");
     }
     for (let y = top; y < bottom; y++) {
-      var offset = y * this.rowSize;
+      const offset = y * this.rowSize;
       for (let x = left; x < right; x++) {
         this.bits[offset + (x >> 5)] |= 1 << (x & 0x1f);
       }
@@ -338,12 +402,15 @@ goog.scope(function() {
 
   /**
    * @override
+   * @param {string=} setString representation of a set bit
+   * @param {string=} unsetString representation of an unset bit
+   * @return {string} representation of entire matrix utilizing given strings
    */
-  pro.toString = function() {
+  pro.toString = function(setString = 'X ', unsetString = '  ') {
     var result = [];
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        result.push(this.get(x, y) ? 'X ' : '  ');
+        result.push(this.get(x, y) ? setString : unsetString);
       }
       result.push('\n');
     }

@@ -169,6 +169,34 @@ define(['chai'], function(chai) {
       testRotate180(8, 5);
     });
 
+    it('testParse', function() {
+      var emptyMatrix = new BitMatrix(3, 3);
+      var fullMatrix = new BitMatrix(3, 3);
+      fullMatrix.setRegion(0, 0, 3, 3);
+      var centerMatrix = new BitMatrix(3, 3);
+      centerMatrix.setRegion(1, 1, 1, 1);
+      var emptyMatrix24 = new BitMatrix(2, 4);
+
+      assert.deepEqual(emptyMatrix, BitMatrix.parse("   \n   \n   \n", "x", " "));
+      assert.deepEqual(emptyMatrix, BitMatrix.parse("   \n   \r\r\n   \n\r", "x", " "));
+      assert.deepEqual(emptyMatrix, BitMatrix.parse("   \n   \n   ", "x", " "));
+
+      assert.deepEqual(fullMatrix, BitMatrix.parse("xxx\nxxx\nxxx\n", "x", " "));
+
+      assert.deepEqual(centerMatrix, BitMatrix.parse("   \n x \n   \n", "x", " "));
+      assert.deepEqual(centerMatrix, BitMatrix.parse("      \n  x   \n      \n", "x ", "  "));
+      try {
+        assert.deepEqual(centerMatrix, BitMatrix.parse("   \n xy\n   \n", "x", " "));
+        assert.fail(true, false);
+      } catch (/*IllegalArgumentException*/ ex) {
+        // good
+      }
+
+      assert.deepEqual(emptyMatrix24, BitMatrix.parse("  \n  \n  \n  \n", "x", " "));
+
+      assert.deepEqual(centerMatrix, BitMatrix.parse(centerMatrix.toString("x", "."), "x", "."));
+    });
+
     it('testUnset', function() {
       var emptyMatrix = new BitMatrix(3, 3);
       var matrix = emptyMatrix.clone();
@@ -208,14 +236,14 @@ define(['chai'], function(chai) {
 
       try {
         emptyMatrix.clone().xor(badMatrix);
-        fail();
+        assert.fail(true, false);
       } catch (err) {
         // good
       }
 
       try {
         badMatrix.clone().xor(emptyMatrix);
-        fail();
+        assert.fail(true, false);
       } catch (err) {
         // good
       }
