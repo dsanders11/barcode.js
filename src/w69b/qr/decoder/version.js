@@ -20,6 +20,7 @@ goog.provide('w69b.qr.decoder.ECB');
 goog.provide('w69b.qr.decoder.ECBlocks');
 goog.provide('w69b.qr.decoder.Version');
 goog.require('w69b.FormatException');
+goog.require('w69b.Integer');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
@@ -28,6 +29,7 @@ goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 goog.scope(function() {
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   var FormatException = w69b.FormatException;
+  var Integer = w69b.Integer;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var BitMatrix = w69b.common.BitMatrix;
 
@@ -449,7 +451,7 @@ goog.scope(function() {
    * @return {Version}
    */
   Version.decodeVersionInformation = function(versionBits) {
-    var bestDifference = 0xffffffff;
+    var bestDifference = Integer.MAX_VALUE;
     var bestVersion = 0;
     for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
       let targetVersion = Version.VERSION_DECODE_INFO[i];

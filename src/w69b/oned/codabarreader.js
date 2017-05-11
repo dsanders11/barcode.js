@@ -18,6 +18,7 @@
 goog.provide('w69b.oned.CodaBarReader');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.DecodeHintType');
+goog.require('w69b.Integer');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Result');
 goog.require('w69b.ResultPoint');
@@ -29,6 +30,7 @@ goog.require('w69b.oned.OneDReader');
 goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
   var DecodeHintType = w69b.DecodeHintType;
+  var Integer = w69b.Integer;
   var NotFoundException = w69b.NotFoundException;
   var Result = w69b.Result;
   var ResultPoint = w69b.ResultPoint;
@@ -329,7 +331,7 @@ goog.scope(function() {
     var theCounters = counters;
 
     var maxBar = 0;
-    var minBar = Number.MAX_VALUE;
+    var minBar = Integer.MAX_VALUE;
     for (let j = position; j < end; j += 2) {
       let currentCounter = theCounters[j];
       if (currentCounter < minBar) {
@@ -342,7 +344,7 @@ goog.scope(function() {
     var thresholdBar = (minBar + maxBar) >> 1;
 
     var maxSpace = 0;
-    var minSpace = Number.MAX_VALUE;
+    var minSpace = Integer.MAX_VALUE;
     for (let j = position + 1; j < end; j += 2) {
       let currentCounter = theCounters[j];
       if (currentCounter < minSpace) {

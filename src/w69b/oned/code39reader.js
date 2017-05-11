@@ -19,6 +19,7 @@ goog.provide('w69b.oned.Code39Reader');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.ChecksumException');
 goog.require('w69b.FormatException');
+goog.require('w69b.Integer');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Result');
 goog.require('w69b.ResultPoint');
@@ -30,6 +31,7 @@ goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
   var ChecksumException = w69b.ChecksumException;
   var FormatException = w69b.FormatException;
+  var Integer = w69b.Integer;
   var NotFoundException = w69b.NotFoundException;
   var Result = w69b.Result;
   var ResultPoint = w69b.ResultPoint;
@@ -108,7 +110,7 @@ goog.scope(function() {
     var maxNarrowCounter = 0;
     var wideCounters;
     do {
-      let minCounter = Number.MAX_VALUE;
+      let minCounter = Integer.MAX_VALUE;
       for (let counter of counters) {
         if (counter < minCounter && counter > maxNarrowCounter) {
           minCounter = counter;

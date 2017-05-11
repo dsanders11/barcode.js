@@ -17,6 +17,7 @@
 
 goog.provide('w69b.oned.OneDimensionalCodeWriter');
 goog.require('w69b.EncodeHintType');
+goog.require('w69b.Integer');
 goog.require('w69b.Writer');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.exceptions.IllegalArgumentException');
@@ -24,6 +25,7 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 goog.scope(function() {
   var EncodeHintType = w69b.EncodeHintType;
+  var Integer = w69b.Integer;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var Writer = w69b.Writer;
   var BitMatrix = w69b.common.BitMatrix;
@@ -54,7 +56,7 @@ goog.scope(function() {
 
     var sidesMargin = this.getDefaultMargin();
     if (opt_hints && !!opt_hints[EncodeHintType.MARGIN]) {
-      sidesMargin = parseInt(opt_hints[EncodeHintType.MARGIN], 10);
+      sidesMargin = Integer.parseInt(opt_hints[EncodeHintType.MARGIN]);
     }
 
     var code = this.encodeBoolean(contents);

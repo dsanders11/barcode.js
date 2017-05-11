@@ -17,6 +17,7 @@
 
 goog.provide('w69b.qr.encoder.Encoder');
 goog.require('w69b.EncodeHintType');
+goog.require('w69b.Integer');
 goog.require('w69b.WriterException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.CharacterSetECI');
@@ -46,6 +47,7 @@ goog.scope(function() {
   var Mode = w69b.qr.decoder.Mode;
   var ModeEnum = w69b.qr.decoder.ModeEnum;
   var EncodeHintType = w69b.EncodeHintType;
+  var Integer = w69b.Integer;
   var CharacterSetECI = w69b.common.CharacterSetECI;
   var GenericGF = w69b.common.reedsolomon.GenericGF;
   var ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;
@@ -289,7 +291,7 @@ goog.scope(function() {
    */
   _.chooseMaskPattern = function(bits, ecLevel, version, matrix) {
 
-    var minPenalty = Number.MAX_VALUE;  // Lower penalty is better.
+    var minPenalty = Integer.MAX_VALUE;  // Lower penalty is better.
     var bestMaskPattern = -1;
     // We try all mask patterns to choose the best one.
     for (let maskPattern = 0; maskPattern < QRCode.NUM_MASK_PATTERNS;

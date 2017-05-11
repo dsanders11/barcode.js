@@ -17,6 +17,7 @@
 
 goog.provide('w69b.oned.ITFWriter');
 goog.require('w69b.BarcodeFormat');
+goog.require('w69b.Integer');
 goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.oned.ITFReader');
 goog.require('w69b.oned.OneDimensionalCodeWriter');
@@ -24,6 +25,7 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
+  var Integer = w69b.Integer;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var ITFReader = w69b.oned.ITFReader;
   var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
@@ -69,8 +71,8 @@ goog.scope(function() {
     var result = new Array(9 + 9 * length);
     var pos = OneDimensionalCodeWriter.appendPattern(result, 0, START_PATTERN, true);
     for (let i = 0; i < length; i += 2) {
-      let one = parseInt(contents.charAt(i), 10);
-      let two = parseInt(contents.charAt(i + 1), 10);
+      let one = Integer.parseInt(contents.charAt(i));
+      let two = Integer.parseInt(contents.charAt(i + 1));
       let encoding = new Int32Array(10);
       for (let j = 0; j < 5; j++) {
         encoding[2 * j] = ITFReader.PATTERNS[one][j];

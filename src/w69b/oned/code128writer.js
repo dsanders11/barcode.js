@@ -17,6 +17,7 @@
 
 goog.provide('w69b.oned.Code128Writer');
 goog.require('w69b.BarcodeFormat');
+goog.require('w69b.Integer');
 goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.oned.Code128Reader');
 goog.require('w69b.oned.OneDimensionalCodeWriter');
@@ -24,6 +25,7 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
+  var Integer = w69b.Integer;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var Code128Reader = w69b.oned.Code128Reader;
   var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
@@ -138,7 +140,7 @@ goog.scope(function() {
             if (codeSet === CODE_CODE_B) {
               patternIndex = contents.charCodeAt(position) - ' '.charCodeAt(0);
             } else { // CODE_CODE_C
-              patternIndex = parseInt(contents.substring(position, position + 2), 10);
+              patternIndex = Integer.parseInt(contents.substring(position, position + 2));
               position++; // Also incremented below
             }
         }

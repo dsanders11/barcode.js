@@ -17,10 +17,12 @@
 
 goog.provide('w69b.common.BitArray');
 goog.require('goog.asserts');
+goog.require('w69b.Integer');
 goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
+  var Integer = w69b.Integer;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
@@ -44,22 +46,6 @@ goog.scope(function() {
   };
   var BitArray = w69b.common.BitArray;
   var pro = BitArray.prototype;
-
-  /**
-   * @param {number} i
-   * @return {number}
-   */
-  BitArray.numberOfTrailingZeros = function(i) {
-    // HD, Figure 5-14
-    var y;
-    if (i === 0) return 32;
-    var n = 31;
-    y = i << 16; if (y !== 0) { n = n - 16; i = y; }
-    y = i << 8; if (y !== 0) { n = n - 8; i = y; }
-    y = i << 4; if (y !== 0) { n = n - 4; i = y; }
-    y = i << 2; if (y !== 0) { n = n - 2; i = y; }
-    return n - ((i << 1) >>> 31);
-  };
 
   /**
    * @return {number}
@@ -134,7 +120,7 @@ goog.scope(function() {
       }
       currentBits = bits[bitsOffset];
     }
-    var result = (bitsOffset << 5) + BitArray.numberOfTrailingZeros(currentBits);
+    var result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
   };
 
@@ -159,7 +145,7 @@ goog.scope(function() {
       }
       currentBits = ~bits[bitsOffset];
     }
-    var result = (bitsOffset << 5) + BitArray.numberOfTrailingZeros(currentBits);
+    var result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
   };
 

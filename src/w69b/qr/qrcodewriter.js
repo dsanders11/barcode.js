@@ -18,6 +18,7 @@
 goog.provide('w69b.qr.QRCodeWriter');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.EncodeHintType');
+goog.require('w69b.Integer');
 goog.require('w69b.Writer');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.exceptions.IllegalArgumentException');
@@ -30,6 +31,7 @@ goog.require('w69b.qr.encoder.QRCode');
 goog.scope(function() {
   var BarcodeFormat = w69b.BarcodeFormat;
   var EncodeHintType = w69b.EncodeHintType;
+  var Integer = w69b.Integer;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   var IllegalStateException = w69b.exceptions.IllegalStateException;
   var Writer = w69b.Writer;
@@ -73,7 +75,7 @@ goog.scope(function() {
         errorCorrectionLevel = ErrorCorrectionLevel.getByName(opt_hints[EncodeHintType.ERROR_CORRECTION].toString());
       }
       if (!!opt_hints[EncodeHintType.MARGIN]) {
-        quietZone = parseInt(opt_hints[EncodeHintType.MARGIN], 10);
+        quietZone = Integer.parseInt(opt_hints[EncodeHintType.MARGIN]);
       }
     }
 

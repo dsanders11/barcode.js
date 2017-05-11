@@ -16,12 +16,14 @@
  */
 
 goog.provide('w69b.common.reedsolomon.GenericGF');
+goog.require('w69b.Integer');
 goog.require('w69b.common.reedsolomon.GenericGFPoly');
 goog.require('w69b.exceptions.ArithmeticException');
 goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
+  var Integer = w69b.Integer;
   var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
   var ArithmeticException = w69b.exceptions.ArithmeticException;
   var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
@@ -192,6 +194,6 @@ goog.scope(function() {
    * @override
    */
   pro.toString = function() {
-    return "GF(0x" + this.primitive_.toString(16) + ',' + this.size_ + ')';
+    return "GF(0x" + Integer.toHexString(this.primitive_) + ',' + this.size_ + ')';
   };
 });

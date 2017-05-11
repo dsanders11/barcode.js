@@ -17,9 +17,11 @@
  */
 goog.provide('w69b.qr.decoder.FormatInformation');
 goog.provide('w69b.qr.decoder.URShift');
+goog.require('w69b.Integer');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 goog.scope(function() {
+  var Integer = w69b.Integer;
   var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
 
   /**
@@ -91,13 +93,6 @@ goog.scope(function() {
   ];
 
   /**
-   * Offset i holds the number of 1 bits in the binary representation of i
-   * @type {Array.<number>}
-   */
-  FormatInformation.BITS_SET_IN_HALF_BYTE = [0, 1, 1, 2, 1, 2, 2, 3,
-    1, 2, 2, 3, 2, 3, 3, 4];
-
-  /**
    * @returns {number} hash code
    */
   pro.GetHashCode = function() {
@@ -119,16 +114,7 @@ goog.scope(function() {
    * @return {number}
    */
   FormatInformation.numBitsDiffering = function(a, b) {
-    a ^= b; // a now has a 1 bit exactly where its bit differs with b's
-    // Count bits set quickly with a series of lookups:
-    return FormatInformation.BITS_SET_IN_HALF_BYTE[a & 0x0F] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 4) & 0x0F)] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 8) & 0x0F)] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 12) & 0x0F)] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 16) & 0x0F)] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 20) & 0x0F)] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 24) & 0x0F)] +
-      FormatInformation.BITS_SET_IN_HALF_BYTE[(URShift(a, 28) & 0x0F)];
+    return Integer.bitCount(a ^ b);
   };
 
   /**
@@ -154,7 +140,7 @@ goog.scope(function() {
    */
   FormatInformation.doDecodeFormatInformation = function(maskedFormatInfo) {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
-    var bestDifference = 0xffffffff;
+    var bestDifference = Integer.MAX_VALUE;
     var bestFormatInfo = 0;
     for (let i = 0; i < FormatInformation.FORMAT_INFO_DECODE_LOOKUP.length;
          i++) {
