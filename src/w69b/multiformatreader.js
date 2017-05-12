@@ -23,6 +23,7 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
 goog.require('w69b.ReaderException');
 goog.require('w69b.Result');
+goog.require('w69b.maxicode.MaxiCodeReader');
 goog.require('w69b.oned.MultiFormatOneDReader');
 goog.require('w69b.qr.QRCodeReader');
 
@@ -35,6 +36,7 @@ goog.scope(function() {
   var ReaderException = w69b.ReaderException;
   var Result = w69b.Result;
   var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
+  var MaxiCodeReader = w69b.maxicode.MaxiCodeReader;
   var QRCodeReader = w69b.qr.QRCodeReader;
 
   /**
@@ -81,8 +83,8 @@ goog.scope(function() {
    * Continuous scan clients will get a <b>large</b> speed increase by using
    * this instead of decode().
    *
-   * @param {BinaryBitmap} image The pixel data to decode
-   * @return {Result} The contents of the image
+   * @param {!BinaryBitmap} image The pixel data to decode
+   * @return {!Result} The contents of the image
    * @throws {NotFoundException} Any errors which occurred
    */
   pro.decodeWithState = function(image) {
@@ -124,6 +126,9 @@ goog.scope(function() {
       if (formats.includes(BarcodeFormat.QR_CODE)) {
         readers.push(new QRCodeReader());
       }
+      if (formats.includes(BarcodeFormat.MAXICODE)) {
+        readers.push(new MaxiCodeReader());
+      }
       // At end in "try harder" mode
       if (addOneDReader && tryHarder) {
         readers.push(new MultiFormatOneDReader(hints));
@@ -135,6 +140,7 @@ goog.scope(function() {
       }
 
       readers.push(new QRCodeReader());
+      readers.push(new MaxiCodeReader());
 
       if (tryHarder) {
         readers.push(new MultiFormatOneDReader(hints));
@@ -156,8 +162,8 @@ goog.scope(function() {
 
   /**
    * @private
-   * @param {BinaryBitmap} image
-   * @return {Result}
+   * @param {!BinaryBitmap} image
+   * @return {!Result}
    * @throws {NotFoundException}
    */
   pro.decodeInternal_ = function(image) {

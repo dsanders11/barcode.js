@@ -219,9 +219,9 @@ goog.scope(function() {
    * somewhat arbitrarily decided that moving up and down by about 1/16 of the
    * image is pretty good; we try more of the image if "trying harder".
    *
-   * @param {BinaryBitmap} image The image to decode
+   * @param {!BinaryBitmap} image The image to decode
    * @param {Object<DecodeHintType,*>} hints Any hints that were requested
-   * @return {Result} The contents of the decoded barcode
+   * @return {!Result} The contents of the decoded barcode
    * @throws {NotFoundException} Any spontaneous errors which occur
    * @private
    */

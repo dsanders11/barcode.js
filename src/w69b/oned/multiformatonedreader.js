@@ -16,6 +16,7 @@
  */
 
 goog.provide('w69b.oned.MultiFormatOneDReader');
+goog.require('w69b.ArrayList');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
@@ -25,10 +26,12 @@ goog.require('w69b.oned.Code128Reader');
 goog.require('w69b.oned.Code39Reader');
 goog.require('w69b.oned.Code93Reader');
 goog.require('w69b.oned.ITFReader');
+goog.require('w69b.oned.MultiFormatUPCEANReader');
 goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
+  var ArrayList = w69b.ArrayList;
   var BarcodeFormat = w69b.BarcodeFormat;
   var DecodeHintType = w69b.DecodeHintType;
   var NotFoundException = w69b.NotFoundException;
@@ -38,6 +41,7 @@ goog.scope(function() {
   var Code39Reader = w69b.oned.Code39Reader;
   var Code93Reader = w69b.oned.Code93Reader;
   var ITFReader =w69b.oned.ITFReader;
+  var MultiFormatUPCEANReader = w69b.oned.MultiFormatUPCEANReader;
   var OneDReader = w69b.oned.OneDReader;
 
   /**
@@ -50,39 +54,46 @@ goog.scope(function() {
     /** @type {Array.<BarcodeFormat>} */
     var possibleFormats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
     var useCode39CheckDigit = Boolean(hints !== null && hints[DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT]);
-    /** @type {!Array.<OneDReader>} */
-    var readers = new Array();
+    /** @type {!ArrayList<OneDReader>} */
+    var readers = new ArrayList();
 
     if (possibleFormats !== null) {
+      if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
+          possibleFormats.includes(BarcodeFormat.UPC_A) ||
+          possibleFormats.includes(BarcodeFormat.EAN_8) ||
+          possibleFormats.includes(BarcodeFormat.UPC_E)) {
+        readers.add(new MultiFormatUPCEANReader(hints));
+      }
       if (possibleFormats.includes(BarcodeFormat.CODE_39)) {
-        readers.push(new Code39Reader(useCode39CheckDigit));
+        readers.add(new Code39Reader(useCode39CheckDigit));
       }
       if (possibleFormats.includes(BarcodeFormat.CODE_93)) {
-        readers.push(new Code93Reader());
+        readers.add(new Code93Reader());
       }
       if (possibleFormats.includes(BarcodeFormat.CODE_128)) {
-        readers.push(new Code128Reader());
+        readers.add(new Code128Reader());
       }
       if (possibleFormats.includes(BarcodeFormat.ITF)) {
-        readers.push(new ITFReader());
+        readers.add(new ITFReader());
       }
       if (possibleFormats.includes(BarcodeFormat.CODABAR)) {
-         readers.push(new CodaBarReader());
+         readers.add(new CodaBarReader());
       }
     }
-    if (readers.length === 0) {
-      readers.push(new Code39Reader());
-      readers.push(new CodaBarReader());
-      readers.push(new Code93Reader());
-      readers.push(new Code128Reader());
-      readers.push(new ITFReader());
+    if (readers.isEmpty()) {
+      readers.add(new MultiFormatUPCEANReader(hints));
+      readers.add(new Code39Reader());
+      readers.add(new CodaBarReader());
+      readers.add(new Code93Reader());
+      readers.add(new Code128Reader());
+      readers.add(new ITFReader());
     }
 
     /**
      * @private
      * @type {!Array.<OneDReader>}
      */
-    this.readers_ = readers;
+    this.readers_ = readers.toArray();
   };
   var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
   goog.inherits(MultiFormatOneDReader, OneDReader);

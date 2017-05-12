@@ -36,12 +36,23 @@ goog.scope(function() {
   };
 
   /**
+   * @param {string} str
+   * @param {number} offset
+   * @param {number} len
+   * @return {!StringBuilder}
+   */
+  pro.append2 = function(str, offset, len) {
+    this.string_ += str.slice(offset, offset + len);
+    return this;
+  };
+
+  /**
    * @param {number} index
    * @param {string} str
    * @return {!StringBuilder}
    */
   pro.insert = function(index, str) {
-    this.string_ = this.string_.slice(0, index) + str + this.string_.slice(index + 1);
+    this.string_ = this.string_.slice(0, index) + str + this.string_.slice(index);
 
     return this;
   };
