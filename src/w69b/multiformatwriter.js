@@ -23,7 +23,11 @@ goog.require('w69b.oned.CodaBarWriter');
 goog.require('w69b.oned.Code128Writer');
 goog.require('w69b.oned.Code39Writer');
 goog.require('w69b.oned.Code93Writer');
+goog.require('w69b.oned.EAN13Writer');
+goog.require('w69b.oned.EAN8Writer');
 goog.require('w69b.oned.ITFWriter');
+goog.require('w69b.oned.UPCAWriter');
+goog.require('w69b.oned.UPCEWriter');
 goog.require('w69b.qr.QRCodeWriter');
 
 goog.scope(function() {
@@ -34,7 +38,11 @@ goog.scope(function() {
   var Code39Writer = w69b.oned.Code39Writer;
   var Code128Writer = w69b.oned.Code128Writer;
   var Code93Writer = w69b.oned.Code93Writer;
+  var EAN13Writer = w69b.oned.EAN13Writer;
+  var EAN8Writer = w69b.oned.EAN8Writer;
   var ITFWriter = w69b.oned.ITFWriter;
+  var UPCAWriter = w69b.oned.UPCAWriter;
+  var UPCEWriter = w69b.oned.UPCEWriter;
   var QRCodeWriter = w69b.qr.QRCodeWriter;
 
   /**
@@ -55,6 +63,18 @@ goog.scope(function() {
     var writer = null;
 
     switch (format) {
+      case BarcodeFormat.EAN_8:
+        writer = new EAN8Writer();
+        break;
+      case BarcodeFormat.UPC_E:
+        writer = new UPCEWriter();
+        break;
+      case BarcodeFormat.EAN_13:
+        writer = new EAN13Writer();
+        break;
+      case BarcodeFormat.UPC_A:
+        writer = new UPCAWriter();
+        break;
       case BarcodeFormat.QR_CODE:
         writer = new QRCodeWriter();
         break;

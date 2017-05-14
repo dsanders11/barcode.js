@@ -77,8 +77,10 @@ goog.scope(function() {
 
   /**
    * Start/end guard pattern.
+   * @const {!Int32Array}
    */
-  const START_END_PATTERN = Int32Array.of(1, 1, 1);
+  UPCEANReader.START_END_PATTERN = Int32Array.of(1, 1, 1);
+  const START_END_PATTERN = UPCEANReader.START_END_PATTERN;
 
   /**
    * Pattern marking the middle of a UPC/EAN pattern, separating the two halves.
@@ -88,7 +90,8 @@ goog.scope(function() {
   /**
    * end guard pattern.
    */
-  const END_PATTERN = Int32Array.of(1, 1, 1, 1, 1, 1);
+  UPCEANReader.END_PATTERN = Int32Array.of(1, 1, 1, 1, 1, 1);
+  var END_PATTERN = UPCEANReader.END_PATTERN;
   /**
    * "Odd", or "L" patterns used to encode UPC/EAN digits.
    * @const {!Array<!Int32Array>}

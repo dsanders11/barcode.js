@@ -83,7 +83,7 @@ goog.scope(function() {
    * (0 or 1) used, and the check digit.
    * @type {!Array.<!Int32Array>}
    */
-  const NUMSYS_AND_CHECK_DIGIT_PATTERNS = [
+  UPCEReader.NUMSYS_AND_CHECK_DIGIT_PATTERNS = [
     Int32Array.of(0x38, 0x34, 0x32, 0x31, 0x2C, 0x26, 0x23, 0x2A, 0x29, 0x25),
     Int32Array.of(0x07, 0x0B, 0x0D, 0x0E, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1A)
   ];
@@ -141,7 +141,7 @@ goog.scope(function() {
   function determineNumSysAndCheckDigit(resultString, lgPatternFound) {
     for (let numSys = 0; numSys <= 1; numSys++) {
       for (let d = 0; d < 10; d++) {
-        if (lgPatternFound === NUMSYS_AND_CHECK_DIGIT_PATTERNS[numSys][d]) {
+        if (lgPatternFound === UPCEReader.NUMSYS_AND_CHECK_DIGIT_PATTERNS[numSys][d]) {
           resultString.insert(0, String.fromCharCode((('0').charCodeAt(0) + numSys)));
           resultString.append(String.fromCharCode((('0').charCodeAt(0) + d)));
           return;

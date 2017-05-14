@@ -76,7 +76,10 @@ goog.scope(function() {
   goog.inherits(EAN13Reader, UPCEANReader);
   var pro = EAN13Reader.prototype;
 
-  const FIRST_DIGIT_ENCODINGS = Int32Array.of(
+  /**
+   * @const {!Int32Array}
+   */
+  EAN13Reader.FIRST_DIGIT_ENCODINGS = Int32Array.of(
     0x00, 0x0B, 0x0D, 0xE, 0x13, 0x19, 0x1C, 0x15, 0x16, 0x1A
   );
 
@@ -140,7 +143,7 @@ goog.scope(function() {
    */
   function determineFirstDigit(resultString, lgPatternFound) {
     for (let d = 0; d < 10; d++) {
-      if (lgPatternFound === FIRST_DIGIT_ENCODINGS[d]) {
+      if (lgPatternFound === EAN13Reader.FIRST_DIGIT_ENCODINGS[d]) {
         resultString.insert(0, String.fromCharCode('0'.charCodeAt(0) + d));
         return;
       }
