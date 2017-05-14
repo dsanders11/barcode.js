@@ -84,11 +84,11 @@ goog.scope(function() {
     /** @type {Array.<ResultPoint>} */
     var points;
     if (opt_hints && !!opt_hints[DecodeHintType.PURE_BARCODE]) {
-      var bits = extractPureBits_(image.getBlackMatrix());
+      let bits = extractPureBits_(image.getBlackMatrix());
       decoderResult = decoder.decode(bits, opt_hints);
       points = NO_POINTS;
     } else {
-      var detectorResult = new Detector(image.getBlackMatrix()).detect(opt_hints);
+      let detectorResult = new Detector(image.getBlackMatrix()).detect(opt_hints);
       decoderResult = decoder.decode(detectorResult.getBits(), opt_hints);
       points = detectorResult.getPoints();
     }

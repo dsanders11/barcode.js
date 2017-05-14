@@ -167,13 +167,13 @@ goog.scope(function() {
         y0,
         0.0, 0.0, 1.0);
     } else {
-      var dx1 = x1 - x2;
-      var dx2 = x3 - x2;
-      var dx3 = x0 - x1 + x2 - x3;
-      var dy1 = y1 - y2;
-      var denominator = dx1 * dy2 - dx2 * dy1;
-      var a13 = (dx3 * dy2 - dx2 * dy3) / denominator;
-      var a23 = (dx1 * dy3 - dx3 * dy1) / denominator;
+      let dx1 = x1 - x2;
+      let dx2 = x3 - x2;
+      let dx3 = x0 - x1 + x2 - x3;
+      let dy1 = y1 - y2;
+      let denominator = dx1 * dy2 - dx2 * dy1;
+      let a13 = (dx3 * dy2 - dx2 * dy3) / denominator;
+      let a23 = (dx1 * dy3 - dx3 * dy1) / denominator;
       return new PerspectiveTransform(x1 - x0 + a13 * x1, x3 - x0 + a23 * x3,
         x0,
         y1 - y0 + a13 * y1, y3 - y0 + a23 * y3, y0, a13, a23, 1.0);

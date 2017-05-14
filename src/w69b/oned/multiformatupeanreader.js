@@ -114,10 +114,10 @@ goog.scope(function() {
       // result if appropriate.
       //
       // But, don't return UPC-A if UPC-A was not a requested format!
-      var ean13MayBeUPCA =
+      let ean13MayBeUPCA =
           result.getBarcodeFormat() === BarcodeFormat.EAN_13 &&
               result.getText().charAt(0) === '0';
-      var possibleFormats = /** @type {Array.<BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
+      let possibleFormats = /** @type {Array.<BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
       let canReturnUPCA = possibleFormats === null || possibleFormats.includes(BarcodeFormat.UPC_A);
 
       if (ean13MayBeUPCA && canReturnUPCA) {

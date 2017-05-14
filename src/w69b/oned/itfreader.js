@@ -190,7 +190,7 @@ goog.scope(function() {
         counterWhite[k] = counterDigitPair[twoK + 1];
       }
 
-      var bestMatch = ITFReader.decodeDigit_(counterBlack);
+      let bestMatch = ITFReader.decodeDigit_(counterBlack);
       resultString.push(String.fromCharCode('0'.charCodeAt(0) + bestMatch));
       bestMatch = ITFReader.decodeDigit_(counterWhite);
       resultString.push(String.fromCharCode('0'.charCodeAt(0) + bestMatch));
@@ -287,8 +287,8 @@ goog.scope(function() {
     // search from 'the start' for the end block
     row.reverse();
     try {
-      var endStart = skipWhiteSpace_(row);
-      var endPattern = ITFReader.findGuardPattern_(row, endStart, END_PATTERN_REVERSED);
+      let endStart = skipWhiteSpace_(row);
+      let endPattern = ITFReader.findGuardPattern_(row, endStart, END_PATTERN_REVERSED);
 
       // The start & end patterns must be pre/post fixed by a quiet zone. This
       // zone must be at least 10 times the width of a narrow line.
@@ -298,7 +298,7 @@ goog.scope(function() {
       // Now recalculate the indices of where the 'endblock' starts & stops to
       // accommodate
       // the reversed nature of the search
-      var temp = endPattern[0];
+      let temp = endPattern[0];
       endPattern[0] = row.getSize() - endPattern[1];
       endPattern[1] = row.getSize() - temp;
 

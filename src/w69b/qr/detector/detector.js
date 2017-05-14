@@ -89,7 +89,7 @@ goog.scope(function() {
     // see http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
     var steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
     if (steep) {
-      var temp = fromX;
+      let temp = fromX;
       fromX = fromY;
       fromY = temp;
       temp = toX;

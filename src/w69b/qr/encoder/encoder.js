@@ -135,7 +135,7 @@ goog.scope(function() {
     // Disabled in compat mode as some scanners seem to have problems with it.
     if (forceECI ||
       (mode === ModeEnum.BYTE && DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
-      var eci = CharacterSetECI.getCharacterSetECIByName(encoding);
+      let eci = CharacterSetECI.getCharacterSetECIByName(encoding);
       if (eci) {
         _.appendECI(eci, headerBits);
       }

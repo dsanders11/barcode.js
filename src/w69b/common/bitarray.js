@@ -67,7 +67,7 @@ goog.scope(function() {
    */
   pro.ensureCapacity = function(size) {
     if (size > this.bits_.length << 5) {
-      var newBits = makeArray(size);
+      let newBits = makeArray(size);
       newBits.set(this.bits_, 0);
       this.bits_ = newBits;
     }

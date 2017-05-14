@@ -61,7 +61,7 @@ goog.scope(function() {
       return this.doDecode_(image, opt_hints ? opt_hints : null);
     } catch (err) {
       if (err instanceof NotFoundException) {
-        var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
+        let tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
         if (tryHarder && image.isRotateSupported()) {
           let rotatedImage = image.rotateCounterClockwise();
           let result = this.doDecode_(rotatedImage, opt_hints ? opt_hints : null);

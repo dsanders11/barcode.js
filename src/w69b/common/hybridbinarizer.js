@@ -93,21 +93,21 @@ goog.scope(function() {
     var width = source.getWidth();
     var height = source.getHeight();
     if (width >= MINIMUM_DIMENSION && height >= MINIMUM_DIMENSION) {
-      var luminances = source.getMatrix();
+      let luminances = source.getMatrix();
       // dived by 8
-      var subWidth = width >> BLOCK_SIZE_POWER;
+      let subWidth = width >> BLOCK_SIZE_POWER;
       // only even numbers
       if ((width & BLOCK_SIZE_MASK) !== 0) {
         subWidth++;
       }
-      var subHeight = height >> BLOCK_SIZE_POWER;
+      let subHeight = height >> BLOCK_SIZE_POWER;
       if ((height & BLOCK_SIZE_MASK) !== 0) {
         subHeight++;
       }
-      var blackPoints = _.calculateBlackPoints(luminances, subWidth,
+      let blackPoints = _.calculateBlackPoints(luminances, subWidth,
         subHeight, width, height);
 
-      var newMatrix = new BitMatrix(width, height);
+      let newMatrix = new BitMatrix(width, height);
       _.calculateThresholdForBlock(luminances, subWidth, subHeight,
         width, height, blackPoints, newMatrix);
       this.matrix_ = newMatrix;

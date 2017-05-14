@@ -130,7 +130,7 @@ goog.scope(function() {
       // Prepare for a mirrored reading.
       parser.mirror();
 
-      var result = this.decodeParser_(parser, opt_hints ? opt_hints : null);
+      let result = this.decodeParser_(parser, opt_hints ? opt_hints : null);
 
       // Success! Notify the caller that the code was mirrored.
       result.setOther(new QRCodeDecoderMetaData(true));

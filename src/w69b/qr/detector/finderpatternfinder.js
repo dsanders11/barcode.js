@@ -631,7 +631,7 @@ goog.scope(function() {
     }
     var firstConfirmedCenter = null;
     for (let i = 0; i < this.possibleCenters_.length; ++i) {
-      var center = this.possibleCenters_[i];
+      let center = this.possibleCenters_[i];
       if (center.getCount() >= CENTER_QUORUM) {
         if (firstConfirmedCenter === null) {
           firstConfirmedCenter = center;
@@ -797,8 +797,8 @@ goog.scope(function() {
      * @return {number}
      */
     function comparator(center1, center2) {
-      var dA = Math.abs(center2.getEstimatedModuleSize() - average);
-      var dB = Math.abs(center1.getEstimatedModuleSize() - average);
+      let dA = Math.abs(center2.getEstimatedModuleSize() - average);
+      let dB = Math.abs(center1.getEstimatedModuleSize() - average);
       return dA < dB ? -1 : dA === dB ? 0 : 1;
     }
 
@@ -818,8 +818,8 @@ goog.scope(function() {
      */
     function comparator(center1, center2) {
       if (center2.getCount() === center1.getCount()) {
-        var dA = Math.abs(center2.getEstimatedModuleSize() - average);
-        var dB = Math.abs(center1.getEstimatedModuleSize() - average);
+        let dA = Math.abs(center2.getEstimatedModuleSize() - average);
+        let dB = Math.abs(center1.getEstimatedModuleSize() - average);
         return dA < dB ? 1 : dA === dB ? 0 : -1;
       } else {
         return center2.getCount() - center1.getCount();

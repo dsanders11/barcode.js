@@ -82,9 +82,9 @@ goog.scope(function() {
     var parityData = -1;
 
     try {
-      var currentCharacterSet = null;
-      var fc1InEffect = false;
-      var mode;
+      let currentCharacterSet = null;
+      let fc1InEffect = false;
+      let mode;
       do {
         // While still another segment to read...
         if (bits.available() < 4) {
@@ -110,7 +110,7 @@ goog.scope(function() {
             parityData = bits.readBits(8);
           } else if (mode === ModeEnum.ECI) {
             // Count doesn't apply to ECI
-            var value = _.parseECIValue(bits);
+            let value = _.parseECIValue(bits);
             currentCharacterSet = CharacterSetECI.getCharacterSetECIByValue(value);
             if (currentCharacterSet === null)
               throw new FormatException();
@@ -119,8 +119,8 @@ goog.scope(function() {
             if (mode === ModeEnum.HANZI) {
               //chinese mode contains a sub set indicator right after mode
               //indicator
-              var subset = bits.readBits(4);
-              var countHanzi = bits.readBits(
+              let subset = bits.readBits(4);
+              let countHanzi = bits.readBits(
                 mode.getCharacterCountBits(version));
               if (subset === GB2312_SUBSET) {
                 _.decodeHanziSegment(bits, result, countHanzi);
@@ -128,7 +128,7 @@ goog.scope(function() {
             } else {
               // "Normal" QR code modes:
               // How many characters will follow, encoded in this mode?
-              var count = bits.readBits(mode.getCharacterCountBits(version));
+              let count = bits.readBits(mode.getCharacterCountBits(version));
               if (mode === ModeEnum.NUMERIC) {
                 _.decodeNumericSegment(bits, result, count);
               } else if (mode === ModeEnum.ALPHANUMERIC) {
@@ -178,8 +178,8 @@ goog.scope(function() {
     var offset = 0;
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
-      var twoBytes = bits.readBits(13);
-      var assembledTwoBytes = ((twoBytes / 0x060) << 8) | (twoBytes % 0x060);
+      let twoBytes = bits.readBits(13);
+      let assembledTwoBytes = ((twoBytes / 0x060) << 8) | (twoBytes % 0x060);
       if (assembledTwoBytes < 0x003BF) {
         // In the 0xA1A1 to 0xAAFE range
         assembledTwoBytes += 0x0A1A1;
@@ -214,8 +214,8 @@ goog.scope(function() {
     var offset = 0;
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
-      var twoBytes = bits.readBits(13);
-      var assembledTwoBytes = ((twoBytes / 0x0C0) << 8) | (twoBytes % 0x0C0);
+      let twoBytes = bits.readBits(13);
+      let assembledTwoBytes = ((twoBytes / 0x0C0) << 8) | (twoBytes % 0x0C0);
       if (assembledTwoBytes < 0x01F00) {
         // In the 0x8140 to 0x9FFC range
         assembledTwoBytes += 0x08140;
@@ -294,7 +294,7 @@ goog.scope(function() {
       if (bits.available() < 11) {
         throw new FormatException();  // throw FormatException.getFormatInstance();
       }
-      var nextTwoCharsBits = bits.readBits(11);
+      let nextTwoCharsBits = bits.readBits(11);
       result.append(_.toAlphaNumericChar(Math.floor(nextTwoCharsBits / 45)));
       result.append(_.toAlphaNumericChar(nextTwoCharsBits % 45));
       count -= 2;
@@ -336,7 +336,7 @@ goog.scope(function() {
       if (bits.available() < 10) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
-      var threeDigitsBits = bits.readBits(10);
+      let threeDigitsBits = bits.readBits(10);
       if (threeDigitsBits >= 1000) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
@@ -350,7 +350,7 @@ goog.scope(function() {
       if (bits.available() < 7) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
-      var twoDigitsBits = bits.readBits(7);
+      let twoDigitsBits = bits.readBits(7);
       if (twoDigitsBits >= 100) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
@@ -361,7 +361,7 @@ goog.scope(function() {
       if (bits.available() < 4) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
-      var digitBits = bits.readBits(4);
+      let digitBits = bits.readBits(4);
       if (digitBits >= 10) {
         throw new FormatException();  // FormatException.getFormatInstance();
       }
@@ -381,12 +381,12 @@ goog.scope(function() {
     }
     if ((firstByte & 0xC0) === 0x80) {
       // two bytes
-      var secondByte = bits.readBits(8);
+      let secondByte = bits.readBits(8);
       return ((firstByte & 0x3F) << 8) | secondByte;
     }
     if ((firstByte & 0xE0) === 0xC0) {
       // three bytes
-      var secondThirdBytes = bits.readBits(16);
+      let secondThirdBytes = bits.readBits(16);
       return ((firstByte & 0x1F) << 16) | secondThirdBytes;
     }
     throw new FormatException();  // FormatException.getFormatInstance();

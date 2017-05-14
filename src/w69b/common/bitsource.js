@@ -76,10 +76,10 @@ goog.scope(function() {
 
     // First, read remainder from current byte
     if (this.bitOffset_ > 0) {
-      var bitsLeft = 8 - this.bitOffset_;
-      var toRead = numBits < bitsLeft ? numBits : bitsLeft;
-      var bitsToNotRead = bitsLeft - toRead;
-      var mask = (0xFF >> (8 - toRead)) << bitsToNotRead;
+      let bitsLeft = 8 - this.bitOffset_;
+      let toRead = numBits < bitsLeft ? numBits : bitsLeft;
+      let bitsToNotRead = bitsLeft - toRead;
+      let mask = (0xFF >> (8 - toRead)) << bitsToNotRead;
       result = (this.bytes_[this.byteOffset_] & mask) >> bitsToNotRead;
       numBits -= toRead;
       this.bitOffset_ += toRead;
@@ -99,8 +99,8 @@ goog.scope(function() {
 
       // Finally read a partial byte
       if (numBits > 0) {
-        var bitsToNotRead = 8 - numBits;
-        var mask = (0xFF >> bitsToNotRead) << bitsToNotRead;
+        let bitsToNotRead = 8 - numBits;
+        let mask = (0xFF >> bitsToNotRead) << bitsToNotRead;
         result = (result << numBits) |
           ((this.bytes_[this.byteOffset_] & mask) >> bitsToNotRead);
         this.bitOffset_ += numBits;

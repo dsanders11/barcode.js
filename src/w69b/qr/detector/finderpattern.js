@@ -54,7 +54,7 @@ goog.scope(function() {
   pro.aboutEquals = function(moduleSize, i, j) {
     if (Math.abs(i - this.y) <= moduleSize &&
       Math.abs(j - this.x) <= moduleSize) {
-      var moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+      let moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
       return moduleSizeDiff <= 1.0 ||
         moduleSizeDiff <= this.estimatedModuleSize;
     }

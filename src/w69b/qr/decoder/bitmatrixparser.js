@@ -185,7 +185,7 @@ goog.scope(function() {
       }
       // Read alternatingly from bottom to top then top to bottom
       for (let count = 0; count < dimension; count++) {
-        var i = readingUp ? dimension - 1 - count : count;
+        let i = readingUp ? dimension - 1 - count : count;
         for (let col = 0; col < 2; col++) {
           // Ignore bits covered by the function pattern
           if (!functionPattern.get(j - col, i)) {
