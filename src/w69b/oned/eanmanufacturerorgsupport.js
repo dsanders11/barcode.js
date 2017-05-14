@@ -20,7 +20,7 @@ goog.require('w69b.Integer');
 
 
 goog.scope(function() {
-  var Integer = w69b.Integer;
+  const Integer = w69b.Integer;
 
   /**
    * Records EAN prefix to GS1 Member Organization, where the member organization
@@ -35,8 +35,8 @@ goog.scope(function() {
     this.ranges_ = [];
     this.countryIdentifiers_ = [];
   };
-  var EANManufacturerOrgSupport = w69b.oned.EANManufacturerOrgSupport;
-  var pro = EANManufacturerOrgSupport.prototype;
+  const EANManufacturerOrgSupport = w69b.oned.EANManufacturerOrgSupport;
+  const pro = EANManufacturerOrgSupport.prototype;
 
   /**
    * @param {string} productCode

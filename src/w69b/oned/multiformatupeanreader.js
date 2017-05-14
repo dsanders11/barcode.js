@@ -31,18 +31,18 @@ goog.require('w69b.oned.UPCEReader');
 
 
 goog.scope(function() {
-  var ArrayList = w69b.ArrayList;
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var DecodeHintType = w69b.DecodeHintType;
-  var NotFoundException = w69b.NotFoundException;
-  var ReaderException = w69b.ReaderException;
-  var Result = w69b.Result;
-  var EAN13Reader = w69b.oned.EAN13Reader;
-  var EAN8Reader = w69b.oned.EAN8Reader;
-  var OneDReader = w69b.oned.OneDReader;
-  var UPCAReader = w69b.oned.UPCAReader;
-  var UPCEANReader = w69b.oned.UPCEANReader;
-  var UPCEReader = w69b.oned.UPCEReader;
+  const ArrayList = w69b.ArrayList;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const DecodeHintType = w69b.DecodeHintType;
+  const NotFoundException = w69b.NotFoundException;
+  const ReaderException = w69b.ReaderException;
+  const Result = w69b.Result;
+  const EAN13Reader = w69b.oned.EAN13Reader;
+  const EAN8Reader = w69b.oned.EAN8Reader;
+  const OneDReader = w69b.oned.OneDReader;
+  const UPCAReader = w69b.oned.UPCAReader;
+  const UPCEANReader = w69b.oned.UPCEANReader;
+  const UPCEReader = w69b.oned.UPCEReader;
 
   /**
    * @constructor
@@ -81,9 +81,9 @@ goog.scope(function() {
      */
     this.readers_ = readers.toArray();
   };
-  var MultiFormatUPCEANReader = w69b.oned.MultiFormatUPCEANReader;
+  const MultiFormatUPCEANReader = w69b.oned.MultiFormatUPCEANReader;
   goog.inherits(MultiFormatUPCEANReader, OneDReader);
-  var pro = MultiFormatUPCEANReader.prototype;
+  const pro = MultiFormatUPCEANReader.prototype;
 
   /**
    * @override

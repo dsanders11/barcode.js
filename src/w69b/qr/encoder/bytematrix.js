@@ -50,7 +50,7 @@ goog.scope(function() {
     this.height_ = height;
     this.bytes_ = new Int8Array(width * height);
   };
-  var pro = w69b.qr.encoder.ByteMatrix.prototype;
+  const pro = w69b.qr.encoder.ByteMatrix.prototype;
 
   /**
    * @return {Int8Array}

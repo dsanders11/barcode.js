@@ -33,22 +33,22 @@ goog.require('w69b.oned.UPCEANExtensionSupport');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var ChecksumException = w69b.ChecksumException;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var Integer = w69b.Integer;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultMetadataType = w69b.ResultMetadataType;
-  var ResultPoint = w69b.ResultPoint;
-  var StringBuilder = w69b.StringBuilder;
-  var BitArray = w69b.common.BitArray;
-  var EANManufacturerOrgSupport = w69b.oned.EANManufacturerOrgSupport;
-  var OneDReader = w69b.oned.OneDReader;
-  var patternMatchVariance = OneDReader.patternMatchVariance;
-  var recordPattern = OneDReader.recordPattern;
-  var UPCEANExtensionSupport = w69b.oned.UPCEANExtensionSupport;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const ChecksumException = w69b.ChecksumException;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const Integer = w69b.Integer;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultMetadataType = w69b.ResultMetadataType;
+  const ResultPoint = w69b.ResultPoint;
+  const StringBuilder = w69b.StringBuilder;
+  const BitArray = w69b.common.BitArray;
+  const EANManufacturerOrgSupport = w69b.oned.EANManufacturerOrgSupport;
+  const OneDReader = w69b.oned.OneDReader;
+  const patternMatchVariance = OneDReader.patternMatchVariance;
+  const recordPattern = OneDReader.recordPattern;
+  const UPCEANExtensionSupport = w69b.oned.UPCEANExtensionSupport;
 
   /**
    * Encapsulates functionality and implementation that is common to UPC and
@@ -65,9 +65,9 @@ goog.scope(function() {
     /** @const {!EANManufacturerOrgSupport} */
     this.eanManSupport_ = new EANManufacturerOrgSupport();
   };
-  var UPCEANReader = w69b.oned.UPCEANReader;
+  const UPCEANReader = w69b.oned.UPCEANReader;
   goog.inherits(UPCEANReader, OneDReader);
-  var pro = UPCEANReader.prototype;
+  const pro = UPCEANReader.prototype;
 
   // These two values are critical for determining how permissive the decoding will be.
   // We've arrived at these values through a lot of trial and error. Setting them any higher
@@ -91,7 +91,7 @@ goog.scope(function() {
    * end guard pattern.
    */
   UPCEANReader.END_PATTERN = Int32Array.of(1, 1, 1, 1, 1, 1);
-  var END_PATTERN = UPCEANReader.END_PATTERN;
+  const END_PATTERN = UPCEANReader.END_PATTERN;
   /**
    * "Odd", or "L" patterns used to encode UPC/EAN digits.
    * @const {!Array<!Int32Array>}

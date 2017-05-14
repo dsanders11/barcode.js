@@ -24,11 +24,11 @@ goog.require('w69b.oned.UPCEANReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var FormatException = w69b.FormatException;
-  var Result = w69b.Result;
-  var EAN13Reader = w69b.oned.EAN13Reader;
-  var UPCEANReader = w69b.oned.UPCEANReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const FormatException = w69b.FormatException;
+  const Result = w69b.Result;
+  const EAN13Reader = w69b.oned.EAN13Reader;
+  const UPCEANReader = w69b.oned.UPCEANReader;
 
 
   /**
@@ -41,9 +41,9 @@ goog.scope(function() {
     goog.base(this);
     this.ean13Reader_ = new EAN13Reader();
   };
-  var UPCAReader = w69b.oned.UPCAReader;
+  const UPCAReader = w69b.oned.UPCAReader;
   goog.inherits(UPCAReader, UPCEANReader);
-  var pro = UPCAReader.prototype;
+  const pro = UPCAReader.prototype;
 
   /**
    * @override

@@ -20,7 +20,7 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 
   /**
    * Encapsulates functionality and implementation that is common to UPC and EAN families
@@ -30,9 +30,9 @@ goog.scope(function() {
    * @abstract
    */
   w69b.oned.UPCEANWriter = function() { };
-  var UPCEANWriter = w69b.oned.UPCEANWriter;
+  const UPCEANWriter = w69b.oned.UPCEANWriter;
   goog.inherits(UPCEANWriter, OneDimensionalCodeWriter);
-  var pro = UPCEANWriter.prototype;
+  const pro = UPCEANWriter.prototype;
 
   /**
    * @override

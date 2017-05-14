@@ -23,11 +23,11 @@ goog.require('w69b.qr.decoder.FormatInformation');
 goog.require('w69b.qr.decoder.Version');
 
 goog.scope(function() {
-  var BitMatrix = w69b.common.BitMatrix;
-  var FormatInformation = w69b.qr.decoder.FormatInformation;
-  var Version = w69b.qr.decoder.Version;
-  var DataMask = w69b.qr.decoder.DataMask;
-  var FormatException = w69b.FormatException;
+  const BitMatrix = w69b.common.BitMatrix;
+  const FormatInformation = w69b.qr.decoder.FormatInformation;
+  const Version = w69b.qr.decoder.Version;
+  const DataMask = w69b.qr.decoder.DataMask;
+  const FormatException = w69b.FormatException;
 
   /**
    * @param {!BitMatrix} bitMatrix matrix.
@@ -49,8 +49,8 @@ goog.scope(function() {
     this.parsedFormatInfo = null;
     this.mirror_ = false;
   };
-  var BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
-  var pro = BitMatrixParser.prototype;
+  const BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
+  const pro = BitMatrixParser.prototype;
 
   /**
    * @param {number} i

@@ -28,16 +28,16 @@ goog.require('w69b.oned.MultiFormatOneDReader');
 goog.require('w69b.qr.QRCodeReader');
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var BinaryBitmap = w69b.BinaryBitmap;
-  var DecodeHintType = w69b.DecodeHintType;
-  var NotFoundException = w69b.NotFoundException;
-  var Reader = w69b.Reader;
-  var ReaderException = w69b.ReaderException;
-  var Result = w69b.Result;
-  var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
-  var MaxiCodeReader = w69b.maxicode.MaxiCodeReader;
-  var QRCodeReader = w69b.qr.QRCodeReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const BinaryBitmap = w69b.BinaryBitmap;
+  const DecodeHintType = w69b.DecodeHintType;
+  const NotFoundException = w69b.NotFoundException;
+  const Reader = w69b.Reader;
+  const ReaderException = w69b.ReaderException;
+  const Result = w69b.Result;
+  const MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
+  const MaxiCodeReader = w69b.maxicode.MaxiCodeReader;
+  const QRCodeReader = w69b.qr.QRCodeReader;
 
   /**
    * MultiFormatReader is a convenience class and the main entry point into the
@@ -49,7 +49,7 @@ goog.scope(function() {
    * @final
    */
   w69b.MultiFormatReader = function() { };
-  var pro = w69b.MultiFormatReader.prototype;
+  const pro = w69b.MultiFormatReader.prototype;
 
   /**
    * @private

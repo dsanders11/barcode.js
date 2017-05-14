@@ -25,12 +25,12 @@ goog.require('w69b.oned.UPCEANExtension5Support');
 
 
 goog.scope(function() {
-  var NotFoundException = w69b.NotFoundException;
-  var ReaderException = w69b.ReaderException;
-  var Result = w69b.Result;
-  var BitArray = w69b.common.BitArray;
-  var UPCEANExtension2Support = w69b.oned.UPCEANExtension2Support;
-  var UPCEANExtension5Support = w69b.oned.UPCEANExtension5Support;
+  const NotFoundException = w69b.NotFoundException;
+  const ReaderException = w69b.ReaderException;
+  const Result = w69b.Result;
+  const BitArray = w69b.common.BitArray;
+  const UPCEANExtension2Support = w69b.oned.UPCEANExtension2Support;
+  const UPCEANExtension5Support = w69b.oned.UPCEANExtension5Support;
 
   /**
    * @constructor
@@ -40,8 +40,8 @@ goog.scope(function() {
     this.twoSupport_ = new UPCEANExtension2Support();
     this.fiveSupport_ = new UPCEANExtension5Support();
   };
-  var UPCEANExtensionSupport = w69b.oned.UPCEANExtensionSupport;
-  var pro = UPCEANExtensionSupport.prototype;
+  const UPCEANExtensionSupport = w69b.oned.UPCEANExtensionSupport;
+  const pro = UPCEANExtensionSupport.prototype;
 
   const EXTENSION_START_PATTERN = Int32Array.of(1,1,2);
 

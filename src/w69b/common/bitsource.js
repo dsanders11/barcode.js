@@ -21,7 +21,7 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * This provides an easy abstraction to read bits at a time from a
@@ -41,8 +41,8 @@ goog.scope(function() {
     this.byteOffset_ = 0;
     this.bitOffset_ = 0;
   };
-  var BitSource = w69b.common.BitSource;
-  var pro = BitSource.prototype;
+  const BitSource = w69b.common.BitSource;
+  const pro = BitSource.prototype;
 
   /**
    * @return {number} index of next bit in current byte which would be read by

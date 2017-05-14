@@ -28,8 +28,8 @@ goog.scope(function() {
   w69b.qr.decoder.QRCodeDecoderMetaData = function(mirrored) {
     this.mirrored = mirrored;
   };
-  var QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
-  var pro = QRCodeDecoderMetaData.prototype;
+  const QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
+  const pro = QRCodeDecoderMetaData.prototype;
 
   /**
    * @return {boolean} true if the QR Code was mirrored.

@@ -25,9 +25,9 @@ goog.require('w69b.ResultPoint');
 // didn't play nice with optional arguments and only Aztec barcodes needed it
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var ResultMetadataType = w69b.ResultMetadataType;
-  var ResultPoint = w69b.ResultPoint;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const ResultMetadataType = w69b.ResultMetadataType;
+  const ResultPoint = w69b.ResultPoint;
 
   /**
    * Encapsulates the result of decoding a barcode within an image.
@@ -47,8 +47,8 @@ goog.scope(function() {
     this.resultMetadata_ = null;
     this.timestamp_ = opt_timestamp ? opt_timestamp : new Date().getTime();
   };
-  var Result = w69b.Result;
-  var pro = Result.prototype;
+  const Result = w69b.Result;
+  const pro = Result.prototype;
 
   /**
    * @return {string} raw text encoded by the barcode

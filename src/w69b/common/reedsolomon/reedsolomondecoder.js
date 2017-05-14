@@ -50,10 +50,10 @@ goog.require('w69b.exceptions.IllegalStateException');
 
 
 goog.scope(function() {
-  var GenericGF = w69b.common.reedsolomon.GenericGF;
-  var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-  var ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
-  var IllegalStateException = w69b.exceptions.IllegalStateException;
+  const GenericGF = w69b.common.reedsolomon.GenericGF;
+  const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
+  const ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
+  const IllegalStateException = w69b.exceptions.IllegalStateException;
   /**
    * @constructor
    * @param {!GenericGF} field field.
@@ -61,8 +61,8 @@ goog.scope(function() {
   w69b.common.reedsolomon.ReedSolomonDecoder = function(field) {
     this.field_ = field;
   };
-  var ReedSolomonDecoder = w69b.common.reedsolomon.ReedSolomonDecoder;
-  var pro = ReedSolomonDecoder.prototype;
+  const ReedSolomonDecoder = w69b.common.reedsolomon.ReedSolomonDecoder;
+  const pro = ReedSolomonDecoder.prototype;
 
   /**
    * Decodes given set of received codewords, which include both data and

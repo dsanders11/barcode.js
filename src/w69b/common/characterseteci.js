@@ -19,7 +19,7 @@ goog.provide('w69b.common.CharacterSetECI');
 goog.require('w69b.FormatException');
 
 goog.scope(function() {
-  var FormatException = w69b.FormatException;
+  const FormatException = w69b.FormatException;
 
   /**
    * @param {!Int32Array} values
@@ -30,8 +30,8 @@ goog.scope(function() {
     this.values = values;
     this.otherEncodingNames = opt_otherEncodingNames;
   };
-  var CharacterSetECI = w69b.common.CharacterSetECI;
-  var pro = CharacterSetECI.prototype;
+  const CharacterSetECI = w69b.common.CharacterSetECI;
+  const pro = CharacterSetECI.prototype;
 
   /** @type {!string} */
   pro.name = '';
@@ -66,7 +66,7 @@ goog.scope(function() {
     GB18030: new CharacterSetECI(Int32Array.of(29), 'GB2312', 'EUC_CN', 'GBK'),
     EUC_KR: new CharacterSetECI(Int32Array.of(30), 'EUC-KR')
   };
-  var CharacterSetECIEnum = w69b.common.CharacterSetECIEnum;
+  const CharacterSetECIEnum = w69b.common.CharacterSetECIEnum;
 
   /** @type {Object<string, CharacterSetECI>} */
   CharacterSetECI.namesToEnum_ = {};

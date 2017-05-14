@@ -24,9 +24,9 @@ goog.require('w69b.common.BitMatrix');
 
 
 goog.scope(function() {
-  var LuminanceSource = w69b.LuminanceSource;
-  var BitMatrix = w69b.common.BitMatrix;
-  var BitArray = w69b.common.BitArray;
+  const LuminanceSource = w69b.LuminanceSource;
+  const BitMatrix = w69b.common.BitMatrix;
+  const BitArray = w69b.common.BitArray;
   /**
    * This Binarizer implementation uses the old ZXing global histogram
    * approach. It is suitable for low-end mobile devices which don't have
@@ -58,9 +58,9 @@ goog.scope(function() {
      */
     this.buckets_ = new Uint8Array(LUMINANCE_BUCKETS);
   };
-  var _ = w69b.common.GlobalHistogramBinarizer;
+  const _ = w69b.common.GlobalHistogramBinarizer;
   goog.inherits(_, w69b.Binarizer);
-  var pro = _.prototype;
+  const pro = _.prototype;
 
   const LUMINANCE_BITS = 5;
   const LUMINANCE_SHIFT = 8 - LUMINANCE_BITS;

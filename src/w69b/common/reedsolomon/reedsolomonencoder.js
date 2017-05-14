@@ -22,9 +22,9 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var GenericGF = w69b.common.reedsolomon.GenericGF;
-  var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const GenericGF = w69b.common.reedsolomon.GenericGF;
+  const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * Implements Reed-Solomon enbcoding, as the name implies.
@@ -43,7 +43,7 @@ goog.scope(function() {
      */
     this.cachedGenerators_ = [new GenericGFPoly(field, Int32Array.of(1))];
   };
-  var pro = w69b.common.reedsolomon.ReedSolomonEncoder.prototype;
+  const pro = w69b.common.reedsolomon.ReedSolomonEncoder.prototype;
 
   /**
    * @param {number} degree degree.

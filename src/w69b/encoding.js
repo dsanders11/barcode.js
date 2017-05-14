@@ -12,8 +12,8 @@ goog.require('w69b.ui.SvgDrawable');
  * Simple high-level interface to create barcodes.
  */
 goog.scope(function() {
-  var SvgDrawable = w69b.ui.SvgDrawable;
-  var EpsDrawable = w69b.ui.EpsDrawable;
+  const SvgDrawable = w69b.ui.SvgDrawable;
+  const EpsDrawable = w69b.ui.EpsDrawable;
 
   /**
    * @param {string} content to encode.

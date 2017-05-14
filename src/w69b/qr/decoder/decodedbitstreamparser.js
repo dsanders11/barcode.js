@@ -29,17 +29,17 @@ goog.require('w69b.qr.decoder.Mode');
 goog.require('w69b.qr.decoder.ModeEnum');
 
 goog.scope(function() {
-  var _ = w69b.qr.decoder.DecodedBitStreamParser;
-  var BitSource = w69b.common.BitSource;
-  var Mode = w69b.qr.decoder.Mode;
-  var ModeEnum = w69b.qr.decoder.ModeEnum;
-  var StringBuffer = goog.string.StringBuffer;
-  var stringutils = w69b.common.stringutils;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var CharacterSetECI = w69b.common.CharacterSetECI;
-  var DecoderResult = w69b.common.DecoderResult;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const _ = w69b.qr.decoder.DecodedBitStreamParser;
+  const BitSource = w69b.common.BitSource;
+  const Mode = w69b.qr.decoder.Mode;
+  const ModeEnum = w69b.qr.decoder.ModeEnum;
+  const StringBuffer = goog.string.StringBuffer;
+  const stringutils = w69b.common.stringutils;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const CharacterSetECI = w69b.common.CharacterSetECI;
+  const DecoderResult = w69b.common.DecoderResult;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * <p>QR Codes can encode text as bits in one of several modes, and can use

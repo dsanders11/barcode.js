@@ -24,10 +24,10 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var NotFoundException = w69b.NotFoundException;
-  var BitArray = w69b.common.BitArray;
-  var BitMatrix = w69b.common.BitMatrix;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const NotFoundException = w69b.NotFoundException;
+  const BitArray = w69b.common.BitArray;
+  const BitMatrix = w69b.common.BitMatrix;
 
   /**
    * This class is the core bitmap class used by ZXing to represent 1 bit data.
@@ -49,8 +49,8 @@ goog.scope(function() {
      */
     this.matrix = null;
   };
-  var BinaryBitmap = w69b.BinaryBitmap;
-  var pro = w69b.BinaryBitmap.prototype;
+  const BinaryBitmap = w69b.BinaryBitmap;
+  const pro = w69b.BinaryBitmap.prototype;
 
   /**
    * @return {number} width the width of the bitmap

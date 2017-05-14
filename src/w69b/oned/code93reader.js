@@ -27,14 +27,14 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var ChecksumException = w69b.ChecksumException;
-  var FormatException = w69b.FormatException;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultPoint = w69b.ResultPoint;
-  var BitArray = w69b.common.BitArray;
-  var OneDReader = w69b.oned.OneDReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const ChecksumException = w69b.ChecksumException;
+  const FormatException = w69b.FormatException;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultPoint = w69b.ResultPoint;
+  const BitArray = w69b.common.BitArray;
+  const OneDReader = w69b.oned.OneDReader;
 
   /**
    * Decodes Code 93 barcodes.
@@ -46,9 +46,9 @@ goog.scope(function() {
   w69b.oned.Code93Reader = function() {
     this.counters_ = new Int32Array(6);
   };
-  var Code93Reader = w69b.oned.Code93Reader;
+  const Code93Reader = w69b.oned.Code93Reader;
   goog.inherits(Code93Reader, OneDReader);
-  var pro = Code93Reader.prototype;
+  const pro = Code93Reader.prototype;
 
   /**
    * Note that 'abcd' are dummy characters in place of control characters.

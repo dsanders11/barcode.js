@@ -28,15 +28,15 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var ChecksumException = w69b.ChecksumException;
-  var FormatException = w69b.FormatException;
-  var Integer = w69b.Integer;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultPoint = w69b.ResultPoint;
-  var BitArray = w69b.common.BitArray;
-  var OneDReader = w69b.oned.OneDReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const ChecksumException = w69b.ChecksumException;
+  const FormatException = w69b.FormatException;
+  const Integer = w69b.Integer;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultPoint = w69b.ResultPoint;
+  const BitArray = w69b.common.BitArray;
+  const OneDReader = w69b.oned.OneDReader;
 
   /**
    * Decodes Code 39 barcodes. This does not support "Full ASCII Code 39" yet.
@@ -67,9 +67,9 @@ goog.scope(function() {
     //decodeRowResult = new StringBuilder(20);
     this.counters_ = new Int32Array(9);
   };
-  var Code39Reader = w69b.oned.Code39Reader;
+  const Code39Reader = w69b.oned.Code39Reader;
   goog.inherits(Code39Reader, OneDReader);
-  var pro = Code39Reader.prototype;
+  const pro = Code39Reader.prototype;
 
   /** @const {string} */
   Code39Reader.ALPHABET_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. *$/+%";

@@ -20,7 +20,7 @@ goog.require('w69b.exceptions.UnsupportedOperationException');
 
 
 goog.scope(function() {
-  var UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
+  const UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
 
   /**
    * The purpose of this class hierarchy is to abstract different bitmap
@@ -48,7 +48,7 @@ goog.scope(function() {
      */
     this.height_ = height;
   };
-  var LuminanceSource = w69b.LuminanceSource;
+  const LuminanceSource = w69b.LuminanceSource;
 
   /**
    * Fetches one row of luminance data from the underlying platform's bitmap.

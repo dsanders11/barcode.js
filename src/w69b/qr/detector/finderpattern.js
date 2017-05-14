@@ -32,9 +32,9 @@ goog.scope(function() {
     this.count = goog.isDef(opt_count) ? opt_count : 1;
     this.estimatedModuleSize = estimatedModuleSize;
   };
-  var FinderPattern = w69b.qr.detector.FinderPattern;
+  const FinderPattern = w69b.qr.detector.FinderPattern;
   goog.inherits(FinderPattern, w69b.ResultPoint);
-  var pro = FinderPattern.prototype;
+  const pro = FinderPattern.prototype;
 
   /**
    * @return {number}

@@ -29,16 +29,16 @@ goog.require('w69b.oned.UPCEReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Character = w69b.Character;
-  var FormatException = w69b.FormatException;
-  var Writer = w69b.Writer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var EAN13Reader = w69b.oned.EAN13Reader;
-  var UPCEANReader = w69b.oned.UPCEANReader;
-  var UPCEReader = w69b.oned.UPCEReader;
-  var UPCEANWriter = w69b.oned.UPCEANWriter;
-  var appendPattern = w69b.oned.OneDimensionalCodeWriter.appendPattern;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Character = w69b.Character;
+  const FormatException = w69b.FormatException;
+  const Writer = w69b.Writer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const EAN13Reader = w69b.oned.EAN13Reader;
+  const UPCEANReader = w69b.oned.UPCEANReader;
+  const UPCEReader = w69b.oned.UPCEReader;
+  const UPCEANWriter = w69b.oned.UPCEANWriter;
+  const appendPattern = w69b.oned.OneDimensionalCodeWriter.appendPattern;
 
   /**
    * This object renders an UPC-E code as a {@link BitMatrix}.
@@ -47,9 +47,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.UPCEWriter = function() { };
-  var UPCEWriter = w69b.oned.UPCEWriter;
+  const UPCEWriter = w69b.oned.UPCEWriter;
   goog.inherits(UPCEWriter, UPCEANWriter);
-  var pro = UPCEWriter.prototype;
+  const pro = UPCEWriter.prototype;
 
   const CODE_WIDTH = 3 + // start guard
       (7 * 6) + // bars

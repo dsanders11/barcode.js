@@ -23,10 +23,10 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var Code93Reader = w69b.oned.Code93Reader;
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const Code93Reader = w69b.oned.Code93Reader;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 
   /**
    * This object renders a CODE93 code as a BitMatrix
@@ -35,9 +35,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.Code93Writer = function() { };
-  var Code93Writer = w69b.oned.Code93Writer;
+  const Code93Writer = w69b.oned.Code93Writer;
   goog.inherits(Code93Writer, OneDimensionalCodeWriter);
-  var pro = Code93Writer.prototype;
+  const pro = Code93Writer.prototype;
 
   /**
    * @override

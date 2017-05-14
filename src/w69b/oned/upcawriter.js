@@ -23,10 +23,10 @@ goog.require('w69b.oned.EAN13Writer');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Writer = w69b.Writer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var EAN13Writer = w69b.oned.EAN13Writer;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Writer = w69b.Writer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const EAN13Writer = w69b.oned.EAN13Writer;
 
   /**
    * This object renders a UPC-A code as a {@link BitMatrix}.
@@ -37,8 +37,8 @@ goog.scope(function() {
   w69b.oned.UPCAWriter = function() {
     this.subWriter_ = new EAN13Writer();
   };
-  var UPCAWriter = w69b.oned.UPCAWriter;
-  var pro = UPCAWriter.prototype;
+  const UPCAWriter = w69b.oned.UPCAWriter;
+  const pro = UPCAWriter.prototype;
 
   /**
    * @override

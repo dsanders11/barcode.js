@@ -24,12 +24,12 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Result');
 
 goog.scope(function() {
-  var BinaryBitmap = w69b.BinaryBitmap;
-  var ChecksumException = w69b.ChecksumException;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
+  const BinaryBitmap = w69b.BinaryBitmap;
+  const ChecksumException = w69b.ChecksumException;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
 
   /**
    * Implementations of this interface can decode an image of a barcode in some
@@ -42,7 +42,7 @@ goog.scope(function() {
    * @interface
    */
   w69b.Reader = function() { };
-  var pro = w69b.Reader.prototype;
+  const pro = w69b.Reader.prototype;
 
   /**
    * Locates and decodes a barcode in some format within an image.

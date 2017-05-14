@@ -28,15 +28,15 @@ goog.require('w69b.common.BitArray');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Integer = w69b.Integer;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultMetadataType = w69b.ResultMetadataType;
-  var ResultPoint = w69b.ResultPoint;
-  var StringBuilder = w69b.StringBuilder;
-  var BitArray = w69b.common.BitArray;
-  var UPCEANReader = w69b.oned.UPCEANReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Integer = w69b.Integer;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultMetadataType = w69b.ResultMetadataType;
+  const ResultPoint = w69b.ResultPoint;
+  const StringBuilder = w69b.StringBuilder;
+  const BitArray = w69b.common.BitArray;
+  const UPCEANReader = w69b.oned.UPCEANReader;
 
   /**
    * @see UPCEANExtension5Support
@@ -49,8 +49,8 @@ goog.scope(function() {
     /** @const {!StringBuilder} */
     this.decodeRowStringBuffer_ = new StringBuilder();
   };
-  var UPCEANExtension2Support = w69b.oned.UPCEANExtension2Support;
-  var pro = UPCEANExtension2Support.prototype;
+  const UPCEANExtension2Support = w69b.oned.UPCEANExtension2Support;
+  const pro = UPCEANExtension2Support.prototype;
 
   /**
    * @param {number} rowNumber

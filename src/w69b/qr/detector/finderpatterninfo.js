@@ -32,8 +32,8 @@ goog.scope(function() {
     this.topLeft = patternCenters[1];
     this.topRight = patternCenters[2];
   };
-  var FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
-  var pro = FinderPatternInfo.prototype;
+  const FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
+  const pro = FinderPatternInfo.prototype;
 
   /**
    * @return {w69b.qr.detector.FinderPattern} bottomLeft pattern

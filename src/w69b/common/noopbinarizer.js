@@ -8,10 +8,10 @@ goog.require('w69b.common.BitMatrix');
 
 
 goog.scope(function() {
-  var Binarizer = w69b.Binarizer;
-  var LuminanceSource = w69b.LuminanceSource;
-  var BitMatrix = w69b.common.BitMatrix;
-  var BitArray = w69b.common.BitArray;
+  const Binarizer = w69b.Binarizer;
+  const LuminanceSource = w69b.LuminanceSource;
+  const BitMatrix = w69b.common.BitMatrix;
+  const BitArray = w69b.common.BitArray;
 
   /**
    * Binarizer implementation that simply passes through the LuminanceSource
@@ -24,9 +24,9 @@ goog.scope(function() {
   w69b.common.NoOpBinarizer = function(source) {
     goog.base(this, source);
   };
-  var NoOpBinarizer = w69b.common.NoOpBinarizer;
+  const NoOpBinarizer = w69b.common.NoOpBinarizer;
   goog.inherits(NoOpBinarizer, Binarizer);
-  var pro = NoOpBinarizer.prototype;
+  const pro = NoOpBinarizer.prototype;
 
   /**
    * @override

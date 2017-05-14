@@ -29,8 +29,8 @@ goog.scope(function() {
     this.bits = bits;
     this.points = points;
   };
-  var DetectorResult = w69b.common.DetectorResult;
-  var pro = DetectorResult.prototype;
+  const DetectorResult = w69b.common.DetectorResult;
+  const pro = DetectorResult.prototype;
 
   /**
    * @return {!w69b.common.BitMatrix} raw barcode bits

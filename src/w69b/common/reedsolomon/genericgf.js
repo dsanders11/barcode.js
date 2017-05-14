@@ -23,10 +23,10 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var Integer = w69b.Integer;
-  var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-  var ArithmeticException = w69b.exceptions.ArithmeticException;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const Integer = w69b.Integer;
+  const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
+  const ArithmeticException = w69b.exceptions.ArithmeticException;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * This class contains utility methods for performing mathematical operations
@@ -75,8 +75,8 @@ goog.scope(function() {
     this.zero_ = new GenericGFPoly(this, new Int32Array(1));
     this.one_ = new GenericGFPoly(this, Int32Array.of(1));
   };
-  var GenericGF = w69b.common.reedsolomon.GenericGF;
-  var pro = GenericGF.prototype;
+  const GenericGF = w69b.common.reedsolomon.GenericGF;
+  const pro = GenericGF.prototype;
 
   /** @const {!GenericGF} */
   GenericGF.AZTEC_DATA_12 = new GenericGF(0x1069, 4096, 1); // x^12 + x^6 + x^5 + x^3 + 1

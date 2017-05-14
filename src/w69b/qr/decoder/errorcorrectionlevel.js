@@ -20,7 +20,7 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * See ISO 18004:2006, 6.5.1. This enum encapsulates the four error
@@ -39,7 +39,7 @@ goog.scope(function() {
     this.bits = bits;
     this.name = name;
   };
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
 
   ErrorCorrectionLevel.L = new ErrorCorrectionLevel(0, 0x01, 'L');
   ErrorCorrectionLevel.M = new ErrorCorrectionLevel(1, 0x00, 'M');
@@ -68,7 +68,7 @@ goog.scope(function() {
     }
   };
 
-  var pro = ErrorCorrectionLevel.prototype;
+  const pro = ErrorCorrectionLevel.prototype;
 
   /**
    * @return {number}

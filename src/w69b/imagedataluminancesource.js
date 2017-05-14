@@ -22,8 +22,8 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var LuminanceSource = w69b.LuminanceSource;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const LuminanceSource = w69b.LuminanceSource;
 
   /**
    * Implementation of LuminanceSource for interacting with ImageData from a
@@ -90,9 +90,9 @@ goog.scope(function() {
     this.left_ = left;
     this.top_ = top;
   };
-  var ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
+  const ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
   goog.inherits(ImageDataLuminanceSource, LuminanceSource);
-  var pro = ImageDataLuminanceSource.prototype;
+  const pro = ImageDataLuminanceSource.prototype;
 
   /**
    * @override

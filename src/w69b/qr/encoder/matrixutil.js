@@ -25,13 +25,13 @@ goog.require('w69b.qr.encoder.MaskUtil');
 goog.require('w69b.qr.encoder.QRCode');
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  var BitArray = w69b.common.BitArray;
-  var ByteMatrix = w69b.qr.encoder.ByteMatrix;
-  var Version = w69b.qr.decoder.Version;
-  var WriterException = w69b.WriterException;
-  var QRCode = w69b.qr.encoder.QRCode;
-  var MaskUtil = w69b.qr.encoder.MaskUtil;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const BitArray = w69b.common.BitArray;
+  const ByteMatrix = w69b.qr.encoder.ByteMatrix;
+  const Version = w69b.qr.decoder.Version;
+  const WriterException = w69b.WriterException;
+  const QRCode = w69b.qr.encoder.QRCode;
+  const MaskUtil = w69b.qr.encoder.MaskUtil;
 
 
   /**
@@ -39,7 +39,7 @@ goog.scope(function() {
    * @author dswitkin@google.com (Daniel Switkin) - ported from C++
    * @author mb@w69b.com (Manuel Braun) - ported to js.
    */
-  var _ = w69b.qr.encoder.MatrixUtil;
+  const _ = w69b.qr.encoder.MatrixUtil;
 
   /**
    * @type {!Array.<!Int32Array>}

@@ -41,8 +41,8 @@ goog.scope(function() {
     this.structuredAppendParity_ = opt_saParity ? opt_saParity : -1;
     this.structuredAppendSequenceNumber_ = opt_saSequence ? opt_saSequence : -1;
   };
-  var DecoderResult = w69b.common.DecoderResult;
-  var pro = DecoderResult.prototype;
+  const DecoderResult = w69b.common.DecoderResult;
+  const pro = DecoderResult.prototype;
 
   /**
    * @return {?Int8Array} raw bytes representing the result, or {@code null} if not applicable

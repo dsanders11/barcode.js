@@ -22,8 +22,8 @@ goog.require('w69b.common.GlobalHistogramBinarizer');
 
 
 goog.scope(function() {
-  var LuminanceSource = w69b.LuminanceSource;
-  var BitMatrix = w69b.common.BitMatrix;
+  const LuminanceSource = w69b.LuminanceSource;
+  const BitMatrix = w69b.common.BitMatrix;
 
   /**
    * This class implements a local thresholding algorithm, which while slower
@@ -60,8 +60,8 @@ goog.scope(function() {
     this.matrix_ = null;
   };
   goog.inherits(w69b.common.HybridBinarizer, w69b.common.GlobalHistogramBinarizer);
-  var _ = w69b.common.HybridBinarizer;
-  var pro = _.prototype;
+  const _ = w69b.common.HybridBinarizer;
+  const pro = _.prototype;
 
   /**
    * @private

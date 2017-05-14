@@ -27,14 +27,14 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultPoint = w69b.ResultPoint;
-  var BitArray = w69b.common.BitArray;
-  var OneDReader = w69b.oned.OneDReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultPoint = w69b.ResultPoint;
+  const BitArray = w69b.common.BitArray;
+  const OneDReader = w69b.oned.OneDReader;
 
   /**
    * Implements decoding of the ITF format, or Interleaved Two of Five.
@@ -54,9 +54,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.ITFReader = function() { };
-  var ITFReader = w69b.oned.ITFReader;
+  const ITFReader = w69b.oned.ITFReader;
   goog.inherits(ITFReader, OneDReader);
-  var pro = ITFReader.prototype;
+  const pro = ITFReader.prototype;
 
   /**
    * @private

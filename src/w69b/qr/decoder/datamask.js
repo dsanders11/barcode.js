@@ -21,10 +21,10 @@ goog.require('w69b.common.BitMatrix');
 goog.require('w69b.qr.decoder.URShift');
 
 goog.scope(function() {
-  var BitMatrix = w69b.common.BitMatrix;
-  var URShift = w69b.qr.decoder.URShift;
+  const BitMatrix = w69b.common.BitMatrix;
+  const URShift = w69b.qr.decoder.URShift;
 
-  var _ = w69b.qr.decoder.DataMask;
+  const _ = w69b.qr.decoder.DataMask;
 
   /** @interface */
   _.DataMaskInterface = function() { };

@@ -28,15 +28,15 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var ChecksumException = w69b.ChecksumException;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultPoint = w69b.ResultPoint;
-  var BitArray = w69b.common.BitArray;
-  var OneDReader = w69b.oned.OneDReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const ChecksumException = w69b.ChecksumException;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultPoint = w69b.ResultPoint;
+  const BitArray = w69b.common.BitArray;
+  const OneDReader = w69b.oned.OneDReader;
 
   /**
    * Decodes Code 128 barcodes.
@@ -45,9 +45,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.Code128Reader = function() { };
-  var Code128Reader = w69b.oned.Code128Reader;
+  const Code128Reader = w69b.oned.Code128Reader;
   goog.inherits(Code128Reader, OneDReader);
-  var pro = Code128Reader.prototype;
+  const pro = Code128Reader.prototype;
 
   /**
    * @const {!Array.<!Int32Array>}

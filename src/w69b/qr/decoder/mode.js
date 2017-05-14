@@ -21,7 +21,7 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * See ISO 18004:2006, 6.4.1, Tables 2 and 3. This enum encapsulates the
@@ -40,8 +40,8 @@ goog.scope(function() {
     this.bits = bits;
     this.name_ = opt_name || 'NONAME';
   };
-  var Mode = w69b.qr.decoder.Mode;
-  var pro = Mode.prototype;
+  const Mode = w69b.qr.decoder.Mode;
+  const pro = Mode.prototype;
 
 
   /** @enum {Mode} */
@@ -60,7 +60,7 @@ goog.scope(function() {
     /** See GBT 18284-2000; "Hanzi" is a transliteration of this mode name. */
     HANZI: new Mode(Int32Array.of(8, 10, 12), 0x0D, 'HANZI')
   };
-  var ModeEnum = w69b.qr.decoder.ModeEnum;
+  const ModeEnum = w69b.qr.decoder.ModeEnum;
 
 
   /**

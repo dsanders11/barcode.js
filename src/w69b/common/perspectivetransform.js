@@ -42,8 +42,8 @@ goog.scope(function() {
     this.a32 = a32;
     this.a33 = a33;
   };
-  var PerspectiveTransform = w69b.common.PerspectiveTransform;
-  var pro = PerspectiveTransform.prototype;
+  const PerspectiveTransform = w69b.common.PerspectiveTransform;
+  const pro = PerspectiveTransform.prototype;
 
   /**
    * @param {Float32Array} points

@@ -26,11 +26,11 @@ goog.require('w69b.qr.detector.FinderPatternInfo');
 
 
 goog.scope(function() {
-  var DecodeHintType = w69b.DecodeHintType;
-  var BitMatrix = w69b.common.BitMatrix;
-  var FinderPattern = w69b.qr.detector.FinderPattern;
-  var FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
-  var ResultPoint = w69b.ResultPoint;
+  const DecodeHintType = w69b.DecodeHintType;
+  const BitMatrix = w69b.common.BitMatrix;
+  const FinderPattern = w69b.qr.detector.FinderPattern;
+  const FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
+  const ResultPoint = w69b.ResultPoint;
 
   /**
    * This class attempts to find finder patterns in a QR Code. Finder
@@ -75,8 +75,8 @@ goog.scope(function() {
     this.hasSkipped_ = false;
 
   };
-  var _ = w69b.qr.detector.FinderPatternFinder;
-  var pro = w69b.qr.detector.FinderPatternFinder.prototype;
+  const _ = w69b.qr.detector.FinderPatternFinder;
+  const pro = w69b.qr.detector.FinderPatternFinder.prototype;
 
   const CENTER_QUORUM = 2;
   const MIN_SKIP = 3; // 1 pixel/module times 3 modules/center

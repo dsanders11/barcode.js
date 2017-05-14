@@ -12,13 +12,13 @@ goog.require('w69b.webgl.WebGLBinarizer');
 
 
 goog.scope(function() {
-  var Size = goog.math.Size;
-  var base64 = goog.crypt.base64;
-  var ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
-  var UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
-  var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
+  const Size = goog.math.Size;
+  const base64 = goog.crypt.base64;
+  const ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
+  const UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
+  const WebGLBinarizer = w69b.webgl.WebGLBinarizer;
 
-  var _ = w69b.imgtools;
+  const _ = w69b.imgtools;
 
   /** @type {HTMLCanvasElement} */
   _.canvas_ = null;

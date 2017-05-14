@@ -23,10 +23,10 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var Code39Reader = w69b.oned.Code39Reader;
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const Code39Reader = w69b.oned.Code39Reader;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 
   /**
    * This object renders a CODE39 code as a {@link BitMatrix}.
@@ -35,9 +35,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.Code39Writer = function() { };
-  var Code39Writer = w69b.oned.Code39Writer;
+  const Code39Writer = w69b.oned.Code39Writer;
   goog.inherits(Code39Writer, OneDimensionalCodeWriter);
-  var pro = Code39Writer.prototype;
+  const pro = Code39Writer.prototype;
 
   /**
    * @override

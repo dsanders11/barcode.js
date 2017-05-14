@@ -33,16 +33,16 @@ goog.require('w69b.qr.detector.FinderPatternInfo');
 
 
 goog.scope(function() {
-  var Version = w69b.qr.decoder.Version;
-  var PerspectiveTransform = w69b.common.PerspectiveTransform;
-  var NotFoundException = w69b.NotFoundException;
-  var MathUtils = w69b.common.detector.MathUtils;
-  var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
-  var DetectorResult = w69b.common.DetectorResult;
-  var GridSampler = w69b.common.GridSampler;
-  var DecodeHintType = w69b.DecodeHintType;
-  var ResultPoint = w69b.ResultPoint;
-  var BitMatrix = w69b.common.BitMatrix;
+  const Version = w69b.qr.decoder.Version;
+  const PerspectiveTransform = w69b.common.PerspectiveTransform;
+  const NotFoundException = w69b.NotFoundException;
+  const MathUtils = w69b.common.detector.MathUtils;
+  const AlignmentPattern = w69b.qr.detector.AlignmentPattern;
+  const DetectorResult = w69b.common.DetectorResult;
+  const GridSampler = w69b.common.GridSampler;
+  const DecodeHintType = w69b.DecodeHintType;
+  const ResultPoint = w69b.ResultPoint;
+  const BitMatrix = w69b.common.BitMatrix;
 
   // set default grid sampler.
   GridSampler.setGridSampler(new w69b.common.DefaultGridSampler());
@@ -66,7 +66,7 @@ goog.scope(function() {
     this.resultPointCallback = null;
     //this.resultPointCallback = opt_callback || null;
   };
-  var pro = w69b.qr.detector.Detector.prototype;
+  const pro = w69b.qr.detector.Detector.prototype;
 
   /**
    * This method traces a line from a point in the image, in the direction

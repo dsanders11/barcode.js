@@ -23,9 +23,9 @@ goog.require('w69b.qr.detector.AlignmentPattern');
 
 
 goog.scope(function() {
-  var BitMatrix = w69b.common.BitMatrix;
-  var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
-  var NotFoundException = w69b.NotFoundException;
+  const BitMatrix = w69b.common.BitMatrix;
+  const AlignmentPattern = w69b.qr.detector.AlignmentPattern;
+  const NotFoundException = w69b.NotFoundException;
   /**
    * This class attempts to find alignment patterns in a QR Code.
    * Alignment patterns look like finder
@@ -71,8 +71,8 @@ goog.scope(function() {
     this.crossCheckStateCount = Int32Array.of(0, 0, 0);
     this.resultPointCallback = resultPointCallback;
   };
-  var AlignmentPatternFinder = w69b.qr.detector.AlignmentPatternFinder;
-  var pro = AlignmentPatternFinder.prototype;
+  const AlignmentPatternFinder = w69b.qr.detector.AlignmentPatternFinder;
+  const pro = AlignmentPatternFinder.prototype;
 
   /**
    * Given a count of black/white/black pixels just seen and an end position,

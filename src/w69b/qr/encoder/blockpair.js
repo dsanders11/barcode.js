@@ -27,7 +27,7 @@ goog.scope(function() {
     this.dataBytes = data;
     this.errorCorrectionBytes = errorCorrection;
   };
-  var pro = w69b.qr.encoder.BlockPair.prototype;
+  const pro = w69b.qr.encoder.BlockPair.prototype;
 
   /**
    * @return {Int8Array}

@@ -36,7 +36,7 @@ goog.scope(function() {
    * @author Manuel Braun (mb@w69b.com) - ported to js
    */
 
-  var _ = w69b.common.GridSampler;
+  const _ = w69b.common.GridSampler;
 
   _.gridSampler = null;
 
@@ -69,7 +69,7 @@ goog.scope(function() {
   w69b.common.GridSamplerInterface = function() {
   };
 
-  var GridSamplerInterface = w69b.common.GridSamplerInterface;
+  const GridSamplerInterface = w69b.common.GridSamplerInterface;
 
   /**
    * Samples an image for a rectangular matrix of bits of the given dimension.

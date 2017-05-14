@@ -23,8 +23,8 @@ goog.require('w69b.qr.decoder.Version');
 
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  var Version = w69b.qr.decoder.Version;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const Version = w69b.qr.decoder.Version;
 
   /**
    * Encapsulates a block of data within a QR Code. QR Codes may split their data into
@@ -41,8 +41,8 @@ goog.scope(function() {
     /** @private */
     this.codewords = codewords;
   };
-  var DataBlock = w69b.qr.decoder.DataBlock;
-  var pro = DataBlock.prototype;
+  const DataBlock = w69b.qr.decoder.DataBlock;
+  const pro = DataBlock.prototype;
 
   /**
    * When QR Codes use multiple data blocks, they are actually interleaved.

@@ -24,9 +24,9 @@ goog.require('w69b.common.PerspectiveTransform');
 
 goog.scope(function() {
 
-  var PerspectiveTransform = w69b.common.PerspectiveTransform;
-  var GridSampler = w69b.common.GridSampler;
-  var BitMatrix = w69b.common.BitMatrix;
+  const PerspectiveTransform = w69b.common.PerspectiveTransform;
+  const GridSampler = w69b.common.GridSampler;
+  const BitMatrix = w69b.common.BitMatrix;
   /**
    * @author Sean Owen
    * @author Manuel Braun (mb@w69b.com) - ported to js.
@@ -35,7 +35,7 @@ goog.scope(function() {
    */
   w69b.common.DefaultGridSampler = function() {
   };
-  var pro = w69b.common.DefaultGridSampler.prototype;
+  const pro = w69b.common.DefaultGridSampler.prototype;
 
   /**
    * @override

@@ -31,19 +31,19 @@ goog.require('w69b.oned.UPCEWriter');
 goog.require('w69b.qr.QRCodeWriter');
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var NotFoundException = w69b.NotFoundException;
-  var Writer = w69b.Writer;
-  var CodaBarWriter = w69b.oned.CodaBarWriter;
-  var Code39Writer = w69b.oned.Code39Writer;
-  var Code128Writer = w69b.oned.Code128Writer;
-  var Code93Writer = w69b.oned.Code93Writer;
-  var EAN13Writer = w69b.oned.EAN13Writer;
-  var EAN8Writer = w69b.oned.EAN8Writer;
-  var ITFWriter = w69b.oned.ITFWriter;
-  var UPCAWriter = w69b.oned.UPCAWriter;
-  var UPCEWriter = w69b.oned.UPCEWriter;
-  var QRCodeWriter = w69b.qr.QRCodeWriter;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const NotFoundException = w69b.NotFoundException;
+  const Writer = w69b.Writer;
+  const CodaBarWriter = w69b.oned.CodaBarWriter;
+  const Code39Writer = w69b.oned.Code39Writer;
+  const Code128Writer = w69b.oned.Code128Writer;
+  const Code93Writer = w69b.oned.Code93Writer;
+  const EAN13Writer = w69b.oned.EAN13Writer;
+  const EAN8Writer = w69b.oned.EAN8Writer;
+  const ITFWriter = w69b.oned.ITFWriter;
+  const UPCAWriter = w69b.oned.UPCAWriter;
+  const UPCEWriter = w69b.oned.UPCEWriter;
+  const QRCodeWriter = w69b.qr.QRCodeWriter;
 
   /**
    * This is a factory class which finds the appropriate Writer subclass for the
@@ -53,7 +53,7 @@ goog.scope(function() {
    * @final
    */
   w69b.MultiFormatWriter = function() { };
-  var pro = w69b.MultiFormatWriter.prototype;
+  const pro = w69b.MultiFormatWriter.prototype;
 
   /**
    * @override

@@ -22,9 +22,9 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
-  var CodaBarReader = w69b.oned.CodaBarReader;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const CodaBarReader = w69b.oned.CodaBarReader;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 
   /**
    * This class renders CodaBar as {@code boolean[]}.
@@ -33,9 +33,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.CodaBarWriter = function() { };
-  var CodaBarWriter = w69b.oned.CodaBarWriter;
+  const CodaBarWriter = w69b.oned.CodaBarWriter;
   goog.inherits(CodaBarWriter, OneDimensionalCodeWriter);
-  var pro = CodaBarWriter.prototype;
+  const pro = CodaBarWriter.prototype;
 
   /** @type {!Array.<string>} */
   const START_END_CHARS = ['A', 'B', 'C', 'D'];

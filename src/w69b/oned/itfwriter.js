@@ -24,11 +24,11 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Integer = w69b.Integer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var ITFReader = w69b.oned.ITFReader;
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Integer = w69b.Integer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const ITFReader = w69b.oned.ITFReader;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 
   /**
    * This object renders a ITF code as a {@link BitMatrix}.
@@ -37,9 +37,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.ITFWriter = function() { };
-  var ITFWriter = w69b.oned.ITFWriter;
+  const ITFWriter = w69b.oned.ITFWriter;
   goog.inherits(ITFWriter, OneDimensionalCodeWriter);
-  var pro = ITFWriter.prototype;
+  const pro = ITFWriter.prototype;
 
   const START_PATTERN = Int32Array.of(1, 1, 1, 1);
   const END_PATTERN = Int32Array.of(3, 1, 1);

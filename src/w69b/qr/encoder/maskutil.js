@@ -21,8 +21,8 @@ goog.require('w69b.qr.encoder.ByteMatrix');
 
 
 goog.scope(function() {
-  var ByteMatrix = w69b.qr.encoder.ByteMatrix;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const ByteMatrix = w69b.qr.encoder.ByteMatrix;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * @author Satoru Takabayashi
@@ -30,7 +30,7 @@ goog.scope(function() {
    * @author Sean Owen
    * @author mb@69b.com (Manuel Braun) ported to js
    */
-  var _ = w69b.qr.encoder.MaskUtil;
+  const _ = w69b.qr.encoder.MaskUtil;
 
   // Penalty weights from section 6.8.2.1
   const N1 = 3;

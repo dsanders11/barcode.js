@@ -29,16 +29,16 @@ goog.require('w69b.qr.encoder.QRCode');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var EncodeHintType = w69b.EncodeHintType;
-  var Integer = w69b.Integer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var IllegalStateException = w69b.exceptions.IllegalStateException;
-  var Writer = w69b.Writer;
-  var BitMatrix = w69b.common.BitMatrix;
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  var Encoder = w69b.qr.encoder.Encoder;
-  var QRCode = w69b.qr.encoder.QRCode;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const EncodeHintType = w69b.EncodeHintType;
+  const Integer = w69b.Integer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalStateException = w69b.exceptions.IllegalStateException;
+  const Writer = w69b.Writer;
+  const BitMatrix = w69b.common.BitMatrix;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const Encoder = w69b.qr.encoder.Encoder;
+  const QRCode = w69b.qr.encoder.QRCode;
 
   /**
    * This object renders a QR Code as a BitMatrix 2D array of greyscale values.
@@ -47,8 +47,8 @@ goog.scope(function() {
    * @final
    */
   w69b.qr.QRCodeWriter = function() { };
-  var QRCodeWriter = w69b.qr.QRCodeWriter;
-  var pro = QRCodeWriter.prototype;
+  const QRCodeWriter = w69b.qr.QRCodeWriter;
+  const pro = QRCodeWriter.prototype;
 
   const QUIET_ZONE_SIZE = 4;
 

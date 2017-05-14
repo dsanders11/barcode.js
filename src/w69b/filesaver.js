@@ -15,9 +15,9 @@ goog.scope(function() {
     this.name = name;
     this.objectUrl_ = null;
   };
-  var FileSaver = w69b.FileSaver;
+  const FileSaver = w69b.FileSaver;
   goog.inherits(FileSaver, goog.Disposable);
-  var pro = w69b.FileSaver.prototype;
+  const pro = w69b.FileSaver.prototype;
 
   /**
    * @param {!Blob} blob to save.

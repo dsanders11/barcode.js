@@ -35,23 +35,23 @@ goog.require('w69b.qr.encoder.MatrixUtil');
 goog.require('w69b.qr.encoder.QRCode');
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  var BitArray = w69b.common.BitArray;
-  var ByteMatrix = w69b.qr.encoder.ByteMatrix;
-  var MatrixUtil = w69b.qr.encoder.MatrixUtil;
-  var Version = w69b.qr.decoder.Version;
-  var WriterException = w69b.WriterException;
-  var BlockPair = w69b.qr.encoder.BlockPair;
-  var QRCode = w69b.qr.encoder.QRCode;
-  var MaskUtil = w69b.qr.encoder.MaskUtil;
-  var Mode = w69b.qr.decoder.Mode;
-  var ModeEnum = w69b.qr.decoder.ModeEnum;
-  var EncodeHintType = w69b.EncodeHintType;
-  var Integer = w69b.Integer;
-  var CharacterSetECI = w69b.common.CharacterSetECI;
-  var GenericGF = w69b.common.reedsolomon.GenericGF;
-  var ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;
-  var stringutils = w69b.common.stringutils;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const BitArray = w69b.common.BitArray;
+  const ByteMatrix = w69b.qr.encoder.ByteMatrix;
+  const MatrixUtil = w69b.qr.encoder.MatrixUtil;
+  const Version = w69b.qr.decoder.Version;
+  const WriterException = w69b.WriterException;
+  const BlockPair = w69b.qr.encoder.BlockPair;
+  const QRCode = w69b.qr.encoder.QRCode;
+  const MaskUtil = w69b.qr.encoder.MaskUtil;
+  const Mode = w69b.qr.decoder.Mode;
+  const ModeEnum = w69b.qr.decoder.ModeEnum;
+  const EncodeHintType = w69b.EncodeHintType;
+  const Integer = w69b.Integer;
+  const CharacterSetECI = w69b.common.CharacterSetECI;
+  const GenericGF = w69b.common.reedsolomon.GenericGF;
+  const ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;
+  const stringutils = w69b.common.stringutils;
 
 
   /**
@@ -59,7 +59,7 @@ goog.scope(function() {
    * @author dswitkin@google.com (Daniel Switkin) - ported from C+
    * @author mb@w69b.com (Manuel Braun) - ported to js
    */
-  var _ = w69b.qr.encoder.Encoder;
+  const _ = w69b.qr.encoder.Encoder;
 
   /**
    * The original table is defined in the table 5 of JISX0510:2004 (p.19).

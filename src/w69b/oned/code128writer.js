@@ -24,11 +24,11 @@ goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Integer = w69b.Integer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var Code128Reader = w69b.oned.Code128Reader;
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Integer = w69b.Integer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const Code128Reader = w69b.oned.Code128Reader;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 
   /**
    * This object renders a CODE128 code as a BitMatrix.
@@ -37,9 +37,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.Code128Writer = function() { };
-  var Code128Writer = w69b.oned.Code128Writer;
+  const Code128Writer = w69b.oned.Code128Writer;
   goog.inherits(Code128Writer, OneDimensionalCodeWriter);
-  var pro = Code128Writer.prototype;
+  const pro = Code128Writer.prototype;
 
   const CODE_START_B = 104;
   const CODE_START_C = 105;
@@ -62,7 +62,7 @@ goog.scope(function() {
    * Results of minimal lookahead for code C
    * @enum {number}
    */
-  var CType = {
+  const CType = {
     UNCODABLE: 0,
     ONE_DIGIT: 1,
     TWO_DIGITS: 2,

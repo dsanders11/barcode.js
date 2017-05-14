@@ -21,8 +21,8 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var StringBuilder = w69b.StringBuilder;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const StringBuilder = w69b.StringBuilder;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * Represents a polynomial whose coefficients are elements of a GF.
@@ -68,8 +68,8 @@ goog.scope(function() {
       this.coefficients_ = coefficients;
     }
   };
-  var GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-  var pro = GenericGFPoly.prototype;
+  const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
+  const pro = GenericGFPoly.prototype;
 
   /**
    * @return {!Int32Array}

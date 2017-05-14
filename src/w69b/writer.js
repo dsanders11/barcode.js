@@ -22,14 +22,14 @@ goog.require('w69b.WriterException');
 goog.require('w69b.common.BitMatrix');
 
 goog.scope(function() {
-  var EncodeHintType = w69b.EncodeHintType;
+  const EncodeHintType = w69b.EncodeHintType;
 
   /**
    * The base class for all objects which encode/generate a barcode image.
    * @interface
    */
   w69b.Writer = function() { };
-  var pro = w69b.Writer.prototype;
+  const pro = w69b.Writer.prototype;
 
   /**
    * Encode a barcode using the default settings.

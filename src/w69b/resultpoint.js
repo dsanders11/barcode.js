@@ -19,7 +19,7 @@ goog.provide('w69b.ResultPointCallback');
 goog.require('w69b.common.detector.MathUtils');
 
 goog.scope(function() {
-  var MathUtils = w69b.common.detector.MathUtils;
+  const MathUtils = w69b.common.detector.MathUtils;
 
   /**
    * @constructor
@@ -30,8 +30,8 @@ goog.scope(function() {
     this.x = posX;
     this.y = posY;
   };
-  var ResultPoint = w69b.ResultPoint;
-  var pro = ResultPoint.prototype;
+  const ResultPoint = w69b.ResultPoint;
+  const pro = ResultPoint.prototype;
 
   /**
    * @return {number} x pos.

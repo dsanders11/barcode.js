@@ -27,14 +27,14 @@ goog.require('w69b.oned.UPCEANWriter');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Character = w69b.Character;
-  var FormatException = w69b.FormatException;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var EAN13Reader = w69b.oned.EAN13Reader;
-  var UPCEANReader = w69b.oned.UPCEANReader;
-  var UPCEANWriter = w69b.oned.UPCEANWriter;
-  var appendPattern = w69b.oned.OneDimensionalCodeWriter.appendPattern;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Character = w69b.Character;
+  const FormatException = w69b.FormatException;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const EAN13Reader = w69b.oned.EAN13Reader;
+  const UPCEANReader = w69b.oned.UPCEANReader;
+  const UPCEANWriter = w69b.oned.UPCEANWriter;
+  const appendPattern = w69b.oned.OneDimensionalCodeWriter.appendPattern;
 
   /**
    * This object renders an EAN13 code as a {@link BitMatrix}.
@@ -43,9 +43,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.EAN13Writer = function() { };
-  var EAN13Writer = w69b.oned.EAN13Writer;
+  const EAN13Writer = w69b.oned.EAN13Writer;
   goog.inherits(EAN13Writer, UPCEANWriter);
-  var pro = EAN13Writer.prototype;
+  const pro = EAN13Writer.prototype;
 
   const CODE_WIDTH = 3 + // start guard
       (7 * 6) + // left bars

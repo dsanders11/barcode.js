@@ -30,17 +30,17 @@ goog.require('w69b.common.BitArray');
 
 
 goog.scope(function() {
-  var BinaryBitmap = w69b.BinaryBitmap;
-  var ChecksumException = w69b.ChecksumException;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var NotFoundException = w69b.NotFoundException;
-  var Reader = w69b.Reader;
-  var ReaderException = w69b.ReaderException;
-  var Result = w69b.Result;
-  var ResultMetadataType = w69b.ResultMetadataType;
-  var ResultPoint = w69b.ResultPoint;
-  var BitArray = w69b.common.BitArray;
+  const BinaryBitmap = w69b.BinaryBitmap;
+  const ChecksumException = w69b.ChecksumException;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const NotFoundException = w69b.NotFoundException;
+  const Reader = w69b.Reader;
+  const ReaderException = w69b.ReaderException;
+  const Result = w69b.Result;
+  const ResultMetadataType = w69b.ResultMetadataType;
+  const ResultPoint = w69b.ResultPoint;
+  const BitArray = w69b.common.BitArray;
 
   /**
    * Encapsulates functionality and implementation that is common to all families
@@ -50,8 +50,8 @@ goog.scope(function() {
    * @abstract
    */
   w69b.oned.OneDReader = function() { };
-  var OneDReader = w69b.oned.OneDReader;
-  var pro = OneDReader.prototype;
+  const OneDReader = w69b.oned.OneDReader;
+  const pro = OneDReader.prototype;
 
   /**
    * @override

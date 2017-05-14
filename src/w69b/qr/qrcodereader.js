@@ -31,18 +31,18 @@ goog.require('w69b.qr.detector.Detector');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var DecodeHintType = w69b.DecodeHintType;
-  var NotFoundException = w69b.NotFoundException;
-  var Reader = w69b.Reader;
-  var Result = w69b.Result;
-  var ResultMetadataType = w69b.ResultMetadataType;
-  var ResultPoint = w69b.ResultPoint;
-  var BitMatrix = w69b.common.BitMatrix;
-  var DecoderResult = w69b.common.DecoderResult;
-  var QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
-  var Decoder = w69b.qr.decoder.Decoder;
-  var Detector = w69b.qr.detector.Detector;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const DecodeHintType = w69b.DecodeHintType;
+  const NotFoundException = w69b.NotFoundException;
+  const Reader = w69b.Reader;
+  const Result = w69b.Result;
+  const ResultMetadataType = w69b.ResultMetadataType;
+  const ResultPoint = w69b.ResultPoint;
+  const BitMatrix = w69b.common.BitMatrix;
+  const DecoderResult = w69b.common.DecoderResult;
+  const QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
+  const Decoder = w69b.qr.decoder.Decoder;
+  const Detector = w69b.qr.detector.Detector;
 
   /**
    * This implementation can detect and decode QR Codes in an image.
@@ -51,8 +51,8 @@ goog.scope(function() {
    * @final
    */
   w69b.qr.QRCodeReader = function() { };
-  var QRCodeReader = w69b.qr.QRCodeReader;
-  var pro = QRCodeReader.prototype;
+  const QRCodeReader = w69b.qr.QRCodeReader;
+  const pro = QRCodeReader.prototype;
 
   /**
    * @type {!Array.<!ResultPoint>}

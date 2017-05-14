@@ -24,11 +24,11 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var EncodeHintType = w69b.EncodeHintType;
-  var Integer = w69b.Integer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var Writer = w69b.Writer;
-  var BitMatrix = w69b.common.BitMatrix;
+  const EncodeHintType = w69b.EncodeHintType;
+  const Integer = w69b.Integer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const Writer = w69b.Writer;
+  const BitMatrix = w69b.common.BitMatrix;
 
   /**
    * Encapsulates functionality and implementation that is common to
@@ -38,8 +38,8 @@ goog.scope(function() {
    * @abstract
    */
   w69b.oned.OneDimensionalCodeWriter = function() { };
-  var OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
-  var pro = OneDimensionalCodeWriter.prototype;
+  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+  const pro = OneDimensionalCodeWriter.prototype;
 
   /**
    * @override

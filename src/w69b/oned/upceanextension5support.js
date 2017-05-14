@@ -28,15 +28,15 @@ goog.require('w69b.common.BitArray');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Integer = w69b.Integer;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultMetadataType = w69b.ResultMetadataType;
-  var ResultPoint = w69b.ResultPoint;
-  var StringBuilder = w69b.StringBuilder;
-  var BitArray = w69b.common.BitArray;
-  var UPCEANReader = w69b.oned.UPCEANReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Integer = w69b.Integer;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultMetadataType = w69b.ResultMetadataType;
+  const ResultPoint = w69b.ResultPoint;
+  const StringBuilder = w69b.StringBuilder;
+  const BitArray = w69b.common.BitArray;
+  const UPCEANReader = w69b.oned.UPCEANReader;
 
   /**
    * @see UPCEANExtension2Support
@@ -49,8 +49,8 @@ goog.scope(function() {
     /** @const {!StringBuilder} */
     this.decodeRowStringBuffer_ = new StringBuilder();
   };
-  var UPCEANExtension5Support = w69b.oned.UPCEANExtension5Support;
-  var pro = UPCEANExtension5Support.prototype;
+  const UPCEANExtension5Support = w69b.oned.UPCEANExtension5Support;
+  const pro = UPCEANExtension5Support.prototype;
 
   const CHECK_DIGIT_ENCODINGS = Int32Array.of(
     0x18, 0x14, 0x12, 0x11, 0x0C, 0x06, 0x03, 0x0A, 0x09, 0x05

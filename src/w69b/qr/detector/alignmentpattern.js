@@ -36,9 +36,9 @@ goog.scope(function() {
     this.count = 1;
     this.estimatedModuleSize = estimatedModuleSize;
   };
-  var AlignmentPattern = w69b.qr.detector.AlignmentPattern;
+  const AlignmentPattern = w69b.qr.detector.AlignmentPattern;
   goog.inherits(AlignmentPattern, w69b.ResultPoint);
-  var pro = AlignmentPattern.prototype;
+  const pro = AlignmentPattern.prototype;
 
   /**
    * Determines if this alignment pattern "about equals" an alignment

@@ -31,18 +31,18 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  var ArrayList = w69b.ArrayList;
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var DecodeHintType = w69b.DecodeHintType;
-  var NotFoundException = w69b.NotFoundException;
-  var ReaderException = w69b.ReaderException;
-  var CodaBarReader = w69b.oned.CodaBarReader;
-  var Code128Reader = w69b.oned.Code128Reader;
-  var Code39Reader = w69b.oned.Code39Reader;
-  var Code93Reader = w69b.oned.Code93Reader;
-  var ITFReader =w69b.oned.ITFReader;
-  var MultiFormatUPCEANReader = w69b.oned.MultiFormatUPCEANReader;
-  var OneDReader = w69b.oned.OneDReader;
+  const ArrayList = w69b.ArrayList;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const DecodeHintType = w69b.DecodeHintType;
+  const NotFoundException = w69b.NotFoundException;
+  const ReaderException = w69b.ReaderException;
+  const CodaBarReader = w69b.oned.CodaBarReader;
+  const Code128Reader = w69b.oned.Code128Reader;
+  const Code39Reader = w69b.oned.Code39Reader;
+  const Code93Reader = w69b.oned.Code93Reader;
+  const ITFReader =w69b.oned.ITFReader;
+  const MultiFormatUPCEANReader = w69b.oned.MultiFormatUPCEANReader;
+  const OneDReader = w69b.oned.OneDReader;
 
   /**
    * @constructor
@@ -95,9 +95,9 @@ goog.scope(function() {
      */
     this.readers_ = readers.toArray();
   };
-  var MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
+  const MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
   goog.inherits(MultiFormatOneDReader, OneDReader);
-  var pro = MultiFormatOneDReader.prototype;
+  const pro = MultiFormatOneDReader.prototype;
 
   /**
    * @override

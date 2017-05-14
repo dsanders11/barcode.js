@@ -21,8 +21,8 @@ goog.require('w69b.Integer');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 goog.scope(function() {
-  var Integer = w69b.Integer;
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const Integer = w69b.Integer;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
 
   /**
    * @param {number} number todo.
@@ -35,7 +35,7 @@ goog.scope(function() {
     else
       return (number >> bits) + (2 << ~bits);
   };
-  var URShift = w69b.qr.decoder.URShift;
+  const URShift = w69b.qr.decoder.URShift;
 
 
   /**
@@ -49,8 +49,8 @@ goog.scope(function() {
     /** @private */
     this.dataMask = (formatInfo & 0x07);
   };
-  var FormatInformation = w69b.qr.decoder.FormatInformation;
-  var pro = FormatInformation.prototype;
+  const FormatInformation = w69b.qr.decoder.FormatInformation;
+  const pro = FormatInformation.prototype;
 
   FormatInformation.FORMAT_INFO_MASK_QR = 0x5412;
 

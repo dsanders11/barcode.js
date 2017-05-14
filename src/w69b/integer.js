@@ -9,7 +9,7 @@ goog.scope(function() {
   w69b.Integer = function(value) {
     this.value_ = parseInt(value, 10);
   };
-  var Integer = w69b.Integer;
+  const Integer = w69b.Integer;
 
   /** @const {number} */
   Integer.MAX_VALUE = Number.MAX_SAFE_INTEGER;

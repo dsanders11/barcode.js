@@ -11,8 +11,8 @@ goog.scope(function() {
     /** @type {!Array.<T>} */
     this.array_ = [];
   };
-  var ArrayList = w69b.ArrayList;
-  var pro = ArrayList.prototype;
+  const ArrayList = w69b.ArrayList;
+  const pro = ArrayList.prototype;
 
   /**
    * @param {T} e

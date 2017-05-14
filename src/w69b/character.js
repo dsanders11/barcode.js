@@ -10,7 +10,7 @@ goog.scope(function() {
   w69b.Character = function(value) {
     this.value_ = value;
   };
-  var Character = w69b.Character;
+  const Character = w69b.Character;
 
   /** @const {number} */
   Character.MAX_RADIX = 36;

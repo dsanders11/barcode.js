@@ -27,11 +27,11 @@ goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  var FormatException = w69b.FormatException;
-  var Integer = w69b.Integer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var BitMatrix = w69b.common.BitMatrix;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const FormatException = w69b.FormatException;
+  const Integer = w69b.Integer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const BitMatrix = w69b.common.BitMatrix;
 
   /**
    * @constructor
@@ -48,7 +48,7 @@ goog.scope(function() {
      */
     this.dataCodewords = dataCodewords;
   };
-  var ECB = w69b.qr.decoder.ECB;
+  const ECB = w69b.qr.decoder.ECB;
 
   /**
    * @return {number}
@@ -79,7 +79,7 @@ goog.scope(function() {
       this.ecBlocks = [ecBlocks1];
     }
   };
-  var ECBlocks = w69b.qr.decoder.ECBlocks;
+  const ECBlocks = w69b.qr.decoder.ECBlocks;
 
   /** @type {Array.<ECB>} */
   ECBlocks.prototype.ecBlocks;
@@ -137,8 +137,8 @@ goog.scope(function() {
     }
     this.totalCodewords = total;
   };
-  var Version = w69b.qr.decoder.Version;
-  var pro = Version.prototype;
+  const Version = w69b.qr.decoder.Version;
+  const pro = Version.prototype;
 
   /**
    * @return {number}

@@ -23,15 +23,15 @@ goog.require('w69b.oned.UPCEANReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var NotFoundException = w69b.NotFoundException;
-  var StringBuilder = w69b.StringBuilder;
-  var UPCEANReader = w69b.oned.UPCEANReader;
-  var decodeDigit = UPCEANReader.decodeDigit;
-  var findGuardPattern = UPCEANReader.findGuardPattern;
-  var L_AND_G_PATTERNS = UPCEANReader.L_AND_G_PATTERNS;
-  var L_PATTERNS = UPCEANReader.L_PATTERNS;
-  var MIDDLE_PATTERN = UPCEANReader.MIDDLE_PATTERN;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const NotFoundException = w69b.NotFoundException;
+  const StringBuilder = w69b.StringBuilder;
+  const UPCEANReader = w69b.oned.UPCEANReader;
+  const decodeDigit = UPCEANReader.decodeDigit;
+  const findGuardPattern = UPCEANReader.findGuardPattern;
+  const L_AND_G_PATTERNS = UPCEANReader.L_AND_G_PATTERNS;
+  const L_PATTERNS = UPCEANReader.L_PATTERNS;
+  const MIDDLE_PATTERN = UPCEANReader.MIDDLE_PATTERN;
 
   // For an EAN-13 barcode, the first digit is represented by the parities used
   // to encode the next six digits, according to the table below. For example,
@@ -72,9 +72,9 @@ goog.scope(function() {
     goog.base(this);
     this.decodeMiddleCounters_ = new Int32Array(4);
   };
-  var EAN13Reader = w69b.oned.EAN13Reader;
+  const EAN13Reader = w69b.oned.EAN13Reader;
   goog.inherits(EAN13Reader, UPCEANReader);
-  var pro = EAN13Reader.prototype;
+  const pro = EAN13Reader.prototype;
 
   /**
    * @const {!Int32Array}

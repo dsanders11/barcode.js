@@ -31,16 +31,16 @@ goog.require('w69b.qr.decoder.QRCodeDecoderMetaData');
 
 
 goog.scope(function() {
-  var ChecksumException = w69b.ChecksumException;
-  var DecodeHintType = w69b.DecodeHintType;
-  var FormatException = w69b.FormatException;
-  var DecoderResult = w69b.common.DecoderResult;
-  var GenericGF = w69b.common.reedsolomon.GenericGF;
-  var ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
-  var BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
-  var DataBlock = w69b.qr.decoder.DataBlock;
-  var DecodedBitStreamParser = w69b.qr.decoder.DecodedBitStreamParser;
-  var QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
+  const ChecksumException = w69b.ChecksumException;
+  const DecodeHintType = w69b.DecodeHintType;
+  const FormatException = w69b.FormatException;
+  const DecoderResult = w69b.common.DecoderResult;
+  const GenericGF = w69b.common.reedsolomon.GenericGF;
+  const ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
+  const BitMatrixParser = w69b.qr.decoder.BitMatrixParser;
+  const DataBlock = w69b.qr.decoder.DataBlock;
+  const DecodedBitStreamParser = w69b.qr.decoder.DecodedBitStreamParser;
+  const QRCodeDecoderMetaData = w69b.qr.decoder.QRCodeDecoderMetaData;
 
   /**
    * The main class which implements QR Code decoding -- as opposed to locating
@@ -51,8 +51,8 @@ goog.scope(function() {
   w69b.qr.decoder.Decoder = function() {
     this.rsDecoder_ = new w69b.common.reedsolomon.ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
   };
-  var Decoder = w69b.qr.decoder.Decoder;
-  var pro = Decoder.prototype;
+  const Decoder = w69b.qr.decoder.Decoder;
+  const pro = Decoder.prototype;
 
   /**
    * Given data and error-correction codewords received, possibly corrupted by errors, attempts to

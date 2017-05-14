@@ -21,7 +21,7 @@ goog.require('w69b.LuminanceSource');
 
 
 goog.scope(function() {
-  var LuminanceSource = w69b.LuminanceSource;
+  const LuminanceSource = w69b.LuminanceSource;
 
   /**
    * This class hierarchy provides a set of methods to convert luminance data to
@@ -44,7 +44,7 @@ goog.scope(function() {
      */
     this.source = source;
   };
-  var Binarizer = w69b.Binarizer;
+  const Binarizer = w69b.Binarizer;
 
   /**
    * @return {LuminanceSource} image.

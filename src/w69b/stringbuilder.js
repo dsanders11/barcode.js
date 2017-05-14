@@ -10,8 +10,8 @@ goog.scope(function() {
   w69b.StringBuilder = function() {
     this.string_ = '';
   };
-  var StringBuilder = w69b.StringBuilder;
-  var pro = StringBuilder.prototype;
+  const StringBuilder = w69b.StringBuilder;
+  const pro = StringBuilder.prototype;
 
   /**
    * @param {number} newLength new length of the string

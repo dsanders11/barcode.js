@@ -14,11 +14,11 @@ goog.require('w69b.worker.DecodeInWorkerHelper');
  * @author mb@w69b.com (Manuel Braun)
  */
 goog.scope(function() {
-  var WorkerMessageType = w69b.worker.WorkerMessageType;
-  var DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
-  var object = goog.object;
-  var Promise = goog.Promise;
-  var _ = w69b.decoding;
+  const WorkerMessageType = w69b.worker.WorkerMessageType;
+  const DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
+  const object = goog.object;
+  const Promise = goog.Promise;
+  const _ = w69b.decoding;
 
   /**
    * Set this according to your setup before creating an instance.

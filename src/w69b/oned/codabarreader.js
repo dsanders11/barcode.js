@@ -28,15 +28,15 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var DecodeHintType = w69b.DecodeHintType;
-  var Integer = w69b.Integer;
-  var NotFoundException = w69b.NotFoundException;
-  var Result = w69b.Result;
-  var ResultPoint = w69b.ResultPoint;
-  var StringBuilder = w69b.StringBuilder;
-  var BitArray = w69b.common.BitArray;
-  var OneDReader = w69b.oned.OneDReader;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const DecodeHintType = w69b.DecodeHintType;
+  const Integer = w69b.Integer;
+  const NotFoundException = w69b.NotFoundException;
+  const Result = w69b.Result;
+  const ResultPoint = w69b.ResultPoint;
+  const StringBuilder = w69b.StringBuilder;
+  const BitArray = w69b.common.BitArray;
+  const OneDReader = w69b.oned.OneDReader;
 
   /**
    * Decodes Codabar barcodes.
@@ -49,9 +49,9 @@ goog.scope(function() {
     this.counters_ = new Int32Array(80);
     this.counterLength_ = 0;
   };
-  var CodaBarReader = w69b.oned.CodaBarReader;
+  const CodaBarReader = w69b.oned.CodaBarReader;
   goog.inherits(CodaBarReader, OneDReader);
-  var pro = CodaBarReader.prototype;
+  const pro = CodaBarReader.prototype;
 
   // These values are critical for determining how permissive the decoding
   // will be. All stripe sizes must be within the window these define, as

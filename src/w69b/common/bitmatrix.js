@@ -22,8 +22,8 @@ goog.require('w69b.common.BitArray');
 goog.require('w69b.exceptions.IllegalArgumentException');
 
 goog.scope(function() {
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var BitArray = w69b.common.BitArray;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const BitArray = w69b.common.BitArray;
 
   /**
    * @param {number} width width.
@@ -51,8 +51,8 @@ goog.scope(function() {
     this.bits = opt_bits ? opt_bits : new Int32Array(this.rowSize * height);
   };
 
-  var BitMatrix = w69b.common.BitMatrix;
-  var pro = BitMatrix.prototype;
+  const BitMatrix = w69b.common.BitMatrix;
+  const pro = BitMatrix.prototype;
 
   /**
    * @param {string} stringRepresentation

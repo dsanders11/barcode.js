@@ -22,8 +22,8 @@ goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  var Integer = w69b.Integer;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const Integer = w69b.Integer;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * A simple, fast array of bits, represented compactly by an array of ints
@@ -44,8 +44,8 @@ goog.scope(function() {
      */
     this.bits_ = opt_size ? makeArray(this.size_) : new Int32Array(1);
   };
-  var BitArray = w69b.common.BitArray;
-  var pro = BitArray.prototype;
+  const BitArray = w69b.common.BitArray;
+  const pro = BitArray.prototype;
 
   /**
    * @return {number}

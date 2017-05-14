@@ -23,13 +23,13 @@ goog.require('w69b.oned.UPCEANReader');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var NotFoundException = w69b.NotFoundException;
-  var StringBuilder = w69b.StringBuilder;
-  var UPCEANReader = w69b.oned.UPCEANReader;
-  var decodeDigit = UPCEANReader.decodeDigit;
-  var findGuardPattern = UPCEANReader.findGuardPattern;
-  var L_AND_G_PATTERNS = UPCEANReader.L_AND_G_PATTERNS;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const NotFoundException = w69b.NotFoundException;
+  const StringBuilder = w69b.StringBuilder;
+  const UPCEANReader = w69b.oned.UPCEANReader;
+  const decodeDigit = UPCEANReader.decodeDigit;
+  const findGuardPattern = UPCEANReader.findGuardPattern;
+  const L_AND_G_PATTERNS = UPCEANReader.L_AND_G_PATTERNS;
 
   /**
    * Implements decoding of the UPC-E format.
@@ -43,9 +43,9 @@ goog.scope(function() {
     goog.base(this);
     this.decodeMiddleCounters_ = new Int32Array(4);
   };
-  var UPCEReader = w69b.oned.UPCEReader;
+  const UPCEReader = w69b.oned.UPCEReader;
   goog.inherits(UPCEReader, UPCEANReader);
-  var pro = UPCEReader.prototype;
+  const pro = UPCEReader.prototype;
 
   /**
    * The pattern that marks the middle, and end, of a UPC-E pattern.

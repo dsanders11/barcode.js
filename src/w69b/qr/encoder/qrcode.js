@@ -22,10 +22,10 @@ goog.require('w69b.qr.decoder.Version');
 goog.require('w69b.qr.encoder.ByteMatrix');
 
 goog.scope(function() {
-  var ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
-  var Mode = w69b.qr.decoder.Mode;
-  var Version = w69b.qr.decoder.Version;
-  var ByteMatrix = w69b.qr.encoder.ByteMatrix;
+  const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
+  const Mode = w69b.qr.decoder.Mode;
+  const Version = w69b.qr.decoder.Version;
+  const ByteMatrix = w69b.qr.encoder.ByteMatrix;
 
   /**
    * @constructor
@@ -35,8 +35,8 @@ goog.scope(function() {
    */
   w69b.qr.encoder.QRCode = function() {
   };
-  var _ = w69b.qr.encoder.QRCode;
-  var pro = _.prototype;
+  const _ = w69b.qr.encoder.QRCode;
+  const pro = _.prototype;
   /**
    * @type {Mode}
    * @private

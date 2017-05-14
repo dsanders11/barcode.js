@@ -26,13 +26,13 @@ goog.require('w69b.oned.UPCEANWriter');
 
 
 goog.scope(function() {
-  var BarcodeFormat = w69b.BarcodeFormat;
-  var Character = w69b.Character;
-  var FormatException = w69b.FormatException;
-  var IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  var UPCEANReader = w69b.oned.UPCEANReader;
-  var UPCEANWriter = w69b.oned.UPCEANWriter;
-  var appendPattern = w69b.oned.OneDimensionalCodeWriter.appendPattern;
+  const BarcodeFormat = w69b.BarcodeFormat;
+  const Character = w69b.Character;
+  const FormatException = w69b.FormatException;
+  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const UPCEANReader = w69b.oned.UPCEANReader;
+  const UPCEANWriter = w69b.oned.UPCEANWriter;
+  const appendPattern = w69b.oned.OneDimensionalCodeWriter.appendPattern;
 
   /**
    * This object renders an EAN8 code as a {@link BitMatrix}.
@@ -41,9 +41,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.EAN8Writer = function() { };
-  var EAN8Writer = w69b.oned.EAN8Writer;
+  const EAN8Writer = w69b.oned.EAN8Writer;
   goog.inherits(EAN8Writer, UPCEANWriter);
-  var pro = EAN8Writer.prototype;
+  const pro = EAN8Writer.prototype;
 
   const CODE_WIDTH = 3 + // start guard
       (7 * 4) + // left bars
