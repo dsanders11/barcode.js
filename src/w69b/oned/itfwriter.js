@@ -48,7 +48,7 @@ goog.scope(function() {
    * @override
    */
   pro.encode = function(contents, format, width, height, opt_hints) {
-    if (format != BarcodeFormat.ITF) {
+    if (format !== BarcodeFormat.ITF) {
       throw new IllegalArgumentException("Can only encode ITF, but got " + format);
     }
 
@@ -60,7 +60,7 @@ goog.scope(function() {
    */
   pro.encodeBoolean = function(contents) {
     var length = contents.length;
-    if (length % 2 != 0) {
+    if (length % 2 !== 0) {
       throw new IllegalArgumentException("The length of the input should be even");
     }
     if (length > 80) {

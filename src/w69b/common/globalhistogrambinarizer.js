@@ -74,7 +74,7 @@ goog.scope(function() {
   pro.getBlackRow = function(y, row) {
     var source = this.getLuminanceSource();
     var width = source.getWidth();
-    if (row == null || row.getSize() < width) {
+    if (row === null || row.getSize() < width) {
       row = new BitArray(width);
     } else {
       row.clear();

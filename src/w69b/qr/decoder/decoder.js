@@ -139,10 +139,10 @@ goog.scope(function() {
     } catch (err) {
       if (err instanceof FormatException || err instanceof ChecksumException) {
         // Throw the exception from the original reading
-        if (fe != null) {
+        if (fe !== null) {
           throw fe;
         }
-        if (ce != null) {
+        if (ce !== null) {
           throw ce;
         }
       }

@@ -34,7 +34,7 @@ goog.scope(function() {
    */
   w69b.common.DecoderResult = function(rawBytes, text, byteSegments, ecLevel, opt_saSequence, opt_saParity) {
     this.rawBytes_ = rawBytes;
-    this.numBits_ = rawBytes == null ? 0 : 8 * rawBytes.length;
+    this.numBits_ = rawBytes === null ? 0 : 8 * rawBytes.length;
     this.text_ = text;
     this.byteSegments_ = byteSegments;
     this.ecLevel_ = ecLevel;

@@ -218,7 +218,7 @@ goog.scope(function() {
    * should revert to its original state.
    */
   pro.remask = function() {
-    if (this.parsedFormatInfo == null) {
+    if (this.parsedFormatInfo === null) {
       return; // We have no format information, and have no data mask
     }
     var dataMask = DataMask.forReference(this.parsedFormatInfo.getDataMask());
@@ -246,7 +246,7 @@ goog.scope(function() {
     var bitMatrix = this.bitMatrix;
     for (let x = 0; x < bitMatrix.getWidth(); x++) {
       for (let y = x + 1; y < bitMatrix.getHeight(); y++) {
-        if (bitMatrix.get(x, y) != bitMatrix.get(y, x)) {
+        if (bitMatrix.get(x, y) !== bitMatrix.get(y, x)) {
           bitMatrix.flip(y, x);
           bitMatrix.flip(x, y);
         }

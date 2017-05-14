@@ -88,7 +88,7 @@ goog.scope(function() {
    * @param {(number|boolean)} value
    */
   pro.set = function(x, y, value) {
-    if (typeof value == 'boolean') {
+    if (typeof value === 'boolean') {
       value = value ? 1 : 0;
     }
 

@@ -274,9 +274,9 @@ goog.scope(function() {
         }
         if (degree === 0 || coefficient !== 1) {
           let alphaPower = this.field_.log(coefficient);
-          if (alphaPower == 0) {
+          if (alphaPower === 0) {
             result.append('1');
-          } else if (alphaPower == 1) {
+          } else if (alphaPower === 1) {
             result.append('a');
           } else {
             result.append("a^");

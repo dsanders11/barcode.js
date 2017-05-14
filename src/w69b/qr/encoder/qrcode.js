@@ -123,7 +123,7 @@ goog.scope(function() {
     result.push(this.version_.toString());
     result.push('\n maskPattern: ');
     result.push(this.maskPattern_);
-    if (this.matrix_ == null) {
+    if (this.matrix_ === null) {
       result.push('\n matrix: null\n');
     } else {
       result.push('\n matrix:\n');

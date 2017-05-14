@@ -73,7 +73,7 @@ goog.scope(function() {
    * @override
    */
   pro.encode = function(contents, format, width, height, opt_hints) {
-    if (format != BarcodeFormat.CODE_128) {
+    if (format !== BarcodeFormat.CODE_128) {
       throw new IllegalArgumentException("Can only encode CODE_128, but got " + format);
     }
 
@@ -211,7 +211,7 @@ goog.scope(function() {
       return CType.UNCODABLE;
     }
     var c = value.charAt(start);
-    if (c == ESCAPE_FNC_1) {
+    if (c === ESCAPE_FNC_1) {
       return CType.FNC_1;
     }
     if (c < '0' || c > '9') {

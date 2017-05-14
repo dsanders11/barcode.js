@@ -119,7 +119,7 @@ goog.scope(function() {
 
     for (let i = 1; i <= 6; i++) {
       let digit = Character.digit(contents.charAt(i), 10);
-      if ((parities >> (6 - i) & 1) == 1) {
+      if ((parities >> (6 - i) & 1) === 1) {
         digit += 10;
       }
       pos += appendPattern(result, pos, UPCEANReader.L_AND_G_PATTERNS[digit], false);

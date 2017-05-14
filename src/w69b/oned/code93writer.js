@@ -43,7 +43,7 @@ goog.scope(function() {
    * @override
    */
   pro.encode = function(contents, format, width, height, opt_hints) {
-    if (format != BarcodeFormat.CODE_93) {
+    if (format !== BarcodeFormat.CODE_93) {
       throw new IllegalArgumentException("Can only encode CODE_93, but got " + format);
     }
 

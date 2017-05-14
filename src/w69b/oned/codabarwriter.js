@@ -83,7 +83,7 @@ goog.scope(function() {
     // The start character and the end character are decoded to 10 length each.
     var resultLength = 20;
     for (let i = 1; i < contents.length - 1; i++) {
-      if (isDigit(contents.charAt(i)) || contents.charAt(i) == '-' || contents.charAt(i) == '$') {
+      if (isDigit(contents.charAt(i)) || contents.charAt(i) === '-' || contents.charAt(i) === '$') {
         resultLength += 9;
       } else if (CHARS_WHICH_ARE_TEN_LENGTH_EACH_AFTER_DECODED.includes(contents.charAt(i))) {
         resultLength += 10;
@@ -99,7 +99,7 @@ goog.scope(function() {
     var position = 0;
     for (let index = 0; index < contents.length; index++) {
       let c = contents.charAt(index).toUpperCase();
-      if (index == 0 || index == contents.length - 1) {
+      if (index === 0 || index === contents.length - 1) {
         // The start/end chars are not in the CodaBarReader.ALPHABET.
         switch (c) {
           case 'T':
@@ -130,7 +130,7 @@ goog.scope(function() {
       while (bit < 7) { // A character consists of 7 digit.
         result[position] = color;
         position++;
-        if (((code >> (6 - bit)) & 1) == 0 || counter == 1) {
+        if (((code >> (6 - bit)) & 1) === 0 || counter === 1) {
           color = !color; // Flip the color.
           bit++;
           counter = 0;
