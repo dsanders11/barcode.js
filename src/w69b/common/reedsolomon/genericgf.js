@@ -50,8 +50,11 @@ goog.scope(function() {
    * @final
    */
   w69b.common.reedsolomon.GenericGF = function(primitive, size, b) {
+    /** @const {number} */
     this.primitive_ = primitive;
+    /** @const {number} */
     this.size_ = size;
+    /** @const {number} */
     this.generatorBase_ = b;
 
     this.expTable_ = new Int32Array(size);

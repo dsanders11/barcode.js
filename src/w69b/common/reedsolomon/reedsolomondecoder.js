@@ -81,7 +81,7 @@ goog.scope(function() {
     for (let i = 0; i < twoS; i++) {
       let eval = poly.evaluateAt(this.field_.exp(i + this.field_.getGeneratorBase()));
       syndromeCoefficients[syndromeCoefficients.length - 1 - i] = eval;
-      if (eval != 0) {
+      if (eval !== 0) {
         noError = false;
       }
     }
@@ -179,7 +179,7 @@ goog.scope(function() {
     var result = new Int32Array(numErrors);
     var e = 0;
     for (let i = 1; i < this.field_.getSize() && e < numErrors; i++) {
-      if (errorLocator.evaluateAt(i) == 0) {
+      if (errorLocator.evaluateAt(i) === 0) {
         result[e] = this.field_.inverse(i);
         e++;
       }
