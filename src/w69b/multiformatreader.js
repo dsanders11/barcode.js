@@ -144,7 +144,6 @@ goog.scope(function() {
       }
 
       readers.push(new QRCodeReader());
-      readers.push(new MaxiCodeReader());
 
       if (tryHarder) {
         readers.push(new MultiFormatOneDReader(hints));
