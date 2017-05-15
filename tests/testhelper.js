@@ -1,5 +1,4 @@
 'use strict';
-goog.require('goog.Promise');
 goog.require('w69b.webgl.WebGLBinarizer');
 goog.require('w69b.worker.DecodeInWorkerHelper');
 // Copyright 2015 Manuel Braun (mb@w69b.com). All Rights Reserved.
@@ -24,7 +23,7 @@ define(function() {
 
   _.loadImage = function(src) {
     var image = new Image();
-    var promise = new goog.Promise(function(resolve) {
+    var promise = new Promise(function(resolve) {
       image.onload = function() {
         resolve(image);
       };
@@ -42,8 +41,14 @@ define(function() {
     _.setupWorkerUrls();
     return _.loadImage(src).then(function(image) {
       var decoder = new w69b.decoding.Decoder(opt);
-      return decoder.decode(image).thenAlways(function() {
+      return decoder.decode(image).then(function(value) {
         decoder.dispose();
+
+        return value;
+      }, function(reason) {
+        decoder.dispose();
+
+        throw reason;
       });
     });
   };

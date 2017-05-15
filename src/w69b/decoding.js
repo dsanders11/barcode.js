@@ -2,7 +2,6 @@
 
 // Public API exports
 goog.provide('w69b.decoding');
-goog.require('goog.Promise');
 goog.require('goog.math.Size');
 goog.require('goog.object');
 goog.require('w69b.webgl.WebGLBinarizer');
@@ -17,7 +16,6 @@ goog.scope(function() {
   const WorkerMessageType = w69b.worker.WorkerMessageType;
   const DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
   const object = goog.object;
-  const Promise = goog.Promise;
   const _ = w69b.decoding;
 
   /**
@@ -98,9 +96,9 @@ goog.scope(function() {
       throw new Error('Decoder is still busy');
     }
     this.busy_ = true;
+    var that = this;
     var opt = this.options_;
     var worker = this.worker_;
-    var resolver = Promise.withResolver();
     // Size of down-scaled image used for decoding internally.
     var size = new goog.math.Size(
       /** @type {number} */ (img.width || img.videoWidth),
@@ -112,31 +110,39 @@ goog.scope(function() {
         size.floor();
       }
     }
-    worker.decode(img, size,
-      /**
-       * @param {string} type
-       * @param {?=} opt_value
-       */
-      function(type, opt_value) {
-        switch (type) {
-          case WorkerMessageType.DECODED:
-            resolver.resolve(opt_value);
-            break;
-          case WorkerMessageType.NOTFOUND:
-            resolver.reject(opt_value ? new Error(opt_value) : "");
-            break;
-          case WorkerMessageType.PATTERN:
-            // Do nothing
-            break;
-          default:
-            resolver.reject();
-            break;
+    return new Promise(function(resolve, reject) {
+      worker.decode(img, size,
+        /**
+         * @param {string} type
+         * @param {?=} opt_value
+         */
+        function(type, opt_value) {
+          switch (type) {
+            case WorkerMessageType.DECODED:
+              resolve(opt_value);
+              break;
+            case WorkerMessageType.NOTFOUND:
+              reject(opt_value ? new Error(opt_value) : "");
+              break;
+            case WorkerMessageType.PATTERN:
+              // Do nothing
+              break;
+            default:
+              reject();
+              break;
+          }
         }
-      }
-    );
-    resolver.promise.thenAlways(function() {
-      this.busy_ = false;
-    }.bind(this));
-    return resolver.promise;
+      );
+    }).then(function(value) {
+      // fulfillment
+      that.busy_ = false;
+
+      return value;
+    }, function(reason) {
+      // rejection
+      that.busy_ = false;
+
+      throw reason;
+    });
   };
 });
