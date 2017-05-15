@@ -16,11 +16,11 @@
  */
 
 goog.provide('w69b.oned.EANManufacturerOrgSupport');
-goog.require('w69b.Integer');
+goog.require('java.lang.Integer');
 
 
 goog.scope(function() {
-  const Integer = w69b.Integer;
+  const Integer = java.lang.Integer;
 
   /**
    * Records EAN prefix to GS1 Member Organization, where the member organization

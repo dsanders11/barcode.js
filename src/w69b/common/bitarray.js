@@ -17,13 +17,13 @@
 
 goog.provide('w69b.common.BitArray');
 goog.require('goog.asserts');
-goog.require('w69b.Integer');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.Integer');
 
 
 goog.scope(function() {
-  const Integer = w69b.Integer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const Integer = java.lang.Integer;
 
   /**
    * A simple, fast array of bits, represented compactly by an array of ints

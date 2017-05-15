@@ -1,4 +1,9 @@
-goog.provide('w69b.StringBuilder');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.StringBuilder');
 goog.require('goog.asserts');
 
 
@@ -7,10 +12,10 @@ goog.scope(function() {
    * Partial implementation of Java's StringBuilder class in JavaScript.
    * @constructor
    */
-  w69b.StringBuilder = function() {
+  java.lang.StringBuilder = function() {
     this.string_ = '';
   };
-  const StringBuilder = w69b.StringBuilder;
+  const StringBuilder = java.lang.StringBuilder;
   const pro = StringBuilder.prototype;
 
   /**

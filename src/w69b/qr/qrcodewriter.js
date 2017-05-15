@@ -16,24 +16,24 @@
  */
 
 goog.provide('w69b.qr.QRCodeWriter');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.IllegalStateException');
+goog.require('java.lang.Integer');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.EncodeHintType');
-goog.require('w69b.Integer');
 goog.require('w69b.Writer');
 goog.require('w69b.common.BitMatrix');
-goog.require('w69b.exceptions.IllegalArgumentException');
-goog.require('w69b.exceptions.IllegalStateException');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 goog.require('w69b.qr.encoder.Encoder');
 goog.require('w69b.qr.encoder.QRCode');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const Integer = java.lang.Integer;
+  const IllegalStateException = java.lang.IllegalStateException;
   const BarcodeFormat = w69b.BarcodeFormat;
   const EncodeHintType = w69b.EncodeHintType;
-  const Integer = w69b.Integer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
-  const IllegalStateException = w69b.exceptions.IllegalStateException;
   const Writer = w69b.Writer;
   const BitMatrix = w69b.common.BitMatrix;
   const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;

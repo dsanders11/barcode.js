@@ -17,11 +17,11 @@
 
 goog.provide('w69b.qr.decoder.Mode');
 goog.provide('w69b.qr.decoder.ModeEnum');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
 
 
 goog.scope(function() {
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
 
   /**
    * See ISO 18004:2006, 6.4.1, Tables 2 and 3. This enum encapsulates the

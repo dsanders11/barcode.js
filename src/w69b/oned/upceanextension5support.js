@@ -17,24 +17,24 @@
 
 
 goog.provide('w69b.oned.UPCEANExtension5Support');
+goog.require('java.lang.Integer');
+goog.require('java.lang.StringBuilder');
 goog.require('w69b.BarcodeFormat');
-goog.require('w69b.Integer');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Result');
 goog.require('w69b.ResultMetadataType');
 goog.require('w69b.ResultPoint');
-goog.require('w69b.StringBuilder');
 goog.require('w69b.common.BitArray');
 
 
 goog.scope(function() {
+  const Integer = java.lang.Integer;
+  const StringBuilder = java.lang.StringBuilder;
   const BarcodeFormat = w69b.BarcodeFormat;
-  const Integer = w69b.Integer;
   const NotFoundException = w69b.NotFoundException;
   const Result = w69b.Result;
   const ResultMetadataType = w69b.ResultMetadataType;
   const ResultPoint = w69b.ResultPoint;
-  const StringBuilder = w69b.StringBuilder;
   const BitArray = w69b.common.BitArray;
   const UPCEANReader = w69b.oned.UPCEANReader;
 

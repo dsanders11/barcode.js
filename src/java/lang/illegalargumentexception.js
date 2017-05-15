@@ -1,4 +1,9 @@
-goog.provide('w69b.exceptions.IllegalArgumentException');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.IllegalArgumentException');
 goog.require('goog.debug.Error');
 
 goog.scope(function() {
@@ -9,7 +14,7 @@ goog.scope(function() {
    * @param {(goog.debug.Error|string)=} opt_throwable_or_msg cause or message.
    * @extends {goog.debug.Error}
    */
-  w69b.exceptions.IllegalArgumentException = function(opt_throwable_or_msg) {
+  java.lang.IllegalArgumentException = function(opt_throwable_or_msg) {
     var msg = opt_throwable_or_msg;
 
     if (opt_throwable_or_msg instanceof goog.debug.Error) {
@@ -18,5 +23,5 @@ goog.scope(function() {
 
     goog.base(this, msg);
   };
-  goog.inherits(w69b.exceptions.IllegalArgumentException, goog.debug.Error);
+  goog.inherits(java.lang.IllegalArgumentException, goog.debug.Error);
 });

@@ -16,11 +16,11 @@
  */
 
 goog.provide('w69b.qr.decoder.ErrorCorrectionLevel');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
 
 
 goog.scope(function() {
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
 
   /**
    * See ISO 18004:2006, 6.5.1. This enum encapsulates the four error

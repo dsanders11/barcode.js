@@ -17,12 +17,13 @@
  */
 
 goog.provide('w69b.qr.decoder.DataBlock');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 goog.require('w69b.qr.decoder.Version');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   const Version = w69b.qr.decoder.Version;
 
@@ -57,7 +58,7 @@ goog.scope(function() {
    */
   DataBlock.getDataBlocks = function(rawCodewords, version, ecLevel) {
     if (rawCodewords.length !== version.totalCodewords) {
-      throw new w69b.exceptions.IllegalArgumentException();
+      throw new IllegalArgumentException();
     }
 
     // Figure out the number and size of data blocks used by this version and

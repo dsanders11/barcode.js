@@ -16,11 +16,11 @@
  */
 
 goog.provide('w69b.LuminanceSource');
-goog.require('w69b.exceptions.UnsupportedOperationException');
+goog.require('java.lang.UnsupportedOperationException');
 
 
 goog.scope(function() {
-  const UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
+  const UnsupportedOperationException = java.lang.UnsupportedOperationException;
 
   /**
    * The purpose of this class hierarchy is to abstract different bitmap

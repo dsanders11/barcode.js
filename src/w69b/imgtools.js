@@ -6,7 +6,6 @@ goog.require('goog.math.Size');
 goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.common.BitMatrix');
 goog.require('w69b.common.HybridBinarizer');
-goog.require('w69b.exceptions.UnsupportedOperationException');
 goog.require('w69b.ui.Drawable');
 goog.require('w69b.webgl.WebGLBinarizer');
 
@@ -15,7 +14,6 @@ goog.scope(function() {
   const Size = goog.math.Size;
   const base64 = goog.crypt.base64;
   const ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
-  const UnsupportedOperationException = w69b.exceptions.UnsupportedOperationException;
   const WebGLBinarizer = w69b.webgl.WebGLBinarizer;
 
   const _ = w69b.imgtools;
@@ -132,7 +130,7 @@ goog.scope(function() {
       var imageData = image;
       if (useWebGL) {
         if (!WebGLBinarizer.isSupported()) {
-          throw new UnsupportedOperationException("WebGL not supported");
+          throw new Error("WebGL not supported");
         }
         let width = /** @type {number} */ (image.width || image.videoWidth);
         let height = /** @type {number} */ (image.height || image.videoHeight);

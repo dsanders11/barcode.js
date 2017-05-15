@@ -16,15 +16,15 @@
  */
 
 goog.provide('w69b.oned.Code93Writer');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.BarcodeFormat');
-goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.oned.Code93Reader');
 goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const BarcodeFormat = w69b.BarcodeFormat;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   const Code93Reader = w69b.oned.Code93Reader;
   const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 

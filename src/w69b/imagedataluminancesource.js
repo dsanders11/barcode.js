@@ -17,12 +17,12 @@
 
 goog.provide('w69b.ImageDataLuminanceSource');
 goog.require('goog.asserts');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.LuminanceSource');
-goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const LuminanceSource = w69b.LuminanceSource;
 
   /**

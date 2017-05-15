@@ -16,11 +16,11 @@
  */
 
 goog.provide('w69b.oned.UPCEWriter');
+goog.require('java.lang.Character');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.BarcodeFormat');
-goog.require('w69b.Character');
 goog.require('w69b.FormatException');
 goog.require('w69b.Writer');
-goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.oned.EAN13Reader');
 goog.require('w69b.oned.OneDimensionalCodeWriter');
 goog.require('w69b.oned.UPCEANReader');
@@ -29,11 +29,11 @@ goog.require('w69b.oned.UPCEReader');
 
 
 goog.scope(function() {
+  const Character = java.lang.Character;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const BarcodeFormat = w69b.BarcodeFormat;
-  const Character = w69b.Character;
   const FormatException = w69b.FormatException;
   const Writer = w69b.Writer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   const EAN13Reader = w69b.oned.EAN13Reader;
   const UPCEANReader = w69b.oned.UPCEANReader;
   const UPCEReader = w69b.oned.UPCEReader;

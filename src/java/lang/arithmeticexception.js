@@ -1,4 +1,9 @@
-goog.provide('w69b.exceptions.ArithmeticException');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.ArithmeticException');
 goog.require('goog.debug.Error');
 
 goog.scope(function() {
@@ -9,8 +14,8 @@ goog.scope(function() {
    * @param {string=} opt_msg message.
    * @extends {goog.debug.Error}
    */
-  w69b.exceptions.ArithmeticException = function(opt_msg) {
+   java.lang.ArithmeticException = function(opt_msg) {
     goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.exceptions.ArithmeticException, goog.debug.Error);
+  goog.inherits(java.lang.ArithmeticException, goog.debug.Error);
 });

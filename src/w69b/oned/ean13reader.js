@@ -16,16 +16,16 @@
  */
 
 goog.provide('w69b.oned.EAN13Reader');
+goog.require('java.lang.StringBuilder');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.NotFoundException');
-goog.require('w69b.StringBuilder');
 goog.require('w69b.oned.UPCEANReader');
 
 
 goog.scope(function() {
+  const StringBuilder = java.lang.StringBuilder;
   const BarcodeFormat = w69b.BarcodeFormat;
   const NotFoundException = w69b.NotFoundException;
-  const StringBuilder = w69b.StringBuilder;
   const UPCEANReader = w69b.oned.UPCEANReader;
   const decodeDigit = UPCEANReader.decodeDigit;
   const findGuardPattern = UPCEANReader.findGuardPattern;

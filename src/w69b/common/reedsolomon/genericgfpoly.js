@@ -16,13 +16,13 @@
  */
 
 goog.provide('w69b.common.reedsolomon.GenericGFPoly');
-goog.require('w69b.StringBuilder');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.StringBuilder');
 
 
 goog.scope(function() {
-  const StringBuilder = w69b.StringBuilder;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const StringBuilder = java.lang.StringBuilder;
 
   /**
    * Represents a polynomial whose coefficients are elements of a GF.

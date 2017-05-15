@@ -1,4 +1,9 @@
-goog.provide('w69b.ArrayList');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.util.ArrayList');
 
 
 goog.scope(function() {
@@ -8,11 +13,11 @@ goog.scope(function() {
    * @implements {Iterable<!T>}
    * @template T
    */
-  w69b.ArrayList = function(opt_ignored) {
+  java.util.ArrayList = function(opt_ignored) {
     /** @type {!Array.<!T>} */
     this.array_ = [];
   };
-  const ArrayList = w69b.ArrayList;
+  const ArrayList = java.util.ArrayList;
   const pro = ArrayList.prototype;
 
   /**

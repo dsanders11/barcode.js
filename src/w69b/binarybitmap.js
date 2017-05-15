@@ -16,15 +16,15 @@
  */
 
 goog.provide('w69b.BinaryBitmap');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.Binarizer');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.BitMatrix');
-goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const NotFoundException = w69b.NotFoundException;
   const BitArray = w69b.common.BitArray;
   const BitMatrix = w69b.common.BitMatrix;

@@ -16,8 +16,8 @@
  */
 
 goog.provide('w69b.qr.encoder.Encoder');
+goog.require('java.lang.Integer');
 goog.require('w69b.EncodeHintType');
-goog.require('w69b.Integer');
 goog.require('w69b.WriterException');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.common.CharacterSetECI');
@@ -35,6 +35,7 @@ goog.require('w69b.qr.encoder.MatrixUtil');
 goog.require('w69b.qr.encoder.QRCode');
 
 goog.scope(function() {
+  const Integer = java.lang.Integer;
   const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   const BitArray = w69b.common.BitArray;
   const ByteMatrix = w69b.qr.encoder.ByteMatrix;
@@ -47,7 +48,6 @@ goog.scope(function() {
   const Mode = w69b.qr.decoder.Mode;
   const ModeEnum = w69b.qr.decoder.ModeEnum;
   const EncodeHintType = w69b.EncodeHintType;
-  const Integer = w69b.Integer;
   const CharacterSetECI = w69b.common.CharacterSetECI;
   const GenericGF = w69b.common.reedsolomon.GenericGF;
   const ReedSolomonEncoder = w69b.common.reedsolomon.ReedSolomonEncoder;

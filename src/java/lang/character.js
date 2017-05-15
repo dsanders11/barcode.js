@@ -1,4 +1,9 @@
-goog.provide('w69b.Character');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.Character');
 goog.require('goog.asserts');
 
 
@@ -7,10 +12,10 @@ goog.scope(function() {
    * @constructor
    * @param {string} value
    */
-  w69b.Character = function(value) {
+  java.lang.Character = function(value) {
     this.value_ = value;
   };
-  const Character = w69b.Character;
+  const Character = java.lang.Character;
 
   /** @const {number} */
   Character.MAX_RADIX = 36;

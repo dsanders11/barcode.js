@@ -17,11 +17,11 @@
  */
 
 goog.provide('w69b.common.BitSource');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
 
 
 goog.scope(function() {
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
 
   /**
    * This provides an easy abstraction to read bits at a time from a

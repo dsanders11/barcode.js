@@ -19,18 +19,18 @@
 goog.provide('w69b.qr.decoder.ECB');
 goog.provide('w69b.qr.decoder.ECBlocks');
 goog.provide('w69b.qr.decoder.Version');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.Integer');
 goog.require('w69b.FormatException');
-goog.require('w69b.Integer');
 goog.require('w69b.common.BitMatrix');
-goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const Integer = java.lang.Integer;
   const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   const FormatException = w69b.FormatException;
-  const Integer = w69b.Integer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   const BitMatrix = w69b.common.BitMatrix;
 
   /**

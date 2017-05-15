@@ -16,17 +16,17 @@
  */
 
 goog.provide('w69b.oned.OneDimensionalCodeWriter');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.Integer');
 goog.require('w69b.EncodeHintType');
-goog.require('w69b.Integer');
 goog.require('w69b.Writer');
 goog.require('w69b.common.BitMatrix');
-goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const Integer = java.lang.Integer;
   const EncodeHintType = w69b.EncodeHintType;
-  const Integer = w69b.Integer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   const Writer = w69b.Writer;
   const BitMatrix = w69b.common.BitMatrix;
 

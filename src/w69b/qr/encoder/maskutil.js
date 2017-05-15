@@ -16,13 +16,13 @@
  */
 
 goog.provide('w69b.qr.encoder.MaskUtil');
-goog.require('w69b.exceptions.IllegalArgumentException');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.qr.encoder.ByteMatrix');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const ByteMatrix = w69b.qr.encoder.ByteMatrix;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * @author Satoru Takabayashi

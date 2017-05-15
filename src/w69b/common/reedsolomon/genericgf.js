@@ -16,17 +16,17 @@
  */
 
 goog.provide('w69b.common.reedsolomon.GenericGF');
-goog.require('w69b.Integer');
+goog.require('java.lang.ArithmeticException');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.Integer');
 goog.require('w69b.common.reedsolomon.GenericGFPoly');
-goog.require('w69b.exceptions.ArithmeticException');
-goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
-  const Integer = w69b.Integer;
+  const ArithmeticException = java.lang.ArithmeticException;
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const Integer = java.lang.Integer;
   const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-  const ArithmeticException = w69b.exceptions.ArithmeticException;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * This class contains utility methods for performing mathematical operations

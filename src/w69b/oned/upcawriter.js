@@ -16,16 +16,16 @@
  */
 
 goog.provide('w69b.oned.UPCAWriter');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.Writer');
-goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.oned.EAN13Writer');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const BarcodeFormat = w69b.BarcodeFormat;
   const Writer = w69b.Writer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   const EAN13Writer = w69b.oned.EAN13Writer;
 
   /**

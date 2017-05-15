@@ -1,4 +1,9 @@
-goog.provide('w69b.exceptions.UnsupportedOperationException');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.UnsupportedOperationException');
 goog.require('goog.debug.Error');
 
 goog.scope(function() {
@@ -8,8 +13,8 @@ goog.scope(function() {
    * @param {string=} opt_msg message.
    * @extends {goog.debug.Error}
    */
-  w69b.exceptions.UnsupportedOperationException = function(opt_msg) {
+  java.lang.UnsupportedOperationException = function(opt_msg) {
     goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.exceptions.UnsupportedOperationException, goog.debug.Error);
+  goog.inherits(java.lang.UnsupportedOperationException, goog.debug.Error);
 });

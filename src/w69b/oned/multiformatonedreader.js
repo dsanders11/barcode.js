@@ -16,7 +16,7 @@
  */
 
 goog.provide('w69b.oned.MultiFormatOneDReader');
-goog.require('w69b.ArrayList');
+goog.require('java.util.ArrayList');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
@@ -31,7 +31,7 @@ goog.require('w69b.oned.OneDReader');
 
 
 goog.scope(function() {
-  const ArrayList = w69b.ArrayList;
+  const ArrayList = java.util.ArrayList;
   const BarcodeFormat = w69b.BarcodeFormat;
   const DecodeHintType = w69b.DecodeHintType;
   const NotFoundException = w69b.NotFoundException;

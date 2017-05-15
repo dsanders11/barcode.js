@@ -16,15 +16,15 @@
  */
 
 goog.provide('w69b.common.reedsolomon.ReedSolomonEncoder');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.common.reedsolomon.GenericGF');
 goog.require('w69b.common.reedsolomon.GenericGFPoly');
-goog.require('w69b.exceptions.IllegalArgumentException');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const GenericGF = w69b.common.reedsolomon.GenericGF;
   const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
 
   /**
    * Implements Reed-Solomon enbcoding, as the name implies.

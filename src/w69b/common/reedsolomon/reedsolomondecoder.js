@@ -17,10 +17,10 @@
  */
 
 goog.provide('w69b.common.reedsolomon.ReedSolomonDecoder');
+goog.require('java.lang.IllegalStateException');
 goog.require('w69b.common.reedsolomon.GenericGF');
 goog.require('w69b.common.reedsolomon.GenericGFPoly');
 goog.require('w69b.common.reedsolomon.ReedSolomonException');
-goog.require('w69b.exceptions.IllegalStateException');
 
 
 /**
@@ -50,10 +50,11 @@ goog.require('w69b.exceptions.IllegalStateException');
 
 
 goog.scope(function() {
+  const IllegalStateException = java.lang.IllegalStateException;
   const GenericGF = w69b.common.reedsolomon.GenericGF;
   const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
   const ReedSolomonException = w69b.common.reedsolomon.ReedSolomonException;
-  const IllegalStateException = w69b.exceptions.IllegalStateException;
+
   /**
    * @constructor
    * @param {!GenericGF} field field.

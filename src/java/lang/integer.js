@@ -1,4 +1,9 @@
-goog.provide('w69b.Integer');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.Integer');
 
 
 goog.scope(function() {
@@ -6,10 +11,10 @@ goog.scope(function() {
    * @constructor
    * @param {string} value
    */
-  w69b.Integer = function(value) {
+  java.lang.Integer = function(value) {
     this.value_ = parseInt(value, 10);
   };
-  const Integer = w69b.Integer;
+  const Integer = java.lang.Integer;
 
   /** @const {number} */
   Integer.MAX_VALUE = Number.MAX_SAFE_INTEGER;

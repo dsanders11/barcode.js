@@ -16,7 +16,7 @@
  */
 
 goog.provide('w69b.multi.GenericMultipleBarcodeReader');
-goog.require('w69b.ArrayList');
+goog.require('java.util.ArrayList');
 goog.require('w69b.BinaryBitmap');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.NotFoundException');
@@ -28,7 +28,7 @@ goog.require('w69b.multi.MultipleBarcodeReader');
 
 
 goog.scope(function() {
-  const ArrayList = w69b.ArrayList;
+  const ArrayList = java.util.ArrayList;
   const BinaryBitmap = w69b.BinaryBitmap;
   const DecodeHintType = w69b.DecodeHintType;
   const NotFoundException = w69b.NotFoundException;

@@ -16,17 +16,17 @@
  */
 
 goog.provide('w69b.oned.Code128Writer');
+goog.require('java.lang.IllegalArgumentException');
+goog.require('java.lang.Integer');
 goog.require('w69b.BarcodeFormat');
-goog.require('w69b.Integer');
-goog.require('w69b.exceptions.IllegalArgumentException');
 goog.require('w69b.oned.Code128Reader');
 goog.require('w69b.oned.OneDimensionalCodeWriter');
 
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
+  const Integer = java.lang.Integer;
   const BarcodeFormat = w69b.BarcodeFormat;
-  const Integer = w69b.Integer;
-  const IllegalArgumentException = w69b.exceptions.IllegalArgumentException;
   const Code128Reader = w69b.oned.Code128Reader;
   const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
 

@@ -1,4 +1,9 @@
-goog.provide('w69b.exceptions.IllegalStateException');
+/**
+ * @fileoverview
+ * @suppress {duplicate}
+ */
+
+goog.provide('java.lang.IllegalStateException');
 goog.require('goog.debug.Error');
 
 goog.scope(function() {
@@ -8,8 +13,8 @@ goog.scope(function() {
    * @param {string=} opt_msg message.
    * @extends {goog.debug.Error}
    */
-  w69b.exceptions.IllegalStateException = function(opt_msg) {
+  java.lang.IllegalStateException = function(opt_msg) {
     goog.base(this, opt_msg);
   };
-  goog.inherits(w69b.exceptions.IllegalStateException, goog.debug.Error);
+  goog.inherits(java.lang.IllegalStateException, goog.debug.Error);
 });

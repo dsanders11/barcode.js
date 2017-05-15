@@ -17,11 +17,11 @@
  */
 goog.provide('w69b.qr.decoder.FormatInformation');
 goog.provide('w69b.qr.decoder.URShift');
-goog.require('w69b.Integer');
+goog.require('java.lang.Integer');
 goog.require('w69b.qr.decoder.ErrorCorrectionLevel');
 
 goog.scope(function() {
-  const Integer = w69b.Integer;
+  const Integer = java.lang.Integer;
   const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
 
   /**
