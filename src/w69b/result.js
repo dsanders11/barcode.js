@@ -34,14 +34,15 @@ goog.scope(function() {
    * @constructor
    * @param {string} text
    * @param {Int8Array} rawBytes
-   * @param {Array.<ResultPoint>} resultPoints
-   * @param {BarcodeFormat} format
+   * @param {!Array.<!ResultPoint>} resultPoints
+   * @param {!BarcodeFormat} format
    * @param {number=} opt_timestamp
    * @final
    */
   w69b.Result = function(text, rawBytes, resultPoints, format, opt_timestamp) {
     this.text_ = text;
     this.rawBytes_ = rawBytes;
+    this.numBits_ = rawBytes === null ? 0 : 8 * rawBytes.length;
     this.resultPoints_ = resultPoints;
     this.format_ = format;
     this.resultMetadata_ = null;
@@ -65,11 +66,18 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Array.<ResultPoint>} points related to the barcode in the image.
-   *                               These are typically points identifying finder
-   *                               patterns or the corners of the barcode. The
-   *                               exact meaning is specific to the type of
-   *                               barcode that was decoded.
+   * @return {number} how many bits of {@link #getRawBytes()} are valid; typically 8 times its length
+   */
+  pro.getNumBits = function() {
+    return this.numBits_;
+  };
+
+  /**
+   * @return {!Array.<!ResultPoint>} points related to the barcode in the image.
+   *                                 These are typically points identifying finder
+   *                                 patterns or the corners of the barcode. The
+   *                                 exact meaning is specific to the type of
+   *                                 barcode that was decoded.
    */
   pro.getResultPoints = function() {
     return this.resultPoints_;
