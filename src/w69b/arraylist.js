@@ -5,17 +5,18 @@ goog.scope(function() {
   /**
    * @constructor
    * @param {number=} opt_ignored
+   * @implements {Iterable<!T>}
    * @template T
    */
   w69b.ArrayList = function(opt_ignored) {
-    /** @type {!Array.<T>} */
+    /** @type {!Array.<!T>} */
     this.array_ = [];
   };
   const ArrayList = w69b.ArrayList;
   const pro = ArrayList.prototype;
 
   /**
-   * @param {T} e
+   * @param {!T} e
    */
   pro.add = function(e) {
     this.array_.push(e);
@@ -29,8 +30,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!Array.<T>=} opt_a
-   * @return {!Array.<T>}
+   * @param {!Array.<!T>=} opt_a
+   * @return {!Array.<!T>}
    */
   pro.toArray = function(opt_a) {
     var length = this.array_.length;
@@ -46,5 +47,18 @@ goog.scope(function() {
     }
 
     return this.array_.slice();
+  };
+
+  pro[Symbol.iterator] = function() {
+    var array = this.array_;
+    var nextIndex = 0;
+
+    return {
+      next: function() {
+        return nextIndex < array.length ?
+          {value: array[nextIndex++], done: false} :
+          {done: true};
+      }
+    };
   };
 });
