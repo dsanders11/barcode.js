@@ -113,6 +113,10 @@ goog.scope(function() {
     var readers = [];
     if (formats !== null) {
       let addOneDReader = Boolean(
+          formats.includes(BarcodeFormat.UPC_A) ||
+          formats.includes(BarcodeFormat.UPC_E) ||
+          formats.includes(BarcodeFormat.EAN_13) ||
+          formats.includes(BarcodeFormat.EAN_8) ||
           formats.includes(BarcodeFormat.CODABAR) ||
           formats.includes(BarcodeFormat.CODE_39) ||
           formats.includes(BarcodeFormat.CODE_93) ||
