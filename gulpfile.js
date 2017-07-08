@@ -39,8 +39,7 @@ var PATHS = {
 var CLOSURE_CONFIG = {
   assume_function_wrapper: true,
   externs: [
-    'externs/iconv.js',
-    'externs/canvas_image_source.js'
+    'externs/iconv.js'
   ],
   generate_exports: true,
   compilation_level: 'ADVANCED_OPTIMIZATIONS',
