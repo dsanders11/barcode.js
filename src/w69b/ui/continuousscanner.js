@@ -410,7 +410,7 @@ goog.scope(function() {
     switch (type) {
       case WorkerMessageType.DECODED:
         opt_value['patterns'].forEach(this.addPattern_, this);
-        this.onDecoded(opt_value['text'], opt_value['format']);
+        this.onDecoded(opt_value['text'], opt_value['format'], opt_value['patterns']);
         this.isDecoding_ = false;
         break;
       case WorkerMessageType.NOTFOUND:
