@@ -427,9 +427,10 @@ goog.scope(function() {
    * Found and decoded barcode.
    * @param {string} text decoded text.
    * @param {!w69b.BarcodeFormat} format barcode format detected.
+   * @param {!Array.<!ResultPoint>} result points
    */
-  pro.onDecoded = function(text, format) {
-    this.decodedCallback_(text, format);
+  pro.onDecoded = function(text, format, points) {
+    this.decodedCallback_(text, format, points);
   };
 
   /**
