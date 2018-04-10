@@ -23,7 +23,6 @@ goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
 goog.require('w69b.ReaderException');
 goog.require('w69b.Result');
-goog.require('w69b.maxicode.MaxiCodeReader');
 goog.require('w69b.oned.MultiFormatOneDReader');
 goog.require('w69b.qr.QRCodeReader');
 
@@ -36,7 +35,6 @@ goog.scope(function() {
   const ReaderException = w69b.ReaderException;
   const Result = w69b.Result;
   const MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
-  const MaxiCodeReader = w69b.maxicode.MaxiCodeReader;
   const QRCodeReader = w69b.qr.QRCodeReader;
 
   /**
@@ -129,9 +127,6 @@ goog.scope(function() {
       }
       if (formats.includes(BarcodeFormat.QR_CODE)) {
         readers.push(new QRCodeReader());
-      }
-      if (formats.includes(BarcodeFormat.MAXICODE)) {
-        readers.push(new MaxiCodeReader());
       }
       // At end in "try harder" mode
       if (addOneDReader && tryHarder) {
