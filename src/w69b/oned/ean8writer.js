@@ -101,7 +101,7 @@ goog.scope(function() {
             "Requested contents should be 8 digits long, but got " + length);
     }
 
-    /** @type {!Array.<!boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(CODE_WIDTH);
     var pos = 0;
 

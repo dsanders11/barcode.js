@@ -105,7 +105,7 @@ goog.scope(function() {
 
     var firstDigit = Character.digit(contents.charAt(0), 10);
     var parities = EAN13Reader.FIRST_DIGIT_ENCODINGS[firstDigit];
-    /** @type {!Array.<!boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(CODE_WIDTH);
     var pos = 0;
 

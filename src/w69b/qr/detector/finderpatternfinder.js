@@ -88,7 +88,7 @@ goog.scope(function() {
 
   /**
    * Precomputed combinations for 3 out of 6.
-   * @type {!Array.<!Array.<!number>>}
+   * @type {!Array.<!Array.<number>>}
    */
   const SKEW_COMBINATIONS = [
     [0, 1, 2],

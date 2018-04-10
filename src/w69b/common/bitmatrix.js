@@ -65,7 +65,7 @@ goog.scope(function() {
       throw new IllegalArgumentException();
     }
 
-    /** @type {!Array.<!boolean>} */
+    /** @type {!Array.<boolean>} */
     var bits = new Array(stringRepresentation.length);
     var bitsPos = 0;
     var rowStartPos = 0;

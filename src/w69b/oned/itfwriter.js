@@ -67,7 +67,7 @@ goog.scope(function() {
       throw new IllegalArgumentException(
           "Requested contents should be less than 80 digits long, but got " + length);
     }
-    /** @type {!Array.<!boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(9 + 9 * length);
     var pos = OneDimensionalCodeWriter.appendPattern(result, 0, START_PATTERN, true);
     for (let i = 0; i < length; i += 2) {

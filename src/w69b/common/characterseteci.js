@@ -33,7 +33,7 @@ goog.scope(function() {
   const CharacterSetECI = w69b.common.CharacterSetECI;
   const pro = CharacterSetECI.prototype;
 
-  /** @type {!string} */
+  /** @type {string} */
   pro.name = '';
 
   /** @enum {CharacterSetECI} */

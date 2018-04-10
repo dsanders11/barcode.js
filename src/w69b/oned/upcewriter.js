@@ -111,7 +111,7 @@ goog.scope(function() {
 
     var checkDigit = Character.digit(contents.charAt(7), 10);
     var parities = UPCEReader.NUMSYS_AND_CHECK_DIGIT_PATTERNS[firstDigit][checkDigit];
-    /** @type {!Array.<!boolean>} */
+    /** @type {!Array.<boolean>} */
     var result = new Array(CODE_WIDTH);
     var pos = 0;
 

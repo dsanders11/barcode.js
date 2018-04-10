@@ -34,7 +34,7 @@ goog.scope(function() {
   /**
    * Encode a barcode using the default settings.
    *
-   * @param {!string} contents the contents to encode in the barcode
+   * @param {string} contents the contents to encode in the barcode
    * @param {w69b.BarcodeFormat} format the barcode format to generate
    * @param {number} width the preferred width in pixels
    * @param {number} height the preferred height in pixels
