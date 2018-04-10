@@ -80,9 +80,9 @@ goog.scope(function() {
     var syndromeCoefficients = new Int32Array(twoS);
     var noError = true;
     for (let i = 0; i < twoS; i++) {
-      let eval = poly.evaluateAt(this.field_.exp(i + this.field_.getGeneratorBase()));
-      syndromeCoefficients[syndromeCoefficients.length - 1 - i] = eval;
-      if (eval !== 0) {
+      let eval_ = poly.evaluateAt(this.field_.exp(i + this.field_.getGeneratorBase()));
+      syndromeCoefficients[syndromeCoefficients.length - 1 - i] = eval_;
+      if (eval_ !== 0) {
         noError = false;
       }
     }
