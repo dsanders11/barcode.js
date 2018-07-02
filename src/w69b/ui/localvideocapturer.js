@@ -218,7 +218,7 @@ goog.scope(function() {
     if (this.mediaVideo_ === null) {
       return;
     }
-    this.mediaVideo_.src = window.URL.createObjectURL(stream);
+    this.mediaVideo_.srcObject = stream;
     this.mediaVideo_.play();
     this.stream_ = stream;
     this.capturing_ = true;
@@ -249,13 +249,9 @@ goog.scope(function() {
    * @suppress {deprecated}
    */
   pro.disposeInternal = function() {
-    var url = this.mediaVideo_.src;
     this.mediaVideo_.pause();
-    this.mediaVideo_.src = '';
+    this.mediaVideo_.srcObject = null;
     this.capturing_ = false;
-    if (window.URL && window.URL.revokeObjectURL) {
-      window.URL.revokeObjectURL(url);
-    }
     this.mediaVideo_ = null;
     if (this.stream_) {
       if (this.stream_['stop']) {
