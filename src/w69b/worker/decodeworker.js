@@ -7,6 +7,7 @@ goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.MultiFormatReader');
 goog.require('w69b.NotFoundException');
+goog.require('w69b.ReaderException');
 goog.require('w69b.Result');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.common.HybridBinarizer');
@@ -22,8 +23,10 @@ goog.scope(function() {
   const DecodeHintType = w69b.DecodeHintType;
   const ResultPoint = w69b.ResultPoint;
 
-  var _ = w69b.worker.DecodeWorker;
+  const _ = w69b.worker.DecodeWorker;
   _.iconvPath = 'iconv.js';
+
+  var multiFormatReader = null;
 
   /**
    * @param {string} msgType messsage type.
@@ -78,6 +81,10 @@ goog.scope(function() {
    * @throws {w69b.NotFoundException} if nothing found
    */
   _.decodeFromImageData = function(imgdata, isBinary, opt_formats, opt_callback) {
+    if (multiFormatReader === null) {
+      multiFormatReader = new w69b.MultiFormatReader();
+    }
+
     var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
     var binarizer;
     if (isBinary) {
@@ -96,7 +103,17 @@ goog.scope(function() {
       opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
     }
 
-    return new w69b.MultiFormatReader().decode(bitmap, opt_hints);
+    try {
+      return multiFormatReader.decode(bitmap, opt_hints);
+    } catch (err) {
+      if (err instanceof w69b.ReaderException) {
+        // Continue
+      } else {
+        throw err;
+      }
+    } finally {
+      multiFormatReader.reset();
+    }
   };
 
   /**
