@@ -15,11 +15,11 @@ goog.require('w69b.worker.DecodeInWorkerHelper');
 goog.require('w69b.worker.WorkerMessageType');
 
 goog.scope(function() {
-  var imgtools = w69b.imgtools;
-  var Size = goog.math.Size;
-  var WorkerMessageType = w69b.worker.WorkerMessageType;
-  var ResultPoint = w69b.ResultPoint;
-  var object = goog.object;
+  const imgtools = w69b.imgtools;
+  const Size = goog.math.Size;
+  const WorkerMessageType = w69b.worker.WorkerMessageType;
+  const ResultPoint = w69b.ResultPoint;
+  const object = goog.object;
 
   /**
    * @param {number} x x pos.
@@ -33,7 +33,7 @@ goog.scope(function() {
     this.size = size || 4;
     this.birthTime = Date.now();
   };
-  var PatternPoint = w69b.ui.PatternPoint;
+  const PatternPoint = w69b.ui.PatternPoint;
 
   /**
    * Component that shows visualization of continuous scanning.
@@ -83,9 +83,9 @@ goog.scope(function() {
      */
     this.notFoundCallback_ = goog.nullFunction;
   };
-  var ContinuousScanner = w69b.ui.ContinuousScanner;
+  const ContinuousScanner = w69b.ui.ContinuousScanner;
   goog.inherits(ContinuousScanner, goog.ui.Component);
-  var pro = ContinuousScanner.prototype;
+  const pro = ContinuousScanner.prototype;
 
   /**
    * @return {boolean} if getUserMedia (and so contiuous scanning)

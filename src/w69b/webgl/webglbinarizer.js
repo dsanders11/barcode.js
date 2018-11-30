@@ -13,10 +13,10 @@ goog.require('w69b.webgl.shaders.gaussBlur');
 
 
 goog.scope(function() {
-  var WebGLFilter = w69b.webgl.WebGLFilter;
-  var WebGLProgram = w69b.webgl.WebGLProgram;
-  var WebGLParams = w69b.webgl.WebGLParams;
-  var WebGLPipeline = w69b.webgl.WebGLPipeline;
+  const WebGLFilter = w69b.webgl.WebGLFilter;
+  const WebGLProgram = w69b.webgl.WebGLProgram;
+  const WebGLParams = w69b.webgl.WebGLParams;
+  const WebGLPipeline = w69b.webgl.WebGLPipeline;
   /**
    * WebGL shader based image binarizer.
    * The basic idea is to estimate an average black level for each pixel by looking at
@@ -38,8 +38,8 @@ goog.scope(function() {
   w69b.webgl.WebGLBinarizer = function(opt_canvas) {
     this.filter_ = new WebGLFilter(opt_canvas);
   };
-  var pro = w69b.webgl.WebGLBinarizer.prototype;
-  var _ = w69b.webgl.WebGLBinarizer;
+  const pro = w69b.webgl.WebGLBinarizer.prototype;
+  const _ = w69b.webgl.WebGLBinarizer;
   /**
    * @type {?boolean}
    */

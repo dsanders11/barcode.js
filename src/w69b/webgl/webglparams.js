@@ -14,7 +14,7 @@ goog.scope(function() {
     if (opt_config)
       this.set(opt_config);
   };
-  var pro = w69b.webgl.WebGLParams.prototype;
+  const pro = w69b.webgl.WebGLParams.prototype;
 
   /**
    * @return {w69b.webgl.WebGLParams} params object.

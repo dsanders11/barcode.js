@@ -6,12 +6,12 @@ goog.require('w69b.iconvlite');
 goog.require('w69b.utf8');
 
 goog.scope(function() {
-  var _ = w69b.common.stringutils;
-  var utf8 = w69b.utf8;
-  var iconv = self.iconv;
-  var iconvlite = w69b.iconvlite;
-  var DecodeHintType = w69b.DecodeHintType;
-  var InvalidCharsetException = w69b.InvalidCharsetException;
+  const _ = w69b.common.stringutils;
+  const utf8 = w69b.utf8;
+  const iconv = self.iconv;
+  const iconvlite = w69b.iconvlite;
+  const DecodeHintType = w69b.DecodeHintType;
+  const InvalidCharsetException = w69b.InvalidCharsetException;
 
   _.SHIFT_JIS = 'Shift_JIS';
   _.GB2312 = 'GB18030';

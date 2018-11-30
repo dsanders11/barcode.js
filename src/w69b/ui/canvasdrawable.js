@@ -15,7 +15,7 @@ goog.scope(function() {
     this.bgStyle_ = 'rgb(255, 255, 255)';
     this.fgStyle_ = 'rgb(0, 0, 0)';
   };
-  var pro = w69b.ui.CanvasDrawable.prototype;
+  const pro = w69b.ui.CanvasDrawable.prototype;
 
   /**
    * @override

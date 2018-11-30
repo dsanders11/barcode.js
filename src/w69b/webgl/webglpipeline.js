@@ -5,8 +5,8 @@ goog.require('w69b.webgl.WebGLParams');
 goog.require('w69b.webgl.WebGLProgram');
 
 goog.scope(function() {
-  var WebGLParams = w69b.webgl.WebGLParams;
-  var WebGLProgram = w69b.webgl.WebGLProgram;
+  const WebGLParams = w69b.webgl.WebGLParams;
+  const WebGLProgram = w69b.webgl.WebGLProgram;
 
   /**
    * Helps to execute multipass webgl programms by applying multiple programs
@@ -19,7 +19,7 @@ goog.scope(function() {
     this.passes_ = [];
     this.filter_ = filter;
   };
-  var pro = w69b.webgl.WebGLPipeline.prototype;
+  const pro = w69b.webgl.WebGLPipeline.prototype;
 
   /**
    *

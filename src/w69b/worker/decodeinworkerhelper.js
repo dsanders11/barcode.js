@@ -14,9 +14,9 @@ goog.require('w69b.worker.WorkerMessageType');
 
 
 goog.scope(function() {
-  var jsloader = goog.net.jsloader;
-  var WorkerMessageType = w69b.worker.WorkerMessageType;
-  var WebGLBinarizer = w69b.webgl.WebGLBinarizer;
+  const jsloader = goog.net.jsloader;
+  const WorkerMessageType = w69b.worker.WorkerMessageType;
+  const WebGLBinarizer = w69b.webgl.WebGLBinarizer;
 
   /**
    * Helper class that decodes in worker if available and reasonable
@@ -28,8 +28,8 @@ goog.scope(function() {
     this.callback_ = null;
     this.formats_ = opt_formats;
   };
-  var DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
-  var pro = DecodeInWorkerHelper.prototype;
+  const DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
+  const pro = DecodeInWorkerHelper.prototype;
 
   /**
    * @type {boolean}

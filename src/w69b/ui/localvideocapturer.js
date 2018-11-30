@@ -6,8 +6,8 @@ goog.require('goog.events');
 goog.require('goog.math.Size');
 
 goog.scope(function() {
-  var Size = goog.math.Size;
-  var imgtools = w69b.imgtools;
+  const Size = goog.math.Size;
+  const imgtools = w69b.imgtools;
   /**
    * TODO: add start/stop methods and ready/error events.
    * @constructor
@@ -27,9 +27,9 @@ goog.scope(function() {
       this.backCanvas_.getContext('2d'));
     this.constraints_ = constraints || { 'facingMode': 'environment' };
   };
-  var LocalVideoCapturer = w69b.ui.LocalVideoCapturer;
+  const LocalVideoCapturer = w69b.ui.LocalVideoCapturer;
   goog.inherits(LocalVideoCapturer, goog.Disposable);
-  var pro = LocalVideoCapturer.prototype;
+  const pro = LocalVideoCapturer.prototype;
 
   /**
    * Alias to getUserMedia functions.

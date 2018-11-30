@@ -26,7 +26,7 @@ goog.scope(function() {
     }
     this.glProgram = shaderProgram;
   };
-  var pro = w69b.webgl.WebGLProgram.prototype;
+  const pro = w69b.webgl.WebGLProgram.prototype;
 
   /**
    * Linked shader program.

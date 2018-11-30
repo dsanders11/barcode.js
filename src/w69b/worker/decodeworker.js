@@ -18,9 +18,9 @@ goog.require('w69b.worker.WorkerMessageType');
 var host = self;
 
 goog.scope(function() {
-  var WorkerMessageType = w69b.worker.WorkerMessageType;
-  var DecodeHintType = w69b.DecodeHintType;
-  var ResultPoint = w69b.ResultPoint;
+  const WorkerMessageType = w69b.worker.WorkerMessageType;
+  const DecodeHintType = w69b.DecodeHintType;
+  const ResultPoint = w69b.ResultPoint;
 
   var _ = w69b.worker.DecodeWorker;
   _.iconvPath = 'iconv.js';

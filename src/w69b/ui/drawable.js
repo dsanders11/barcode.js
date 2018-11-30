@@ -7,7 +7,7 @@ goog.scope(function() {
    * @interface
    */
   w69b.ui.Drawable = function() { };
-  var pro = w69b.ui.Drawable.prototype;
+  const pro = w69b.ui.Drawable.prototype;
 
   /**
    * Set size of drawable and fill background.

@@ -17,7 +17,7 @@ goog.scope(function() {
     this.height_ = 0;
     this.width_ = 0;
   };
-  var pro = w69b.ui.EpsDrawable.prototype;
+  const pro = w69b.ui.EpsDrawable.prototype;
 
   /**
    * Writes header to buffer.

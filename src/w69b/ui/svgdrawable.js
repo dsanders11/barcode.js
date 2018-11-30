@@ -14,7 +14,7 @@ goog.scope(function() {
     this.bgStyle_ = 'white';
     this.fgStyle_ = 'black';
   };
-  var pro = w69b.ui.SvgDrawable.prototype;
+  const pro = w69b.ui.SvgDrawable.prototype;
 
   /**
    * Writes header to buffer.

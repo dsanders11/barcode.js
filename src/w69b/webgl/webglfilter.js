@@ -8,7 +8,7 @@ goog.require('w69b.webgl.shaders.fragCoordTest');
 
 
 goog.scope(function() {
-  var WebGLProgram = w69b.webgl.WebGLProgram;
+  const WebGLProgram = w69b.webgl.WebGLProgram;
 
   /**
    * Thrown when webgl is not supported.
@@ -47,7 +47,7 @@ goog.scope(function() {
 
     this.framebuffer_ = this.context_.createFramebuffer();
   };
-  var _ = w69b.webgl.WebGLFilter;
+  const _ = w69b.webgl.WebGLFilter;
   /**
    * @type {Array.<number>}
    * @private
@@ -55,7 +55,7 @@ goog.scope(function() {
   _.fragCoordOffset_ = null;
   // Simple vertex shader.
 
-  var pro = w69b.webgl.WebGLFilter.prototype;
+  const pro = w69b.webgl.WebGLFilter.prototype;
 
   /**
    * Rendering context of back canvas.
