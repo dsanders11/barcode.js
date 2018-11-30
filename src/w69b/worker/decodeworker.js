@@ -83,6 +83,18 @@ goog.scope(function() {
   _.decodeFromImageData = function(imgdata, isBinary, opt_formats, opt_callback) {
     if (multiFormatReader === null) {
       multiFormatReader = new w69b.MultiFormatReader();
+
+      var opt_hints = (opt_formats || opt_callback) ? {} : undefined;
+
+      if (opt_callback) {
+        opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
+      }
+
+      if (opt_formats) {
+        opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
+      }
+
+      multiFormatReader.setHints(opt_hints);
     }
 
     var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
@@ -93,18 +105,9 @@ goog.scope(function() {
       binarizer = new w69b.common.HybridBinarizer(luminanceSource);
     }
     var bitmap = new w69b.BinaryBitmap(binarizer);
-    var opt_hints = (opt_formats || opt_callback) ? {} : undefined;
-
-    if (opt_callback) {
-      opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
-    }
-
-    if (opt_formats) {
-      opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
-    }
 
     try {
-      return multiFormatReader.decode(bitmap, opt_hints);
+      return multiFormatReader.decodeWithState(bitmap);
     } catch (err) {
       if (err instanceof w69b.ReaderException) {
         // Continue
