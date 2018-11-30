@@ -31,7 +31,7 @@ goog.scope(function() {
     this.x = x;
     this.y = y;
     this.size = size || 4;
-    this.birthTime = new Date().getTime();
+    this.birthTime = Date.now();
   };
   var PatternPoint = w69b.ui.PatternPoint;
 
@@ -306,7 +306,7 @@ goog.scope(function() {
     if (this.stopped_)
       return;
     this.drawVisualization_();
-    this.lastFrameTime_ = new Date().getTime();
+    this.lastFrameTime_ = Date.now();
     // This draws the result of the last frame on the current frame which
     // is nasty but as we have sent the last image to the worker, we
     // cannot draw it anymore without copying (at least in FF).
@@ -353,7 +353,7 @@ goog.scope(function() {
     // context.fillText(this.lastResult_, 10, 10);
     var scale = this.size_.width / this.decodeSize_.width;
     var maxAge = this.maxPatternAge_;
-    var now = new Date().getTime();
+    var now = Date.now();
     for (let i = 0; i < this.foundPatterns_.length; ++i) {
       let pattern = this.foundPatterns_[i];
       let age = now - pattern.birthTime;
@@ -376,7 +376,7 @@ goog.scope(function() {
   pro.scheduleNextFrame = function() {
     var animFrame = (window.requestAnimationFrame ||
       window.mozRequestAnimationFrame || window.oRequestAnimationFrame);
-    var timeSinceLastFrame = new Date().getTime() - this.lastFrameTime_;
+    var timeSinceLastFrame = Date.now() - this.lastFrameTime_;
     var waitTime = 0;
     // Draw at capped FPS
     if (timeSinceLastFrame < this.timeBetweenFrames_) {

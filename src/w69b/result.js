@@ -46,7 +46,7 @@ goog.scope(function() {
     this.resultPoints_ = resultPoints;
     this.format_ = format;
     this.resultMetadata_ = null;
-    this.timestamp_ = opt_timestamp ? opt_timestamp : new Date().getTime();
+    this.timestamp_ = opt_timestamp ? opt_timestamp : Date.now();
   };
   const Result = w69b.Result;
   const pro = Result.prototype;
