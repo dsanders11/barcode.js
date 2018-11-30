@@ -20,6 +20,20 @@ goog.scope(function() {
   var _ = w69b.common.detector.MathUtils;
 
   /**
+   * Ends up being a bit faster than {@link Math#round(float)}. This merely
+   * rounds its argument to the nearest int, where x.5 rounds up to x+1.
+   * Semantics of this shortcut differ slightly from {@link Math#round(float)}
+   * in that half rounds down for negative values. -2.5 rounds to -3, not -2.
+   * For purposes here it makes no difference.
+   *
+   * @param {number} d real value to round
+   * @return {number} nearest {@code int}
+   */
+  _.round = function(d) {
+    return Math.round(d + (d < 0.0 ? -0.5 : 0.5));
+  };
+
+  /**
    * Euclidean distance.
    * @param {number} aX
    * @param {number} aY
