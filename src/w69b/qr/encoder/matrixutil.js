@@ -147,7 +147,7 @@ goog.scope(function() {
    *
    * JAVAPORT: We shouldn't need to do this at all. The code should be
    * rewritten to begin encoding with the ByteMatrix initialized all to zero.
-   * @param {ByteMatrix} matrix matrix.
+   * @param {!ByteMatrix} matrix matrix.
    */
   _.clearMatrix = function(matrix) {
     matrix.clear(-1);
@@ -156,11 +156,11 @@ goog.scope(function() {
   /**
    * Build 2D matrix of QR Code from "dataBits" with "ecLevel", "version" and
    * "getMaskPattern". On success, store the result in "matrix" .
-   * @param {BitArray} dataBits bits.
-   * @param {ErrorCorrectionLevel} ecLevel error correction leval.
-   * @param {Version} version version.
+   * @param {!BitArray} dataBits bits.
+   * @param {!ErrorCorrectionLevel} ecLevel error correction leval.
+   * @param {!Version} version version.
    * @param {number} maskPattern mask.
-   * @param {ByteMatrix} matrix result matrix.
+   * @param {!ByteMatrix} matrix result matrix.
    */
   _.buildMatrix = function(dataBits, ecLevel, version, maskPattern, matrix) {
     _.clearMatrix(matrix);
@@ -180,8 +180,8 @@ goog.scope(function() {
    * - Timing patterns
    * - Dark dot at the left bottom corner
    * - Position adjustment patterns, if needed
-   * @param {Version} version version.
-   * @param {ByteMatrix} matrix result.
+   * @param {!Version} version version.
+   * @param {!ByteMatrix} matrix result.
    */
   _.embedBasicPatterns = function(version, matrix) {
     // Let's get started with embedding big squares at corners.
@@ -197,9 +197,9 @@ goog.scope(function() {
 
   /**
    * Embed type information. On success, modify the matrix.
-   * @param {ErrorCorrectionLevel} ecLevel error correciton level.
+   * @param {!ErrorCorrectionLevel} ecLevel error correciton level.
    * @param {number} maskPattern pattern.
-   * @param {ByteMatrix} matrix result.
+   * @param {!ByteMatrix} matrix result.
    */
   _.embedTypeInfo = function(ecLevel, maskPattern, matrix) {
     var typeInfoBits = new BitArray();
@@ -232,8 +232,8 @@ goog.scope(function() {
   /**
    * Embed version information if need be. On success, modify the matrix.
    * See 8.10 of JISX0510:2004 (p.47) for how to embed version information.
-   * @param {Version} version version.
-   * @param {ByteMatrix} matrix result.
+   * @param {!Version} version version.
+   * @param {!ByteMatrix} matrix result.
    */
   _.maybeEmbedVersionInfo = function(version, matrix) {
     // Version info is necessary if version >= 7.
@@ -262,9 +262,9 @@ goog.scope(function() {
    * return true.  For debugging purposes, it skips masking process if
    * "getMaskPattern" is -1.  See 8.7 of JISX0510:2004 (p.38) for how to embed
    * data bits.
-   * @param {BitArray} dataBits bits.
+   * @param {!BitArray} dataBits bits.
    * @param {number} maskPattern mask.
-   * @param {ByteMatrix} matrix result..
+   * @param {!ByteMatrix} matrix result..
    */
   _.embedDataBits = function(dataBits, maskPattern, matrix) {
     var bitIndex = 0;
@@ -382,9 +382,9 @@ goog.scope(function() {
    * Make bit vector of type information. On success, store the result in
    * "bits" and return true.  Encode error correction level and mask pattern.
    * See 8.9 of JISX0510:2004 (p.45) for details.
-   * @param {ErrorCorrectionLevel} ecLevel error correction level.
+   * @param {!ErrorCorrectionLevel} ecLevel error correction level.
    * @param {number} maskPattern pattern.
-   * @param {BitArray} bits result array.
+   * @param {!BitArray} bits result array.
    */
   _.makeTypeInfoBits = function(ecLevel, maskPattern, bits) {
     if (!QRCode.isValidMaskPattern(maskPattern)) {
@@ -409,8 +409,8 @@ goog.scope(function() {
   /**
    * Make bit vector of version information. On success, store the result in
    * "bits" and return true.  See 8.10 of JISX0510:2004 (p.45) for details.
-   * @param {Version} version version.
-   * @param {BitArray} bits result array.
+   * @param {!Version} version version.
+   * @param {!BitArray} bits result array.
    */
   _.makeVersionInfoBits = function(version, bits) {
     bits.appendBits(version.getVersionNumber(), 6);
@@ -433,7 +433,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ByteMatrix} matrix matrix to add timing patterns to.
+   * @param {!ByteMatrix} matrix matrix to add timing patterns to.
    */
   _.embedTimingPatterns = function(matrix) {
     // -8 is for skipping position detection patterns (size 7), and two
@@ -453,7 +453,7 @@ goog.scope(function() {
 
   /**
    * Embed the lonely dark dot at left bottom corner. JISX0510:2004 (p.46)
-   * @param {ByteMatrix} matrix the matrix.
+   * @param {!ByteMatrix} matrix the matrix.
    */
   _.embedDarkDotAtLeftBottomCorner = function(matrix) {
     if (matrix.get(8, matrix.getHeight() - 8) === 0) {
@@ -465,8 +465,8 @@ goog.scope(function() {
   /**
    * @param {number} xStart
    * @param {number} yStart
-   * @param {ByteMatrix} matrix
-   * @throws {WriterException}
+   * @param {!ByteMatrix} matrix
+   * @throws {!WriterException}
    */
   _.embedHorizontalSeparationPattern = function(xStart, yStart, matrix) {
     for (let x = 0; x < 8; ++x) {
@@ -480,8 +480,8 @@ goog.scope(function() {
   /**
    * @param {number} xStart
    * @param {number} yStart
-   * @param {ByteMatrix} matrix
-   * @throws {WriterException}
+   * @param {!ByteMatrix} matrix
+   * @throws {!WriterException}
    */
   _.embedVerticalSeparationPattern = function(xStart, yStart, matrix) {
     for (let y = 0; y < 7; ++y) {
@@ -495,8 +495,8 @@ goog.scope(function() {
   /**
    * @param {number} xStart
    * @param {number} yStart
-   * @param {ByteMatrix} matrix
-   * @throws {WriterException}
+   * @param {!ByteMatrix} matrix
+   * @throws {!WriterException}
    */
   _.embedPositionAdjustmentPattern = function(xStart, yStart, matrix) {
     for (let y = 0; y < 5; ++y) {
@@ -510,8 +510,8 @@ goog.scope(function() {
   /**
    * @param {number} xStart
    * @param {number} yStart
-   * @param {ByteMatrix} matrix
-   * @throws {WriterException}
+   * @param {!ByteMatrix} matrix
+   * @throws {!WriterException}
    */
   _.embedPositionDetectionPattern = function(xStart, yStart, matrix) {
     for (let y = 0; y < 7; ++y) {
@@ -524,7 +524,7 @@ goog.scope(function() {
   /**
    * Embed position detection patterns and surrounding vertical/horizontal
    * separators.
-   * @param {ByteMatrix} matrix working matrix.
+   * @param {!ByteMatrix} matrix working matrix.
    */
   _.embedPositionDetectionPatternsAndSeparators = function(matrix) {
     // Embed three big squares at corners.
@@ -561,8 +561,8 @@ goog.scope(function() {
 
   /**
    * Embed position adjustment patterns if needed.
-   * @param {Version} version
-   * @param {ByteMatrix} matrix
+   * @param {!Version} version
+   * @param {!ByteMatrix} matrix
    */
   _.maybeEmbedPositionAdjustmentPatterns = function(version, matrix) {
     // The patterns appear if version >= 2

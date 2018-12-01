@@ -179,7 +179,7 @@ goog.scope(function() {
 
   /**
    * @param {number} start
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.validatePattern_ = function(start) {
     var counters = this.counters_;
@@ -248,8 +248,8 @@ goog.scope(function() {
    * Records the size of all runs of white and black pixels, starting with white.
    * This is just like recordPattern, except it records all the counters, and
    * uses our builtin "counters" member for storage.
-   * @param {BitArray} row row to count from
-   * @throws {NotFoundException}
+   * @param {!BitArray} row row to count from
+   * @throws {!NotFoundException}
    */
   pro.setCounters_ = function(row) {
     this.counterLength_ = 0;
@@ -291,7 +291,7 @@ goog.scope(function() {
 
   /**
    * @return {number}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.findStartPattern_ = function() {
     var counters = this.counters_;

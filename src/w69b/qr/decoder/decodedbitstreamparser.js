@@ -53,7 +53,7 @@ goog.scope(function() {
 
   /**
    * See ISO 18004:2006, 6.4.4 Table 5
-   * @type {Array.<string>}
+   * @type {!Array.<string>}
    */
   const ALPHANUMERIC_CHARS = [
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B',
@@ -65,17 +65,17 @@ goog.scope(function() {
 
 
   /**
-   * @param {Int8Array} bytes byte blocks.
-   * @param {w69b.qr.decoder.Version} version qr code version.
-   * @param {w69b.qr.decoder.ErrorCorrectionLevel} ecLevel error correction level.
-   * @param {Object<DecodeHintType,*>=} opt_hints
+   * @param {!Int8Array} bytes byte blocks.
+   * @param {!w69b.qr.decoder.Version} version qr code version.
+   * @param {!w69b.qr.decoder.ErrorCorrectionLevel} ecLevel error correction level.
+   * @param {!Object<!DecodeHintType,*>=} opt_hints
    * @return {!DecoderResult} decoded string.
    */
   _.decode = function(bytes, version, ecLevel, opt_hints) {
     var bits = new BitSource(bytes);
     var result = new StringBuffer();
     /**
-     * @type {Array.<Int8Array>}
+     * @type {!Array.<!Int8Array>}
      */
     var byteSegments = [];
     var symbolSequence = -1;
@@ -162,9 +162,10 @@ goog.scope(function() {
 
   /**
    * See specification GBT 18284-2000
-   * @param {BitSource} bits bits.
-   * @param {StringBuffer} result string buffer.
+   * @param {!BitSource} bits bits.
+   * @param {!StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
+   * @throws {!FormatException}
    */
   _.decodeHanziSegment = function(bits, result, count) {
     // Don't crash trying to read more bits than we have available.
@@ -198,9 +199,10 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitSource} bits bits.
-   * @param {StringBuffer} result string buffer.
+   * @param {!BitSource} bits bits.
+   * @param {!StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
+   * @throws {!FormatException}
    */
   _.decodeKanjiSegment = function(bits, result, count) {
     // Don't crash trying to read more bits than we have available.
@@ -233,12 +235,13 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitSource} bits bits.
-   * @param {StringBuffer} result string buffer.
+   * @param {!BitSource} bits bits.
+   * @param {!StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
    * @param {?CharacterSetECI} currentCharacterSetECI character set eci name.
-   * @param {Array.<Int8Array>} byteSegments raw bytes.
-   * @param {Object<DecodeHintType,*>=} opt_hints
+   * @param {!Array.<!Int8Array>} byteSegments raw bytes.
+   * @param {!Object<!DecodeHintType,*>=} opt_hints
+   * @throws {!FormatException}
    */
   _.decodeByteSegment = function(bits, result, count, currentCharacterSetECI,
                                  byteSegments, opt_hints) {
@@ -282,10 +285,11 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitSource} bits bits.
-   * @param {StringBuffer} result string buffer.
+   * @param {!BitSource} bits bits.
+   * @param {!StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
    * @param {boolean} fc1InEffect flag.
+   * @throws {!FormatException}
    */
   _.decodeAlphanumericSegment = function(bits, result, count, fc1InEffect) {
     // Read two characters at a time
@@ -325,9 +329,10 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitSource} bits bits.
-   * @param {StringBuffer} result string buffer.
+   * @param {!BitSource} bits bits.
+   * @param {!StringBuffer} result string buffer.
    * @param {number} count bytes to decode.
+   * @throws {!FormatException}
    */
   _.decodeNumericSegment = function(bits, result, count) {
     // Read three digits at a time
@@ -370,8 +375,9 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitSource} bits
+   * @param {!BitSource} bits
    * @return {number}
+   * @throws {!FormatException}
    */
   _.parseECIValue = function(bits) {
     var firstByte = bits.readBits(8);

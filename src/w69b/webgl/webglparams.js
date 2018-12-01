@@ -6,10 +6,10 @@ goog.scope(function() {
   /**
    * Helps to apply parameters to a webgl programm.
    * @constructor
-   * @param {Object=} opt_config initial config, see set().
+   * @param {?Object=} opt_config initial config, see set().
    */
   w69b.webgl.WebGLParams = function(opt_config) {
-    /** @type {Object<string, Array>} */
+    /** @type {!Object<string, !Array>} */
     this.data_ = {};
     if (opt_config)
       this.set(opt_config);
@@ -17,7 +17,7 @@ goog.scope(function() {
   const pro = w69b.webgl.WebGLParams.prototype;
 
   /**
-   * @return {w69b.webgl.WebGLParams} params object.
+   * @return {!w69b.webgl.WebGLParams} params object.
    */
   pro.clone = function() {
     var params = new w69b.webgl.WebGLParams();
@@ -32,15 +32,15 @@ goog.scope(function() {
    * 'imageId': ['i', 1]
    * }
    *
-   * @param {Object<string, (number|Array.<(string|number)>)>} config mapping of names to either:
+   * @param {!Object<string, (number|!Array.<(string|number)>)>} config mapping of names to either:
      *  one or multiple float values,
      * ['i', 21, 45, 6] one or multiple integers with a preceeding 'i'.
-   * @return {w69b.webgl.WebGLParams} this for chaining.
+   * @return {!w69b.webgl.WebGLParams} this for chaining.
    */
   pro.set = function(config) {
     goog.object.forEach(config,
       /**
-       * @param {(number|Array.<(string|number)>)} value
+       * @param {(number|!Array.<(string|number)>)} value
        * @param {string} key
        */
       function(value, key) {
@@ -55,7 +55,7 @@ goog.scope(function() {
   /**
    * @param {string} name parameter name.
    * @param {string} type param type.
-   * @param {(number|Array.<number>)} value to set.
+   * @param {(number|!Array.<number>)} value to set.
    * @private
    */
   pro.setInternal_ = function(name, type, value) {
@@ -64,8 +64,8 @@ goog.scope(function() {
 
   /**
    * @param {string} name as passed to shader.
-   * @param {(number|Array.<number>)} value integer.
-   * @return {w69b.webgl.WebGLParams} this for chaining.
+   * @param {(number|!Array.<number>)} value integer.
+   * @return {!w69b.webgl.WebGLParams} this for chaining.
    */
   pro.setInt = function(name, value) {
     var len = value.length || 1;
@@ -75,8 +75,8 @@ goog.scope(function() {
 
   /**
    * @param {string} name as passed to shader.
-   * @param {(number|Array.<number>)} value float.
-   * @return {w69b.webgl.WebGLParams} this for chaining.
+   * @param {(number|!Array.<number>)} value float.
+   * @return {!w69b.webgl.WebGLParams} this for chaining.
    */
   pro.setFloat = function(name, value) {
     var len = value.length || 1;
@@ -99,18 +99,18 @@ goog.scope(function() {
   /**
    * Apply parameters to program. You need to call program.use() and
    * program.initCommonAttributes() yourself.
-   * @param {w69b.webgl.WebGLProgram} program webgl program.
+   * @param {!w69b.webgl.WebGLProgram} program webgl program.
    */
   pro.apply = function(program) {
     var setters = program.getNamedSetterFunctions();
     goog.object.forEach(this.data_,
       /**
-       * @param {(string|Array.<(string|number)>)} value
+       * @param {(string|!Array.<(string|number)>)} value
        * @param {string} name
        */
       function(value, name) {
         var type = /** @type {string} */ (value[0]);
-        var valueArgs = /** @type {Array.<(string|number)>} */ (value[1]);
+        var valueArgs = /** @type {!Array.<(string|number)>} */ (value[1]);
         setters[type].apply(program, [name].concat(valueArgs));
       }, this);
   };
@@ -118,7 +118,7 @@ goog.scope(function() {
   /**
    * Same as apply() but takes care of calling program.use() and
    * initCommonAttribtues()
-   * @param {w69b.webgl.WebGLProgram} program webgl program.
+   * @param {!w69b.webgl.WebGLProgram} program webgl program.
    */
   pro.useAndApply = function(program) {
     program.use();

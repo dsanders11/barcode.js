@@ -51,13 +51,13 @@ goog.scope(function() {
 
   /**
    * @private
-   * @type {Object<DecodeHintType,*>}
+   * @type {?Object<!DecodeHintType,*>}
    */
   pro.hints_ = null;
 
   /**
    * @private
-   * @type {Array.<Reader>}
+   * @type {?Array.<!Reader>}
    */
   pro.readers_ = null;
 
@@ -83,7 +83,7 @@ goog.scope(function() {
    *
    * @param {!BinaryBitmap} image The pixel data to decode
    * @return {!Result} The contents of the image
-   * @throws {NotFoundException} Any errors which occurred
+   * @throws {!NotFoundException} Any errors which occurred
    */
   pro.decodeWithState = function(image) {
     // Make sure to set up the default state so we don't crash
@@ -99,15 +99,15 @@ goog.scope(function() {
    * readers without reallocating memory. This is important for performance in
    * continuous scan clients.
    *
-   * @param {?Object<DecodeHintType,*>} hints The set of hints to use for
-   *                                          subsequent calls to decode(image)
+   * @param {?Object<!DecodeHintType,*>} hints The set of hints to use for
+   *                                           subsequent calls to decode(image)
    */
   pro.setHints = function(hints) {
     this.hints_ = hints;
 
     var tryHarder = hints && !!hints[DecodeHintType.TRY_HARDER];
     var formats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
-    /** @type {!Array.<Reader>} */
+    /** @type {!Array.<!Reader>} */
     var readers = [];
     if (formats !== null) {
       let addOneDReader = Boolean(
@@ -162,13 +162,13 @@ goog.scope(function() {
    * @private
    * @param {!BinaryBitmap} image
    * @return {!Result}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.decodeInternal_ = function(image) {
     if (this.readers_ !== null) {
       for (let reader of this.readers_) {
         try {
-          return reader.decode(image, this.hints_);
+          return reader.decode(image, this.hints_ || undefined);
         } catch (err) {
           if (err instanceof ReaderException) {
             // continue

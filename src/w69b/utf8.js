@@ -39,7 +39,7 @@ goog.provide('w69b.utf8');
   /**
    * fixedFromCodePoint
    * Convert array of unicode code points to string.
-   * @param {Array.<number>} codePoints codePoints sequence.
+   * @param {!Array.<number>} codePoints codePoints sequence.
    * @return {string} resulting string.
    * @license Originally from ES6 Unicode Shims 0.1
    * (c) 2012 Steven Levithan <http://slevithan.com/>
@@ -60,10 +60,10 @@ goog.provide('w69b.utf8');
   /**
    * Convert string to UTF8 byte sequence.
    * @param {string} str javascript string (unicode).
-   * @return {Int8Array} byte sequence.
+   * @return {!Int8Array} byte sequence.
    */
   function stringToUTF8Bytes(str) {
-    /** @type {Array.<number>} */
+    /** @type {!Array.<number>} */
     var bytes = [];
     for (let i = 0; i < str.length; ++i) {
       let codePoint = fixedCharCodeAt(str, i);
@@ -103,7 +103,7 @@ goog.provide('w69b.utf8');
 
   /**
    * Convert UTF8 byte sequence to string.
-   * @param {Int8Array} bytes UTF8 byte sequence.
+   * @param {!Int8Array} bytes UTF8 byte sequence.
    * @return {?string} result string or null on error (invalid input).
    */
   function UTF8BytesToString(bytes) {

@@ -40,11 +40,11 @@ goog.scope(function() {
     }
     this.bitMatrix = bitMatrix;
     /**
-     * @type {Version}
+     * @type {?Version}
      */
     this.parsedVersion = null;
     /**
-     * @type {FormatInformation}
+     * @type {?FormatInformation}
      */
     this.parsedFormatInfo = null;
     this.mirror_ = false;
@@ -111,7 +111,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Version} version.
+   * @return {!Version} version.
    */
   pro.readVersion = function() {
     if (this.parsedVersion !== null) {
@@ -157,7 +157,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Int8Array} bytes encoded within the QR Code
+   * @return {!Int8Array} bytes encoded within the QR Code
    */
   pro.readCodewords = function() {
     var formatInfo = this.readFormatInformation();

@@ -17,7 +17,7 @@ goog.scope(function() {
    * Binarizer implementation that simply passes through the LuminanceSource
    * data unchanged. Useful for when the LuminanceSource is already binary.
    *
-   * @param {LuminanceSource} source binary luminance source
+   * @param {!LuminanceSource} source binary luminance source
    * @constructor
    * @extends {Binarizer}
    */

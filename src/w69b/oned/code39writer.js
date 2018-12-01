@@ -92,7 +92,7 @@ goog.scope(function() {
 
   /**
    * @param {number} a
-   * @param {Int32Array} toReturn
+   * @param {!Int32Array} toReturn
    * @private
    */
   function toIntArray(a, toReturn) {

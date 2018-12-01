@@ -50,7 +50,7 @@ goog.scope(function() {
    * @param {!BitArray} row
    * @param {number} rowOffset
    * @return {!Result}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.decodeRow = function(rowNumber, row, rowOffset) {
     var extensionStartRange = w69b.oned.UPCEANReader.findGuardPattern(row, rowOffset, false, EXTENSION_START_PATTERN);

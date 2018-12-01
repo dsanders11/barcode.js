@@ -42,7 +42,7 @@ goog.scope(function() {
    * Apply mask penalty rule 1 and return the penalty.
    * Find repetitive cells with the same color and
    * give penalty to them. Example: 00000 or 11111.
-   * @param {ByteMatrix} matrix working matrix.
+   * @param {!ByteMatrix} matrix working matrix.
    * @return {number} result.
    */
   _.applyMaskPenaltyRule1 = function(matrix) {
@@ -57,7 +57,7 @@ goog.scope(function() {
    * which is to find MxN blocks and give a
    * penalty proportional to (M-1)x(N-1), because this is the number of
    * 2x2 blocks inside such a block.
-   * @param {ByteMatrix} matrix working matrix.
+   * @param {!ByteMatrix} matrix working matrix.
    * @return {number} result.
    */
   _.applyMaskPenaltyRule2 = function(matrix) {
@@ -82,7 +82,7 @@ goog.scope(function() {
    * 10111010000, and give penalty to them.
    * If we find patterns like 000010111010000, we give
    * penalties twice (i.e. 40 * 2).
-   * @param {ByteMatrix} matrix working matrix.
+   * @param {!ByteMatrix} matrix working matrix.
    * @return {number} result.
    */
   _.applyMaskPenaltyRule3 = function(matrix) {
@@ -143,7 +143,7 @@ goog.scope(function() {
    * Apply mask penalty rule 4 and return the penalty. Calculate the ratio of
    * dark cells and give penalty if the ratio is far from 50%. It gives 10
    * penalty for 5% distance.
-   * @param {ByteMatrix} matrix working matrix.
+   * @param {!ByteMatrix} matrix working matrix.
    * @return {number} result.
    */
   _.applyMaskPenaltyRule4 = function(matrix) {
@@ -213,7 +213,7 @@ goog.scope(function() {
   /**
    * Helper function for applyMaskPenaltyRule1. We need this for doing this
    * calculation in both vertical and horizontal orders respectively.
-   * @param {ByteMatrix} matrix working matrix.
+   * @param {!ByteMatrix} matrix working matrix.
    * @param {boolean} isHorizontal horizontal switch.
    * @return {number} penalty.
    */

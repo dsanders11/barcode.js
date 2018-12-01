@@ -30,7 +30,7 @@ goog.scope(function() {
    *
    * @author Sean Owen
    *
-   * @param {Int32Array} characterCountBitsForVersions nodoc.
+   * @param {!Int32Array} characterCountBitsForVersions nodoc.
    * @param {number} bits nodoc.
    * @param {string=} opt_name name for testing.
    * @constructor
@@ -44,7 +44,7 @@ goog.scope(function() {
   const pro = Mode.prototype;
 
 
-  /** @enum {Mode} */
+  /** @enum {!Mode} */
   w69b.qr.decoder.ModeEnum = {
     // Not really a mode...
     TERMINATOR: new Mode(Int32Array.of(0, 0, 0), 0x00, 'TERMINATOR'),
@@ -64,7 +64,7 @@ goog.scope(function() {
 
 
   /**
-   * @param {w69b.qr.decoder.Version} version version in question.
+   * @param {!w69b.qr.decoder.Version} version version in question.
    * @return {number} number of bits used, in this QR Code symbol {@link Version} , to
    * encode the count of characters that will follow encoded in this Mode.
    */
@@ -97,7 +97,7 @@ goog.scope(function() {
 
   /**
    * @param {number} bits four bits encoding a QR Code data mode.
-   * @return {Mode} Mode encoded by these bits.
+   * @return {!Mode} Mode encoded by these bits.
    */
   Mode.forBits = function(bits) {
     switch (bits) {

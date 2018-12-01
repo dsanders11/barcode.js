@@ -38,19 +38,19 @@ goog.scope(function() {
   const _ = w69b.qr.encoder.QRCode;
   const pro = _.prototype;
   /**
-   * @type {Mode}
+   * @type {?Mode}
    * @private
    */
   pro.mode_ = null;
   /**
    *
-   * @type {ErrorCorrectionLevel}
+   * @type {?ErrorCorrectionLevel}
    * @private
    */
   pro.ecLevel_ = null;
   /**
    *
-   * @type {Version}
+   * @type {?Version}
    * @private
    */
   pro.version_ = null;
@@ -62,7 +62,7 @@ goog.scope(function() {
   pro.maskPattern_ = -1;
   /**
    *
-   * @type {ByteMatrix}
+   * @type {?ByteMatrix}
    * @private
    */
   pro.matrix_ = null;
@@ -74,21 +74,21 @@ goog.scope(function() {
 
 
   /**
-   * @return {Mode} mode.
+   * @return {?Mode} mode.
    */
   pro.getMode = function() {
     return this.mode_;
   };
 
   /**
-   * @return {ErrorCorrectionLevel} ec level.
+   * @return {?ErrorCorrectionLevel} ec level.
    */
   pro.getECLevel = function() {
     return this.ecLevel_;
   };
 
   /**
-   * @return {Version} version.
+   * @return {?Version} version.
    */
   pro.getVersion = function() {
     return this.version_;
@@ -102,7 +102,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {ByteMatrix} matrix.
+   * @return {?ByteMatrix} matrix.
    */
   pro.getMatrix = function() {
     return this.matrix_;
@@ -134,21 +134,21 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Mode} value mode.
+   * @param {!Mode} value mode.
    */
   pro.setMode = function(value) {
     this.mode_ = value;
   };
 
   /**
-   * @param {ErrorCorrectionLevel} value ec level.
+   * @param {!ErrorCorrectionLevel} value ec level.
    */
   pro.setECLevel = function(value) {
     this.ecLevel_ = value;
   };
 
   /**
-   * @param {Version} version version.
+   * @param {!Version} version version.
    */
   pro.setVersion = function(version) {
     this.version_ = version;
@@ -162,7 +162,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ByteMatrix} value matrix.
+   * @param {!ByteMatrix} value matrix.
    */
   pro.setMatrix = function(value) {
     this.matrix_ = value;

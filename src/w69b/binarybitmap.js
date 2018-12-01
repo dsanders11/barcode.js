@@ -34,7 +34,7 @@ goog.scope(function() {
    * Reader objects accept a BinaryBitmap and attempt to decode it.
    *
    * @constructor
-   * @param {w69b.Binarizer} binarizer
+   * @param {!w69b.Binarizer} binarizer
    * @final
    */
   w69b.BinaryBitmap = function(binarizer) {
@@ -44,7 +44,7 @@ goog.scope(function() {
     this.binarizer = binarizer;
 
     /**
-     * @type {BitMatrix}
+     * @type {?BitMatrix}
      * @private
      */
     this.matrix = null;
@@ -73,12 +73,12 @@ goog.scope(function() {
    * decoding 1D barcodes and may choose to apply sharpening.
    *
    * @param {number} y The row to fetch, which must be in [0, bitmap height)
-   * @param {BitArray=} opt_row An optional preallocated array. If null or too
-   *                            small, it will be ignored. If used, the
-   *                            Binarizer will call BitArray.clear(). Always use
-   *                            the returned object.
+   * @param {!BitArray=} opt_row An optional preallocated array. If null or too
+   *                             small, it will be ignored. If used, the
+   *                             Binarizer will call BitArray.clear(). Always use
+   *                             the returned object.
    * @return {!BitArray} The array of bits for this row (true means black).
-   * @throws {NotFoundException} if row can't be binarized
+   * @throws {!NotFoundException} if row can't be binarized
    */
   pro.getBlackRow = function(y, opt_row) {
     return this.binarizer.getBlackRow(y, opt_row);
@@ -92,7 +92,7 @@ goog.scope(function() {
    * getBlackRow(), so don't mix and match between them.
    *
    * @return {!BitMatrix} The 2D array of bits for the image (true means black).
-   * @throws {NotFoundException} if image can't be binarized to make a matrix
+   * @throws {!NotFoundException} if image can't be binarized to make a matrix
    */
   pro.getBlackMatrix = function() {
     // The matrix is created on demand the first time it is requested, then

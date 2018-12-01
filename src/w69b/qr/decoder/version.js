@@ -68,7 +68,7 @@ goog.scope(function() {
    * @constructor
    * @param {number} ecCodewordsPerBlock code words per block.
    * @param {!ECB} ecBlocks1 block1.
-   * @param {ECB=} opt_ecBlocks2 block2.
+   * @param {!ECB=} opt_ecBlocks2 block2.
    */
   w69b.qr.decoder.ECBlocks = function(ecCodewordsPerBlock, ecBlocks1, opt_ecBlocks2) {
     this.ecCodewordsPerBlock = ecCodewordsPerBlock;
@@ -81,11 +81,11 @@ goog.scope(function() {
   };
   const ECBlocks = w69b.qr.decoder.ECBlocks;
 
-  /** @type {Array.<ECB>} */
+  /** @type {?Array.<!ECB>} */
   ECBlocks.prototype.ecBlocks;
 
   /**
-   * @return {Array.<ECB>}
+   * @return {?Array.<!ECB>}
    */
   ECBlocks.prototype.getECBlocks = function() {
     return this.ecBlocks;
@@ -113,11 +113,11 @@ goog.scope(function() {
   /**
    * @constructor
    * @param {number} versionNumber
-   * @param {Int32Array} alignmentPatternCenters
-   * @param {ECBlocks} ecBlocks1
-   * @param {ECBlocks} ecBlocks2
-   * @param {ECBlocks} ecBlocks3
-   * @param {ECBlocks} ecBlocks4
+   * @param {!Int32Array} alignmentPatternCenters
+   * @param {!ECBlocks} ecBlocks1
+   * @param {!ECBlocks} ecBlocks2
+   * @param {!ECBlocks} ecBlocks3
+   * @param {!ECBlocks} ecBlocks4
    */
   w69b.qr.decoder.Version = function(versionNumber, alignmentPatternCenters, ecBlocks1,
                              ecBlocks2, ecBlocks3, ecBlocks4) {
@@ -169,7 +169,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {BitMatrix}
+   * @return {!BitMatrix}
    */
   pro.buildFunctionPattern = function() {
     var dimension = this.getDimensionForVersion();
@@ -211,8 +211,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ErrorCorrectionLevel} ecLevel
-   * @return {ECBlocks}
+   * @param {!ErrorCorrectionLevel} ecLevel
+   * @return {!ECBlocks}
    */
   pro.getECBlocksForLevel = function(ecLevel) {
     return this.ecBlocks[ecLevel.ordinal];
@@ -225,7 +225,7 @@ goog.scope(function() {
     0x1AFAB, 0x1B08E, 0x1CC1A, 0x1D33F, 0x1ED75, 0x1F250, 0x209D5, 0x216F0,
     0x228BA, 0x2379F, 0x24B0B, 0x2542E, 0x26A64, 0x27541, 0x28C69);
 
-  /** @type {!Array.<Version>} */
+  /** @type {!Array.<!Version>} */
   Version.VERSIONS = function() {
     return new Array(new Version(1, new Int32Array(0),
       new ECBlocks(7, new ECB(1, 19)),
@@ -416,7 +416,7 @@ goog.scope(function() {
 
   /**
    * @param {number} versionNumber
-   * @return {Version}
+   * @return {!Version}
    */
   Version.getVersionForNumber = function(versionNumber) {
     if (versionNumber < 1 || versionNumber > 40) {
@@ -429,8 +429,8 @@ goog.scope(function() {
    * Deduces version information purely from QR Code dimensions.
    *
    * @param {number} dimension dimension in modules
-   * @return {Version} for a QR Code of that dimension
-   * @throws {FormatException} if dimension is not 1 mod 4
+   * @return {!Version} for a QR Code of that dimension
+   * @throws {!FormatException} if dimension is not 1 mod 4
    */
   Version.getProvisionalVersionForDimension = function(dimension) {
     if (dimension % 4 !== 1) {
@@ -448,7 +448,7 @@ goog.scope(function() {
 
   /**
    * @param {number} versionBits
-   * @return {Version}
+   * @return {?Version}
    */
   Version.decodeVersionInformation = function(versionBits) {
     var bestDifference = Integer.MAX_VALUE;

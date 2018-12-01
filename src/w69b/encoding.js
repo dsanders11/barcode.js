@@ -17,11 +17,11 @@ goog.scope(function() {
 
   /**
    * @param {string} content to encode.
-   * @param {w69b.BarcodeFormat} format barcode format to encode as
-   * @param {HTMLCanvasElement} canvas canvas to draw on.
-   * @param {Object<w69b.EncodeHintType,*>=} opt_hints optional encoding hints
-   *                                                   such as margin or
-   *                                                   error correction
+   * @param {!w69b.BarcodeFormat} format barcode format to encode as
+   * @param {!HTMLCanvasElement} canvas canvas to draw on.
+   * @param {!Object<!w69b.EncodeHintType,*>=} opt_hints optional encoding hints
+   *                                                     such as margin or
+   *                                                     error correction
    * @export
    */
   w69b.encoding.drawOnCanvas = function(content, format, canvas, opt_hints) {
@@ -33,12 +33,12 @@ goog.scope(function() {
 
   /**
    * @param {string} content to encode.
-   * @param {w69b.BarcodeFormat} format barcode format to encode as
+   * @param {!w69b.BarcodeFormat} format barcode format to encode as
    * @param {number} width width to use as svg width.
    * @param {number} height height to use as svg height.
-   * @param {Object<w69b.EncodeHintType,*>=} opt_hints optional encoding hints
-   *                                                   such as margin or
-   *                                                   error correction
+   * @param {!Object<!w69b.EncodeHintType,*>=} opt_hints optional encoding hints
+   *                                                     such as margin or
+   *                                                     error correction
    * @return {string} svg source.
    * @export
    */
@@ -52,12 +52,12 @@ goog.scope(function() {
 
   /**
    * @param {string} content to encode.
-   * @param {w69b.BarcodeFormat} format barcode format to encode as
+   * @param {!w69b.BarcodeFormat} format barcode format to encode as
    * @param {number} width width to use as eps width.
    * @param {number} height height to use as eps height.
-   * @param {Object<w69b.EncodeHintType,*>=} opt_hints optional encoding hints
-   *                                                   such as margin or
-   *                                                   error correction
+   * @param {!Object<!w69b.EncodeHintType,*>=} opt_hints optional encoding hints
+   *                                                     such as margin or
+   *                                                     error correction
    * @return {string} eps source.
    * @export
    */

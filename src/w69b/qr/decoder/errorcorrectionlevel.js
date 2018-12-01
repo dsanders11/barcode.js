@@ -54,7 +54,8 @@ goog.scope(function() {
   /**
    * get by name.
    * @param {string} name one of 'L', 'M', 'Q', 'H';.
-   * @return {ErrorCorrectionLevel} ec level or null if name is invalid.
+   * @return {!ErrorCorrectionLevel} ec level
+   * @throws {!IllegalArgumentException} if name is invalid
    */
   ErrorCorrectionLevel.getByName = function(name) {
     var map = {'L': ErrorCorrectionLevel.L,
@@ -64,7 +65,7 @@ goog.scope(function() {
     if (map.hasOwnProperty(name)) {
       return map[name];
     } else {
-      return null;
+      throw new IllegalArgumentException("Invalid name");
     }
   };
 

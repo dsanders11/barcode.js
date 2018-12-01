@@ -36,7 +36,7 @@ goog.scope(function() {
   /** @type {string} */
   pro.name = '';
 
-  /** @enum {CharacterSetECI} */
+  /** @enum {!CharacterSetECI} */
   w69b.common.CharacterSetECIEnum = {
     Cp437: new CharacterSetECI(Int32Array.of(0, 2), 'CP437'),
     ISO8859_1: new CharacterSetECI(Int32Array.of(1, 3), 'ISO-8859-1'),
@@ -68,10 +68,10 @@ goog.scope(function() {
   };
   const CharacterSetECIEnum = w69b.common.CharacterSetECIEnum;
 
-  /** @type {Object<string, CharacterSetECI>} */
+  /** @type {!Object<string, !CharacterSetECI>} */
   CharacterSetECI.namesToEnum_ = {};
 
-  /** @type {Object<number, CharacterSetECI>} */
+  /** @type {!Object<number, !CharacterSetECI>} */
   CharacterSetECI.valuesToEnum_ = {};
 
   (function() {
@@ -101,9 +101,9 @@ goog.scope(function() {
 
   /**
    * @param {number} value character set ECI value
-   * @return {CharacterSetECI} representing ECI of given value, or null if it
-   *                           is legal but unsupported
-   * @throws {FormatException} if ECI value is invalid
+   * @return {!CharacterSetECI} representing ECI of given value, or null if it
+   *                            is legal but unsupported
+   * @throws {!FormatException} if ECI value is invalid
    */
   CharacterSetECI.getCharacterSetECIByValue = function(value) {
     if (value < 0 || value >= 900) {
@@ -114,8 +114,8 @@ goog.scope(function() {
 
   /**
    * @param {string} name character set ECI encoding name
-   * @return {CharacterSetECI} representing ECI for character encoding, or null
-   *                           if it is legal but unsupported
+   * @return {!CharacterSetECI} representing ECI for character encoding, or null
+   *                            if it is legal but unsupported
    */
   CharacterSetECI.getCharacterSetECIByName = function(name) {
     return CharacterSetECI.namesToEnum_[name];

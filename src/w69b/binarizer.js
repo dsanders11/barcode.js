@@ -34,20 +34,20 @@ goog.scope(function() {
    * Ported to js by Manuel Braun
    *
    * @constructor
-   * @param {LuminanceSource} source gray values
+   * @param {!LuminanceSource} source gray values
    * @abstract
    */
   w69b.Binarizer = function(source) {
     /**
      * @protected
-     * @type {LuminanceSource}
+     * @type {!LuminanceSource}
      */
     this.source = source;
   };
   const Binarizer = w69b.Binarizer;
 
   /**
-   * @return {LuminanceSource} image.
+   * @return {!LuminanceSource} image.
    */
   Binarizer.prototype.getLuminanceSource = function() {
     return this.source;
@@ -64,11 +64,11 @@ goog.scope(function() {
    *
    * @abstract
    * @param {number} y The row to fetch, 0 <= y < bitmap height.
-   * @param {w69b.common.BitArray=} opt_row An optional preallocated array. If
-   *                                        null or too small, it will be
-   *                                        ignored.  If used, the Binarizer
-   *                                        will call BitArray.clear(). Always
-   *                                        use the returned object.
+   * @param {!w69b.common.BitArray=} opt_row An optional preallocated array. If
+   *                                         null or too small, it will be
+   *                                         ignored.  If used, the Binarizer
+   *                                         will call BitArray.clear(). Always
+   *                                         use the returned object.
    * @return {!w69b.common.BitArray} The array of bits for this row (true means
    *                                 black).
    */
@@ -94,9 +94,9 @@ goog.scope(function() {
    * for why we can't use Java's clone() method.
    *
    * @abstract
-   * @param {LuminanceSource} source The LuminanceSource this Binarizer
+   * @param {!LuminanceSource} source The LuminanceSource this Binarizer
    * will operate on.
-   * @return {w69b.Binarizer} A new concrete Binarizer implementation
+   * @return {!w69b.Binarizer} A new concrete Binarizer implementation
    * object.
    */
   Binarizer.prototype.createBinarizer = function(source) { };

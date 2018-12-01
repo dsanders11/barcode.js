@@ -61,7 +61,7 @@ goog.scope(function() {
    * @param {!BitArray} row
    * @param {!Int32Array} extensionStartRange
    * @return {!Result}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.decodeRow = function(rowNumber, row, extensionStartRange) {
     var result = this.decodeRowStringBuffer_;
@@ -90,7 +90,7 @@ goog.scope(function() {
    * @param {!Int32Array} startRange
    * @param {!StringBuilder} resultString
    * @return {number}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.decodeMiddle_ = function(row, startRange, resultString) {
     var counters = this.decodeMiddleCounters_;
@@ -152,7 +152,7 @@ goog.scope(function() {
   /**
    * @param {number} lgPatternFound
    * @return {number}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   function determineCheckDigit(lgPatternFound) {
     for (let d = 0; d < 10; d++) {
@@ -165,7 +165,7 @@ goog.scope(function() {
 
   /**
    * @param {string} raw raw content of extension
-   * @return {Object<ResultMetadataType,*>} formatted interpretation of raw content as a {@link Map} mapping
+   * @return {?Object<!ResultMetadataType,*>} formatted interpretation of raw content as a {@link Map} mapping
    *  one {@link ResultMetadataType} to appropriate value, or {@code null} if not known
    */
   function parseExtensionString(raw) {

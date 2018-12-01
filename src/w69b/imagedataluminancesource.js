@@ -30,7 +30,7 @@ goog.scope(function() {
    * canvas. Based on RGBLuminanceSource in ZXing.
    *
    * @constructor
-   * @param {(ImageData|Int8Array)} image
+   * @param {!ImageData|!Int8Array} image
    * @param {number=} opt_left
    * @param {number=} opt_top
    * @param {number=} opt_width

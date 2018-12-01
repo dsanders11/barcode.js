@@ -49,7 +49,7 @@ goog.scope(function() {
   /**
    * Class to decode barcode images. Loads a worker at initialization, if enabled,
    * so make sure to re-use instances whenever possible.
-   * @param {Object<string,*>=} opt_options options with the following properties:
+   * @param {!Object<string,*>=} opt_options options with the following properties:
    * - {boolean} worker: use web worker, if supported, defaults to true
    * - {boolean} webgl: use webgl binarizer, if supported, defaults to true
    * - {number} maxSize: scale down image if large than this value in any dimension.
@@ -85,7 +85,7 @@ goog.scope(function() {
   /**
    * Decode image that contains a barcode. It can handle image/video and imagedata objects.
    * Note that image conversion is expensive, so pass your image as-is whenever possible.
-   * @param {!(CanvasImageSource|ImageData)} img image to decode.
+   * @param {!CanvasImageSource|!ImageData} img image to decode.
    * @return {!Promise} result. Resolves to an object
    * with a text property that contains the decoded string on success.
    * Rejects if no barcode could be found or decoding failed.

@@ -73,7 +73,7 @@ goog.scope(function() {
    *
    * @param {!Int32Array} received data and error-correction codewords.
    * @param {number} twoS number of error-correction codewords available.
-   * @throws {ReedSolomonException}
+   * @throws {!ReedSolomonException}
    */
   pro.decode = function(received, twoS) {
     var poly = new GenericGFPoly(this.field_, received);
@@ -110,7 +110,7 @@ goog.scope(function() {
    * @param {!GenericGFPoly} b
    * @param {number} R
    * @return {!Array.<!GenericGFPoly>}
-   * @throws {ReedSolomonException}
+   * @throws {!ReedSolomonException}
    */
   pro.runEuclideanAlgorithm = function(a, b, R) {
     // Assume a's degree is >= b's
@@ -169,7 +169,7 @@ goog.scope(function() {
   /**
    * @param {!GenericGFPoly} errorLocator
    * @return {!Int32Array}
-   * @throws {ReedSolomonException}
+   * @throws {!ReedSolomonException}
    */
   pro.findErrorLocations = function(errorLocator) {
     // This is a direct application of Chien's search

@@ -65,7 +65,7 @@ goog.scope(function() {
   const decoder = new Decoder();
 
   /**
-   * @return {Decoder}
+   * @return {!Decoder}
    * @protected
    * @final
    */
@@ -79,9 +79,9 @@ goog.scope(function() {
    * @final
    */
   pro.decode = function(image, opt_hints) {
-    /** @type {DecoderResult} */
+    /** @type {?DecoderResult} */
     var decoderResult;
-    /** @type {Array.<ResultPoint>} */
+    /** @type {?Array.<!ResultPoint>} */
     var points;
     if (opt_hints && !!opt_hints[DecodeHintType.PURE_BARCODE]) {
       let bits = extractPureBits_(image.getBlackMatrix());
@@ -133,7 +133,7 @@ goog.scope(function() {
    * @see com.google.zxing.datamatrix.DataMatrixReader#extractPureBits(BitMatrix)
    * @param {!BitMatrix} image
    * @return {!BitMatrix}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    */
   function extractPureBits_(image) {
@@ -218,10 +218,10 @@ goog.scope(function() {
   }
 
   /**
-   * @param {Int32Array} leftTopBlack
-   * @param {BitMatrix} image
+   * @param {!Int32Array} leftTopBlack
+   * @param {!BitMatrix} image
    * @return {number}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    */
   function moduleSize_(leftTopBlack, image){

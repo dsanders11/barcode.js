@@ -46,15 +46,15 @@ goog.scope(function() {
 
   /**
    * @constructor
-   * @param {?Object<DecodeHintType,*>} hints
+   * @param {?Object<!DecodeHintType,*>} hints
    * @extends {OneDReader}
    * @final
    */
   w69b.oned.MultiFormatOneDReader = function(hints) {
-    /** @type {Array.<BarcodeFormat>} */
+    /** @type {?Array.<!BarcodeFormat>} */
     var possibleFormats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
     var useCode39CheckDigit = Boolean(hints !== null && hints[DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT]);
-    /** @type {!ArrayList<OneDReader>} */
+    /** @type {!ArrayList<!OneDReader>} */
     var readers = new ArrayList();
 
     if (possibleFormats !== null) {
@@ -91,7 +91,7 @@ goog.scope(function() {
 
     /**
      * @private
-     * @type {!Array.<OneDReader>}
+     * @type {!Array.<!OneDReader>}
      */
     this.readers_ = readers.toArray();
   };

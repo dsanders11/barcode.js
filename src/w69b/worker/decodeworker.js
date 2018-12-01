@@ -7,7 +7,6 @@ goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.MultiFormatReader');
 goog.require('w69b.NotFoundException');
-goog.require('w69b.ReaderException');
 goog.require('w69b.Result');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.common.HybridBinarizer');
@@ -45,7 +44,7 @@ goog.scope(function() {
   /**
    * @param {!ImageData} imgdata image to
    * @param {boolean} isBinary
-   * @param {Array.<w69b.BarcodeFormat>=} opt_formats
+   * @param {?Array.<!w69b.BarcodeFormat>=} opt_formats
    * @param {boolean=} opt_failOnCharset immediately fail on charset error if
    *                                     true, do not try to load iconv. decode.
    */
@@ -75,10 +74,10 @@ goog.scope(function() {
    * Decode barcode from ImageData.
    * @param {!ImageData} imgdata from canvas.
    * @param {boolean} isBinary
-   * @param {Array.<w69b.BarcodeFormat>=} opt_formats
+   * @param {?Array.<!w69b.BarcodeFormat>=} opt_formats
    * @param {?w69b.ResultPointCallback=} opt_callback callback.
-   * @return {w69b.Result} decoded barcode.
-   * @throws {w69b.NotFoundException} if nothing found
+   * @return {!w69b.Result} decoded barcode.
+   * @throws {!w69b.NotFoundException} if nothing found
    */
   _.decodeFromImageData = function(imgdata, isBinary, opt_formats, opt_callback) {
     if (multiFormatReader === null) {
@@ -116,7 +115,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ResultPoint} pattern found.
+   * @param {!ResultPoint} pattern found.
    */
   _.onPatternFound = function(pattern) {
     // Build plain json object.
@@ -125,7 +124,7 @@ goog.scope(function() {
 
   /**
    * Received message from host.
-   * @param {MessageEvent} event
+   * @param {!MessageEvent} event
    */
   self.onmessage = function(event) {
     var data = event.data;

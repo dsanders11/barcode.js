@@ -26,7 +26,7 @@ goog.scope(function() {
    * @constructor
    * @param {?Int8Array} rawBytes
    * @param {string} text
-   * @param {?Array.<Int8Array>} byteSegments
+   * @param {?Array.<!Int8Array>} byteSegments
    * @param {?string} ecLevel
    * @param {number=} opt_saSequence
    * @param {number=} opt_saParity
@@ -73,7 +73,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {?Array.<Int8Array>} list of byte segments in the result, or {@code null} if not applicable
+   * @return {?Array.<!Int8Array>} list of byte segments in the result, or {@code null} if not applicable
    */
   pro.getByteSegments = function() {
     return this.byteSegments_;
@@ -115,14 +115,14 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Object} arbitrary additional metadata
+   * @return {!Object} arbitrary additional metadata
    */
   pro.getOther = function() {
     return this.other_;
   };
 
   /**
-   * @param {Object} other
+   * @param {!Object} other
    */
   pro.setOther = function(other) {
     this.other_ = other;

@@ -1,5 +1,6 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.worker.DecodeInWorkerHelper');
+goog.require('goog.html.legacyconversions');
 goog.require('goog.math.Size');
 goog.require('goog.net.jsloader');
 goog.require('goog.string');
@@ -22,7 +23,7 @@ goog.scope(function() {
    * Helper class that decodes in worker if available and reasonable
    * and falls back to main thread decoding if not.
    * @constructor
-   * @param {Array.<w69b.BarcodeFormat>=} opt_formats Formats to decode for
+   * @param {!Array.<!w69b.BarcodeFormat>=} opt_formats Formats to decode for
    */
   w69b.worker.DecodeInWorkerHelper = function(opt_formats) {
     this.callback_ = null;
@@ -45,7 +46,7 @@ goog.scope(function() {
 
   /**
    * Initialized with binarizer if supported.
-   * @type {WebGLBinarizer}
+   * @type {?WebGLBinarizer}
    * @private
    */
   pro.webGLBinarizer_ = null;
@@ -57,7 +58,7 @@ goog.scope(function() {
   pro.useWorker_ = false;
 
   /**
-   * @type {Worker}
+   * @type {?Worker}
    * @private
    */
   pro.worker_ = null;
@@ -155,7 +156,7 @@ goog.scope(function() {
 
   /**
    * Message form worker received
-   * @param {MessageEvent} event
+   * @param {!MessageEvent} event
    * @private
    */
   pro.onMessage_ = function(event) {
@@ -170,7 +171,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(CanvasImageSource|ImageData)} imgdata frame to process.
+   * @param {!CanvasImageSource|!ImageData} imgdata frame to process.
    * @param {!goog.math.Size} size of image data, or desired size of binarizer output in
    * case webGl is used. If aspect ratio is different from input espect ratio, we only use the
    * top-left rectange of the input image that covers the desired size.
@@ -207,7 +208,7 @@ goog.scope(function() {
       imgDataOrMatrix = w69b.imgtools.getImageData(imgDataOrMatrix, size);
     }
     if (this.useWorker_) {
-      let buffer = (/** @type {Uint8ClampedArray}  */ (imgDataOrMatrix.data)).buffer;
+      let buffer = (/** @type {!Uint8ClampedArray}  */ (imgDataOrMatrix.data)).buffer;
       let msg = {
         'width': imgDataOrMatrix.width,
         'height': imgDataOrMatrix.height,
@@ -258,7 +259,8 @@ goog.scope(function() {
             '/' + url;
         }
         // And try again when loaded.
-        jsloader.load(url).addCallback(function() {
+        const trustedUrl = goog.html.legacyconversions.trustedResourceUrlFromString(url);
+        jsloader.safeLoad(trustedUrl).addCallback(function() {
           this.decodeLocalFallback_(imgdata, isBinary, callback);
         }, this);
         return;

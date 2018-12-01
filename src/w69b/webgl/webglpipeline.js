@@ -11,11 +11,11 @@ goog.scope(function() {
   /**
    * Helps to execute multipass webgl programms by applying multiple programs
    * and parameter successively.
-   * @param {w69b.webgl.WebGLFilter} filter webgl filter.
+   * @param {!w69b.webgl.WebGLFilter} filter webgl filter.
    * @constructor
    */
   w69b.webgl.WebGLPipeline = function(filter) {
-    /** @type {(function(number, number, number)|Array.<(WebGLProgram|WebGLParams)>)}*/
+    /** @type {!Array.<(function(number, number, number)|!Array.<!WebGLProgram, !WebGLParams>)>}*/
     this.passes_ = [];
     this.filter_ = filter;
   };
@@ -23,8 +23,8 @@ goog.scope(function() {
 
   /**
    *
-   * @param {WebGLProgram} program to run.
-   * @param {WebGLParams} parameters to apply.
+   * @param {!WebGLProgram} program to run.
+   * @param {!WebGLParams} parameters to apply.
    */
   pro.addPass = function(program, parameters) {
     this.passes_.push([program, parameters]);
@@ -53,7 +53,7 @@ goog.scope(function() {
     var prevProgarm = null;
     var filter = this.filter_;
     var numPasses = this.passes_.length;
-    /** @type {Array.<number>} */
+    /** @type {?Array.<number>} */
     var pingPongTextureIds;
     // Ensures last pass goes on outTextureId.
     if (numPasses % 2 == 0) {
@@ -66,8 +66,8 @@ goog.scope(function() {
     for (let i = 0; i < numPasses; ++i) {
       let pass = this.passes_[i];
       if (pass.length) {
-        let program = /** @type {WebGLProgram} */ (pass[0]);
-        let params = /** @type {WebGLParams} */ (pass[1]);
+        let program = /** @type {!WebGLProgram} */ (pass[0]);
+        let params = /** @type {!WebGLParams} */ (pass[1]);
         if (program != prevProgarm) {
           program.use();
           program.initCommonAttributes();

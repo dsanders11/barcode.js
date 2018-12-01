@@ -141,7 +141,7 @@ goog.scope(function() {
   /**
    * @param {!BitArray} row
    * @return {!Int32Array}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    */
   pro.findAsteriskPattern_ = function(row) {
@@ -210,7 +210,7 @@ goog.scope(function() {
   /**
    * @param {number} pattern
    * @returns {string}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    */
   Code93Reader.patternToChar_ = function(pattern) {
@@ -225,7 +225,7 @@ goog.scope(function() {
   /**
    * @param {string} encoded
    * @return {string}
-   * @throws {FormatException}
+   * @throws {!FormatException}
    * @private
    */
   Code93Reader.decodeExtended_ = function(encoded) {
@@ -299,7 +299,7 @@ goog.scope(function() {
 
   /**
    * @param {string} result
-   * @throws {ChecksumException}
+   * @throws {!ChecksumException}
    */
   function checkChecksums(result){
     var length = result.length;
@@ -311,7 +311,7 @@ goog.scope(function() {
    * @param {string} result
    * @param {number} checkPosition
    * @param {number} weightMax
-   * @throws {ChecksumException}
+   * @throws {!ChecksumException}
    */
   function checkOneChecksum(result, checkPosition, weightMax) {
     var weight = 1;

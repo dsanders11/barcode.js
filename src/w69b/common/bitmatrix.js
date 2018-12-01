@@ -29,7 +29,7 @@ goog.scope(function() {
    * @param {number} width width.
    * @param {number=} opt_height height defaults to width.
    * @param {number=} opt_rowSize
-   * @param {Int32Array=} opt_bits
+   * @param {!Int32Array=} opt_bits
    * @constructor
    */
   w69b.common.BitMatrix = function(width, opt_height, opt_rowSize, opt_bits) {
@@ -174,7 +174,7 @@ goog.scope(function() {
    * Exclusive-or (XOR): Flip the bit in this {@code BitMatrix} if the
    * corresponding mask bit is set.
    *
-   * @param {BitMatrix} mask XOR mask
+   * @param {!BitMatrix} mask XOR mask
    */
   pro.xor = function(mask) {
     if (this.width !== mask.getWidth() || this.height !== mask.getHeight()
@@ -204,7 +204,7 @@ goog.scope(function() {
    * @param {number} top top pos.
    * @param {number} width width.
    * @param {number} height height.
-   * @throws {IllegalArgumentException}
+   * @throws {!IllegalArgumentException}
    */
   pro.setRegion = function(left, top, width, height) {
     goog.asserts.assert(Number.isInteger(left));
@@ -235,7 +235,7 @@ goog.scope(function() {
    * A fast method to retrieve one row of data from the matrix as a BitArray.
    *
    * @param {number} y The row to retrieve
-   * @param {BitArray} row An optional caller-allocated BitArray, will be
+   * @param {!BitArray} row An optional caller-allocated BitArray, will be
    *                       allocated if null or too small
    * @return {!BitArray} The resulting BitArray - this reference should always
    *                     be used even when passing your own row
@@ -255,7 +255,7 @@ goog.scope(function() {
 
   /**
    * @param {number} y row to set
-   * @param {BitArray} row {@link BitArray} to copy from
+   * @param {!BitArray} row {@link BitArray} to copy from
    */
   pro.setRow = function(y, row) {
     this.bits.set(row.getBitArray().slice(0, this.rowSize), y * this.rowSize);
@@ -282,7 +282,7 @@ goog.scope(function() {
   /**
    * This is useful in detecting the enclosing rectangle of a 'pure' barcode.
    *
-   * @return {Int32Array} {@code left,top,width,height} enclosing rectangle of all 1 bits, or null if it is all white
+   * @return {?Int32Array} {@code left,top,width,height} enclosing rectangle of all 1 bits, or null if it is all white
    */
   pro.getEnclosingRectangle = function() {
     var left = this.width;

@@ -77,7 +77,7 @@ goog.scope(function() {
 
   /**
    * @param {!BinaryBitmap} image
-   * @param {Object<DecodeHintType,*>} hints
+   * @param {?Object<!DecodeHintType,*>} hints
    * @param {!ArrayList<!Result>} results
    * @param {number} xOffset
    * @param {number} yOffset

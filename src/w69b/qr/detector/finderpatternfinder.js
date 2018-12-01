@@ -55,7 +55,7 @@ goog.scope(function() {
      */
     this.image_ = image;
     /**
-     * @type {!Array.<FinderPattern>}
+     * @type {!Array.<!FinderPattern>}
      */
     this.possibleCenters_ = [];
     /**
@@ -115,8 +115,8 @@ goog.scope(function() {
 
 
   /**
-   * @param {Object<DecodeHintType,*>=} opt_hints hints.
-   * @return {FinderPatternInfo} info.
+   * @param {!Object<!DecodeHintType,*>=} opt_hints hints.
+   * @return {!FinderPatternInfo} info.
    */
   pro.find = function(opt_hints) {
     var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
@@ -239,7 +239,7 @@ goog.scope(function() {
    * Given a count of black/white/black/white/black pixels just seen and an
    * end position,
    * figures the location of the center of this run.
-   * @param {Int32Array} stateCount state count.
+   * @param {!Int32Array} stateCount state count.
    * @param {number} end end position.
    * @return {number} position.
    */
@@ -248,7 +248,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Int32Array} stateCount count of
+   * @param {!Int32Array} stateCount count of
    * black/white/black/white/black pixels just read.
    * @return {boolean} true iff the proportions of the counts is close enough
    * to the 1/1/3/1/1 ratios used by finder patterns to be considered a match.
@@ -281,7 +281,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Int32Array} count.
+   * @return {!Int32Array} count.
    */
   pro.getCrossCheckStateCount = function() {
     this.crossCheckStateCount_[0] = 0;
@@ -572,7 +572,7 @@ goog.scope(function() {
    * finder pattern.  Each additional find is more evidence that the location
    * is in fact a finder pattern center
    *
-   * @param {Int32Array} stateCount reading state module counts from
+   * @param {!Int32Array} stateCount reading state module counts from
    * horizontal scan.
    * @param {number} i row where finder pattern may be found.
    * @param {number} j end of possible finder pattern in row.
@@ -696,7 +696,7 @@ goog.scope(function() {
 
   /**
    * @param {boolean=} opt_checkSkew check skew, defaults to false.
-   * @return {Array.<FinderPattern>} the 3 best FinderPatterns from our list
+   * @return {!Array.<!FinderPattern>} the 3 best FinderPatterns from our list
    * of candidates. The "best" are those that have been detected at
    * least CENTER_QUORUM times, and whose module size differs from the
    * average among those patterns the least.
@@ -770,8 +770,8 @@ goog.scope(function() {
 
   /**
    * Get c
-   * @param {Array.<FinderPattern>} centers finder pattern candidates.
-   * @return {Array.<Array.<FinderPattern>>} result.
+   * @param {!Array.<!FinderPattern>} centers finder pattern candidates.
+   * @return {!Array.<!Array.<!FinderPattern>>} result.
    */
   _.getCombinations = function(centers) {
     var len = centers.length;
@@ -788,12 +788,12 @@ goog.scope(function() {
   /**
    * Orders by furthest from average
    * @param {number} average average.
-   * @return {function(FinderPattern, FinderPattern):number} compare function.
+   * @return {function(!FinderPattern, !FinderPattern):number} compare function.
    */
   _.FurthestFromAverageComparator = function(average) {
     /**
-     * @param {FinderPattern} center1
-     * @param {FinderPattern} center2
+     * @param {!FinderPattern} center1
+     * @param {!FinderPattern} center2
      * @return {number}
      */
     function comparator(center1, center2) {
@@ -808,12 +808,12 @@ goog.scope(function() {
   /**
    * Orders by {@link FinderPattern#getCount()}, descending.
    * @param {number} average average.
-   * @return {function(FinderPattern, FinderPattern):number} compare function.
+   * @return {function(!FinderPattern, !FinderPattern):number} compare function.
    */
   _.CenterComparator = function(average) {
     /**
-     * @param {FinderPattern} center1
-     * @param {FinderPattern} center2
+     * @param {!FinderPattern} center1
+     * @param {!FinderPattern} center2
      * @return {number}
      */
     function comparator(center1, center2) {
@@ -831,9 +831,9 @@ goog.scope(function() {
 
   /**
    * Computes a - b / |a-b|.
-   * @param {ResultPoint} pattern1 a.
-   * @param {ResultPoint} pattern2 b.
-   * @return {Array.<number>} result as array [x, y].
+   * @param {!ResultPoint} pattern1 a.
+   * @param {!ResultPoint} pattern2 b.
+   * @return {!Array.<number>} result as array [x, y].
    */
   _.diff = function(pattern1, pattern2) {
     var diffX = pattern1.getX() - pattern2.getX();
@@ -844,8 +844,8 @@ goog.scope(function() {
 
   /**
    * Scalar product
-   * @param {Array.<number>} a vector a.
-   * @param {Array.<number>} b vector a.
+   * @param {!Array.<number>} a vector a.
+   * @param {!Array.<number>} b vector a.
    * @return {number} scalar product.
    */
   _.scalarProduct = function(a, b) {
@@ -858,7 +858,7 @@ goog.scope(function() {
    * Computes a number that expresses how good alignement of the givevn
    * patterns can be explained by a simliarity transformation. This
    * assumes that they are oriented in triangular shape.
-   * @param {Array.<w69b.ResultPoint>} patterns array of size 3.
+   * @param {!Array.<!w69b.ResultPoint>} patterns array of size 3.
    * @return {number} skew error.
    */
   _.computeSkew = function(patterns) {

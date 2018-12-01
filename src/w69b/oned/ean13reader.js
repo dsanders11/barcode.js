@@ -139,7 +139,7 @@ goog.scope(function() {
    * @param {!StringBuilder} resultString string to insert decoded first digit into
    * @param {number} lgPatternFound int whose bits indicates the pattern of odd/even L/G patterns used to
    *  encode digits
-   * @throws {NotFoundException} if first digit cannot be determined
+   * @throws {!NotFoundException} if first digit cannot be determined
    */
   function determineFirstDigit(resultString, lgPatternFound) {
     for (let d = 0; d < 10; d++) {

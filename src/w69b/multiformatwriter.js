@@ -59,7 +59,7 @@ goog.scope(function() {
    * @override
    */
   pro.encode = function(contents, format, width, height, opt_hints) {
-    /** @type {Writer} */
+    /** @type {?Writer} */
     var writer = null;
 
     switch (format) {

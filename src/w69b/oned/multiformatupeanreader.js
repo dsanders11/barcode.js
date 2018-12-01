@@ -46,13 +46,13 @@ goog.scope(function() {
 
   /**
    * @constructor
-   * @param {?Object<DecodeHintType,*>} hints
+   * @param {?Object<!DecodeHintType,*>} hints
    * @extends {OneDReader}
    * @final
    */
   w69b.oned.MultiFormatUPCEANReader = function(hints) {
-    var possibleFormats = /** @type {Array.<BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
-    /** @type {!ArrayList<OneDReader>} */
+    var possibleFormats = /** @type {?Array.<!BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
+    /** @type {!ArrayList<!OneDReader>} */
     var readers = new ArrayList();
 
     if (possibleFormats !== null) {
@@ -77,7 +77,7 @@ goog.scope(function() {
 
     /**
      * @private
-     * @type {!Array.<OneDReader>}
+     * @type {!Array.<!OneDReader>}
      */
     this.readers_ = readers.toArray();
   };
@@ -117,7 +117,7 @@ goog.scope(function() {
       let ean13MayBeUPCA =
           result.getBarcodeFormat() === BarcodeFormat.EAN_13 &&
               result.getText().charAt(0) === '0';
-      let possibleFormats = /** @type {Array.<BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
+      let possibleFormats = /** @type {?Array.<!BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
       let canReturnUPCA = possibleFormats === null || possibleFormats.includes(BarcodeFormat.UPC_A);
 
       if (ean13MayBeUPCA && canReturnUPCA) {

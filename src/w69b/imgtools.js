@@ -18,10 +18,10 @@ goog.scope(function() {
 
   const _ = w69b.imgtools;
 
-  /** @type {HTMLCanvasElement} */
+  /** @type {?HTMLCanvasElement} */
   _.canvas_ = null;
 
-  /** @type {CanvasRenderingContext2D} */
+  /** @type {?CanvasRenderingContext2D} */
   _.context_ = null;
 
   /**
@@ -59,8 +59,8 @@ goog.scope(function() {
 
   /**
    * Get content of canvas as png stored in a blob.
-   * @param {HTMLCanvasElement} canvas canvas element.
-   * @param {function(Blob)} callback called with blob data.
+   * @param {!HTMLCanvasElement} canvas canvas element.
+   * @param {function(!Blob)} callback called with blob data.
    * @export
    */
   w69b.imgtools.getCanvasAsBlob = function(canvas, callback) {
@@ -86,7 +86,7 @@ goog.scope(function() {
    * image src. Image has to be loaded. Image is scaled down to opt_maxSize if
    * its width or height is larger. Will be grayscaled if browser supports it.
    * @param {!CanvasImageSource} img image.
-   * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or Size object
+   * @param {(number|!Size)=} opt_maxSize max size of any dimension in pixels or Size object
    * that img data should cover (cropping bottom-right corners).
    * @return {!ImageData} image data.
    */
@@ -112,11 +112,11 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(CanvasImageSource|ImageData)} image image to binarize.
+   * @param {!CanvasImageSource|!ImageData} image image to binarize.
    * @param {boolean=} useWebGL should WebGL be used to binarize.
-   * @param {(number|Size)=} opt_maxSize max size of any dimension in pixels or
-   *                                     Size object that img data should cover
-   *                                     (cropping bottom-right corners).
+   * @param {(number|!Size)=} opt_maxSize max size of any dimension in pixels or
+   *                                      Size object that img data should cover
+   *                                      (cropping bottom-right corners).
    * @return {!ImageData} binary data.
    * @export
    */
@@ -191,7 +191,7 @@ goog.scope(function() {
   /**
    * Scales size in-place to fit maxSize if larger, keeping the aspect ratio.
    * @param {!Size} size
-   * @param {!(number|Size)} maxSize
+   * @param {number|!Size} maxSize
    * @export
    */
   w69b.imgtools.scaleToMaxSize = function(size, maxSize) {

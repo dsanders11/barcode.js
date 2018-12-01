@@ -24,19 +24,19 @@ goog.scope(function() {
 
   /**
    * Filters images using webgl shaders.
-   * @param {HTMLCanvasElement=} opt_canvas canvas to use.
+   * @param {!HTMLCanvasElement=} opt_canvas canvas to use.
    * @constructor
    */
   w69b.webgl.WebGLFilter = function(opt_canvas) {
     this.textures = [];
     /**
      * @private
-     * @type {HTMLCanvasElement}
+     * @type {!HTMLCanvasElement}
      */
-    this.canvas_ = /** @type {HTMLCanvasElement} */ (
+    this.canvas_ = /** @type {!HTMLCanvasElement} */ (
       opt_canvas || document.createElement('canvas'));
     try {
-      this.context_ = /** @type {WebGLRenderingContext} */ (
+      this.context_ = /** @type {!WebGLRenderingContext} */ (
         this.canvas_.getContext('webgl') ||
           this.canvas_.getContext('experimental-webgl'));
     } catch (ignored) {
@@ -49,7 +49,7 @@ goog.scope(function() {
   };
   const _ = w69b.webgl.WebGLFilter;
   /**
-   * @type {Array.<number>}
+   * @type {?Array.<number>}
    * @private
    */
   _.fragCoordOffset_ = null;
@@ -59,12 +59,12 @@ goog.scope(function() {
 
   /**
    * Rendering context of back canvas.
-   * @type {WebGLRenderingContext}
+   * @type {?WebGLRenderingContext}
    * @private
    */
   pro.context_ = null;
 
-  /** @type {!Array.<WebGLTexture>} */
+  /** @type {!Array.<!WebGLTexture>} */
   pro.textures = [];
 
   /**
@@ -110,15 +110,15 @@ goog.scope(function() {
   };
 
   /**
-   * @return {WebGLRenderingContext} webgl context.
+   * @return {!WebGLRenderingContext} webgl context.
    */
   pro.getContext = function() {
-    return this.context_;
+    return /** @type {!WebGLRenderingContext} */(this.context_);
   };
 
   /**
    * @param {number} id texture id.
-   * @return {WebGLTexture} texture.
+   * @return {!WebGLTexture} texture.
    */
   pro.getTexture = function(id) {
     return this.textures[id];
@@ -162,7 +162,7 @@ goog.scope(function() {
    * @param {number} id texture unit id.
    * @param {number=} opt_width in pixels.
    * @param {number=} opt_height in pixsels.
-   * @return {WebGLTexture} texture.
+   * @return {!WebGLTexture} texture.
    */
   pro.createTexture = function(id, opt_width, opt_height) {
     var gl = this.context_;
@@ -187,7 +187,7 @@ goog.scope(function() {
   /**
    * Attach texture to framebuffer.
    * @param {number} textureId texture id.
-   * @param {WebGLFramebuffer=} opt_framebuffer defaults to this.framebuffer.
+   * @param {!WebGLFramebuffer=} opt_framebuffer defaults to this.framebuffer.
    */
   pro.attachTextureToFB = function(textureId, opt_framebuffer) {
     var gl = this.context_;
@@ -199,7 +199,7 @@ goog.scope(function() {
 
   /**
    * Returns offset for normalizing gl_FragCoord.
-   * @return {Array.<number>} offset.
+   * @return {?Array.<number>} offset.
    */
   pro.getFragCoordOffset = function() {
     return _.fragCoordOffset_;
@@ -227,8 +227,8 @@ goog.scope(function() {
   _.testFragCoordOffset = function() {
     if (_.fragCoordOffset_)
       return;
-    var canvas = /** @type {HTMLCanvasElement} */ (document.createElement('canvas'));
-    var gl = /** @type {?WebGLRenderingContext} */ (
+    var canvas = /** @type {!HTMLCanvasElement} */ (document.createElement('canvas'));
+    var gl = /** @type {!WebGLRenderingContext} */ (
       canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
     canvas.width = 20;
     canvas.height = 20;

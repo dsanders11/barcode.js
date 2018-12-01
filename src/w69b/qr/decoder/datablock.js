@@ -50,11 +50,11 @@ goog.scope(function() {
    * That is, the first byte of data block 1 to n is written, then the second
    * bytes, and so on. This method will separate the data into original blocks.
    *
-   * @param {Int8Array} rawCodewords bytes as read directly from the QR Code
-   * @param {Version} version version of the QR Code
-   * @param {ErrorCorrectionLevel} ecLevel error-correction level of the QR Code
-   * @return {!Array.<DataBlock>} containing original bytes, "de-interleaved" from
-   *                              representation in the QR Code
+   * @param {!Int8Array} rawCodewords bytes as read directly from the QR Code
+   * @param {!Version} version version of the QR Code
+   * @param {!ErrorCorrectionLevel} ecLevel error-correction level of the QR Code
+   * @return {!Array.<!DataBlock>} containing original bytes, "de-interleaved" from
+   *                               representation in the QR Code
    */
   DataBlock.getDataBlocks = function(rawCodewords, version, ecLevel) {
     if (rawCodewords.length !== version.totalCodewords) {
@@ -74,7 +74,7 @@ goog.scope(function() {
 
     // Now establish DataBlocks of the appropriate size and number of data
     // codewords
-    /** @type {!Array.<DataBlock>} */
+    /** @type {!Array.<!DataBlock>} */
     var result = new Array(totalBlocks);
     var numResultBlocks = 0;
     for (let j = 0; j < ecBlockArray.length; j++) {

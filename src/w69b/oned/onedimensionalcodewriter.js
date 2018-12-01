@@ -64,7 +64,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<boolean>} code
+   * @param {!Array.<boolean>} code
    * @param {number} width
    * @param {number} height
    * @param {number} sidesMargin
@@ -91,7 +91,7 @@ goog.scope(function() {
   }
 
   /**
-   * @param {Array.<boolean>} target encode black/white pattern into this array
+   * @param {!Array.<boolean>} target encode black/white pattern into this array
    * @param {number} pos position to start encoding at in {@code target}
    * @param {!Int32Array} pattern lengths of black/white runs to encode
    * @param {boolean} startColor starting color - false for white, true for black

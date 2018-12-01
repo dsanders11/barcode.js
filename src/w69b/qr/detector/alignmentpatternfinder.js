@@ -61,7 +61,7 @@ goog.scope(function() {
                                             resultPointCallback) {
     /** @type {!BitMatrix} */
     this.image = image;
-    /** @type {Array.<AlignmentPattern>} */
+    /** @type {!Array.<!AlignmentPattern>} */
     this.possibleCenters = [];
     this.startX = startX;
     this.startY = startY;
@@ -77,7 +77,7 @@ goog.scope(function() {
   /**
    * Given a count of black/white/black pixels just seen and an end position,
    * figures the location of the center of this black/white/black run.
-   * @param {Int32Array} stateCount
+   * @param {!Int32Array} stateCount
    * @param {number} end
    * @return {number}
    */
@@ -86,7 +86,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Int32Array} stateCount count of black/white/black pixels just read
+   * @param {!Int32Array} stateCount count of black/white/black pixels just read
    * @return {boolean} true iff the proportions of the counts is close enough to the 1/1/1 ratios
    *         used by alignment patterns to be considered a match
    */
@@ -178,11 +178,11 @@ goog.scope(function() {
    * image. It is a bit messy since it's pretty performance-critical and so is
    * written to be fast foremost.
    *
-   * @param {Int32Array} stateCount reading state module counts from horizontal scan
+   * @param {!Int32Array} stateCount reading state module counts from horizontal scan
    * @param {number} i row where alignment pattern may be found
    * @param {number} j end of possible alignment pattern in row
-   * @return {AlignmentPattern} if found
-   * @throws {NotFoundException} if not found
+   * @return {!AlignmentPattern} if found
+   * @throws {!NotFoundException} if not found
    */
   pro.handlePossibleCenter = function(stateCount, i, j) {
     var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
@@ -207,7 +207,7 @@ goog.scope(function() {
         this.resultPointCallback(point);
       }
     }
-    return null;
+    throw new NotFoundException();
   };
 
   /**
@@ -215,8 +215,8 @@ goog.scope(function() {
    * image. It is a bit messy since it's pretty performance-critical and so is
    * written to be fast foremost.
    *
-   * @return {AlignmentPattern} if found
-   * @throws {NotFoundException} if not found
+   * @return {!AlignmentPattern} if found
+   * @throws {!NotFoundException} if not found
    */
   pro.find = function() {
     var startX = this.startX;

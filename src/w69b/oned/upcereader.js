@@ -136,7 +136,7 @@ goog.scope(function() {
   /**
    * @param {!StringBuilder} resultString
    * @param {number} lgPatternFound
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   function determineNumSysAndCheckDigit(resultString, lgPatternFound) {
     for (let numSys = 0; numSys <= 1; numSys++) {

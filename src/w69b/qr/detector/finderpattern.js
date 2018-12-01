@@ -69,7 +69,7 @@ goog.scope(function() {
    * @param {number} i position.
    * @param {number} j position.
    * @param {number} newModuleSize size.
-   * @return {FinderPattern} combined pattern.
+   * @return {!FinderPattern} combined pattern.
    */
   pro.combineEstimate = function(i, j, newModuleSize) {
     var count = this.count;
@@ -90,12 +90,13 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Object} JSON object for pattern.
+   * @return {!Object} JSON object for pattern.
    */
   pro['toJSON'] = function() {
     return {
       'x': this.getX(),
       'y': this.getY(),
-      'size': this.getEstimatedModuleSize()};
+      'size': this.getEstimatedModuleSize()
+    };
   };
 });

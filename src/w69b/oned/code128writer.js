@@ -202,7 +202,7 @@ goog.scope(function() {
   /**
    * @param {string} value
    * @param {number} start
-   * @return {CType}
+   * @return {!CType}
    * @private
    */
   function findCType(value, start) {

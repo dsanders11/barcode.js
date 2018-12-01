@@ -33,7 +33,7 @@ goog.scope(function() {
    * black level estimations.
    *
    * @constructor
-   * @param {HTMLCanvasElement=} opt_canvas canvas to use.
+   * @param {!HTMLCanvasElement=} opt_canvas canvas to use.
    */
   w69b.webgl.WebGLBinarizer = function(opt_canvas) {
     this.filter_ = new WebGLFilter(opt_canvas);
@@ -63,24 +63,24 @@ goog.scope(function() {
    */
   pro.inSize_ = null;
 
-  /** @type {WebGLProgram} */
+  /** @type {?WebGLProgram} */
   pro.programDynRange1 = null;
 
-  /** @type {WebGLProgram} */
+  /** @type {?WebGLProgram} */
   pro.programDynRange2 = null;
 
-  /** @type {WebGLProgram} */
+  /** @type {?WebGLProgram} */
   pro.programEstimateBlack = null;
 
-  /** @type {WebGLProgram} */
+  /** @type {?WebGLProgram} */
   pro.programThreshold = null;
 
-  /** @type {WebGLProgram} */
+  /** @type {?WebGLProgram} */
   pro.programGauss = null;
 
   /**
    * @param {string} source fragment source.
-   * @return {WebGLProgram} compiled program.
+   * @return {!WebGLProgram} compiled program.
    */
   pro.getProgram = function(source) {
     return new WebGLProgram(this.filter_.getContext(), source);
@@ -131,7 +131,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {WebGLPipeline}
+   * @return {!WebGLPipeline}
    */
   pro.createPipeline = function() {
     var width = this.filter_.getWidth();
@@ -167,57 +167,74 @@ goog.scope(function() {
     });
 
     // Apply gauss and downsample to scaledWidth/Height
-    pipeline.addPass(this.programGauss,
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programGauss),
       baseParams.clone().set({
         'width': scaledWith,
         'sampleDirection': [0, 1],
         'texwidth': inSize.width,
         'texheight': inSize.height
-      }));
+      })
+    );
 
-    pipeline.addPass(this.programGauss,
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programGauss),
       smallImgParams.clone().set({
         'inheight': height,
         'sampleDirection': [1, 0]
-      }));
+      })
+    );
 
     // Compute more dynamic ranges and two more scales on gray
     // level image, in a layout next to each other. Kernel size increases
     // from left to right.
-    pipeline.addPass(this.programDynRange1, smallImgParams.clone().set({
-      'sampleDirection': [0, 1]
-    }));
-    pipeline.addPass(this.programDynRange2, smallImgParams.clone().set({
-      'sampleDirection': [1, 0]
-    }));
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programDynRange1),
+      smallImgParams.clone().set({
+        'sampleDirection': [0, 1]
+      })
+    );
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programDynRange2),
+      smallImgParams.clone().set({
+        'sampleDirection': [1, 0]
+      })
+    );
 
-    pipeline.addPass(this.programDynRange2, smallImgParams.clone().set({
-      'sampleDirection': [0, 2]
-    }));
-    pipeline.addPass(this.programDynRange2, smallImgParams.clone().set({
-      'sampleDirection': [2, 0],
-      'outOffset': [scaledWith, 0]
-    }));
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programDynRange2),
+      smallImgParams.clone().set({
+        'sampleDirection': [0, 2]
+      })
+    );
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programDynRange2),
+      smallImgParams.clone().set({
+        'sampleDirection': [2, 0],
+        'outOffset': [scaledWith, 0]
+      })
+    );
 
-    pipeline.addPass(this.programDynRange2, smallImgParams.clone().set({
-      'sampleDirection': [0, 2],
-      'inOffset': [scaledWith, 0]
-    }));
-    pipeline.addPass(this.programDynRange2, smallImgParams.clone().set({
-      'sampleDirection': [2, 0],
-      'outOffset': [scaledWith * 2, 0]
-    }));
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programDynRange2),
+      smallImgParams.clone().set({
+        'sampleDirection': [0, 2],
+        'inOffset': [scaledWith, 0]
+      })
+    );
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programDynRange2),
+      smallImgParams.clone().set({
+        'sampleDirection': [2, 0],
+        'outOffset': [scaledWith * 2, 0]
+      })
+    );
     // Use scale space and dynamic range estimations to estimate black level.
-    pipeline.addPass(this.programEstimateBlack, smallImgParams);
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programEstimateBlack),
+      smallImgParams);
     // pipeline.addPass(extractChannel,
     //  smallImgParams.clone().setInt('channel', 2));
 
-    pipeline.addPass(this.programThreshold, smallImgParams.clone()
+    pipeline.addPass(/** @type {!WebGLProgram} */(this.programThreshold),
+      smallImgParams.clone()
       .setInt('origImage', 0)
       .set({
         'width': inSize.width, 'height': inSize.height,
         'inwidth': scaledWith, 'inheight': scaledHeight
-      }));
+      })
+    );
     return pipeline;
   };
 
@@ -229,7 +246,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {!(CanvasImageSource|ImageData)} image image
+   * @param {!CanvasImageSource|!ImageData} image image
    * to render.
    */
   pro.render = function(image) {
@@ -326,7 +343,7 @@ goog.scope(function() {
    * @param {!ImageData} imageData
    * @param {number} x pos.
    * @param {number} y pos.
-   * @return {Array.<number>} [red, green, blue, alpha] values.
+   * @return {!Array.<number>} [red, green, blue, alpha] values.
    */
   function getPixel(imageData, x, y) {
     var data = imageData.data;

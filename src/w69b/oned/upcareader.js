@@ -83,7 +83,7 @@ goog.scope(function() {
   /**
    * @param {!Result} result
    * @return {!Result}
-   * @throws {FormatException}
+   * @throws {!FormatException}
    */
   function maybeReturnResult(result) {
     var text = result.getText();

@@ -101,7 +101,7 @@ goog.scope(function() {
   /**
    * For efficiency, returns -1 on failure. Not throwing here saved as many as
    * 700 exceptions per image when using some of our blackbox images.
-   * @param {Int32Array} counters
+   * @param {!Int32Array} counters
    * @return {number}
    * @private
    */
@@ -228,10 +228,10 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitArray} row
-   * @param {Int32Array} counters
-   * @return {Int32Array}
-   * @throws {NotFoundException}
+   * @param {!BitArray} row
+   * @param {!Int32Array} counters
+   * @return {!Int32Array}
+   * @throws {!NotFoundException}
    * @private
    */
   Code39Reader.findAsteriskPattern_ = function(row, counters) {
@@ -272,7 +272,7 @@ goog.scope(function() {
   /**
    * @param {string} encoded
    * @return {string}
-   * @throws {FormatException}
+   * @throws {!FormatException}
    * @private
    */
   Code39Reader.decodeExtended_ = function(encoded) {
@@ -334,7 +334,7 @@ goog.scope(function() {
   /**
    * @param {number} pattern
    * @returns {string}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    */
   Code39Reader.patternToChar_ = function(pattern) {

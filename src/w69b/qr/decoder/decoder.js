@@ -87,10 +87,10 @@ goog.scope(function() {
 
   /**
    * @param {!w69b.common.BitMatrix} bits booleans representing white/black QR Code modules
-   * @param {Object<DecodeHintType,*>=} opt_hints decoding hints that should be used to influence decoding
+   * @param {!Object<!DecodeHintType,*>=} opt_hints decoding hints that should be used to influence decoding
    * @return {!DecoderResult} text and bytes encoded within the QR Code
-   * @throws {FormatException}
-   * @throws {ChecksumException}
+   * @throws {!FormatException}
+   * @throws {!ChecksumException}
    */
   pro.decode = function(bits, opt_hints) {
     // Construct a parser and read version, error-correction level
@@ -98,7 +98,7 @@ goog.scope(function() {
     var fe = null;
     var ce = null;
     try {
-      return this.decodeParser_(parser, opt_hints ? opt_hints : null);
+      return this.decodeParser_(parser, opt_hints ? opt_hints : undefined);
     } catch (err) {
       if (err instanceof FormatException) {
         fe = err;
@@ -130,7 +130,7 @@ goog.scope(function() {
       // Prepare for a mirrored reading.
       parser.mirror();
 
-      let result = this.decodeParser_(parser, opt_hints ? opt_hints : null);
+      let result = this.decodeParser_(parser, opt_hints ? opt_hints : undefined);
 
       // Success! Notify the caller that the code was mirrored.
       result.setOther(new QRCodeDecoderMetaData(true));
@@ -152,13 +152,13 @@ goog.scope(function() {
 
   /**
    * @param {!BitMatrixParser} parser
-   * @param {Object<DecodeHintType,*>} hints
+   * @param {!Object<!DecodeHintType,*>=} opt_hints
    * @return {!DecoderResult}
-   * @throws {FormatException}
-   * @throws {ChecksumException}
+   * @throws {!FormatException}
+   * @throws {!ChecksumException}
    * @private
    */
-  pro.decodeParser_ = function(parser, hints) {
+  pro.decodeParser_ = function(parser, opt_hints) {
     var version = parser.readVersion();
     var ecLevel = parser.readFormatInformation().getErrorCorrectionLevel();
 
@@ -187,6 +187,6 @@ goog.scope(function() {
 
     // Decode the contents of that stream of bytes
     return DecodedBitStreamParser.decode(
-      resultBytes, version, ecLevel, hints ? hints : undefined);
+      resultBytes, version, ecLevel, opt_hints);
   };
 });

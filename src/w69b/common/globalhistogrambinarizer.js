@@ -41,19 +41,19 @@ goog.scope(function() {
    * @author Sean Owen
    * Ported to js by Manuel Braun
    *
-   * @param {LuminanceSource} source gray values.
+   * @param {!LuminanceSource} source gray values.
    * @constructor
    * @extends {w69b.Binarizer}
    */
   w69b.common.GlobalHistogramBinarizer = function(source) {
     goog.base(this, source);
     /**
-     * @type {Int8Array}
+     * @type {!Int8Array}
      * @private
      */
     this.luminances_ = new Int8Array(0);
     /**
-     * @type {Uint8Array}
+     * @type {!Uint8Array}
      * @private
      */
     this.buckets_ = new Uint8Array(LUMINANCE_BUCKETS);
@@ -167,7 +167,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Uint8Array} buckets
+   * @param {!Uint8Array} buckets
    * @return {number}
    */
   _.estimateBlackPoint = function(buckets) {

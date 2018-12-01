@@ -46,7 +46,7 @@ goog.scope(function() {
   const pro = PerspectiveTransform.prototype;
 
   /**
-   * @param {Float32Array} points
+   * @param {!Float32Array} points
    */
   pro.transformPoints1 = function(points) {
     var max = points.length;
@@ -69,8 +69,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Float32Array} xValues
-   * @param {Float32Array} yValues
+   * @param {!Float32Array} xValues
+   * @param {!Float32Array} yValues
    */
   pro.transformPoints2 = function(xValues, yValues) {
     var n = xValues.length;
@@ -84,7 +84,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {PerspectiveTransform}
+   * @return {!PerspectiveTransform}
    */
   pro.buildAdjoint = function() {
     // Adjoint is the transpose of the cofactor matrix:
@@ -101,8 +101,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {PerspectiveTransform} other
-   * @return {PerspectiveTransform}
+   * @param {!PerspectiveTransform} other
+   * @return {!PerspectiveTransform}
    */
   pro.times = function(other) {
     return new PerspectiveTransform(this.a11 * other.a11 +
@@ -134,7 +134,7 @@ goog.scope(function() {
    * @param {number} y2p
    * @param {number} x3p
    * @param {number} y3p
-   * @return {PerspectiveTransform}
+   * @return {!PerspectiveTransform}
    */
   PerspectiveTransform.quadrilateralToQuadrilateral = function(
     x0, y0, x1, y1, x2, y2, x3, y3, x0p, y0p, x1p, y1p, x2p, y2p, x3p, y3p) {
@@ -156,7 +156,7 @@ goog.scope(function() {
    * @param {number} y2
    * @param {number} x3
    * @param {number} y3
-   * @return {PerspectiveTransform}
+   * @return {!PerspectiveTransform}
    */
   PerspectiveTransform.squareToQuadrilateral = function(x0, y0, x1, y1,
                                                         x2, y2, x3, y3) {
@@ -189,7 +189,7 @@ goog.scope(function() {
    * @param {number} y2
    * @param {number} x3
    * @param {number} y3
-   * @return {PerspectiveTransform}
+   * @return {!PerspectiveTransform}
    */
   PerspectiveTransform.quadrilateralToSquare = function(x0, y0, x1, y1,
                                                         x2, y2, x3, y3) {

@@ -62,7 +62,7 @@ goog.scope(function() {
    * @param {?Int8Array} row An optional preallocated array. If null or too
    *                         small, it will be ignored. Always use the returned
    *                         object, and ignore the length of the array.
-   * @return {Int8Array} An array containing the luminance data.
+   * @return {!Int8Array} An array containing the luminance data.
    * @abstract
    */
   LuminanceSource.prototype.getRow = function(y, row) { };
@@ -71,10 +71,10 @@ goog.scope(function() {
    * Fetches luminance data for the underlying bitmap. Values should be fetched
    * using: {@code int luminance = array[y * width + x] & 0xff}
    *
-   * @return {Int8Array} A row-major 2D array of luminance values. Do not use
-   *                     result.length as it may be larger than width * height
-   *                     bytes on some platforms. Do not modify the contents of
-   *                     the result.
+   * @return {!Int8Array} A row-major 2D array of luminance values. Do not use
+   *                      result.length as it may be larger than width * height
+   *                      bytes on some platforms. Do not modify the contents of
+   *                      the result.
    * @abstract
    */
   LuminanceSource.prototype.getMatrix = function() { };
@@ -111,7 +111,7 @@ goog.scope(function() {
    * @param {number} top The top coordinate, which must be in [0,getHeight())
    * @param {number} width The width of the rectangle to crop.
    * @param {number} height The height of the rectangle to crop.
-   * @return {LuminanceSource} A cropped version of this object.
+   * @return {!LuminanceSource} A cropped version of this object.
    */
   LuminanceSource.prototype.crop = function(left, top, width, height) {
     throw new UnsupportedOperationException(
@@ -129,7 +129,7 @@ goog.scope(function() {
    * Returns a new object with rotated image data by 90 degrees
    * counterclockwise. Only callable if {@link #isRotateSupported()} is true.
    *
-   * @return {LuminanceSource} A rotated version of this object.
+   * @return {!LuminanceSource} A rotated version of this object.
    */
   LuminanceSource.prototype.rotateCounterClockwise = function() {
     throw new UnsupportedOperationException(
@@ -140,7 +140,7 @@ goog.scope(function() {
    * Returns a new object with rotated image data by 45 degrees
    * counterclockwise. Only callable if {@link #isRotateSupported()} is true.
    *
-   * @return {LuminanceSource} A rotated version of this object.
+   * @return {!LuminanceSource} A rotated version of this object.
    */
   LuminanceSource.prototype.rotateCounterClockwise45 = function() {
     throw new UnsupportedOperationException(

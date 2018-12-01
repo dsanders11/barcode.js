@@ -100,7 +100,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {FormatInformation} other
+   * @param {!FormatInformation} other
    * @return {boolean} are they equal
    */
   pro.Equals = function(other) {
@@ -119,7 +119,7 @@ goog.scope(function() {
 
   /**
    * @param {number} maskedFormatInfo
-   * @return {FormatInformation}
+   * @return {?FormatInformation}
    */
   FormatInformation.decodeFormatInformation = function(maskedFormatInfo) {
     var formatInfo = FormatInformation.doDecodeFormatInformation(
@@ -136,7 +136,7 @@ goog.scope(function() {
 
   /**
    * @param {number} maskedFormatInfo
-   * @return {FormatInformation}
+   * @return {?FormatInformation}
    */
   FormatInformation.doDecodeFormatInformation = function(maskedFormatInfo) {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
@@ -166,7 +166,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {ErrorCorrectionLevel}
+   * @return {!ErrorCorrectionLevel}
    */
   pro.getErrorCorrectionLevel = function() {
     return this.errorCorrectionLevel;

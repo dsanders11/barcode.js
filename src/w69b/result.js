@@ -33,7 +33,7 @@ goog.scope(function() {
    * Encapsulates the result of decoding a barcode within an image.
    * @constructor
    * @param {string} text
-   * @param {Int8Array} rawBytes
+   * @param {?Int8Array} rawBytes
    * @param {!Array.<!ResultPoint>} resultPoints
    * @param {!BarcodeFormat} format
    * @param {number=} opt_timestamp
@@ -59,7 +59,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Int8Array} raw bytes encoded by the barcode, if applicable, otherwise {@code null}
+   * @return {?Int8Array} raw bytes encoded by the barcode, if applicable, otherwise {@code null}
    */
   pro.getRawBytes = function() {
     return this.rawBytes_;
@@ -84,25 +84,25 @@ goog.scope(function() {
   };
 
   /**
-   * @return {BarcodeFormat} representing the format of the barcode that was decoded
+   * @return {!BarcodeFormat} representing the format of the barcode that was decoded
    */
   pro.getBarcodeFormat = function() {
     return this.format_;
   };
 
   /**
-   * @return {Object<ResultMetadataType,*>} mapping {@link ResultMetadataType}
-   *                                        keys to values. May be {@code null}.
-   *                                        This contains optional metadata
-   *                                        about what was detected about the
-   *                                        barcode, like orientation.
+   * @return {?Object<!ResultMetadataType,*>} mapping {@link ResultMetadataType}
+   *                                          keys to values. May be {@code null}.
+   *                                          This contains optional metadata
+   *                                          about what was detected about the
+   *                                          barcode, like orientation.
    */
   pro.getResultMetadata = function() {
     return this.resultMetadata_;
   };
 
   /**
-   * @param {ResultMetadataType} type
+   * @param {!ResultMetadataType} type
    * @param {*} value
    */
   pro.putMetadata = function(type, value) {
@@ -113,7 +113,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Object<ResultMetadataType,*>} metadata
+   * @param {?Object<!ResultMetadataType,*>} metadata
    */
   pro.putAllMetadata = function(metadata) {
     if (metadata !== null) {
@@ -126,7 +126,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Array.<ResultPoint>} newPoints
+   * @param {!Array.<!ResultPoint>} newPoints
    */
   pro.addResultPoints = function(newPoints) {
     var oldPoints = this.resultPoints_;
@@ -152,12 +152,13 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Object} JSON object.
+   * @return {!Object} JSON object.
    */
   pro['toJSON'] = function() {
     return {
       'text': this.getText(),
       'format': this.getBarcodeFormat(),
-      'patterns': this.getResultPoints().map(pattern => pattern['toJSON']())};
+      'patterns': this.getResultPoints().map(pattern => pattern['toJSON']())
+    };
   };
 });

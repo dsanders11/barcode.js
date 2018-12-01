@@ -129,7 +129,7 @@ goog.scope(function() {
   /**
    * @param {!BitArray} row
    * @return {!Int32Array}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   UPCEANReader.findStartGuardPattern = function(row) {
     var foundStart = false;
@@ -149,14 +149,15 @@ goog.scope(function() {
         foundStart = row.isRange(quietStart, start, false);
       }
     }
-    return startRange;
+    return /** @type {!Int32Array} */(startRange);
   };
 
   /**
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    return this.decodeRow2(rowNumber, row, UPCEANReader.findStartGuardPattern(row), hints);
+    return this.decodeRow2(
+      rowNumber, row, UPCEANReader.findStartGuardPattern(row), hints || undefined);
   };
 
   /**
@@ -167,14 +168,14 @@ goog.scope(function() {
    * @param {number} rowNumber row index into the image
    * @param {!BitArray} row encoding of the row of the barcode image
    * @param {!Int32Array} startGuardRange start/end column where the opening start pattern was found
-   * @param {Object<DecodeHintType,*>} hints optional hints that influence decoding
+   * @param {!Object<!DecodeHintType,*>=} hints optional hints that influence decoding
    * @return {!Result} encapsulating the result of decoding a barcode in the row
-   * @throws {NotFoundException} if no potential barcode is found
-   * @throws {ChecksumException} if a potential barcode is found but does not pass its checksum
-   * @throws {FormatException} if a potential barcode is found but format is invalid
+   * @throws {!NotFoundException} if no potential barcode is found
+   * @throws {!ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {!FormatException} if a potential barcode is found but format is invalid
    */
   pro.decodeRow2 = function(rowNumber, row, startGuardRange, hints) {
-    var resultPointCallback = /** @type {(w69b.ResultPointCallback|undefined)} */ (!hints ? null :
+    var resultPointCallback = /** @type {(!w69b.ResultPointCallback|null)} */ (!hints ? null :
         hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
 
     if (!resultPointCallback) {
@@ -243,7 +244,7 @@ goog.scope(function() {
       // continue
     }
 
-    var allowedExtensions = /** @type {Int32Array} */ (
+    var allowedExtensions = /** @type {!Int32Array} */ (
         !hints ? null : hints[DecodeHintType.ALLOWED_EAN_EXTENSIONS]);
     if (!allowedExtensions) {
       allowedExtensions = null;
@@ -274,7 +275,7 @@ goog.scope(function() {
   /**
    * @param {string} s string of digits to check
    * @return {boolean} {@link #checkStandardUPCEANChecksum(CharSequence)}
-   * @throws {FormatException} if the string does not contain only digits
+   * @throws {!FormatException} if the string does not contain only digits
    */
   pro.checkChecksum = function(s) {
     return UPCEANReader.checkStandardUPCEANChecksum(s);
@@ -286,7 +287,7 @@ goog.scope(function() {
    *
    * @param {string} s string of digits to check
    * @return {boolean} true iff string of digits passes the UPC/EAN checksum algorithm
-   * @throws {FormatException} if the string does not contain only digits
+   * @throws {!FormatException} if the string does not contain only digits
    */
   UPCEANReader.checkStandardUPCEANChecksum = function(s) {
     var length = s.length;
@@ -300,7 +301,7 @@ goog.scope(function() {
   /**
    * @param {string} s
    * @return {number}
-   * @throws {FormatException}
+   * @throws {!FormatException}
    */
   UPCEANReader.getStandardUPCEANChecksum = function(s) {
     var length = s.length;
@@ -327,7 +328,7 @@ goog.scope(function() {
    * @param {!BitArray} row
    * @param {number} endStart
    * @return {!Int32Array}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.decodeEnd = function(row, endStart) {
     return UPCEANReader.findGuardPattern(row, endStart, false, START_END_PATTERN);
@@ -339,7 +340,7 @@ goog.scope(function() {
    * @param {boolean} whiteFirst
    * @param {!Int32Array} pattern
    * @return {!Int32Array}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   UPCEANReader.findGuardPattern = function(row, rowOffset, whiteFirst, pattern) {
     return UPCEANReader.findGuardPattern_(row, rowOffset, whiteFirst, pattern, new Int32Array(pattern.length));
@@ -354,7 +355,7 @@ goog.scope(function() {
    * searched for as a pattern
    * @param {!Int32Array} counters array of counters, as long as pattern, to re-use
    * @return {!Int32Array} start/end horizontal offset of guard pattern, as an array of two ints
-   * @throws {NotFoundException} if pattern is not found
+   * @throws {!NotFoundException} if pattern is not found
    */
   UPCEANReader.findGuardPattern_ = function(row, rowOffset, whiteFirst, pattern, counters) {
     var width = row.getSize();
@@ -396,7 +397,7 @@ goog.scope(function() {
    * for the digits 0-9 are used, and this indicates the encodings for 0 to 9 that should
    * be used
    * @return {number} horizontal offset of first pixel beyond the decoded digit
-   * @throws {NotFoundException} if digit cannot be decoded
+   * @throws {!NotFoundException} if digit cannot be decoded
    */
   UPCEANReader.decodeDigit = function(row, counters, rowOffset, patterns) {
     recordPattern(row, rowOffset, counters);
@@ -433,7 +434,7 @@ goog.scope(function() {
    * @param {!Int32Array} startRange start/end offset of start guard pattern
    * @param {!StringBuilder} resultString {@link StringBuilder} to append decoded chars to
    * @return {number} horizontal offset of first pixel after the "middle" that was decoded
-   * @throws {NotFoundException} if decoding could not complete successfully
+   * @throws {!NotFoundException} if decoding could not complete successfully
    */
   pro.decodeMiddle;
 });

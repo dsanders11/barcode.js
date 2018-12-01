@@ -194,8 +194,8 @@ goog.scope(function() {
    * {@link #sizeOfBlackWhiteBlackRunBothWays(int, int, int, int)} to
    * figure the
    * width of each, measuring along the axis between their centers.
-   * @param {ResultPoint} pattern first pattern
-   * @param {ResultPoint} otherPattern other pattern
+   * @param {!ResultPoint} pattern first pattern
+   * @param {!ResultPoint} otherPattern other pattern
    * @return {number} module size
    * @final
    */
@@ -224,9 +224,9 @@ goog.scope(function() {
    * Computes an average estimated module size based on estimated derived from
    * the positions of the three finder patterns.
    *
-   * @param {ResultPoint} topLeft detected top-left finder pattern center
-   * @param {ResultPoint} topRight detected top-right finder pattern center
-   * @param {ResultPoint} bottomLeft detected bottom-left finder pattern center
+   * @param {!ResultPoint} topLeft detected top-left finder pattern center
+   * @param {!ResultPoint} topRight detected top-right finder pattern center
+   * @param {!ResultPoint} bottomLeft detected bottom-left finder pattern center
    * @return {number} estimated module size
    */
   pro.calculateModuleSize = function(topLeft, topRight, bottomLeft) {
@@ -239,9 +239,9 @@ goog.scope(function() {
    * Computes the dimension (number of modules on a size) of the QR Code based
    * on the position of the finder patterns and estimated module size.
    *
-   * @param {ResultPoint} topLeft detected top-left finder pattern center
-   * @param {ResultPoint} topRight detected top-right finder pattern center
-   * @param {ResultPoint} bottomLeft detected bottom-left finder pattern center
+   * @param {!ResultPoint} topLeft detected top-left finder pattern center
+   * @param {!ResultPoint} topRight detected top-right finder pattern center
+   * @param {!ResultPoint} bottomLeft detected bottom-left finder pattern center
    * @param {number} moduleSize
    * @return {number} computed dimension
    */
@@ -283,8 +283,8 @@ goog.scope(function() {
    * @param {number} estAlignmentY y coordinate of above.
    * @param {number} allowanceFactor number of pixels in all directions to
    * search from the center.
-   * @return {AlignmentPattern} if found, or null otherwise.
-   * @throws {NotFoundException} if an unexpected error occurs during detection
+   * @return {!AlignmentPattern} if found, or null otherwise.
+   * @throws {!NotFoundException} if an unexpected error occurs during detection
    */
   pro.findAlignmentInRegion = function(overallEstModuleSize, estAlignmentX,
                                        estAlignmentY, allowanceFactor) {
@@ -312,12 +312,12 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ResultPoint} topLeft detected top-left finder pattern center
-   * @param {ResultPoint} topRight detected top-right finder pattern center
-   * @param {ResultPoint} bottomLeft detected bottom-left finder pattern center
-   * @param {ResultPoint} alignmentPattern
+   * @param {!ResultPoint} topLeft detected top-left finder pattern center
+   * @param {!ResultPoint} topRight detected top-right finder pattern center
+   * @param {!ResultPoint} bottomLeft detected bottom-left finder pattern center
+   * @param {?ResultPoint} alignmentPattern
    * @param {number} dimension
-   * @return {PerspectiveTransform}
+   * @return {!PerspectiveTransform}
    */
   pro.createTransform = function(topLeft, topRight, bottomLeft,
                                  alignmentPattern, dimension) {
@@ -348,8 +348,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitMatrix} image
-   * @param {PerspectiveTransform} transform
+   * @param {!BitMatrix} image
+   * @param {!PerspectiveTransform} transform
    * @param {number} dimension
    * @return {!BitMatrix}
    */
@@ -360,9 +360,9 @@ goog.scope(function() {
 
   /**
    * TODO.
-   * @param {w69b.qr.detector.FinderPatternInfo} info info.
+   * @param {!w69b.qr.detector.FinderPatternInfo} info info.
    * @return {!w69b.common.DetectorResult} result.
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    */
   pro.processFinderPatternInfo = function(info) {
 
@@ -431,15 +431,15 @@ goog.scope(function() {
   /**
    * Detects a QR Code in an image.
    *
-   * @param {Object<DecodeHintType,*>=} opt_hints optional hints to detector
-   * @return {DetectorResult} encapsulating results of detecting a QR Code
-   * @throws {NotFoundException} if QR Code cannot be found
-   * @throws {FormatException} if a QR Code cannot be decoded
+   * @param {!Object<!DecodeHintType,*>=} opt_hints optional hints to detector
+   * @return {!DetectorResult} encapsulating results of detecting a QR Code
+   * @throws {!NotFoundException} if QR Code cannot be found
+   * @throws {!FormatException} if a QR Code cannot be decoded
    */
   pro.detect = function(opt_hints) {
     var callback = null;
     if (opt_hints && !!opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]) {
-      callback = /** @type {(w69b.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
+      callback = /** @type {(!w69b.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
     }
     this.resultPointCallback = callback;
 

@@ -39,7 +39,7 @@ goog.scope(function() {
     this.field_ = field;
     /**
      * @private
-     * @type {Array.<!GenericGFPoly>}
+     * @type {!Array.<!GenericGFPoly>}
      */
     this.cachedGenerators_ = [new GenericGFPoly(field, Int32Array.of(1))];
   };

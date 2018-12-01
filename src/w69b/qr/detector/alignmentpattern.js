@@ -73,7 +73,7 @@ goog.scope(function() {
    * @param {number} i
    * @param {number} j
    * @param {number} newModuleSize
-   * @return {AlignmentPattern} a new containing an average of the two.
+   * @return {!AlignmentPattern} a new containing an average of the two.
    */
   pro.combineEstimate = function(i, j, newModuleSize) {
     var combinedX = (this.x + j) / 2.0;
@@ -84,12 +84,13 @@ goog.scope(function() {
 
 
   /**
-   * @return {Object} JSON object for pattern.
+   * @return {!Object} JSON object for pattern.
    */
   pro['toJSON'] = function() {
     return {
       'x': this.getX(),
       'y': this.getY(),
-      'size': this.getEstimatedModuleSize()};
+      'size': this.getEstimatedModuleSize()
+    };
   };
 });

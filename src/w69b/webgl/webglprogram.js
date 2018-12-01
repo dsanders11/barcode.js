@@ -6,7 +6,7 @@ goog.require('w69b.webgl.shaders.rectVertex');
 goog.scope(function() {
   /**
    * Filters images using webgl shaders.
-   * @param {WebGLRenderingContext} gl rendering context.
+   * @param {!WebGLRenderingContext} gl rendering context.
    * @param {string} fragmentSource fragmentSource.
    * @param {string=} opt_vertexSource vertex shader.
    * @constructor
@@ -34,7 +34,7 @@ goog.scope(function() {
   pro.glProgram = null;
 
   /**
-   * @type {WebGLRenderingContext} gl rendering context.
+   * @type {?WebGLRenderingContext} gl rendering context.
    */
   pro.contex_ = null;
 
@@ -93,7 +93,7 @@ goog.scope(function() {
 
   /**
    * @param {string} name variable name.
-   * @param {(Array.<number>|Float32Array)} value float value.
+   * @param {(!Array.<number>|!Float32Array)} value float value.
    */
   pro.setUniform1fv = function(name, value) {
     var location = this.context_.getUniformLocation(this.glProgram, name);
@@ -111,14 +111,14 @@ goog.scope(function() {
 
 
   /**
-   * @return {Object} mapping of type names to unbound setter functions.
+   * @return {!Object} mapping of type names to unbound setter functions.
    */
   pro.getNamedSetterFunctions = function() {
     return this.namedSetterFns_;
   };
 
   /**
-   * @type {Object} mapping type names to setter functions.
+   * @type {!Object} mapping type names to setter functions.
    * @private
    */
   pro.namedSetterFns_ = {
@@ -131,7 +131,7 @@ goog.scope(function() {
    * @param {string} source shader source.
    * @param {boolean} isVertex true for vertex shader, false for fragment
    * shader.
-   * @return {WebGLShader} shader.
+   * @return {!WebGLShader} shader.
    */
   pro.buildShader_ = function(source, isVertex) {
     var gl = this.context_;

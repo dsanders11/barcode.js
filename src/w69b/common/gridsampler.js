@@ -38,6 +38,7 @@ goog.scope(function() {
 
   const _ = w69b.common.GridSampler;
 
+  /** @type {?w69b.common.GridSamplerInterface} */
   _.gridSampler = null;
 
   /**
@@ -48,7 +49,7 @@ goog.scope(function() {
    * activity can swap in an implementation that takes advantage of native
    * platform libraries.
    *
-   * @param {w69b.common.GridSamplerInterface} newGridSampler The
+   * @param {!w69b.common.GridSamplerInterface} newGridSampler The
    * platform-specific object to install.
    */
   _.setGridSampler = function(newGridSampler) {
@@ -56,7 +57,7 @@ goog.scope(function() {
   };
 
   /**
-   * @return {w69b.common.GridSamplerInterface} the current implementation of GridSampler.
+   * @return {?w69b.common.GridSamplerInterface} the current implementation of GridSampler.
    */
   _.getInstance = function() {
     return _.gridSampler;
@@ -73,7 +74,7 @@ goog.scope(function() {
 
   /**
    * Samples an image for a rectangular matrix of bits of the given dimension.
-   * @param {w69b.common.BitMatrix} image image to sample.
+   * @param {!w69b.common.BitMatrix} image image to sample.
    * @param {number} dimensionX width of BitMatrix to sample from image.
    * @param {number} dimensionY height of BitMatrix to sample from
    * image.
@@ -108,11 +109,11 @@ goog.scope(function() {
 
   /**
    * Samples an image for a rectangular matrix of bits of the given dimension.
-   * @param {w69b.common.BitMatrix} image image to sample.
+   * @param {!w69b.common.BitMatrix} image image to sample.
    * @param {number} dimensionX width of BitMatrix to sample from image.
    * @param {number} dimensionY height of BitMatrix to sample from
    * image.
-   * @param {w69b.common.PerspectiveTransform} transform transformation matrix.
+   * @param {!w69b.common.PerspectiveTransform} transform transformation matrix.
    * @return {!w69b.common.BitMatrix} representing a grid of points sampled from
    * the image within a region defined by the "from" parameters by the given
    * points is invalid or results in sampling outside the image boundaries.
@@ -135,8 +136,8 @@ goog.scope(function() {
    * line until one is found to be within the image. Because the set of points
    * are assumed to be linear, this is valid.</p>
    *
-   * @param {w69b.common.BitMatrix} image image into which the points should map.
-   * @param {Float32Array} points actual points in x1,y1,...,xn,yn form.
+   * @param {!w69b.common.BitMatrix} image image into which the points should map.
+   * @param {!Float32Array} points actual points in x1,y1,...,xn,yn form.
    */
   _.checkAndNudgePoints = function(image, points) {
     var width = image.getWidth();

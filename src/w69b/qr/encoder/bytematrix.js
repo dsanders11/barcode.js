@@ -53,7 +53,7 @@ goog.scope(function() {
   const pro = w69b.qr.encoder.ByteMatrix.prototype;
 
   /**
-   * @return {Int8Array}
+   * @return {!Int8Array}
    */
   pro.getBytes = function() {
     return this.bytes_;

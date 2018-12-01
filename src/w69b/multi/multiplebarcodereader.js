@@ -37,7 +37,7 @@ goog.scope(function() {
 
   /**
    * @param {!BinaryBitmap} image
-   * @param {Object<DecodeHintType,*>=} opt_hints
+   * @param {!Object<!DecodeHintType,*>=} opt_hints
    * @return {!Array.<!Result>}
    * @throws {NotFoundException}
    */

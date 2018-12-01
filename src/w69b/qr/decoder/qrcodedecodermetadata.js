@@ -40,7 +40,7 @@ goog.scope(function() {
 
   /**
    * Apply the result points' order correction due to mirroring.
-   * @param {Array.<w69b.ResultPoint>} points Array of points to apply mirror correction to.
+   * @param {!Array.<!w69b.ResultPoint>} points Array of points to apply mirror correction to.
    */
   pro.applyMirroredCorrection = function(points) {
     if (!this.mirrored || points === null || points.length < 3) {

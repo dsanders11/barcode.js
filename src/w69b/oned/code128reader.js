@@ -484,11 +484,11 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitArray} row
+   * @param {!BitArray} row
    * @param {!Int32Array} counters
    * @param {number} rowOffset
    * @return {number}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    * @static
    */
@@ -513,9 +513,9 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitArray} row
+   * @param {!BitArray} row
    * @return {!Int32Array}
-   * @throws {NotFoundException}
+   * @throws {!NotFoundException}
    * @private
    * @static
    */

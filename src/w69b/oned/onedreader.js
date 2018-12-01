@@ -104,8 +104,8 @@ goog.scope(function() {
    * total variance from the expected pattern proportions across all pattern
    * elements, to the length of the pattern.
    *
-   * @param {Int32Array} counters observed counters
-   * @param {Int32Array} pattern expected pattern
+   * @param {!Int32Array} counters observed counters
+   * @param {!Int32Array} pattern expected pattern
    * @param {number} maxIndividualVariance The most any counter can differ before we give up
    * @return {number} ratio of total variance between counters and pattern compared to total pattern size
    * @protected
@@ -141,10 +141,10 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitArray} row
+   * @param {!BitArray} row
    * @param {number} start
-   * @param {Int32Array} counters
-   * @throws {NotFoundException}
+   * @param {!Int32Array} counters
+   * @throws {!NotFoundException}
    * @protected
    */
   OneDReader.recordPatternInReverse = function(row, start, counters) {
@@ -172,10 +172,10 @@ goog.scope(function() {
    * is the count of a run of black pixels if the row begin on a black pixels at
    * that point.
    *
-   * @param {BitArray} row row to count from
+   * @param {!BitArray} row row to count from
    * @param {number} start offset into row to start at
-   * @param {Int32Array} counters array into which to record counts
-   * @throws {NotFoundException} if counters cannot be filled entirely from row before running out of pixels
+   * @param {!Int32Array} counters array into which to record counts
+   * @throws {!NotFoundException} if counters cannot be filled entirely from row before running out of pixels
    * @protected
    */
   OneDReader.recordPattern = function(row, start, counters) {
@@ -220,9 +220,9 @@ goog.scope(function() {
    * image is pretty good; we try more of the image if "trying harder".
    *
    * @param {!BinaryBitmap} image The image to decode
-   * @param {Object<DecodeHintType,*>} hints Any hints that were requested
+   * @param {?Object<!DecodeHintType,*>} hints Any hints that were requested
    * @return {!Result} The contents of the decoded barcode
-   * @throws {NotFoundException} Any spontaneous errors which occur
+   * @throws {!NotFoundException} Any spontaneous errors which occur
    * @private
    */
   pro.doDecode_ = function(image, hints) {
@@ -310,11 +310,11 @@ goog.scope(function() {
    *
    * @param {number} rowNumber row number from top of the row
    * @param {!BitArray} row the black/white pixel data of the row
-   * @param {Object<DecodeHintType,*>} hints decode hints
+   * @param {?Object<!DecodeHintType,*>} hints decode hints
    * @return {!Result} containing encoded string and start/end of barcode
-   * @throws {NotFoundException} if no potential barcode is found
-   * @throws {ChecksumException} if a potential barcode is found but does not pass its checksum
-   * @throws {FormatException} if a potential barcode is found but format is invalid
+   * @throws {!NotFoundException} if no potential barcode is found
+   * @throws {!ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {!FormatException} if a potential barcode is found but format is invalid
    * @abstract
    */
   OneDReader.prototype.decodeRow = function(rowNumber, row, hints) { };

@@ -32,7 +32,7 @@ goog.scope(function() {
   /**
    * Implementations of this method reverse the data masking process applied to a QR Code and
    * make its bits ready to read.
-   * @param {BitMatrix} bits representation of QR Code bits
+   * @param {!BitMatrix} bits representation of QR Code bits
    * @param {number} dimension dimension of QR Code, represented by bits, being unmasked
    */
   _.DataMaskInterface.prototype.unmaskBitMatrix = function(bits, dimension) { };
@@ -266,7 +266,7 @@ goog.scope(function() {
   };
 
   /**
-   * @type {Array.<!_.DataMaskInterface>}
+   * @type {!Array.<!_.DataMaskInterface>}
    * @private
    */
   _.DATA_MASKS_ = new Array(new _.DataMask000(), new _.DataMask001(),

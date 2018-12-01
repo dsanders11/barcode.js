@@ -124,10 +124,10 @@ goog.scope(function() {
     ITFReader.decodeMiddle_(row, startRange[1], endRange[0], result);
     var resultString = result.join('');
 
-    /** @type {Int32Array} */
+    /** @type {?Int32Array} */
     var allowedLengths = null;
     if (hints !== null) {
-      allowedLengths = /** @type {Int32Array} */ (hints[DecodeHintType.ALLOWED_LENGTHS] || null);
+      allowedLengths = /** @type {?Int32Array} */ (hints[DecodeHintType.ALLOWED_LENGTHS] || null);
 
     }
     if (allowedLengths === null) {
@@ -164,11 +164,11 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitArray} row row of black/white values to search
+   * @param {!BitArray} row row of black/white values to search
    * @param {number} payloadStart offset of start pattern
    * @param {number} payloadEnd
-   * @param {Array.<string>} resultString string array to add decoded chars to
-   * @throws {NotFoundException} if decoding could not complete successfully
+   * @param {!Array.<string>} resultString string array to add decoded chars to
+   * @throws {!NotFoundException} if decoding could not complete successfully
    */
   ITFReader.decodeMiddle_ = function(row, payloadStart, payloadEnd, resultString) {
     // Digits are interleaved in pairs - 5 black lines for one digit, and the
@@ -204,10 +204,10 @@ goog.scope(function() {
   /**
    * Identify where the start of the middle / payload section starts.
    *
-   * @param {BitArray} row row of black/white values to search
-   * @return {Int32Array} array containing index of start of 'start block' and
-   *                      end of 'start block'
-   * @throws {NotFoundException}
+   * @param {!BitArray} row row of black/white values to search
+   * @return {!Int32Array} array containing index of start of 'start block' and
+   *                       end of 'start block'
+   * @throws {!NotFoundException}
    */
   pro.decodeStart_ = function(row) {
     var endStart = skipWhiteSpace_(row);
@@ -234,9 +234,9 @@ goog.scope(function() {
    *
    * ref: http://www.barcode-1.net/i25code.html
    *
-   * @param {BitArray} row bit array representing the scanned barcode.
+   * @param {!BitArray} row bit array representing the scanned barcode.
    * @param {number} startPattern index into row of the start or end pattern.
-   * @throws {NotFoundException} if the quiet zone cannot be found
+   * @throws {!NotFoundException} if the quiet zone cannot be found
    */
   pro.validateQuietZone_ = function(row, startPattern) {
     // expect to find this many pixels of quiet zone
@@ -260,10 +260,10 @@ goog.scope(function() {
   /**
    * Skip all whitespace until we get to the first black line.
    *
-   * @param {BitArray}row row of black/white values to search
+   * @param {!BitArray}row row of black/white values to search
    * @return {number} index of the first black line.
-   * @throws {NotFoundException} Throws exception if no black lines are found
-   *                             in the row
+   * @throws {!NotFoundException} Throws exception if no black lines are found
+   *                              in the row
    */
   function skipWhiteSpace_(row) {
     var width = row.getSize();
@@ -278,9 +278,9 @@ goog.scope(function() {
   /**
    * Identify where the end of the middle / payload section ends.
    *
-   * @param {BitArray} row row of black/white values to search
-   * @return {Int32Array} array containing index of start of 'end block' and
-   *                      end of 'end block'
+   * @param {!BitArray} row row of black/white values to search
+   * @return {!Int32Array} array containing index of start of 'end block' and
+   *                       end of 'end block'
    */
   pro.decodeEnd_ = function(row) {
     // For convenience, reverse the row and then
@@ -310,13 +310,13 @@ goog.scope(function() {
   };
 
   /**
-   * @param {BitArray} row row of black/white values to search
+   * @param {!BitArray} row row of black/white values to search
    * @param {number} rowOffset position to start search
-   * @param {Int32Array} pattern pattern of counts of number of black and white
-   *                             pixels that are being searched for as a pattern
-   * @return {Int32Array} start/end horizontal offset of guard pattern, as an
-   *                      array of two ints
-   * @throws {NotFoundException} if pattern is not found
+   * @param {!Int32Array} pattern pattern of counts of number of black and white
+   *                              pixels that are being searched for as a pattern
+   * @return {!Int32Array} start/end horizontal offset of guard pattern, as an
+   *                       array of two ints
+   * @throws {!NotFoundException} if pattern is not found
    */
   ITFReader.findGuardPattern_ = function(row, rowOffset, pattern) {
     var patternLength = pattern.length;
@@ -354,10 +354,10 @@ goog.scope(function() {
    * Attempts to decode a sequence of ITF black/white lines into single
    * digit.
    *
-   * @param {Int32Array} counters the counts of runs of observed
-   *                              black/white/black/... values
+   * @param {!Int32Array} counters the counts of runs of observed
+   *                               black/white/black/... values
    * @return {number} The decoded digit
-   * @throws {NotFoundException} if digit cannot be decoded
+   * @throws {!NotFoundException} if digit cannot be decoded
    */
   ITFReader.decodeDigit_ = function(counters) {
     var bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept

@@ -139,8 +139,8 @@ goog.scope(function() {
   /**
    * Get Image data of current frame from local video stream.
    * Image is scaled down to opt_maxSize if its width or height is larger.
-   * @param {Size} size desired size of image.
-   * @return {ImageData} image data.
+   * @param {!Size} size desired size of image.
+   * @return {!ImageData} image data.
    * @export
    */
   pro.getImageData = function(size) {
@@ -191,8 +191,8 @@ goog.scope(function() {
 
   /**
    * Draws video on canvas, scaling to to fit into canvas.
-   * @param {HTMLCanvasElement} canvas canvas to draw on.
-   * @param {CanvasRenderingContext2D} context context of canvas.
+   * @param {!HTMLCanvasElement} canvas canvas to draw on.
+   * @param {!CanvasRenderingContext2D} context context of canvas.
    * @export
    */
   pro.drawOnCanvas = function(canvas, context) {

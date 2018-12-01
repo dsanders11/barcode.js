@@ -51,7 +51,7 @@ goog.scope(function() {
    * Orders an array of three ResultPoints in an order [A,B,C] such that AB is less than AC
    * and BC is less than AC, and the angle between BC and BA is less than 180 degrees.
    *
-   * @param {Array.<ResultPoint>} patterns array of three {@code ResultPoint} to order
+   * @param {!Array.<!ResultPoint>} patterns array of three {@code ResultPoint} to order
    */
   ResultPoint.orderBestPatterns = function(patterns) {
     // Find distances between pattern centers
@@ -93,8 +93,8 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ResultPoint} pattern1 first pattern
-   * @param {ResultPoint} pattern2 second pattern
+   * @param {!ResultPoint} pattern1 first pattern
+   * @param {!ResultPoint} pattern2 second pattern
    * @return {number} distance between two points
    */
   ResultPoint.distance = function(pattern1, pattern2) {
@@ -103,9 +103,9 @@ goog.scope(function() {
 
   /**
    * Returns the z component of the cross product between vectors BC and BA.
-   * @param {ResultPoint} pointA
-   * @param {ResultPoint} pointB
-   * @param {ResultPoint} pointC
+   * @param {!ResultPoint} pointA
+   * @param {!ResultPoint} pointB
+   * @param {!ResultPoint} pointC
    * @return {number}
    */
   ResultPoint.crossProductZ = function(pointA, pointB, pointC) {
@@ -115,14 +115,15 @@ goog.scope(function() {
   };
 
   /**
-   * @return {Object} JSON object for pattern.
+   * @return {!Object} JSON object for pattern.
    */
   pro['toJSON'] = function() {
     return {
       'x': this.getX(),
-      'y': this.getY()};
+      'y': this.getY()
+    };
   };
 
-  /** @typedef {function(ResultPoint)} */
+  /** @typedef {function(!ResultPoint)} */
   w69b.ResultPointCallback;
 });

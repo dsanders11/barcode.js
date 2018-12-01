@@ -86,12 +86,12 @@ goog.scope(function() {
   /**
    * Note that the input matrix uses 0 == white, 1 == black, while the output
    * matrix uses 0 == black, 255 == white (i.e. an 8 bit greyscale bitmap).
-   * @param {QRCode} code
+   * @param {!QRCode} code
    * @param {number} width
    * @param {number} height
    * @param {number} quietZone
    * @return {!BitMatrix}
-   * @throws {IllegalStateException}
+   * @throws {!IllegalStateException}
    */
   function renderResult(code, width, height, quietZone) {
     var input = code.getMatrix();

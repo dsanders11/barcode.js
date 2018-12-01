@@ -26,7 +26,7 @@ goog.scope(function() {
 
   /**
    * Decodes bytes bytes array as returned by getBytes().
-   * @param {Int8Array} bytes sequence of given charset.
+   * @param {!Int8Array} bytes sequence of given charset.
    * @param {string=} opt_charset name of charset.
    * @return {string} decoded string.
    */
@@ -51,7 +51,7 @@ goog.scope(function() {
       if (!iconv)
         throw new InvalidCharsetException(
           'iconv not loaded, cannot handle ' + charset);
-      /** @type {Int8Array} */
+      /** @type {!Int8Array} */
       let utf8Bytes = iconv.convert(bytes, charset, _.UTF8);
       if (utf8Bytes === null)
         throw new InvalidCharsetException(
@@ -70,11 +70,11 @@ goog.scope(function() {
    * Decodes bytes bytes array as returned by getBytes().
    * @param {string} str to encode.
    * @param {string=} opt_charset name of charset.
-   * @return {Int8Array} bytes.
+   * @return {!Int8Array} bytes.
    */
   _.stringToBytes = function(str, opt_charset) {
     var charset = opt_charset || _.UTF8;
-    /** @type {Int8Array} */
+    /** @type {?Int8Array} */
     var bytes = null;
     if (charset === _.UTF8) {
       bytes = utf8.stringToUTF8Bytes(str);
@@ -97,9 +97,9 @@ goog.scope(function() {
   };
 
   /**
-   * @param {Int8Array} bytes bytes encoding a string, whose encoding
+   * @param {!Int8Array} bytes bytes encoding a string, whose encoding
    * should be guessed.
-   * @param {Object<DecodeHintType,*>=} opt_hints decode hints if applicable.
+   * @param {!Object<!DecodeHintType,*>=} opt_hints decode hints if applicable.
    * @return {string} name of guessed encoding; at the moment will only
    * guess one of:
    *  {@link #SHIFT_JIS}, {@link #UTF8}, {@link #ISO88591}, or the platform
