@@ -54,7 +54,7 @@ goog.scope(function() {
   pro.aboutEquals = function(moduleSize, i, j) {
     if (Math.abs(i - this.y) <= moduleSize &&
       Math.abs(j - this.x) <= moduleSize) {
-      let moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+      const moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
       return moduleSizeDiff <= 1.0 ||
         moduleSizeDiff <= this.estimatedModuleSize;
     }
@@ -72,11 +72,11 @@ goog.scope(function() {
    * @return {!FinderPattern} combined pattern.
    */
   pro.combineEstimate = function(i, j, newModuleSize) {
-    var count = this.count;
-    var combinedCount = count + 1;
-    var combinedX = (count * this.x + j) / combinedCount;
-    var combinedY = (count * this.y + i) / combinedCount;
-    var combinedModuleSize = (count * this.estimatedModuleSize +
+    const count = this.count;
+    const combinedCount = count + 1;
+    const combinedX = (count * this.x + j) / combinedCount;
+    const combinedY = (count * this.y + i) / combinedCount;
+    const combinedModuleSize = (count * this.estimatedModuleSize +
       newModuleSize) / combinedCount;
     return new FinderPattern(combinedX, combinedY,
       combinedModuleSize, combinedCount);

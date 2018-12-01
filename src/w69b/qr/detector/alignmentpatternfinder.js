@@ -91,8 +91,8 @@ goog.scope(function() {
    *         used by alignment patterns to be considered a match
    */
   pro.foundPatternCross = function(stateCount) {
-    var moduleSize = this.moduleSize;
-    var maxVariance = moduleSize / 2.0;
+    const moduleSize = this.moduleSize;
+    const maxVariance = moduleSize / 2.0;
     for (let i = 0; i < 3; i++) {
       if (Math.abs(moduleSize - stateCount[i]) >= maxVariance) {
         return false;
@@ -115,16 +115,16 @@ goog.scope(function() {
    */
   pro.crossCheckVertical = function(startI, centerJ, maxCount,
                                     originalStateCountTotal) {
-    var image = this.image;
+    const image = this.image;
 
-    var maxI = image.getHeight();
-    var stateCount = this.crossCheckStateCount;
+    const maxI = image.getHeight();
+    const stateCount = this.crossCheckStateCount;
     stateCount[0] = 0;
     stateCount[1] = 0;
     stateCount[2] = 0;
 
     // Start counting up from center
-    var i = startI;
+    let i = startI;
     while (i >= 0 && image.get(centerJ, i) &&
       stateCount[1] <= maxCount) {
       stateCount[1]++;
@@ -162,7 +162,7 @@ goog.scope(function() {
       return NaN;
     }
 
-    var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
+    const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
     if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >=
       2 * originalStateCountTotal) {
       return NaN;
@@ -185,23 +185,23 @@ goog.scope(function() {
    * @throws {!NotFoundException} if not found
    */
   pro.handlePossibleCenter = function(stateCount, i, j) {
-    var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
-    var centerJ = this.centerFromEnd(stateCount, j);
-    var centerI = this.crossCheckVertical(i, Math.floor(centerJ),
+    const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2];
+    const centerJ = this.centerFromEnd(stateCount, j);
+    const centerI = this.crossCheckVertical(i, Math.floor(centerJ),
       2 * stateCount[1], stateCountTotal);
     if (!isNaN(centerI)) {
-      let estimatedModuleSize = (stateCount[0] + stateCount[1] +
+      const estimatedModuleSize = (stateCount[0] + stateCount[1] +
         stateCount[2]) / 3.0;
-      let max = this.possibleCenters.length;
+      const max = this.possibleCenters.length;
       for (let index = 0; index < max; index++) {
-        let center = this.possibleCenters[index];
+        const center = this.possibleCenters[index];
         // Look for about the same center and module size:
         if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
           return center.combineEstimate(centerI, centerJ, estimatedModuleSize);
         }
       }
       // Hadn't found this before; save it
-      let point = new AlignmentPattern(centerJ, centerI, estimatedModuleSize);
+      const point = new AlignmentPattern(centerJ, centerI, estimatedModuleSize);
       this.possibleCenters.push(point);
       if (this.resultPointCallback !== null) {
         this.resultPointCallback(point);
@@ -219,14 +219,14 @@ goog.scope(function() {
    * @throws {!NotFoundException} if not found
    */
   pro.find = function() {
-    var startX = this.startX;
-    var height = this.height;
-    var image = this.image;
-    var maxJ = startX + this.width;
-    var middleI = this.startY + (height >> 1);
+    const startX = this.startX;
+    const height = this.height;
+    const image = this.image;
+    const maxJ = startX + this.width;
+    const middleI = this.startY + (height >> 1);
     // We are looking for black/white/black modules in 1:1:1 ratio;
     // this tracks the number of black/white/black modules seen so far
-    var stateCount = new Int32Array(3);
+    const stateCount = new Int32Array(3);
     for (let iGen = 0; iGen < height; iGen++) {
       // Search from middle outwards
       let i = middleI +
@@ -255,7 +255,7 @@ goog.scope(function() {
               // A winner?
               if (this.foundPatternCross(stateCount)) {
                 // Yes
-                let confirmed = this.handlePossibleCenter(stateCount, i, j);
+                const confirmed = this.handlePossibleCenter(stateCount, i, j);
                 if (confirmed !== null) {
                   return confirmed;
                 }
@@ -279,7 +279,7 @@ goog.scope(function() {
         j++;
       }
       if (this.foundPatternCross(stateCount)) {
-        let confirmed = this.handlePossibleCenter(stateCount, i, maxJ);
+        const confirmed = this.handlePossibleCenter(stateCount, i, maxJ);
         if (confirmed !== null) {
           return confirmed;
         }

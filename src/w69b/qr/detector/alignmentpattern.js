@@ -52,7 +52,7 @@ goog.scope(function() {
   pro.aboutEquals = function(moduleSize, i, j) {
     if (Math.abs(i - this.y) <= moduleSize &&
       Math.abs(j - this.x) <= moduleSize) {
-      let moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+      const moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
       return moduleSizeDiff <= 1.0 ||
         moduleSizeDiff / this.estimatedModuleSize <= 1.0;
     }
@@ -76,9 +76,9 @@ goog.scope(function() {
    * @return {!AlignmentPattern} a new containing an average of the two.
    */
   pro.combineEstimate = function(i, j, newModuleSize) {
-    var combinedX = (this.x + j) / 2.0;
-    var combinedY = (this.y + i) / 2.0;
-    var combinedModuleSize = (this.estimatedModuleSize + newModuleSize) / 2.0;
+    const combinedX = (this.x + j) / 2.0;
+    const combinedY = (this.y + i) / 2.0;
+    const combinedModuleSize = (this.estimatedModuleSize + newModuleSize) / 2.0;
     return new AlignmentPattern(combinedX, combinedY, combinedModuleSize);
   };
 

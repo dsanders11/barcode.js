@@ -661,7 +661,7 @@ goog.scope(function() {
     let confirmedCount = 0;
     let totalModuleSize = 0.0;
     const max = this.possibleCenters_.length;
-    for (let pattern of this.possibleCenters_) {
+    for (const pattern of this.possibleCenters_) {
       if (pattern.getCount() >= CENTER_QUORUM) {
         confirmedCount++;
         totalModuleSize += pattern.getEstimatedModuleSize();
@@ -681,7 +681,7 @@ goog.scope(function() {
     // only those with >= CENTER_QUORUM.
     const average = totalModuleSize / max;
     let totalDeviation = 0.0;
-    for (let pattern of this.possibleCenters_) {
+    for (const pattern of this.possibleCenters_) {
       totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
     }
     if (totalDeviation > 0.05 * totalModuleSize) {
