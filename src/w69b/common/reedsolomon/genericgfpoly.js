@@ -141,15 +141,15 @@ goog.scope(function() {
       return this;
     }
 
-    var smallerCoefficients = this.coefficients_;
-    var largerCoefficients = other.coefficients_;
+    let smallerCoefficients = this.coefficients_;
+    let largerCoefficients = other.coefficients_;
     if (smallerCoefficients.length > largerCoefficients.length) {
-      let temp = smallerCoefficients;
+      const temp = smallerCoefficients;
       smallerCoefficients = largerCoefficients;
       largerCoefficients = temp;
     }
-    var sumDiff = new Int32Array(largerCoefficients.length);
-    var lengthDiff = largerCoefficients.length - smallerCoefficients.length;
+    const sumDiff = new Int32Array(largerCoefficients.length);
+    const lengthDiff = largerCoefficients.length - smallerCoefficients.length;
     // Copy high-order terms only found in higher-degree polynomial's coefficients
     sumDiff.set(largerCoefficients.slice(0, lengthDiff));
 
@@ -172,13 +172,13 @@ goog.scope(function() {
     if (this.isZero() || other.isZero()) {
       return this.field_.getZero();
     }
-    var aCoefficients = this.coefficients_;
-    var aLength = aCoefficients.length;
-    var bCoefficients = other.coefficients_;
-    var bLength = bCoefficients.length;
-    var product = new Int32Array(aLength + bLength - 1);
+    const aCoefficients = this.coefficients_;
+    const aLength = aCoefficients.length;
+    const bCoefficients = other.coefficients_;
+    const bLength = bCoefficients.length;
+    const product = new Int32Array(aLength + bLength - 1);
     for (let i = 0; i < aLength; i++) {
-      let aCoeff = aCoefficients[i];
+      const aCoeff = aCoefficients[i];
       for (let j = 0; j < bLength; j++) {
         product[i + j] = w69b.common.reedsolomon.GenericGF.addOrSubtract(
           product[i + j], this.field_.multiply(aCoeff, bCoefficients[j]));
@@ -198,8 +198,8 @@ goog.scope(function() {
     if (scalar === 1) {
       return this;
     }
-    var size = this.coefficients_.length;
-    var product = new Int32Array(size);
+    const size = this.coefficients_.length;
+    const product = new Int32Array(size);
     for (let i = 0; i < size; i++) {
       product[i] = this.field_.multiply(this.coefficients_[i], scalar);
     }
@@ -218,8 +218,8 @@ goog.scope(function() {
     if (coefficient === 0) {
       return this.field_.getZero();
     }
-    var size = this.coefficients_.length;
-    var product = new Int32Array(size + degree);
+    const size = this.coefficients_.length;
+    const product = new Int32Array(size + degree);
     for (let i = 0; i < size; i++) {
       product[i] = this.field_.multiply(this.coefficients_[i], coefficient);
     }
@@ -238,17 +238,17 @@ goog.scope(function() {
       throw new IllegalArgumentException("Divide by 0");
     }
 
-    var quotient = this.field_.getZero();
-    var remainder = this;
+    let quotient = this.field_.getZero();
+    let remainder = this;
 
-    var denominatorLeadingTerm = other.getCoefficient(other.getDegree());
-    var inverseDenominatorLeadingTerm = this.field_.inverse(denominatorLeadingTerm);
+    const denominatorLeadingTerm = other.getCoefficient(other.getDegree());
+    const inverseDenominatorLeadingTerm = this.field_.inverse(denominatorLeadingTerm);
 
     while (remainder.getDegree() >= other.getDegree() && !remainder.isZero()) {
-      let degreeDifference = remainder.getDegree() - other.getDegree();
-      let scale = this.field_.multiply(remainder.getCoefficient(remainder.getDegree()), inverseDenominatorLeadingTerm);
-      let term = other.multiplyByMonomial(degreeDifference, scale);
-      let iterationQuotient = this.field_.buildMonomial(degreeDifference, scale);
+      const degreeDifference = remainder.getDegree() - other.getDegree();
+      const scale = this.field_.multiply(remainder.getCoefficient(remainder.getDegree()), inverseDenominatorLeadingTerm);
+      const term = other.multiplyByMonomial(degreeDifference, scale);
+      const iterationQuotient = this.field_.buildMonomial(degreeDifference, scale);
       quotient = quotient.addOrSubtract(iterationQuotient);
       remainder = remainder.addOrSubtract(term);
     }
@@ -260,7 +260,7 @@ goog.scope(function() {
    * @override
    */
   pro.toString = function() {
-    var result = new StringBuilder();
+    const result = new StringBuilder();
     for (let degree = this.getDegree(); degree >= 0; degree--) {
       let coefficient = this.getCoefficient(degree);
       if (coefficient !== 0) {
@@ -273,7 +273,7 @@ goog.scope(function() {
           }
         }
         if (degree === 0 || coefficient !== 1) {
-          let alphaPower = this.field_.log(coefficient);
+          const alphaPower = this.field_.log(coefficient);
           if (alphaPower === 0) {
             result.append('1');
           } else if (alphaPower === 1) {

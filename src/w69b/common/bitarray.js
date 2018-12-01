@@ -67,7 +67,7 @@ goog.scope(function() {
    */
   pro.ensureCapacity = function(size) {
     if (size > this.bits_.length << 5) {
-      let newBits = makeArray(size);
+      const newBits = makeArray(size);
       newBits.set(this.bits_, 0);
       this.bits_ = newBits;
     }
@@ -105,13 +105,13 @@ goog.scope(function() {
    * @see #getNextUnset(int)
    */
   pro.getNextSet = function(from) {
-    var bits = this.bits_;
-    var size = this.size_;
+    const bits = this.bits_;
+    const size = this.size_;
     if (from >= size) {
       return size;
     }
-    var bitsOffset = from >> 5;
-    var currentBits = bits[bitsOffset];
+    let bitsOffset = from >> 5;
+    let currentBits = bits[bitsOffset];
     // mask off lesser bits first
     currentBits &= ~((1 << (from & 0x1F)) - 1);
     while (currentBits === 0) {
@@ -120,7 +120,7 @@ goog.scope(function() {
       }
       currentBits = bits[bitsOffset];
     }
-    var result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
+    const result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
   };
 
@@ -130,13 +130,13 @@ goog.scope(function() {
    * @return {number}
    */
   pro.getNextUnset = function(from) {
-    var bits = this.bits_;
-    var size = this.size_;
+    const bits = this.bits_;
+    const size = this.size_;
     if (from >= size) {
       return size;
     }
-    var bitsOffset = from >> 5;
-    var currentBits = ~bits[bitsOffset];
+    let bitsOffset = from >> 5;
+    let currentBits = ~bits[bitsOffset];
     // mask off lesser bits first
     currentBits &= ~((1 << (from & 0x1F)) - 1);
     while (currentBits === 0) {
@@ -145,7 +145,7 @@ goog.scope(function() {
       }
       currentBits = ~bits[bitsOffset];
     }
-    var result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
+    const result = (bitsOffset << 5) + Integer.numberOfTrailingZeros(currentBits);
     return result > size ? size : result;
   };
 
@@ -179,11 +179,11 @@ goog.scope(function() {
     }
     // will be easier to treat this as the last actually set bit -- inclusive
     end--;
-    var firstInt = start >> 5;
-    var lastInt = end >> 5;
+    const firstInt = start >> 5;
+    const lastInt = end >> 5;
     for (let i = firstInt; i <= lastInt; i++) {
-      let firstBit = i > firstInt ? 0 : start & 0x1F;
-      let lastBit = i < lastInt ? 31 : end & 0x1F;
+      const firstBit = i > firstInt ? 0 : start & 0x1F;
+      const lastBit = i < lastInt ? 31 : end & 0x1F;
       let mask;
       if (firstBit === 0 && lastBit === 31) {
         mask = -1;
@@ -226,11 +226,11 @@ goog.scope(function() {
     }
     // will be easier to treat this as the last actually set bit -- inclusive
     end--;
-    var firstInt = start >> 5;
-    var lastInt = end >> 5;
+    const firstInt = start >> 5;
+    const lastInt = end >> 5;
     for (let i = firstInt; i <= lastInt; i++) {
-      let firstBit = i > firstInt ? 0 : start & 0x1F;
-      let lastBit = i < lastInt ? 31 : end & 0x1F;
+      const firstBit = i > firstInt ? 0 : start & 0x1F;
+      const lastBit = i < lastInt ? 31 : end & 0x1F;
       let mask;
       if (firstBit === 0 && lastBit === 31) {
         mask = -1;
@@ -286,7 +286,7 @@ goog.scope(function() {
    * @param {BitArray} other other.
    */
   pro.appendBitArray = function(other) {
-    var otherSize = other.size_;
+    const otherSize = other.size_;
     this.ensureCapacity(this.size_ + otherSize);
     for (let i = 0; i < otherSize; i++) {
       this.appendBit(other.get(i));
@@ -341,8 +341,8 @@ goog.scope(function() {
    * Reverses all bits in the array.
    */
   pro.reverse = function() {
-    var newBits = new Int32Array(this.bits_.length);
-    var size = this.size_;
+    const newBits = new Int32Array(this.bits_.length);
+    const size = this.size_;
     for (let i = 0; i < size; i++) {
       if (this.get(size - i - 1)) {
         newBits[i >> 5] |= 1 << (i & 0x1F);
@@ -363,7 +363,7 @@ goog.scope(function() {
    * @override
    */
   pro.toString = function() {
-    var result = [];
+    const result = [];
     for (let i = 0; i < this.size_; i++) {
       if ((i & 0x07) === 0) {
         result.push(' ');

@@ -336,7 +336,7 @@ goog.scope(function() {
    * @param {!BitArray} bits
    */
   _.terminateBits = function(numDataBytes, bits) {
-    var capacity = numDataBytes << 3;
+    const capacity = numDataBytes << 3;
     if (bits.getSize() > capacity) {
       throw new WriterException('data bits cannot fit in the QR Code' +
         bits.getSize() + ' > ' + capacity);
@@ -346,7 +346,7 @@ goog.scope(function() {
     }
     // Append termination bits. See 8.4.8 of JISX0510:2004 (p.24) for details.
     // If the last byte isn't 8-bit aligned, we'll add padding bits.
-    var numBitsInLastByte = bits.getSize() & 0x07;
+    const numBitsInLastByte = bits.getSize() & 0x07;
     if (numBitsInLastByte > 0) {
       for (let i = numBitsInLastByte; i < 8; i++) {
         bits.appendBit(false);
@@ -354,7 +354,7 @@ goog.scope(function() {
     }
     // If we have more space, we'll fill the space with padding patterns
     // defined in 8.4.9 (p.24).
-    var numPaddingBytes = numDataBytes - bits.getSizeInBytes();
+    const numPaddingBytes = numDataBytes - bits.getSizeInBytes();
     for (let i = 0; i < numPaddingBytes; ++i) {
       bits.appendBits((i & 0x01) === 0 ? 0xEC : 0x11, 8);
     }
@@ -384,21 +384,21 @@ goog.scope(function() {
       throw new WriterException('Block ID too large');
     }
     // numRsBlocksInGroup2 = 196 % 5 = 1
-    var numRsBlocksInGroup2 = numTotalBytes % numRSBlocks;
+    const numRsBlocksInGroup2 = numTotalBytes % numRSBlocks;
     // numRsBlocksInGroup1 = 5 - 1 = 4
-    var numRsBlocksInGroup1 = numRSBlocks - numRsBlocksInGroup2;
+    const numRsBlocksInGroup1 = numRSBlocks - numRsBlocksInGroup2;
     // numTotalBytesInGroup1 = 196 / 5 = 39
-    var numTotalBytesInGroup1 = Math.floor(numTotalBytes / numRSBlocks);
+    const numTotalBytesInGroup1 = Math.floor(numTotalBytes / numRSBlocks);
     // numTotalBytesInGroup2 = 39 + 1 = 40
-    var numTotalBytesInGroup2 = numTotalBytesInGroup1 + 1;
+    const numTotalBytesInGroup2 = numTotalBytesInGroup1 + 1;
     // numDataBytesInGroup1 = 66 / 5 = 13
-    var numDataBytesInGroup1 = Math.floor(numDataBytes / numRSBlocks);
+    const numDataBytesInGroup1 = Math.floor(numDataBytes / numRSBlocks);
     // numDataBytesInGroup2 = 13 + 1 = 14
-    var numDataBytesInGroup2 = numDataBytesInGroup1 + 1;
+    const numDataBytesInGroup2 = numDataBytesInGroup1 + 1;
     // numEcBytesInGroup1 = 39 - 13 = 26
-    var numEcBytesInGroup1 = numTotalBytesInGroup1 - numDataBytesInGroup1;
+    const numEcBytesInGroup1 = numTotalBytesInGroup1 - numDataBytesInGroup1;
     // numEcBytesInGroup2 = 40 - 14 = 26
-    var numEcBytesInGroup2 = numTotalBytesInGroup2 - numDataBytesInGroup2;
+    const numEcBytesInGroup2 = numTotalBytesInGroup2 - numDataBytesInGroup2;
     // Sanity checks.
     // 26 = 26
     if (numEcBytesInGroup1 !== numEcBytesInGroup2) {
@@ -448,25 +448,25 @@ goog.scope(function() {
     // Step 1.  Divide data bytes into blocks and generate error correction
     // bytes for them. We'll store the divided data bytes blocks and error
     // correction bytes blocks into "blocks".
-    var dataBytesOffset = 0;
-    var maxNumDataBytes = 0;
-    var maxNumEcBytes = 0;
+    let dataBytesOffset = 0;
+    let maxNumDataBytes = 0;
+    let maxNumEcBytes = 0;
 
     // Since, we know the number of reedsolomon blocks, we can initialize the
     // vector with the number.
-    var blocks = [];
+    const blocks = [];
 
     for (let i = 0; i < numRSBlocks; ++i) {
-      let numDataBytesInBlock = new Int32Array(1);
-      let numEcBytesInBlock = new Int32Array(1);
+      const numDataBytesInBlock = new Int32Array(1);
+      const numEcBytesInBlock = new Int32Array(1);
       _.getNumDataBytesAndNumECBytesForBlockID(
         numTotalBytes, numDataBytes, numRSBlocks, i,
         numDataBytesInBlock, numEcBytesInBlock);
 
-      let size = numDataBytesInBlock[0];
-      let dataBytes = new Int8Array(size);
+      const size = numDataBytesInBlock[0];
+      const dataBytes = new Int8Array(size);
       bits.toBytes(8 * dataBytesOffset, dataBytes, 0, size);
-      let ecBytes = _.generateECBytes(dataBytes, numEcBytesInBlock[0]);
+      const ecBytes = _.generateECBytes(dataBytes, numEcBytesInBlock[0]);
       blocks.push(new BlockPair(dataBytes, ecBytes));
 
       maxNumDataBytes = Math.max(maxNumDataBytes, size);
@@ -477,14 +477,14 @@ goog.scope(function() {
       throw new WriterException('Data bytes does not match offset');
     }
 
-    var result = new BitArray();
+    const result = new BitArray();
 
     // First, place data blocks.
     for (let i = 0; i < maxNumDataBytes; ++i) {
       blocks.forEach(
         /** @param {!BlockPair} block */
         function(block) {
-          var dataBytes = block.getDataBytes();
+          const dataBytes = block.getDataBytes();
           if (i < dataBytes.length) {
             result.appendBits(dataBytes[i], 8);
           }
@@ -496,7 +496,7 @@ goog.scope(function() {
       blocks.forEach(
         /** @param {!BlockPair} block */
         function(block) {
-          var ecBytes = block.getErrorCorrectionBytes();
+          const ecBytes = block.getErrorCorrectionBytes();
           if (i < ecBytes.length) {
             result.appendBits(ecBytes[i], 8);
           }
@@ -517,15 +517,15 @@ goog.scope(function() {
    * @return {!Int8Array} bytes.
    */
   _.generateECBytes = function(dataBytes, numEcBytesInBlock) {
-    var numDataBytes = dataBytes.length;
-    var toEncode = new Int32Array(numDataBytes + numEcBytesInBlock);
+    const numDataBytes = dataBytes.length;
+    const toEncode = new Int32Array(numDataBytes + numEcBytesInBlock);
     for (let i = 0; i < numDataBytes; i++) {
       toEncode[i] = dataBytes[i] & 0xFF;
     }
     new ReedSolomonEncoder(GenericGF.QR_CODE_FIELD_256).encode(toEncode,
       numEcBytesInBlock);
 
-    var ecBytes = new Int8Array(numEcBytesInBlock);
+    const ecBytes = new Int8Array(numEcBytesInBlock);
     for (let i = 0; i < numEcBytesInBlock; i++) {
       ecBytes[i] = toEncode[numDataBytes + i];
     }
@@ -550,7 +550,7 @@ goog.scope(function() {
    * @throws {!WriterException}
    */
   _.appendLengthInfo = function(numLetters, version, mode, bits) {
-    var numBits = mode.getCharacterCountBits(version);
+    const numBits = mode.getCharacterCountBits(version);
     if (numLetters >= (1 << numBits)) {
       throw new WriterException(numLetters + ' is bigger than ' +
         ((1 << numBits) - 1));
@@ -591,20 +591,20 @@ goog.scope(function() {
    * @param {!BitArray} bits
    */
   _.appendNumericBytes = function(content, bits) {
-    var length = content.length;
-    var i = 0;
-    var codeZero = '0'.charCodeAt(0);
+    const length = content.length;
+    let i = 0;
+    const codeZero = '0'.charCodeAt(0);
     while (i < length) {
-      let num1 = content.charCodeAt(i) - codeZero;
+      const num1 = content.charCodeAt(i) - codeZero;
       if (i + 2 < length) {
         // Encode three numeric letters in ten bits.
-        let num2 = content.charCodeAt(i + 1) - codeZero;
-        let num3 = content.charCodeAt(i + 2) - codeZero;
+        const num2 = content.charCodeAt(i + 1) - codeZero;
+        const num3 = content.charCodeAt(i + 2) - codeZero;
         bits.appendBits(num1 * 100 + num2 * 10 + num3, 10);
         i += 3;
       } else if (i + 1 < length) {
         // Encode two numeric letters in seven bits.
-        let num2 = content.charCodeAt(i + 1) - codeZero;
+        const num2 = content.charCodeAt(i + 1) - codeZero;
         bits.appendBits(num1 * 10 + num2, 7);
         i += 2;
       } else {
@@ -620,15 +620,15 @@ goog.scope(function() {
    * @param {!BitArray} bits
    */
   _.appendAlphanumericBytes = function(content, bits) {
-    var length = content.length;
-    var i = 0;
+    const length = content.length;
+    let i = 0;
     while (i < length) {
-      let code1 = _.getAlphanumericCode(content.charCodeAt(i));
+      const code1 = _.getAlphanumericCode(content.charCodeAt(i));
       if (code1 === -1) {
         throw new WriterException();
       }
       if (i + 1 < length) {
-        let code2 = _.getAlphanumericCode(content.charCodeAt(i + 1));
+        const code2 = _.getAlphanumericCode(content.charCodeAt(i + 1));
         if (code2 === -1) {
           throw new WriterException();
         }
@@ -649,7 +649,7 @@ goog.scope(function() {
    * @param {string} encoding
    */
   _.append8BitBytes = function(content, bits, encoding) {
-    var bytes;
+    let bytes;
     try {
       bytes = stringutils.stringToBytes(content, encoding);
     } catch (uee) {
@@ -665,17 +665,17 @@ goog.scope(function() {
    * @param {!BitArray} bits
    */
   _.appendKanjiBytes = function(content, bits) {
-    var bytes;
+    let bytes;
     try {
       bytes = stringutils.stringToBytes(content, 'Shift_JIS');
     } catch (uee) {
       throw new WriterException(uee);
     }
-    var length = bytes.length;
+    const length = bytes.length;
     for (let i = 0; i < length; i += 2) {
-      let byte1 = bytes[i] & 0xFF;
-      let byte2 = bytes[i + 1] & 0xFF;
-      let code = (byte1 << 8) | byte2;
+      const byte1 = bytes[i] & 0xFF;
+      const byte2 = bytes[i + 1] & 0xFF;
+      const code = (byte1 << 8) | byte2;
       let subtracted = -1;
       if (code >= 0x8140 && code <= 0x9ffc) {
         subtracted = code - 0x8140;
@@ -685,7 +685,7 @@ goog.scope(function() {
       if (subtracted === -1) {
         throw new WriterException('Invalid byte sequence');
       }
-      let encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
+      const encoded = ((subtracted >> 8) * 0xc0) + (subtracted & 0xff);
       bits.appendBits(encoded, 13);
     }
   };

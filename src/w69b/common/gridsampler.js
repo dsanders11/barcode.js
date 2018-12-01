@@ -140,13 +140,13 @@ goog.scope(function() {
    * @param {!Float32Array} points actual points in x1,y1,...,xn,yn form.
    */
   _.checkAndNudgePoints = function(image, points) {
-    var width = image.getWidth();
-    var height = image.getHeight();
+    const width = image.getWidth();
+    const height = image.getHeight();
     // Check and nudge points from start until we see some that are OK:
-    var nudged = true;
+    let nudged = true;
     for (let offset = 0; offset < points.length && nudged; offset += 2) {
-      let x = points[offset] >> 0;
-      let y = points[offset + 1] >> 0;
+      const x = points[offset] >> 0;
+      const y = points[offset + 1] >> 0;
       if (x < -1 || x > width || y < -1 || y > height) {
         throw new w69b.NotFoundException();
       }
@@ -169,8 +169,8 @@ goog.scope(function() {
     // Check and nudge points from end:
     nudged = true;
     for (let offset = points.length - 2; offset >= 0 && nudged; offset -= 2) {
-      let x = points[offset] >> 0;
-      let y = points[offset + 1] >> 0;
+      const x = points[offset] >> 0;
+      const y = points[offset + 1] >> 0;
       if (x < -1 || x > width || y < -1 || y > height) {
         throw new w69b.NotFoundException();
       }

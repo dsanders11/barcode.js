@@ -67,7 +67,7 @@ goog.scope(function() {
    */
   pro.decodeMultiple = function(image, opt_hints) {
     /** @type {!ArrayList<!Result>} */
-    var results = new ArrayList();
+    const results = new ArrayList();
     this.doDecodeMultiple_(image, opt_hints ? opt_hints : null, results, 0, 0, 0);
     if (results.isEmpty()) {
       throw new NotFoundException();
@@ -88,7 +88,7 @@ goog.scope(function() {
       return;
     }
 
-    var result;
+    let result;
     try {
       result = this.delegate_.decode(image, hints);
     } catch (ignored) {
@@ -98,7 +98,7 @@ goog.scope(function() {
 
       throw ignored;
     }
-    var alreadyFound = false;
+    let alreadyFound = false;
     for (let existingResult of results) {
       if (existingResult.getText() === result.getText()) {
         alreadyFound = true;
@@ -109,22 +109,22 @@ goog.scope(function() {
       results.add(translateResultPoints(result, xOffset, yOffset));
     }
     /** @type {!Array.<!ResultPoint>} */
-    var resultPoints = result.getResultPoints();
+    const resultPoints = result.getResultPoints();
     if (resultPoints === null || resultPoints.length === 0) {
       return;
     }
-    var width = image.getWidth();
-    var height = image.getHeight();
-    var minX = width;
-    var minY = height;
-    var maxX = 0.0;
-    var maxY = 0.0;
+    const width = image.getWidth();
+    const height = image.getHeight();
+    let minX = width;
+    let minY = height;
+    let maxX = 0.0;
+    let maxY = 0.0;
     for (let point of resultPoints) {
       if (point === null) {
         continue;
       }
-      let x = point.getX();
-      let y = point.getY();
+      const x = point.getX();
+      const y = point.getY();
       if (x < minX) {
         minX = x;
       }
@@ -177,24 +177,24 @@ goog.scope(function() {
    */
   function translateResultPoints(result, xOffset, yOffset) {
     /** @type {!Array.<!ResultPoint>} */
-    var oldResultPoints = result.getResultPoints();
+    const oldResultPoints = result.getResultPoints();
     if (oldResultPoints === null) {
       return result;
     }
     /** @type {!Array.<!ResultPoint>} */
-    var newResultPoints = new Array(oldResultPoints.length);
+    const newResultPoints = new Array(oldResultPoints.length);
     for (let i = 0; i < oldResultPoints.length; i++) {
-      let oldPoint = oldResultPoints[i];
+      const oldPoint = oldResultPoints[i];
       if (oldPoint !== null) {
         newResultPoints[i] = new ResultPoint(oldPoint.getX() + xOffset, oldPoint.getY() + yOffset);
       }
     }
-    var newResult = new Result(result.getText(),
-                               result.getRawBytes(),
-                               result.getNumBits(),
-                               newResultPoints,
-                               result.getBarcodeFormat(),
-                               result.getTimestamp());
+    const newResult = new Result(result.getText(),
+                                 result.getRawBytes(),
+                                 result.getNumBits(),
+                                 newResultPoints,
+                                 result.getBarcodeFormat(),
+                                 result.getTimestamp());
     newResult.putAllMetadata(result.getResultMetadata());
     return newResult;
   }

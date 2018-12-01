@@ -45,7 +45,7 @@ goog.scope(function() {
                             p1FromY, p2FromX, p2FromY, p3FromX, p3FromY,
                             p4FromX, p4FromY) {
 
-    var transform = PerspectiveTransform.quadrilateralToQuadrilateral(
+    const transform = PerspectiveTransform.quadrilateralToQuadrilateral(
       p1ToX, p1ToY, p2ToX, p2ToY, p3ToX, p3ToY, p4ToX, p4ToY,
       p1FromX, p1FromY, p2FromX, p2FromY, p3FromX, p3FromY, p4FromX, p4FromY);
 
@@ -60,11 +60,11 @@ goog.scope(function() {
     if (dimensionX <= 0 || dimensionY <= 0) {
       throw new w69b.NotFoundException();
     }
-    var bits = new BitMatrix(dimensionX, dimensionY);
-    var points = new Float32Array(dimensionX << 1);
+    const bits = new BitMatrix(dimensionX, dimensionY);
+    const points = new Float32Array(dimensionX << 1);
     for (let y = 0; y < dimensionY; y++) {
-      let max = points.length;
-      let iValue = y + 0.5;
+      const max = points.length;
+      const iValue = y + 0.5;
       for (let x = 0; x < max; x += 2) {
         points[x] = (x >> 1) + 0.5;
         points[x + 1] = iValue;

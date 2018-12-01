@@ -17,7 +17,7 @@
 goog.provide('w69b.common.detector.MathUtils');
 
 goog.scope(function() {
-  var _ = w69b.common.detector.MathUtils;
+  const _ = w69b.common.detector.MathUtils;
 
   /**
    * Ends up being a bit faster than {@link Math#round(float)}. This merely
@@ -42,8 +42,8 @@ goog.scope(function() {
    * @return {number} Euclidean distance between points A and B
    */
   _.distance = function(aX, aY, bX, bY) {
-    var xDiff = aX - bX;
-    var yDiff = aY - bY;
+    const xDiff = aX - bX;
+    const yDiff = aY - bY;
     return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
   };
 });

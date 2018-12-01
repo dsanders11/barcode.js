@@ -89,11 +89,11 @@ goog.scope(function() {
     if (this.matrix_ !== null) {
       return this.matrix_;
     }
-    var source = this.getLuminanceSource();
-    var width = source.getWidth();
-    var height = source.getHeight();
+    const source = this.getLuminanceSource();
+    const width = source.getWidth();
+    const height = source.getHeight();
     if (width >= MINIMUM_DIMENSION && height >= MINIMUM_DIMENSION) {
-      let luminances = source.getMatrix();
+      const luminances = source.getMatrix();
       // dived by 8
       let subWidth = width >> BLOCK_SIZE_POWER;
       // only even numbers
@@ -104,10 +104,10 @@ goog.scope(function() {
       if ((height & BLOCK_SIZE_MASK) !== 0) {
         subHeight++;
       }
-      let blackPoints = _.calculateBlackPoints(luminances, subWidth,
+      const blackPoints = _.calculateBlackPoints(luminances, subWidth,
         subHeight, width, height);
 
-      let newMatrix = new BitMatrix(width, height);
+      const newMatrix = new BitMatrix(width, height);
       _.calculateThresholdForBlock(luminances, subWidth, subHeight,
         width, height, blackPoints, newMatrix);
       this.matrix_ = newMatrix;
@@ -214,7 +214,7 @@ goog.scope(function() {
   _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
                                     height) {
     /** @type {!Array.<!Int32Array>} */
-    var blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
+    const blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
     const maxXOffset = width - BLOCK_SIZE;
     const maxYOffset = height - BLOCK_SIZE;
     for (let y = 0; y < subHeight; y++) {

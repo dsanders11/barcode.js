@@ -108,7 +108,7 @@ goog.scope(function() {
    * @override
    */
   pro.toString = function() {
-    var result = [];
+    const result = [];
     for (let y = 0; y < this.height_; ++y) {
       for (let x = 0; x < this.width_; ++x) {
         switch (this.get(x, y)) {

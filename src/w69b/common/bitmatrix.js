@@ -33,7 +33,7 @@ goog.scope(function() {
    * @constructor
    */
   w69b.common.BitMatrix = function(width, opt_height, opt_rowSize, opt_bits) {
-    var height = goog.isDef(opt_height) ? opt_height : width;
+    const height = goog.isDef(opt_height) ? opt_height : width;
     if (width < 1 || height < 1) {
       throw new IllegalArgumentException("Both dimensions must be greater than 0");
     }
@@ -66,12 +66,12 @@ goog.scope(function() {
     }
 
     /** @type {!Array.<boolean>} */
-    var bits = new Array(stringRepresentation.length);
-    var bitsPos = 0;
-    var rowStartPos = 0;
-    var rowLength = -1;
-    var nRows = 0;
-    var pos = 0;
+    const bits = new Array(stringRepresentation.length);
+    let bitsPos = 0;
+    let rowStartPos = 0;
+    let rowLength = -1;
+    let nRows = 0;
+    let pos = 0;
     while (pos < stringRepresentation.length) {
       if (stringRepresentation.charAt(pos) === '\n' ||
           stringRepresentation.charAt(pos) === '\r') {
@@ -109,7 +109,7 @@ goog.scope(function() {
       nRows++;
     }
 
-    var matrix = new BitMatrix(rowLength, nRows);
+    const matrix = new BitMatrix(rowLength, nRows);
     for (let i = 0; i < bitsPos; i++) {
       if (bits[i]) {
         matrix.set(i % rowLength, Math.floor(i / rowLength));
@@ -181,10 +181,10 @@ goog.scope(function() {
         || this.rowSize !== mask.getRowSize()) {
       throw new IllegalArgumentException("input matrix dimensions do not match");
     }
-    var rowArray = new BitArray((this.width >> 5) + 1);
+    const rowArray = new BitArray((this.width >> 5) + 1);
     for (let y = 0; y < this.height; y++) {
-      let offset = y * this.rowSize;
-      let row = mask.getRow(y, rowArray).getBitArray();
+      const offset = y * this.rowSize;
+      const row = mask.getRow(y, rowArray).getBitArray();
       for (let x = 0; x < this.rowSize; x++) {
         this.bits[offset + x] ^= row[x];
       }
@@ -246,7 +246,7 @@ goog.scope(function() {
     } else {
       row.clear();
     }
-    var offset = y * this.rowSize;
+    const offset = y * this.rowSize;
     for (let x = 0; x < this.rowSize; x++) {
       row.setBulk(x * 32, this.bits[offset + x]);
     }
@@ -265,10 +265,10 @@ goog.scope(function() {
    * Modifies this {@code BitMatrix} to represent the same but rotated 180 degrees
    */
   pro.rotate180 = function() {
-    var width = this.getWidth();
-    var height = this.getHeight();
-    var topRow = new BitArray(width);
-    var bottomRow = new BitArray(width);
+    const width = this.getWidth();
+    const height = this.getHeight();
+    let topRow = new BitArray(width);
+    let bottomRow = new BitArray(width);
     for (let i = 0; i < (height + 1) >> 1; i++) {
       topRow = this.getRow(i, topRow);
       bottomRow = this.getRow(height - 1 - i, bottomRow);
@@ -285,10 +285,10 @@ goog.scope(function() {
    * @return {?Int32Array} {@code left,top,width,height} enclosing rectangle of all 1 bits, or null if it is all white
    */
   pro.getEnclosingRectangle = function() {
-    var left = this.width;
-    var top = this.height;
-    var right = -1;
-    var bottom = -1;
+    let left = this.width;
+    let top = this.height;
+    let right = -1;
+    let bottom = -1;
 
     for (let y = 0; y < this.height; y++) {
       for (let x32 = 0; x32 < this.rowSize; x32++) {
@@ -335,18 +335,18 @@ goog.scope(function() {
    * @return {?Int32Array} coordinate of top-left-most 1 bit, or null if it is all white
    */
   pro.getTopLeftOnBit = function() {
-    var bitsOffset = 0;
+    let bitsOffset = 0;
     while (bitsOffset < this.bits.length && this.bits[bitsOffset] === 0) {
       bitsOffset++;
     }
     if (bitsOffset === this.bits.length) {
       return null;
     }
-    var y = Math.floor(bitsOffset / this.rowSize);
-    var x = (bitsOffset % this.rowSize) * 32;
+    const y = Math.floor(bitsOffset / this.rowSize);
+    let x = (bitsOffset % this.rowSize) * 32;
 
-    var theBits = this.bits[bitsOffset];
-    var bit = 0;
+    const theBits = this.bits[bitsOffset];
+    let bit = 0;
     while ((theBits << (31 - bit)) === 0) {
       bit++;
     }
@@ -358,7 +358,7 @@ goog.scope(function() {
    * @return {?Int32Array} coordinate of bottom-right-most 1 bit, or null if it is all white
    */
   pro.getBottomRightOnBit = function() {
-    var bitsOffset = this.bits.length - 1;
+    let bitsOffset = this.bits.length - 1;
     while (bitsOffset >= 0 && this.bits[bitsOffset] === 0) {
       bitsOffset--;
     }
@@ -366,11 +366,11 @@ goog.scope(function() {
       return null;
     }
 
-    var y = Math.floor(bitsOffset / this.rowSize);
-    var x = (bitsOffset % this.rowSize) * 32;
+    const y = Math.floor(bitsOffset / this.rowSize);
+    let x = (bitsOffset % this.rowSize) * 32;
 
-    var theBits = this.bits[bitsOffset];
-    var bit = 31;
+    const theBits = this.bits[bitsOffset];
+    let bit = 31;
     while ((theBits >>> bit) === 0) {
       bit--;
     }
@@ -407,7 +407,7 @@ goog.scope(function() {
    * @return {string} representation of entire matrix utilizing given strings
    */
   pro.toString = function(setString = 'X ', unsetString = '  ') {
-    var result = [];
+    const result = [];
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         result.push(this.get(x, y) ? setString : unsetString);

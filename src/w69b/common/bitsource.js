@@ -72,14 +72,14 @@ goog.scope(function() {
       throw new IllegalArgumentException(numBits.toString());
     }
 
-    var result = 0;
+    let result = 0;
 
     // First, read remainder from current byte
     if (this.bitOffset_ > 0) {
-      let bitsLeft = 8 - this.bitOffset_;
-      let toRead = numBits < bitsLeft ? numBits : bitsLeft;
-      let bitsToNotRead = bitsLeft - toRead;
-      let mask = (0xFF >> (8 - toRead)) << bitsToNotRead;
+      const bitsLeft = 8 - this.bitOffset_;
+      const toRead = numBits < bitsLeft ? numBits : bitsLeft;
+      const bitsToNotRead = bitsLeft - toRead;
+      const mask = (0xFF >> (8 - toRead)) << bitsToNotRead;
       result = (this.bytes_[this.byteOffset_] & mask) >> bitsToNotRead;
       numBits -= toRead;
       this.bitOffset_ += toRead;
@@ -99,8 +99,8 @@ goog.scope(function() {
 
       // Finally read a partial byte
       if (numBits > 0) {
-        let bitsToNotRead = 8 - numBits;
-        let mask = (0xFF >> bitsToNotRead) << bitsToNotRead;
+        const bitsToNotRead = 8 - numBits;
+        const mask = (0xFF >> bitsToNotRead) << bitsToNotRead;
         result = (result << numBits) |
           ((this.bytes_[this.byteOffset_] & mask) >> bitsToNotRead);
         this.bitOffset_ += numBits;

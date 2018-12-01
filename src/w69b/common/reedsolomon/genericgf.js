@@ -59,7 +59,7 @@ goog.scope(function() {
 
     this.expTable_ = new Int32Array(size);
     this.logTable_ = new Int32Array(size);
-    var x = 1;
+    let x = 1;
     for (let i = 0; i < size; i++) {
       this.expTable_[i] = x;
       x *= 2; // we're assuming the generator alpha is 2
@@ -121,7 +121,7 @@ goog.scope(function() {
     if (coefficient === 0) {
       return this.zero_;
     }
-    var coefficients = new Int32Array(degree + 1);
+    const coefficients = new Int32Array(degree + 1);
     coefficients[0] = coefficient;
     return new GenericGFPoly(this, coefficients);
   };

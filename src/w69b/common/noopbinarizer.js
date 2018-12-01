@@ -32,8 +32,8 @@ goog.scope(function() {
    * @override
    */
   pro.getBlackRow = function(y, row) {
-    var source = this.getLuminanceSource();
-    var width = source.getWidth();
+    const source = this.getLuminanceSource();
+    const width = source.getWidth();
 
     if (row === null || row.getSize() < width) {
       row = new BitArray(width);
@@ -54,16 +54,16 @@ goog.scope(function() {
    * @override
    */
   pro.getBlackMatrix = function() {
-    var source = this.getLuminanceSource();
-    var width = source.getWidth();
-    var height = source.getHeight();
-    var matrix = new BitMatrix(width, height);
+    const source = this.getLuminanceSource();
+    const width = source.getWidth();
+    const height = source.getHeight();
+    const matrix = new BitMatrix(width, height);
 
-    var luminances = source.getMatrix();
+    const luminances = source.getMatrix();
     for (let y = 0; y < height; y++) {
-      let offset = y * width;
+      const offset = y * width;
       for (let x = 0; x < width; x++) {
-        let pixel = luminances[offset + x] & 0xff;
+        const pixel = luminances[offset + x] & 0xff;
         if (pixel) {
           matrix.set(x, y);
         }

@@ -202,28 +202,28 @@ goog.scope(function() {
    * @param {!ByteMatrix} matrix result.
    */
   _.embedTypeInfo = function(ecLevel, maskPattern, matrix) {
-    var typeInfoBits = new BitArray();
+    const typeInfoBits = new BitArray();
     _.makeTypeInfoBits(ecLevel, maskPattern, typeInfoBits);
 
     for (let i = 0; i < typeInfoBits.getSize(); ++i) {
       // Place bits in LSB to MSB order.  LSB (least significant bit) is the
       // last value in "typeInfoBits".
-      let bit = typeInfoBits.get(typeInfoBits.getSize() - 1 - i);
+      const bit = typeInfoBits.get(typeInfoBits.getSize() - 1 - i);
 
       // Type info bits at the left top corner. See 8.9 of JISX0510:2004 (p.46).
-      let x1 = _.TYPE_INFO_COORDINATES[i][0];
-      let y1 = _.TYPE_INFO_COORDINATES[i][1];
+      const x1 = _.TYPE_INFO_COORDINATES[i][0];
+      const y1 = _.TYPE_INFO_COORDINATES[i][1];
       matrix.set(x1, y1, bit);
 
       if (i < 8) {
         // Right top corner.
-        let x2 = matrix.getWidth() - i - 1;
-        let y2 = 8;
+        const x2 = matrix.getWidth() - i - 1;
+        const y2 = 8;
         matrix.set(x2, y2, bit);
       } else {
         // Left bottom corner.
-        let x2 = 8;
-        let y2 = matrix.getHeight() - 7 + (i - 8);
+        const x2 = 8;
+        const y2 = matrix.getHeight() - 7 + (i - 8);
         matrix.set(x2, y2, bit);
       }
     }
@@ -240,14 +240,14 @@ goog.scope(function() {
     if (version.getVersionNumber() < 7) {
       return;  // Don't need version info.
     }
-    var versionInfoBits = new BitArray();
+    const versionInfoBits = new BitArray();
     _.makeVersionInfoBits(version, versionInfoBits);
 
-    var bitIndex = 6 * 3 - 1;  // It will decrease from 17 to 0.
+    let bitIndex = 6 * 3 - 1;  // It will decrease from 17 to 0.
     for (let i = 0; i < 6; ++i) {
       for (let j = 0; j < 3; ++j) {
         // Place bits in LSB (least significant bit) to MSB order.
-        let bit = versionInfoBits.get(bitIndex);
+        const bit = versionInfoBits.get(bitIndex);
         bitIndex--;
         // Left bottom corner.
         matrix.set(i, matrix.getHeight() - 11 + j, bit);
@@ -267,11 +267,11 @@ goog.scope(function() {
    * @param {!ByteMatrix} matrix result..
    */
   _.embedDataBits = function(dataBits, maskPattern, matrix) {
-    var bitIndex = 0;
-    var direction = -1;
+    let bitIndex = 0;
+    let direction = -1;
     // Start from the right bottom cell.
-    var x = matrix.getWidth() - 1;
-    var y = matrix.getHeight() - 1;
+    let x = matrix.getWidth() - 1;
+    let y = matrix.getHeight() - 1;
     while (x > 0) {
       // Skip the vertical timing pattern.
       if (x === 6) {
@@ -325,7 +325,7 @@ goog.scope(function() {
    * @return {number} position of MSB
    */
   _.findMSBSet = function(value) {
-    var numDigits = 0;
+    let numDigits = 0;
     while (value !== 0) {
       value >>>= 1;
       ++numDigits;
@@ -368,7 +368,7 @@ goog.scope(function() {
   _.calculateBCHCode = function(value, poly) {
     // If poly is "1 1111 0010 0101" (version info poly), msbSetInPoly is 13.
     // We'll subtract 1 from 13 to make it 12.
-    var msbSetInPoly = _.findMSBSet(poly);
+    const msbSetInPoly = _.findMSBSet(poly);
     value <<= msbSetInPoly - 1;
     // Do the division business using exclusive-or operations.
     while (_.findMSBSet(value) >= msbSetInPoly) {
@@ -390,13 +390,13 @@ goog.scope(function() {
     if (!QRCode.isValidMaskPattern(maskPattern)) {
       throw new WriterException('Invalid mask pattern');
     }
-    var typeInfo = (ecLevel.getBits() << 3) | maskPattern;
+    const typeInfo = (ecLevel.getBits() << 3) | maskPattern;
     bits.appendBits(typeInfo, 5);
 
-    var bchCode = _.calculateBCHCode(typeInfo, _.TYPE_INFO_POLY);
+    const bchCode = _.calculateBCHCode(typeInfo, _.TYPE_INFO_POLY);
     bits.appendBits(bchCode, 10);
 
-    var maskBits = new BitArray();
+    const maskBits = new BitArray();
     maskBits.appendBits(_.TYPE_INFO_MASK_PATTERN, 15);
     bits.xor(maskBits);
 
@@ -414,7 +414,7 @@ goog.scope(function() {
    */
   _.makeVersionInfoBits = function(version, bits) {
     bits.appendBits(version.getVersionNumber(), 6);
-    var bchCode = _.calculateBCHCode(version.getVersionNumber(),
+    const bchCode = _.calculateBCHCode(version.getVersionNumber(),
       _.VERSION_INFO_POLY);
     bits.appendBits(bchCode, 12);
 
@@ -439,7 +439,7 @@ goog.scope(function() {
     // -8 is for skipping position detection patterns (size 7), and two
     // horizontal/vertical separation patterns (size 1). Thus, 8 = 7 + 1.
     for (let i = 8; i < matrix.getWidth() - 8; ++i) {
-      let bit = (i + 1) % 2;
+      const bit = (i + 1) % 2;
       // Horizontal line.
       if (_.isEmpty(matrix.get(i, 6))) {
         matrix.set(i, 6, bit);
@@ -528,7 +528,7 @@ goog.scope(function() {
    */
   _.embedPositionDetectionPatternsAndSeparators = function(matrix) {
     // Embed three big squares at corners.
-    var pdpWidth = _.POSITION_DETECTION_PATTERN[0].length;
+    const pdpWidth = _.POSITION_DETECTION_PATTERN[0].length;
     // Left top corner.
     _.embedPositionDetectionPattern(0, 0, matrix);
     // Right top corner.
@@ -537,7 +537,7 @@ goog.scope(function() {
     _.embedPositionDetectionPattern(0, matrix.getWidth() - pdpWidth, matrix);
 
     // Embed horizontal separation patterns around the squares.
-    var hspWidth = 8;
+    const hspWidth = 8;
     // Left top corner.
     _.embedHorizontalSeparationPattern(0, hspWidth - 1, matrix);
     // Right top corner.
@@ -548,7 +548,7 @@ goog.scope(function() {
       matrix);
 
     // Embed vertical separation patterns around the squares.
-    var vspSize = 7;
+    const vspSize = 7;
     // Left top corner.
     _.embedVerticalSeparationPattern(vspSize, 0, matrix);
     // Right top corner.
@@ -569,14 +569,14 @@ goog.scope(function() {
     if (version.getVersionNumber() < 2) {
       return;
     }
-    var index = version.getVersionNumber() - 1;
-    var coordinates = _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index];
-    var numCoordinates =
+    const index = version.getVersionNumber() - 1;
+    const coordinates = _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index];
+    const numCoordinates =
       _.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE[index].length;
     for (let i = 0; i < numCoordinates; ++i) {
       for (let j = 0; j < numCoordinates; ++j) {
-        let y = coordinates[i];
-        let x = coordinates[j];
+        const y = coordinates[i];
+        const x = coordinates[j];
         if (x === -1 || y === -1) {
           continue;
         }

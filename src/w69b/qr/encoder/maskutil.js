@@ -61,12 +61,12 @@ goog.scope(function() {
    * @return {number} result.
    */
   _.applyMaskPenaltyRule2 = function(matrix) {
-    var penalty = 0;
-    var width = matrix.getWidth();
-    var height = matrix.getHeight();
+    let penalty = 0;
+    const width = matrix.getWidth();
+    const height = matrix.getHeight();
     for (let y = 0; y < height - 1; y++) {
       for (let x = 0; x < width - 1; x++) {
-        let value = matrix.get(x, y);
+        const value = matrix.get(x, y);
         if (value === matrix.get(x + 1, y) && value === matrix.get(x, y + 1) &&
           value === matrix.get(x + 1, y + 1)) {
           penalty++;
@@ -86,12 +86,12 @@ goog.scope(function() {
    * @return {number} result.
    */
   _.applyMaskPenaltyRule3 = function(matrix) {
-    var penalty = 0;
-    var width = matrix.getWidth();
-    var height = matrix.getHeight();
-    var bytes = matrix.getBytes();
+    let penalty = 0;
+    const width = matrix.getWidth();
+    const height = matrix.getHeight();
+    const bytes = matrix.getBytes();
     for (let y = 0; y < height; y++) {
-      let yOffset = width * y;
+      const yOffset = width * y;
       for (let x = 0; x < width; x++) {
         // Tried to simplify following conditions but failed.
         if (x + 6 < width &&
@@ -147,9 +147,9 @@ goog.scope(function() {
    * @return {number} result.
    */
   _.applyMaskPenaltyRule4 = function(matrix) {
-    var numDarkCells = 0;
-    var width = matrix.getWidth();
-    var height = matrix.getHeight();
+    let numDarkCells = 0;
+    const width = matrix.getWidth();
+    const height = matrix.getHeight();
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         if (matrix.get(x, y) === 1) {
@@ -157,10 +157,10 @@ goog.scope(function() {
         }
       }
     }
-    var numTotalCells = matrix.getHeight() * matrix.getWidth();
-    var darkRatio = numDarkCells / numTotalCells;
+    const numTotalCells = matrix.getHeight() * matrix.getWidth();
+    const darkRatio = numDarkCells / numTotalCells;
     // * 100.0 / 5.0
-    var fivePercentVariances = Math.floor(Math.abs(darkRatio - 0.5) * 20.0);
+    const fivePercentVariances = Math.floor(Math.abs(darkRatio - 0.5) * 20.0);
     return fivePercentVariances * N4;
   };
 
@@ -174,8 +174,8 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.getDataMaskBit = function(maskPattern, x, y) {
-    var intermediate;
-    var temp;
+    let intermediate;
+    let temp;
     switch (maskPattern) {
       case 0:
         intermediate = (y + x) & 0x1;
@@ -218,14 +218,14 @@ goog.scope(function() {
    * @return {number} penalty.
    */
   _.applyMaskPenaltyRule1Internal = function(matrix, isHorizontal) {
-    var penalty = 0;
-    var iLimit = isHorizontal ? matrix.getHeight() : matrix.getWidth();
-    var jLimit = isHorizontal ? matrix.getWidth() : matrix.getHeight();
+    let penalty = 0;
+    const iLimit = isHorizontal ? matrix.getHeight() : matrix.getWidth();
+    const jLimit = isHorizontal ? matrix.getWidth() : matrix.getHeight();
     for (let i = 0; i < iLimit; i++) {
       let numSameBitCells = 0;
       let prevBit = -1;
       for (let j = 0; j < jLimit; j++) {
-        let bit = isHorizontal ? matrix.get(j, i) : matrix.get(i, j);
+        const bit = isHorizontal ? matrix.get(j, i) : matrix.get(i, j);
         if (bit === prevBit) {
           numSameBitCells++;
         } else {
