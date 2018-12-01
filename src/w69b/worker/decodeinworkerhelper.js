@@ -208,7 +208,7 @@ goog.scope(function() {
       imgDataOrMatrix = w69b.imgtools.getImageData(imgDataOrMatrix, size);
     }
     if (this.useWorker_) {
-      let buffer = (/** @type {!Uint8ClampedArray}  */ (imgDataOrMatrix.data)).buffer;
+      let buffer = (/** @type {!Uint8ClampedArray} */ (imgDataOrMatrix.data)).buffer;
       let msg = {
         'width': imgDataOrMatrix.width,
         'height': imgDataOrMatrix.height,
