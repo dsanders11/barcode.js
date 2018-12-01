@@ -158,7 +158,7 @@ goog.scope(function() {
       }
     }
     if (numTransitionsLeft >= 0) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     OneDReader.recordPattern(row, start + 1, counters);
   };
@@ -183,7 +183,7 @@ goog.scope(function() {
     counters.fill(0);
     var end = row.getSize();
     if (start >= end) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     var isWhite = !row.get(start);
     var counterPosition = 0;
@@ -205,7 +205,7 @@ goog.scope(function() {
     // If we read fully the last section of pixels and filled up our counters -- or filled
     // the last counter but ran off the side of the image, OK. Otherwise, a problem.
     if (!(counterPosition === numCounters || (counterPosition === numCounters - 1 && i === end))) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
   };
 
@@ -301,7 +301,7 @@ goog.scope(function() {
       }
     }
 
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**

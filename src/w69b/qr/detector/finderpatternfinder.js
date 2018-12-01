@@ -31,6 +31,7 @@ goog.scope(function() {
   const FinderPattern = w69b.qr.detector.FinderPattern;
   const FinderPatternInfo = w69b.qr.detector.FinderPatternInfo;
   const ResultPoint = w69b.ResultPoint;
+  const NotFoundException = w69b.NotFoundException;
 
   /**
    * This class attempts to find finder patterns in a QR Code. Finder
@@ -705,7 +706,7 @@ goog.scope(function() {
     var startSize = this.possibleCenters_.length;
     if (startSize < 3) {
       // Couldn't find enough finder patterns
-      throw new w69b.NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     var centers = goog.array.clone(this.possibleCenters_);
 

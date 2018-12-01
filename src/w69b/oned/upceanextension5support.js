@@ -120,12 +120,12 @@ goog.scope(function() {
     }
 
     if (resultString.length() !== 5) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     var checkDigit = determineCheckDigit(lgPatternFound);
     if (extensionChecksum(resultString.toString()) !== checkDigit) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     return rowOffset;
@@ -160,7 +160,7 @@ goog.scope(function() {
         return d;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   }
 
   /**

@@ -106,7 +106,7 @@ goog.scope(function() {
     do {
       let charOffset = this.toNarrowWidePattern_(nextStart);
       if (charOffset === -1) {
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
       // Hack: We store the position in the alphabet table into a
       // StringBuilder, so that we can access the decoded patterns in
@@ -131,7 +131,7 @@ goog.scope(function() {
     // otherwise this is probably a false positive. The exception is if we are
     // at the end of the row. (I.e. the barcode barely fits.)
     if (nextStart < counterLength && trailingWhitespace < lastPatternSize >> 1) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     this.validatePattern_(startOffset);
@@ -143,17 +143,17 @@ goog.scope(function() {
     // Ensure a valid start and end character
     var startchar = decodeRowResult.charAt(0);
     if (!STARTEND_ENCODING.includes(startchar)) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     var endchar = decodeRowResult.charAt(decodeRowResult.length() - 1);
     if (!STARTEND_ENCODING.includes(endchar)) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     // remove stop/start characters character and check if a long enough string is contained
     if (decodeRowResult.length() <= MIN_CHARACTER_LENGTH) {
       // Almost surely a false positive ( start + stop + at least 1 character)
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     if (!hints || !!hints[DecodeHintType.RETURN_CODABAR_START_END]) {
@@ -233,7 +233,7 @@ goog.scope(function() {
         let category = (j & 1) + (pattern & 1) * 2;
         let size = counters[pos + j];
         if (size < mins[category] || size > maxes[category]) {
-          throw new NotFoundException();
+          throw NotFoundException.getNotFoundInstance();
         }
         pattern >>= 1;
       }
@@ -257,7 +257,7 @@ goog.scope(function() {
     var i = row.getNextUnset(0);
     var end = row.getSize();
     if (i >= end) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     var isWhite = true;
     var count = 0;
@@ -311,7 +311,7 @@ goog.scope(function() {
         }
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**

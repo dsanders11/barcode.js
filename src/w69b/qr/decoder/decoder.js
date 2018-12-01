@@ -74,7 +74,7 @@ goog.scope(function() {
         codewordsInts, codewordBytes.length - numDataCodewords);
     } catch (err) {
       if (err instanceof ReedSolomonException) {
-        throw new ChecksumException();
+        throw ChecksumException.getChecksumInstance();
       }
       throw err;
     }

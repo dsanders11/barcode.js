@@ -178,6 +178,6 @@ goog.scope(function() {
         }
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 });

@@ -169,7 +169,7 @@ goog.scope(function() {
       OneDReader.recordPattern(row, nextStart, theCounters);
       let pattern = Code39Reader.toNarrowWidePattern_(theCounters);
       if (pattern < 0) {
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
       decodedChar = Code39Reader.patternToChar_(pattern);
       result += decodedChar;
@@ -191,7 +191,7 @@ goog.scope(function() {
     // If 50% of last pattern size, following last pattern, is not whitespace, fail
     // (but if it's whitespace to the very end of the image, that's OK)
     if (nextStart !== end && (whiteSpaceAfterEnd * 2) < lastPatternSize) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     if (this.usingCheckDigit_) {
@@ -201,14 +201,14 @@ goog.scope(function() {
         total += Code39Reader.CHECK_DIGIT_STRING.indexOf(result.charAt(i));
       }
       if (result.charAt(max) !== Code39Reader.CHECK_DIGIT_STRING.charAt(total % 43)) {
-        throw new ChecksumException();
+        throw ChecksumException.getChecksumInstance();
       }
       result = result.slice(0, max);
     }
 
     if (result.length === 0) {
       // false positive
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     var resultString;
@@ -266,7 +266,7 @@ goog.scope(function() {
         isWhite = !isWhite;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**
@@ -289,7 +289,7 @@ goog.scope(function() {
             if (next >= 'A' && next <= 'Z') {
               decodedChar = String.fromCharCode(next.charCodeAt(0) + 32);
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
           case '$':
@@ -297,7 +297,7 @@ goog.scope(function() {
             if (next >= 'A' && next <= 'Z') {
               decodedChar = String.fromCharCode(next.charCodeAt(0) - 64);
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
           case '%':
@@ -307,7 +307,7 @@ goog.scope(function() {
             } else if (next >= 'F' && next <= 'W') {
               decodedChar = String.fromCharCode(next.charCodeAt(0) - 11);
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
           case '/':
@@ -317,7 +317,7 @@ goog.scope(function() {
             } else if (next === 'Z') {
               decodedChar = ':';
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
         }
@@ -343,6 +343,6 @@ goog.scope(function() {
         return Code39Reader.ALPHABET_STRING.charAt(i);
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 });

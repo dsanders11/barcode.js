@@ -107,7 +107,7 @@ goog.scope(function() {
    */
   CharacterSetECI.getCharacterSetECIByValue = function(value) {
     if (value < 0 || value >= 900) {
-      throw new FormatException("Invalid ECI value");
+      throw FormatException.getFormatInstance();
     }
     return CharacterSetECI.valuesToEnum_[value];
   };

@@ -132,7 +132,7 @@ goog.scope(function() {
       return result;
     }
 
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**

@@ -94,7 +94,7 @@ goog.scope(function() {
       OneDReader.recordPattern(row, nextStart, theCounters);
       let pattern = toPattern(theCounters);
       if (pattern < 0) {
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
       decodedChar = Code93Reader.patternToChar_(pattern);
       result += decodedChar;
@@ -114,12 +114,12 @@ goog.scope(function() {
 
     // Should be at least one more black module
     if (nextStart === end || !row.get(nextStart)) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     if (result.length < 2) {
       // false positive -- need at least 2 checksum digits
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     checkChecksums(result);
@@ -176,7 +176,7 @@ goog.scope(function() {
         isWhite = !isWhite;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**
@@ -219,7 +219,7 @@ goog.scope(function() {
         return Code93Reader.ALPHABET[i];
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**
@@ -235,7 +235,7 @@ goog.scope(function() {
       let c = encoded.charAt(i);
       if (c >= 'a' && c <= 'd') {
         if (i >= length - 1) {
-          throw new FormatException();
+          throw FormatException.getFormatInstance();
         }
         let next = encoded.charAt(i + 1);
         let decodedChar = '\0';
@@ -245,7 +245,7 @@ goog.scope(function() {
             if (next >= 'A' && next <= 'Z') {
               decodedChar = String.fromCharCode(next.charCodeAt(0) + 32);
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
           case 'a':
@@ -253,7 +253,7 @@ goog.scope(function() {
             if (next >= 'A' && next <= 'Z') {
               decodedChar = String.fromCharCode(next.charCodeAt(0) - 64);
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
           case 'b':
@@ -273,7 +273,7 @@ goog.scope(function() {
               // %T to %Z all map to DEL (127)
               decodedChar = 127;
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
           case 'c':
@@ -283,7 +283,7 @@ goog.scope(function() {
             } else if (next === 'Z') {
               decodedChar = ':';
             } else {
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
             }
             break;
         }
@@ -323,7 +323,7 @@ goog.scope(function() {
       }
     }
     if (result.charAt(checkPosition) !== Code93Reader.ALPHABET[total % 47]) {
-      throw new ChecksumException();
+      throw ChecksumException.getChecksumInstance();
     }
   }
 });

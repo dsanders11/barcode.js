@@ -23,11 +23,24 @@ goog.scope(function() {
    * Thrown when a barcode was successfully detected and decoded, but
    * was not returned because its checksum feature failed.
    * @constructor
-   * @param {string=} opt_msg message.
    * @extends {w69b.ReaderException}
    */
-  w69b.ChecksumException = function(opt_msg) {
-    goog.base(this, opt_msg);
+  w69b.ChecksumException = function() {
+    goog.base(this);
   };
   goog.inherits(w69b.ChecksumException, w69b.ReaderException);
+
+  const _ = w69b.ChecksumException;
+
+  /**
+   * @type {!w69b.ChecksumException}
+   */
+  const INSTANCE = new w69b.ChecksumException();
+
+  /**
+   * @returns {!w69b.ChecksumException}
+   */
+  _.getChecksumInstance = function() {
+    return INSTANCE;
+  };
 });

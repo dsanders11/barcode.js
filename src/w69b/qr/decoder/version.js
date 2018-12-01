@@ -434,13 +434,13 @@ goog.scope(function() {
    */
   Version.getProvisionalVersionForDimension = function(dimension) {
     if (dimension % 4 !== 1) {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
     try {
       return Version.getVersionForNumber((dimension - 17) >> 2);
     } catch (err) {
       if (err instanceof IllegalArgumentException) {
-        throw new FormatException();
+        throw FormatException.getFormatInstance();
       }
       throw err;
     }

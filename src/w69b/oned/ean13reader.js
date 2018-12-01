@@ -148,6 +148,6 @@ goog.scope(function() {
         return;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   }
 });

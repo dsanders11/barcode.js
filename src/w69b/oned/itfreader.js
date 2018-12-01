@@ -152,7 +152,7 @@ goog.scope(function() {
       lengthOK = true;
     }
     if (!lengthOK) {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
 
     return new Result(
@@ -253,7 +253,7 @@ goog.scope(function() {
     }
     if (quietCount !== 0) {
       // Unable to find the necessary number of quiet zone pixels.
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
   };
 
@@ -269,7 +269,7 @@ goog.scope(function() {
     var width = row.getSize();
     var endStart = row.getNextSet(0);
     if (endStart === width) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     return endStart;
@@ -347,7 +347,7 @@ goog.scope(function() {
         isWhite = !isWhite;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**
@@ -374,7 +374,7 @@ goog.scope(function() {
     if (bestMatch >= 0) {
       return bestMatch;
     } else {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
   };
 });

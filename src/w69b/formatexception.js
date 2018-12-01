@@ -24,11 +24,24 @@ goog.scope(function() {
    * the content did not conform to the barcode's format rules. This could have
    * been due to a mis-detection.
    * @constructor
-   * @param {string=} opt_msg message.
    * @extends {w69b.ReaderException}
    */
-  w69b.FormatException = function(opt_msg) {
-    goog.base(this, opt_msg);
+  w69b.FormatException = function() {
+    goog.base(this);
   };
   goog.inherits(w69b.FormatException, w69b.ReaderException);
+
+  const _ = w69b.FormatException;
+
+  /**
+   * @type {!w69b.FormatException}
+   */
+  const INSTANCE = new w69b.FormatException();
+
+  /**
+   * @returns {!w69b.FormatException}
+   */
+  _.getFormatInstance = function() {
+    return INSTANCE;
+  };
 });

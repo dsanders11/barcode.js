@@ -90,7 +90,7 @@ goog.scope(function() {
     if (text.charAt(0) === '0') {
       return new Result(text.substring(1), null, result.getResultPoints(), BarcodeFormat.UPC_A);
     } else {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
   }
 });

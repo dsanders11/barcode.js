@@ -23,11 +23,24 @@ goog.scope(function() {
    * Thrown when a barcode was not found in the image. It might have been
    * partially detected but could not be confirmed.
    * @constructor
-   * @param {string=} opt_msg message.
    * @extends {w69b.ReaderException}
    */
-  w69b.NotFoundException = function(opt_msg) {
-    goog.base(this, opt_msg);
+  w69b.NotFoundException = function() {
+    goog.base(this);
   };
   goog.inherits(w69b.NotFoundException, w69b.ReaderException);
+
+  const _ = w69b.NotFoundException;
+
+  /**
+   * @type {!w69b.NotFoundException}
+   */
+  const INSTANCE = new w69b.NotFoundException();
+
+  /**
+   * @returns {!w69b.NotFoundException}
+   */
+  _.getNotFoundInstance = function() {
+    return INSTANCE;
+  };
 });

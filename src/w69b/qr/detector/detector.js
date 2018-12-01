@@ -296,7 +296,7 @@ goog.scope(function() {
       estAlignmentX + allowance);
     if (alignmentAreaRightX - alignmentAreaLeftX <
       overallEstModuleSize * 3) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     var alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
@@ -372,7 +372,7 @@ goog.scope(function() {
 
     var moduleSize = this.calculateModuleSize(topLeft, topRight, bottomLeft);
     if (moduleSize < 1.0) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     var dimension = this.computeDimension(topLeft, topRight, bottomLeft,
       moduleSize);

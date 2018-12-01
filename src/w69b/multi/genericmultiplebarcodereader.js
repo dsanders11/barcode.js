@@ -70,7 +70,7 @@ goog.scope(function() {
     const results = new ArrayList();
     this.doDecodeMultiple_(image, opt_hints ? opt_hints : null, results, 0, 0, 0);
     if (results.isEmpty()) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     return results.toArray();
   };

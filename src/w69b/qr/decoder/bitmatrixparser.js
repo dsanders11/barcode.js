@@ -36,7 +36,7 @@ goog.scope(function() {
   w69b.qr.decoder.BitMatrixParser = function(bitMatrix) {
     var dimension = bitMatrix.getHeight();
     if (dimension < 21 || (dimension & 0x03) !== 1) {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
     this.bitMatrix = bitMatrix;
     /**
@@ -107,7 +107,7 @@ goog.scope(function() {
     if (this.parsedFormatInfo !== null) {
       return this.parsedFormatInfo;
     }
-    throw new FormatException();
+    throw FormatException.getFormatInstance();
   };
 
   /**
@@ -153,7 +153,7 @@ goog.scope(function() {
       this.parsedVersion.getDimensionForVersion() === dimension) {
       return this.parsedVersion;
     }
-    throw new FormatException();
+    throw FormatException.getFormatInstance();
   };
 
   /**
@@ -207,7 +207,7 @@ goog.scope(function() {
       readingUp ^= true; // readingUp = !readingUp; // switch directions
     }
     if (resultOffset !== version.totalCodewords) {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
     return result;
   };

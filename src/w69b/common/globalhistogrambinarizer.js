@@ -27,6 +27,7 @@ goog.scope(function() {
   const LuminanceSource = w69b.LuminanceSource;
   const BitMatrix = w69b.common.BitMatrix;
   const BitArray = w69b.common.BitArray;
+  const NotFoundException = w69b.NotFoundException;
   /**
    * This Binarizer implementation uses the old ZXing global histogram
    * approach. It is suitable for low-end mobile devices which don't have
@@ -212,7 +213,7 @@ goog.scope(function() {
     // black point, throw rather than waste time trying to decode the image,
     // and risk false positives.
     if (secondPeak - firstPeak <= numBuckets >> 4) {
-      throw new w69b.NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     // Find a valley between them that is low and closer to the white peak.

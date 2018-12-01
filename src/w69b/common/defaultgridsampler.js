@@ -23,10 +23,11 @@ goog.require('w69b.common.GridSamplerInterface');
 goog.require('w69b.common.PerspectiveTransform');
 
 goog.scope(function() {
-
   const PerspectiveTransform = w69b.common.PerspectiveTransform;
   const GridSampler = w69b.common.GridSampler;
   const BitMatrix = w69b.common.BitMatrix;
+  const NotFoundException = w69b.NotFoundException;
+
   /**
    * @author Sean Owen
    * @author Manuel Braun (mb@w69b.com) - ported to js.
@@ -58,7 +59,7 @@ goog.scope(function() {
   pro.sampleGridTransform = function(image, dimensionX, dimensionY,
                                      transform) {
     if (dimensionX <= 0 || dimensionY <= 0) {
-      throw new w69b.NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     const bits = new BitMatrix(dimensionX, dimensionY);
     const points = new Float32Array(dimensionX << 1);
@@ -90,7 +91,7 @@ goog.scope(function() {
         // our clever checks above -- can't have that. We could check each
         // point's coordinates but that feels duplicative. We settle for
         // catching and wrapping ArrayIndexOutOfBoundsException.
-        throw new w69b.NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
     }
     return bits;

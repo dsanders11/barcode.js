@@ -212,16 +212,16 @@ goog.scope(function() {
     var end = endRange[1];
     var quietEnd = end + (end - endRange[0]);
     if (quietEnd >= row.getSize() || !row.isRange(end, quietEnd, false)) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     var resultString = result.toString();
     // UPC/EAN should never be less than 8 chars anyway
     if (resultString.length < 8) {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
     if (!this.checkChecksum(resultString)) {
-      throw new ChecksumException();
+      throw ChecksumException.getChecksumInstance();
     }
 
     var left = (startGuardRange[1] + startGuardRange[0]) / 2.0;
@@ -258,7 +258,7 @@ goog.scope(function() {
         }
       }
       if (!valid) {
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
     }
 
@@ -309,7 +309,7 @@ goog.scope(function() {
     for (let i = length - 1; i >= 0; i -= 2) {
       let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
       if (digit < 0 || digit > 9) {
-        throw new FormatException();
+        throw FormatException.getFormatInstance();
       }
       sum += digit;
     }
@@ -317,7 +317,7 @@ goog.scope(function() {
     for (let i = length - 2; i >= 0; i -= 2) {
       let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
       if (digit < 0 || digit > 9) {
-        throw new FormatException();
+        throw FormatException.getFormatInstance();
       }
       sum += digit;
     }
@@ -384,7 +384,7 @@ goog.scope(function() {
         isWhite = !isWhite;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**
@@ -415,7 +415,7 @@ goog.scope(function() {
     if (bestMatch >= 0) {
       return bestMatch;
     } else {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
   };
 

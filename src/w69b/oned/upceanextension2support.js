@@ -116,11 +116,11 @@ goog.scope(function() {
     }
 
     if (resultString.length() !== 2) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     if (Integer.parseInt(resultString.toString()) % 4 !== checkParity) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     return rowOffset;

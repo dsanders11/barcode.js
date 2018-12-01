@@ -206,7 +206,7 @@ goog.scope(function() {
         codeSet = CODE_CODE_C;
         break;
       default:
-        throw new FormatException();
+        throw FormatException.getFormatInstance();
     }
 
     var done = false;
@@ -261,7 +261,7 @@ goog.scope(function() {
         case CODE_START_A:
         case CODE_START_B:
         case CODE_START_C:
-          throw new FormatException();
+          throw FormatException.getFormatInstance();
       }
 
       switch (codeSet) {
@@ -438,21 +438,21 @@ goog.scope(function() {
     if (!row.isRange(nextStart,
                      Math.min(row.getSize(), nextStart + ((nextStart - lastStart) >> 1)),
                      false)) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     // Pull out from sum the value of the penultimate check code
     checksumTotal -= multiplier * lastCode;
     // lastCode is the checksum then:
     if (checksumTotal % 103 !== lastCode) {
-      throw new ChecksumException();
+      throw ChecksumException.getChecksumInstance();
     }
 
     // Need to pull out the check digits from string
     var resultLength = result.length;
     if (resultLength === 0) {
       // false positive
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     // Only bother if the result had at least one character, and if the checksum digit happened to
@@ -508,7 +508,7 @@ goog.scope(function() {
     if (bestMatch >= 0) {
       return bestMatch;
     } else {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
   };
 
@@ -562,6 +562,6 @@ goog.scope(function() {
         isWhite = !isWhite;
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 });

@@ -102,7 +102,7 @@ goog.scope(function() {
             fc1InEffect = true;
           } else if (mode === ModeEnum.STRUCTURED_APPEND) {
             if (bits.available() < 16) {
-              throw new FormatException();  // FormatException.getFormatInstance();
+              throw FormatException.getFormatInstance();
             }
             // sequence number and parity is added later to the result metadata
             // Read next 8 bits (symbol sequence #) and 8 bits (parity data), then continue
@@ -113,7 +113,7 @@ goog.scope(function() {
             let value = _.parseECIValue(bits);
             currentCharacterSet = CharacterSetECI.getCharacterSetECIByValue(value);
             if (currentCharacterSet === null)
-              throw new FormatException();
+              throw FormatException.getFormatInstance();
           } else {
             // First handle Hanzi mode which does not start with character count
             if (mode === ModeEnum.HANZI) {
@@ -139,7 +139,7 @@ goog.scope(function() {
               } else if (mode === ModeEnum.KANJI) {
                 _.decodeKanjiSegment(bits, result, count);
               } else {
-                throw new FormatException();  //FormatException.getFormatInstance();
+                throw FormatException.getFormatInstance();
               }
             }
           }
@@ -147,7 +147,7 @@ goog.scope(function() {
       } while (mode !== ModeEnum.TERMINATOR);
     } catch (err) {
       if (err instanceof IllegalArgumentException) {
-        throw new FormatException();
+        throw FormatException.getFormatInstance();
       }
       throw err;
     }
@@ -170,7 +170,7 @@ goog.scope(function() {
   _.decodeHanziSegment = function(bits, result, count) {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
-      throw new FormatException();  // FormatException.getFormatInstance();
+      throw FormatException.getFormatInstance();
     }
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
@@ -207,7 +207,7 @@ goog.scope(function() {
   _.decodeKanjiSegment = function(bits, result, count) {
     // Don't crash trying to read more bits than we have available.
     if (count * 13 > bits.available()) {
-      throw new FormatException();
+      throw FormatException.getFormatInstance();
     }
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
@@ -247,7 +247,7 @@ goog.scope(function() {
                                  byteSegments, opt_hints) {
     // Don't crash trying to read more bits than we have available.
     if (count << 3 > bits.available()) {
-      throw new FormatException();  //FormatException.getFormatInstance();
+      throw FormatException.getFormatInstance();
     }
 
     var readBytes = new Int8Array(count);
@@ -279,7 +279,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(value));
 
     if (value >= ALPHANUMERIC_CHARS.length) {
-      throw new FormatException();  // FormatException.getFormatInstance();
+      throw FormatException.getFormatInstance();
     }
     return ALPHANUMERIC_CHARS[Math.floor(value)];
   };
@@ -296,7 +296,7 @@ goog.scope(function() {
     // var start = result.getLength();
     while (count > 1) {
       if (bits.available() < 11) {
-        throw new FormatException();  // throw FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       let nextTwoCharsBits = bits.readBits(11);
       result.append(_.toAlphaNumericChar(Math.floor(nextTwoCharsBits / 45)));
@@ -306,7 +306,7 @@ goog.scope(function() {
     if (count === 1) {
       // special case: one character left
       if (bits.available() < 6) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       result.append(_.toAlphaNumericChar(bits.readBits(6)));
     }
@@ -339,11 +339,11 @@ goog.scope(function() {
     while (count >= 3) {
       // Each 10 bits encodes three digits
       if (bits.available() < 10) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       let threeDigitsBits = bits.readBits(10);
       if (threeDigitsBits >= 1000) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       result.append(_.toAlphaNumericChar(Math.floor(threeDigitsBits / 100)));
       result.append(_.toAlphaNumericChar(Math.floor(threeDigitsBits / 10) % 10));
@@ -353,22 +353,22 @@ goog.scope(function() {
     if (count === 2) {
       // Two digits left over to read, encoded in 7 bits
       if (bits.available() < 7) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       let twoDigitsBits = bits.readBits(7);
       if (twoDigitsBits >= 100) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       result.append(_.toAlphaNumericChar(Math.floor(twoDigitsBits / 10)));
       result.append(_.toAlphaNumericChar(twoDigitsBits % 10));
     } else if (count === 1) {
       // One digit left over to read
       if (bits.available() < 4) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       let digitBits = bits.readBits(4);
       if (digitBits >= 10) {
-        throw new FormatException();  // FormatException.getFormatInstance();
+        throw FormatException.getFormatInstance();
       }
       result.append(_.toAlphaNumericChar(digitBits));
     }
@@ -395,6 +395,6 @@ goog.scope(function() {
       let secondThirdBytes = bits.readBits(16);
       return ((firstByte & 0x1F) << 16) | secondThirdBytes;
     }
-    throw new FormatException();  // FormatException.getFormatInstance();
+    throw FormatException.getFormatInstance();
   };
 });

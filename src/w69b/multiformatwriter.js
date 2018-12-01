@@ -16,6 +16,7 @@
  */
 
 goog.provide('w69b.MultiFormatWriter');
+goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.BarcodeFormat');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Writer');
@@ -31,6 +32,7 @@ goog.require('w69b.oned.UPCEWriter');
 goog.require('w69b.qr.QRCodeWriter');
 
 goog.scope(function() {
+  const IllegalArgumentException = java.lang.IllegalArgumentException;
   const BarcodeFormat = w69b.BarcodeFormat;
   const NotFoundException = w69b.NotFoundException;
   const Writer = w69b.Writer;
@@ -94,7 +96,7 @@ goog.scope(function() {
         writer = new CodaBarWriter();
         break;
       default:
-        throw new NotFoundException("No encoder available for format " + format);
+        throw new IllegalArgumentException("No encoder available for format " + format);
     }
     return writer.encode(contents, format, width, height, opt_hints);
   };

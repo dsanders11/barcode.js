@@ -140,7 +140,7 @@ goog.scope(function() {
     var leftTopBlack = image.getTopLeftOnBit();
     var rightBottomBlack = image.getBottomRightOnBit();
     if (leftTopBlack === null || rightBottomBlack === null) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     var moduleSize = moduleSize_(leftTopBlack, image);
@@ -152,7 +152,7 @@ goog.scope(function() {
 
     // Sanity check!
     if (left >= right || top >= bottom) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     if (bottom - top !== right - left) {
@@ -162,18 +162,18 @@ goog.scope(function() {
       right = left + (bottom - top);
       if (right >= image.getWidth()) {
         // Abort if that would not make sense -- off image
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
     }
 
     var matrixWidth = Math.round((right - left + 1) / moduleSize);
     var matrixHeight = Math.round((bottom - top + 1) / moduleSize);
     if (matrixWidth <= 0 || matrixHeight <= 0) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     if (matrixHeight !== matrixWidth) {
       // Only possibly decode square regions
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
 
     // Push in the "border" by half the module width so that we start
@@ -190,7 +190,7 @@ goog.scope(function() {
     if (nudgedTooFarRight > 0) {
       if (nudgedTooFarRight > nudge) {
         // Neither way fits; abort
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
       left -= nudgedTooFarRight;
     }
@@ -199,7 +199,7 @@ goog.scope(function() {
     if (nudgedTooFarDown > 0) {
       if (nudgedTooFarDown > nudge) {
         // Neither way fits; abort
-        throw new NotFoundException();
+        throw NotFoundException.getNotFoundInstance();
       }
       top -= nudgedTooFarDown;
     }
@@ -242,7 +242,7 @@ goog.scope(function() {
       y++;
     }
     if (x === width || y === height) {
-      throw new NotFoundException();
+      throw NotFoundException.getNotFoundInstance();
     }
     return (x - leftTopBlack[0]) / 7.0;
   }

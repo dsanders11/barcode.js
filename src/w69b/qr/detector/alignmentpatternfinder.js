@@ -207,7 +207,7 @@ goog.scope(function() {
         this.resultPointCallback(point);
       }
     }
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 
   /**
@@ -292,6 +292,6 @@ goog.scope(function() {
       return this.possibleCenters[0];
     }
 
-    throw new NotFoundException();
+    throw NotFoundException.getNotFoundInstance();
   };
 });
