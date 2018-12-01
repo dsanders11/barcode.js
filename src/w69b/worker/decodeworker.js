@@ -110,12 +110,6 @@ goog.scope(function() {
 
     try {
       return multiFormatReader.decodeWithState(bitmap);
-    } catch (err) {
-      if (err instanceof w69b.ReaderException) {
-        // Continue
-      } else {
-        throw err;
-      }
     } finally {
       multiFormatReader.reset();
     }
