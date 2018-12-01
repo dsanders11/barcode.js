@@ -94,7 +94,9 @@ goog.scope(function() {
         opt_hints[DecodeHintType.POSSIBLE_FORMATS] = opt_formats;
       }
 
-      multiFormatReader.setHints(opt_hints);
+      if (opt_hints !== undefined) {
+        multiFormatReader.setHints(opt_hints);
+      }
     }
 
     var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
