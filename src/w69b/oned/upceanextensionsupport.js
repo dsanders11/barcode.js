@@ -53,7 +53,7 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.decodeRow = function(rowNumber, row, rowOffset) {
-    var extensionStartRange = w69b.oned.UPCEANReader.findGuardPattern(row, rowOffset, false, EXTENSION_START_PATTERN);
+    const extensionStartRange = w69b.oned.UPCEANReader.findGuardPattern(row, rowOffset, false, EXTENSION_START_PATTERN);
     try {
       return this.fiveSupport_.decodeRow(rowNumber, row, extensionStartRange);
     } catch (/*ReaderException*/ ignored) {

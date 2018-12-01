@@ -54,39 +54,39 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     if (length > 80) {
       throw new IllegalArgumentException(
         "Requested contents should be less than 80 digits long, but got " + length);
     }
     //each character is encoded by 9 of 0/1's
-    var widths = new Int32Array(9);
+    const widths = new Int32Array(9);
 
     //length of code + 2 start/stop characters + 2 checksums, each of 9 bits, plus a termination bar
-    var codeWidth = (contents.length + 2 + 2) * 9 + 1;
+    const codeWidth = (contents.length + 2 + 2) * 9 + 1;
 
     //start character (*)
     toIntArray(Code93Reader.CHARACTER_ENCODINGS[47], widths);
 
     /** @type {!Array.<boolean>} */
-    var result = new Array(codeWidth);
-    var pos = Code93Writer.appendPattern(result, 0, widths);
+    const result = new Array(codeWidth);
+    let pos = Code93Writer.appendPattern(result, 0, widths);
 
     for (let i = 0; i < length; i++) {
-      let indexInString = Code93Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
+      const indexInString = Code93Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
       toIntArray(Code93Reader.CHARACTER_ENCODINGS[indexInString], widths);
       pos += Code93Writer.appendPattern(result, pos, widths);
     }
 
     //add two checksums
-    var check1 = Code93Writer.computeChecksumIndex_(contents, 20);
+    const check1 = Code93Writer.computeChecksumIndex_(contents, 20);
     toIntArray(Code93Reader.CHARACTER_ENCODINGS[check1], widths);
     pos += Code93Writer.appendPattern(result, pos, widths);
 
     //append the contents to reflect the first checksum added
     contents += Code93Reader.ALPHABET_STRING.charAt(check1);
 
-    var check2 = Code93Writer.computeChecksumIndex_(contents, 15);
+    const check2 = Code93Writer.computeChecksumIndex_(contents, 15);
     toIntArray(Code93Reader.CHARACTER_ENCODINGS[check2], widths);
     pos += Code93Writer.appendPattern(result, pos, widths);
 
@@ -107,7 +107,7 @@ goog.scope(function() {
    */
   function toIntArray(a, toReturn) {
     for (let i = 0; i < 9; i++) {
-      let temp = a & (1 << (8 - i));
+      const temp = a & (1 << (8 - i));
       toReturn[i] = temp === 0 ? 0 : 1;
     }
   }
@@ -120,7 +120,7 @@ goog.scope(function() {
    * @private
    */
   Code93Writer.appendPattern = function(target, pos, pattern) {
-    for (let bit of pattern) {
+    for (const bit of pattern) {
       target[pos++] = bit !== 0;
     }
     return 9;
@@ -133,11 +133,11 @@ goog.scope(function() {
    * @private
    */
   Code93Writer.computeChecksumIndex_ = function(contents, maxWeight) {
-    var weight = 1;
-    var total = 0;
+    let weight = 1;
+    let total = 0;
 
     for (let i = contents.length - 1; i >= 0; i--) {
-      let indexInString = Code93Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
+      const indexInString = Code93Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
       total += indexInString * weight;
       if (++weight > maxWeight) {
         weight = 1;

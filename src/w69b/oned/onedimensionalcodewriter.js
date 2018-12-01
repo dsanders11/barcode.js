@@ -54,12 +54,12 @@ goog.scope(function() {
                                          + width + 'x' + height);
     }
 
-    var sidesMargin = this.getDefaultMargin();
+    let sidesMargin = this.getDefaultMargin();
     if (opt_hints && !!opt_hints[EncodeHintType.MARGIN]) {
       sidesMargin = Integer.parseInt(opt_hints[EncodeHintType.MARGIN]);
     }
 
-    var code = this.encodeBoolean(contents);
+    const code = this.encodeBoolean(contents);
     return renderResult(code, width, height, sidesMargin);
   };
 
@@ -72,16 +72,16 @@ goog.scope(function() {
    * @private
    */
   function renderResult(code, width, height, sidesMargin) {
-    var inputWidth = code.length;
+    const inputWidth = code.length;
     // Add quiet zone on both sides.
-    var fullWidth = inputWidth + sidesMargin;
-    var outputWidth = Math.max(width, fullWidth);
-    var outputHeight = Math.max(1, height);
+    const fullWidth = inputWidth + sidesMargin;
+    const outputWidth = Math.max(width, fullWidth);
+    const outputHeight = Math.max(1, height);
 
-    var multiple = Math.floor(outputWidth / fullWidth);
-    var leftPadding = (outputWidth - (inputWidth * multiple)) >> 1;
+    const multiple = Math.floor(outputWidth / fullWidth);
+    const leftPadding = (outputWidth - (inputWidth * multiple)) >> 1;
 
-    var output = new BitMatrix(outputWidth, outputHeight);
+    const output = new BitMatrix(outputWidth, outputHeight);
     for (let inputX = 0, outputX = leftPadding; inputX < inputWidth; inputX++, outputX += multiple) {
       if (code[inputX]) {
         output.setRegion(outputX, 0, multiple, outputHeight);
@@ -99,9 +99,9 @@ goog.scope(function() {
    * @protected
    */
   OneDimensionalCodeWriter.appendPattern = function(target, pos, pattern, startColor) {
-    var color = startColor;
-    var numAdded = 0;
-    for (let len of pattern) {
+    let color = startColor;
+    let numAdded = 0;
+    for (const len of pattern) {
       for (let j = 0; j < len; j++) {
         target[pos++] = color;
       }

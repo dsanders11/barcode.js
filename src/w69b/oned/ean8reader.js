@@ -47,29 +47,29 @@ goog.scope(function() {
    * @override
    */
   pro.decodeMiddle = function(row, startRange, result) {
-    var counters = this.decodeMiddleCounters_;
+    const counters = this.decodeMiddleCounters_;
     counters[0] = 0;
     counters[1] = 0;
     counters[2] = 0;
     counters[3] = 0;
-    var end = row.getSize();
-    var rowOffset = startRange[1];
+    const end = row.getSize();
+    let rowOffset = startRange[1];
 
     for (let x = 0; x < 4 && rowOffset < end; x++) {
-      let bestMatch = decodeDigit(row, counters, rowOffset, L_PATTERNS);
+      const bestMatch = decodeDigit(row, counters, rowOffset, L_PATTERNS);
       result.append(String.fromCharCode('0'.charCodeAt(0) + bestMatch % 10));
-      for (let counter of counters) {
+      for (const counter of counters) {
         rowOffset += counter;
       }
     }
 
-    var middleRange = findGuardPattern(row, rowOffset, true, MIDDLE_PATTERN);
+    const middleRange = findGuardPattern(row, rowOffset, true, MIDDLE_PATTERN);
     rowOffset = middleRange[1];
 
     for (let x = 0; x < 4 && rowOffset < end; x++) {
-      let bestMatch = decodeDigit(row, counters, rowOffset, L_PATTERNS);
+      const bestMatch = decodeDigit(row, counters, rowOffset, L_PATTERNS);
       result.append(String.fromCharCode('0'.charCodeAt(0) + bestMatch));
-      for (let counter of counters) {
+      for (const counter of counters) {
         rowOffset += counter;
       }
     }

@@ -86,7 +86,7 @@ goog.scope(function() {
    * @throws {!FormatException}
    */
   function maybeReturnResult(result) {
-    var text = result.getText();
+    const text = result.getText();
     if (text.charAt(0) === '0') {
       return new Result(text.substring(1), null, result.getResultPoints(), BarcodeFormat.UPC_A);
     } else {

@@ -59,7 +59,7 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     if (length % 2 !== 0) {
       throw new IllegalArgumentException("The length of the input should be even");
     }
@@ -68,12 +68,12 @@ goog.scope(function() {
           "Requested contents should be less than 80 digits long, but got " + length);
     }
     /** @type {!Array.<boolean>} */
-    var result = new Array(9 + 9 * length);
-    var pos = OneDimensionalCodeWriter.appendPattern(result, 0, START_PATTERN, true);
+    const result = new Array(9 + 9 * length);
+    let pos = OneDimensionalCodeWriter.appendPattern(result, 0, START_PATTERN, true);
     for (let i = 0; i < length; i += 2) {
-      let one = Integer.parseInt(contents.charAt(i));
-      let two = Integer.parseInt(contents.charAt(i + 1));
-      let encoding = new Int32Array(10);
+      const one = Integer.parseInt(contents.charAt(i));
+      const two = Integer.parseInt(contents.charAt(i + 1));
+      const encoding = new Int32Array(10);
       for (let j = 0; j < 5; j++) {
         encoding[2 * j] = ITFReader.PATTERNS[one][j];
         encoding[2 * j + 1] = ITFReader.PATTERNS[two][j];

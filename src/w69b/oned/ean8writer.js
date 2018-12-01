@@ -67,7 +67,7 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     switch (length) {
       case 7:
         // No check digit present, calculate it and add it
@@ -102,20 +102,20 @@ goog.scope(function() {
     }
 
     /** @type {!Array.<boolean>} */
-    var result = new Array(CODE_WIDTH);
-    var pos = 0;
+    const result = new Array(CODE_WIDTH);
+    let pos = 0;
 
     pos += appendPattern(result, pos, UPCEANReader.START_END_PATTERN, true);
 
     for (let i = 0; i <= 3; i++) {
-      let digit = Character.digit(contents.charAt(i), 10);
+      const digit = Character.digit(contents.charAt(i), 10);
       pos += appendPattern(result, pos, UPCEANReader.L_PATTERNS[digit], false);
     }
 
     pos += appendPattern(result, pos, UPCEANReader.MIDDLE_PATTERN, false);
 
     for (let i = 4; i <= 7; i++) {
-      let digit = Character.digit(contents.charAt(i), 10);
+      const digit = Character.digit(contents.charAt(i), 10);
       pos += appendPattern(result, pos, UPCEANReader.L_PATTERNS[digit], true);
     }
     appendPattern(result, pos, UPCEANReader.START_END_PATTERN, true);

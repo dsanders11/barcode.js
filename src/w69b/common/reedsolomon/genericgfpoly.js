@@ -51,7 +51,7 @@ goog.scope(function() {
       throw new IllegalArgumentException();
     }
     this.field_ = field;
-    var coefficientsLength = coefficients.length;
+    const coefficientsLength = coefficients.length;
     if (coefficientsLength > 1 && coefficients[0] === 0) {
       // Leading term must be non-zero for anything except the constant polynomial "0"
       let firstNonZero = 1;
@@ -117,8 +117,8 @@ goog.scope(function() {
       }
       return result;
     }
-    var result = this.coefficients_[0];
-    var size = this.coefficients_.length;
+    let result = this.coefficients_[0];
+    const size = this.coefficients_.length;
     for (let i = 1; i < size; i++) {
       result = w69b.common.reedsolomon.GenericGF.addOrSubtract(
         this.field_.multiply(a, result), this.coefficients_[i]);

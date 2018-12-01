@@ -54,33 +54,33 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     if (length > 80) {
       throw new IllegalArgumentException(
         "Requested contents should be less than 80 digits long, but got " + length);
     }
 
-    var widths = new Int32Array(9);
-    var codeWidth = 24 + 1 + length;
+    const widths = new Int32Array(9);
+    let codeWidth = 24 + 1 + length;
     for (let i = 0; i < length; i++) {
-      let indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
+      const indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
       if (indexInString < 0) {
         throw new IllegalArgumentException("Bad contents: " + contents);
       }
       toIntArray(Code39Reader.CHARACTER_ENCODINGS[indexInString], widths);
-      for (let width of widths) {
+      for (const width of widths) {
         codeWidth += width;
       }
     }
     /** @type {!Array.<boolean>} */
-    var result = new Array(codeWidth);
+    const result = new Array(codeWidth);
     toIntArray(Code39Reader.ASTERISK_ENCODING, widths);
-    var pos = OneDimensionalCodeWriter.appendPattern(result, 0, widths, true);
-    var narrowWhite = Int32Array.of(1);
+    let pos = OneDimensionalCodeWriter.appendPattern(result, 0, widths, true);
+    const narrowWhite = Int32Array.of(1);
     pos += OneDimensionalCodeWriter.appendPattern(result, pos, narrowWhite, false);
     //append next character to byte matrix
     for (let i = 0; i < length; i++) {
-      let indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
+      const indexInString = Code39Reader.ALPHABET_STRING.indexOf(contents.charAt(i));
       toIntArray(Code39Reader.CHARACTER_ENCODINGS[indexInString], widths);
       pos += OneDimensionalCodeWriter.appendPattern(result, pos, widths, true);
       pos += OneDimensionalCodeWriter.appendPattern(result, pos, narrowWhite, false);
@@ -97,7 +97,7 @@ goog.scope(function() {
    */
   function toIntArray(a, toReturn) {
     for (let i = 0; i < 9; i++) {
-      let temp = a & (1 << (8 - i));
+      const temp = a & (1 << (8 - i));
       toReturn[i] = temp === 0 ? 1 : 2;
     }
   }

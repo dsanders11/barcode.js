@@ -120,10 +120,10 @@ goog.scope(function() {
    * @return {!FinderPatternInfo} info.
    */
   pro.find = function(opt_hints) {
-    var tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
-    var pureBarcode = Boolean(opt_hints && !!opt_hints[DecodeHintType.PURE_BARCODE]);
-    var maxI = this.image_.getHeight();
-    var maxJ = this.image_.getWidth();
+    const tryHarder = opt_hints && !!opt_hints[DecodeHintType.TRY_HARDER];
+    const pureBarcode = Boolean(opt_hints && !!opt_hints[DecodeHintType.PURE_BARCODE]);
+    const maxI = this.image_.getHeight();
+    const maxJ = this.image_.getWidth();
     // We are looking for black/white/black/white/black modules in
     // 1:1:3:1:1 ratio; this tracks the number of such modules seen so far
 
@@ -134,14 +134,14 @@ goog.scope(function() {
     // number of pixels the center could be, so skip this often. When trying
     // harder, look for all
     // QR versions regardless of how dense they are.
-    var iSkip = Math.floor((3 * maxI) / (4 * MAX_MODULES));
+    let iSkip = Math.floor((3 * maxI) / (4 * MAX_MODULES));
     if (iSkip < MIN_SKIP || tryHarder) {
       iSkip = MIN_SKIP;
     }
 
-    var done = false;
-    var stateCount = new Int32Array(5);
-    var confirmed;
+    let done = false;
+    const stateCount = new Int32Array(5);
+    let confirmed;
     for (let i = iSkip - 1; i < maxI && !done; i += iSkip) {
       // Get a row of black/white values
       stateCount[0] = 0;
@@ -230,7 +230,7 @@ goog.scope(function() {
       }
     }
 
-    var patternInfo = this.selectBestPatterns(true);
+    const patternInfo = this.selectBestPatterns(true);
     ResultPoint.orderBestPatterns(patternInfo);
 
     return new FinderPatternInfo(patternInfo);
@@ -255,9 +255,9 @@ goog.scope(function() {
    * to the 1/1/3/1/1 ratios used by finder patterns to be considered a match.
    */
   _.foundPatternCross = function(stateCount) {
-    var totalModuleSize = 0;
+    let totalModuleSize = 0;
     for (let i = 0; i < 5; i++) {
-      let count = stateCount[i];
+      const count = stateCount[i];
       if (count === 0) {
         return false;
       }
@@ -266,8 +266,8 @@ goog.scope(function() {
     if (totalModuleSize < 7) {
       return false;
     }
-    var moduleSize = Math.floor((totalModuleSize << INTEGER_MATH_SHIFT) / 7);
-    var maxVariance = moduleSize >> 1;
+    const moduleSize = Math.floor((totalModuleSize << INTEGER_MATH_SHIFT) / 7);
+    const maxVariance = moduleSize >> 1;
     // Allow less than 50% variance from 1-1-3-1-1 proportions
     return Math.abs(moduleSize - (stateCount[0] << INTEGER_MATH_SHIFT)) <
       maxVariance &&
@@ -308,11 +308,11 @@ goog.scope(function() {
    * @private
    */
   pro.crossCheckDiagonal_ = function(startI, centerJ, maxCount, originalStateCountTotal) {
-    var image = this.image_;
-    var stateCount = this.getCrossCheckStateCount();
+    const image = this.image_;
+    const stateCount = this.getCrossCheckStateCount();
 
     // Start counting up, left from center finding black center mass
-    var i = 0;
+    let i = 0;
     while (startI >= i && centerJ >= i && image.get(centerJ - i, startI - i)) {
       stateCount[2]++;
       i++;
@@ -344,8 +344,8 @@ goog.scope(function() {
        return false;
     }
 
-    var maxI = image.getHeight();
-    var maxJ = image.getWidth();
+    const maxI = image.getHeight();
+    const maxJ = image.getWidth();
 
     // Now also count down, right from center
     i = 1;
@@ -381,7 +381,7 @@ goog.scope(function() {
 
     // If we found a finder-pattern-like section, but its size is more than
     // 100% different than the original, assume it's a false positive
-    var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] +
+    const stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] +
       stateCount[3] + stateCount[4];
     return Math.abs(stateCountTotal - originalStateCountTotal) < 2 *
       originalStateCountTotal && _.foundPatternCross(stateCount);
@@ -404,13 +404,13 @@ goog.scope(function() {
    */
   pro.crossCheckVertical = function(startI, centerJ, maxCount,
                                     originalStateCountTotal) {
-    var image = this.image_;
+    const image = this.image_;
 
-    var maxI = image.getHeight();
-    var stateCount = this.getCrossCheckStateCount();
+    const maxI = image.getHeight();
+    const stateCount = this.getCrossCheckStateCount();
 
     // Start counting up from center
-    var i = startI;
+    let i = startI;
     while (i >= 0 && image.get(centerJ, i)) {
       stateCount[2]++;
       i--;
@@ -464,7 +464,7 @@ goog.scope(function() {
 
     // If we found a finder-pattern-like section, but its size is more than
     // 40% different than the original, assume it's a false positive
-    var stateCountTotal = stateCount[0] + stateCount[1] +
+    const stateCountTotal = stateCount[0] + stateCount[1] +
       stateCount[2] + stateCount[3] +
       stateCount[4];
     if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >=
@@ -492,12 +492,12 @@ goog.scope(function() {
    */
   pro.crossCheckHorizontal = function(startJ, centerI, maxCount,
                                       originalStateCountTotal) {
-    var image = this.image_;
+    const image = this.image_;
 
-    var maxJ = image.getWidth();
-    var stateCount = this.getCrossCheckStateCount();
+    const maxJ = image.getWidth();
+    const stateCount = this.getCrossCheckStateCount();
 
-    var j = startJ;
+    let j = startJ;
     while (j >= 0 && image.get(j, centerI)) {
       stateCount[2]++;
       j--;
@@ -550,7 +550,7 @@ goog.scope(function() {
     // If we found a finder-pattern-like section, but its size is
     // significantly different than
     // the original, assume it's a false positive
-    var stateCountTotal = stateCount[0] + stateCount[1] +
+    const stateCountTotal = stateCount[0] + stateCount[1] +
       stateCount[2] + stateCount[3] + stateCount[4];
     if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >=
       originalStateCountTotal) {
@@ -581,10 +581,10 @@ goog.scope(function() {
    * @return {boolean} true if a finder pattern candidate was found this time.
    */
   pro.handlePossibleCenter = function(stateCount, i, j, pureBarcode) {
-    var stateCountTotal = stateCount[0] + stateCount[1] +
+    const stateCountTotal = stateCount[0] + stateCount[1] +
       stateCount[2] + stateCount[3] + stateCount[4];
-    var centerJ = this.centerFromEnd(stateCount, j);
-    var centerI = this.crossCheckVertical(i, Math.floor(centerJ),
+    let centerJ = this.centerFromEnd(stateCount, j);
+    const centerI = this.crossCheckVertical(i, Math.floor(centerJ),
       stateCount[2], stateCountTotal);
     if (!isNaN(centerI)) {
       // Re-cross check
@@ -594,10 +594,10 @@ goog.scope(function() {
           (!pureBarcode || this.crossCheckDiagonal_(
             Math.floor(centerI), Math.floor(centerJ), stateCount[2],
             stateCountTotal))) {
-        let estimatedModuleSize = stateCountTotal / 7.0;
+        const estimatedModuleSize = stateCountTotal / 7.0;
         let found = false;
         for (let index = 0; index < this.possibleCenters_.length; index++) {
-          let center = this.possibleCenters_[index];
+          const center = this.possibleCenters_[index];
           // Look for about the same center and module size:
           if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
             this.possibleCenters_[index] =
@@ -607,7 +607,7 @@ goog.scope(function() {
           }
         }
         if (!found) {
-          let point = new FinderPattern(centerJ, centerI, estimatedModuleSize);
+          const point = new FinderPattern(centerJ, centerI, estimatedModuleSize);
           this.possibleCenters_.push(point);
           if (this.resultPointCallback_ !== null) {
             this.resultPointCallback_(point);
@@ -626,13 +626,13 @@ goog.scope(function() {
    * lie below a certain point farther down in the image.
    */
   pro.findRowSkip = function() {
-    var max = this.possibleCenters_.length;
+    const max = this.possibleCenters_.length;
     if (max <= 1) {
       return 0;
     }
-    var firstConfirmedCenter = null;
+    let firstConfirmedCenter = null;
     for (let i = 0; i < this.possibleCenters_.length; ++i) {
-      let center = this.possibleCenters_[i];
+      const center = this.possibleCenters_[i];
       if (center.getCount() >= CENTER_QUORUM) {
         if (firstConfirmedCenter === null) {
           firstConfirmedCenter = center;
@@ -658,9 +658,9 @@ goog.scope(function() {
    * , the estimated module size of the candidates is "pretty similar".
    */
   pro.haveMultiplyConfirmedCenters = function() {
-    var confirmedCount = 0;
-    var totalModuleSize = 0.0;
-    var max = this.possibleCenters_.length;
+    let confirmedCount = 0;
+    let totalModuleSize = 0.0;
+    const max = this.possibleCenters_.length;
     for (let pattern of this.possibleCenters_) {
       if (pattern.getCount() >= CENTER_QUORUM) {
         confirmedCount++;
@@ -679,8 +679,8 @@ goog.scope(function() {
     // 5% of the total module size estimates, it's too much.
     // manu: Does it make sense to divide by max while counting
     // only those with >= CENTER_QUORUM.
-    var average = totalModuleSize / max;
-    var totalDeviation = 0.0;
+    const average = totalModuleSize / max;
+    let totalDeviation = 0.0;
     for (let pattern of this.possibleCenters_) {
       totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
     }
@@ -689,8 +689,8 @@ goog.scope(function() {
     }
 
     // Check skew of best patterns.
-    var centers = this.selectBestPatterns();
-    var skew = _.computeSkew(centers);
+    const centers = this.selectBestPatterns();
+    const skew = _.computeSkew(centers);
 
     return skew < SKEW_THRESHOLD;
   };
@@ -703,12 +703,12 @@ goog.scope(function() {
    * average among those patterns the least.
    */
   pro.selectBestPatterns = function(opt_checkSkew) {
-    var startSize = this.possibleCenters_.length;
+    const startSize = this.possibleCenters_.length;
     if (startSize < 3) {
       // Couldn't find enough finder patterns
       throw NotFoundException.getNotFoundInstance();
     }
-    var centers = goog.array.clone(this.possibleCenters_);
+    let centers = goog.array.clone(this.possibleCenters_);
 
     // Filter outlier possibilities whose module size is too different
     if (startSize > 3) {
@@ -716,21 +716,21 @@ goog.scope(function() {
       // to choose from
       let totalModuleSize = 0.0;
       let square = 0.0;
-      for (let center of centers) {
-        let size = center.getEstimatedModuleSize();
+      for (const center of centers) {
+        const size = center.getEstimatedModuleSize();
         totalModuleSize += size;
         square += size * size;
       }
-      let average = totalModuleSize / startSize;
-      let stdDev = Math.sqrt(square / startSize - average * average);
+      const average = totalModuleSize / startSize;
+      const stdDev = Math.sqrt(square / startSize - average * average);
 
       centers.sort(_.FurthestFromAverageComparator(average));
 
-      let limit = Math.max(0.2 * average, stdDev);
+      const limit = Math.max(0.2 * average, stdDev);
 
       for (let i = 0; i < centers.length &&
         centers.length > 3; i++) {
-        let pattern = centers[i];
+        const pattern = centers[i];
         if (Math.abs(pattern.getEstimatedModuleSize() - average) > limit) {
           goog.array.removeAt(centers, i);
           i--;
@@ -742,17 +742,17 @@ goog.scope(function() {
       // Throw away all but those first size candidate points we found.
 
       let totalModuleSize = 0.0;
-      for (let possibleCenter of centers) {
+      for (const possibleCenter of centers) {
         totalModuleSize += possibleCenter.getEstimatedModuleSize();
       }
 
-      let average = totalModuleSize / centers.length;
+      const average = totalModuleSize / centers.length;
 
       centers.sort(_.CenterComparator(average));
 
       if (opt_checkSkew) {
         // check skew error of first few sets.
-        let withSkew = _.getCombinations(centers).map(function(combination) {
+        const withSkew = _.getCombinations(centers).map(function(combination) {
           return {centers: combination,
             skew: _.computeSkew(combination)};
         });
@@ -775,8 +775,8 @@ goog.scope(function() {
    * @return {!Array.<!Array.<!FinderPattern>>} result.
    */
   _.getCombinations = function(centers) {
-    var len = centers.length;
-    var result = [];
+    const len = centers.length;
+    const result = [];
     SKEW_COMBINATIONS.forEach(function(indices) {
       if (indices[0] < len && indices[1] && len && indices[2] < len) {
         result.push([centers[indices[0]], centers[indices[1]],
@@ -798,8 +798,8 @@ goog.scope(function() {
      * @return {number}
      */
     function comparator(center1, center2) {
-      let dA = Math.abs(center2.getEstimatedModuleSize() - average);
-      let dB = Math.abs(center1.getEstimatedModuleSize() - average);
+      const dA = Math.abs(center2.getEstimatedModuleSize() - average);
+      const dB = Math.abs(center1.getEstimatedModuleSize() - average);
       return dA < dB ? -1 : dA === dB ? 0 : 1;
     }
 
@@ -819,8 +819,8 @@ goog.scope(function() {
      */
     function comparator(center1, center2) {
       if (center2.getCount() === center1.getCount()) {
-        let dA = Math.abs(center2.getEstimatedModuleSize() - average);
-        let dB = Math.abs(center1.getEstimatedModuleSize() - average);
+        const dA = Math.abs(center2.getEstimatedModuleSize() - average);
+        const dB = Math.abs(center1.getEstimatedModuleSize() - average);
         return dA < dB ? 1 : dA === dB ? 0 : -1;
       } else {
         return center2.getCount() - center1.getCount();
@@ -837,9 +837,9 @@ goog.scope(function() {
    * @return {!Array.<number>} result as array [x, y].
    */
   _.diff = function(pattern1, pattern2) {
-    var diffX = pattern1.getX() - pattern2.getX();
-    var diffY = pattern1.getY() - pattern2.getY();
-    var len = Math.sqrt(diffX * diffX + diffY * diffY);
+    const diffX = pattern1.getX() - pattern2.getX();
+    const diffY = pattern1.getY() - pattern2.getY();
+    const len = Math.sqrt(diffX * diffX + diffY * diffY);
     return [diffX / len, diffY / len];
   };
 
@@ -863,17 +863,17 @@ goog.scope(function() {
    * @return {number} skew error.
    */
   _.computeSkew = function(patterns) {
-    var diff01 = _.diff(patterns[0], patterns[1]);
-    var diff02 = _.diff(patterns[0], patterns[2]);
-    var diff12 = _.diff(patterns[1], patterns[2]);
+    const diff01 = _.diff(patterns[0], patterns[1]);
+    const diff02 = _.diff(patterns[0], patterns[2]);
+    const diff12 = _.diff(patterns[1], patterns[2]);
     /** @type {!Array.<number>} */
-    var scalars = [Math.abs(_.scalarProduct(diff01, diff02)),
+    const scalars = [Math.abs(_.scalarProduct(diff01, diff02)),
       Math.abs(_.scalarProduct(diff01, diff12)),
       Math.abs(_.scalarProduct(diff02, diff12))
     ];
 
     scalars.sort();
-    var error = scalars[0] +
+    const error = scalars[0] +
       Math.abs(scalars[1] - _.SQRT_05) +
       Math.abs(scalars[2] - _.SQRT_05);
     return error;

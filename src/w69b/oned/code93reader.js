@@ -79,20 +79,20 @@ goog.scope(function() {
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    var start = this.findAsteriskPattern_(row);
+    let start = this.findAsteriskPattern_(row);
     // Read off white space
-    var nextStart = row.getNextSet(start[1]);
-    var end = row.getSize();
+    let nextStart = row.getNextSet(start[1]);
+    let end = row.getSize();
 
-    var theCounters = this.counters_;
+    const theCounters = this.counters_;
     theCounters.fill(0);
-    var result = '';
+    let result = '';
 
-    var decodedChar;
-    var lastStart;
+    let decodedChar;
+    let lastStart;
     do {
       OneDReader.recordPattern(row, nextStart, theCounters);
-      let pattern = toPattern(theCounters);
+      const pattern = toPattern(theCounters);
       if (pattern < 0) {
         throw NotFoundException.getNotFoundInstance();
       }
@@ -107,8 +107,8 @@ goog.scope(function() {
     } while (decodedChar !== '*');
     result = result.slice(0, -1); // remove asterisk
 
-    var lastPatternSize = 0;
-    for (let counter of theCounters) {
+    let lastPatternSize = 0;
+    for (const counter of theCounters) {
       lastPatternSize += counter;
     }
 
@@ -126,10 +126,10 @@ goog.scope(function() {
     // Remove checksum digits
     result = result.slice(0, -2);
 
-    var resultString = Code93Reader.decodeExtended_(result);
+    const resultString = Code93Reader.decodeExtended_(result);
 
-    var left = (start[1] + start[0]) / 2.0;
-    var right = lastStart + lastPatternSize / 2.0;
+    const left = (start[1] + start[0]) / 2.0;
+    const right = lastStart + lastPatternSize / 2.0;
     return new Result(
         resultString,
         null,
@@ -145,16 +145,16 @@ goog.scope(function() {
    * @private
    */
   pro.findAsteriskPattern_ = function(row) {
-    var width = row.getSize();
-    var rowOffset = row.getNextSet(0);
+    const width = row.getSize();
+    const rowOffset = row.getNextSet(0);
 
     this.counters_.fill(0);
-    var theCounters = this.counters_;
-    var patternStart = rowOffset;
-    var isWhite = false;
-    var patternLength = theCounters.length;
+    const theCounters = this.counters_;
+    let patternStart = rowOffset;
+    let isWhite = false;
+    const patternLength = theCounters.length;
 
-    var counterPosition = 0;
+    let counterPosition = 0;
     for (let i = rowOffset; i < width; i++) {
       if (row.get(i) !== isWhite) {
         theCounters[counterPosition]++;
@@ -185,14 +185,14 @@ goog.scope(function() {
    * @private
    */
   function toPattern(counters) {
-    var sum = 0;
-    for (let counter of counters) {
+    let sum = 0;
+    for (const counter of counters) {
       sum += counter;
     }
-    var pattern = 0;
-    var max = counters.length;
+    let pattern = 0;
+    let max = counters.length;
     for (let i = 0; i < max; i++) {
-      let scaled = Math.round(counters[i] * 9.0 / sum);
+      const scaled = Math.round(counters[i] * 9.0 / sum);
       if (scaled < 1 || scaled > 4) {
         return -1;
       }
@@ -229,15 +229,15 @@ goog.scope(function() {
    * @private
    */
   Code93Reader.decodeExtended_ = function(encoded) {
-    var length = encoded.length;
-    var decoded = '';
+    const length = encoded.length;
+    let decoded = '';
     for (let i = 0; i < length; i++) {
-      let c = encoded.charAt(i);
+      const c = encoded.charAt(i);
       if (c >= 'a' && c <= 'd') {
         if (i >= length - 1) {
           throw FormatException.getFormatInstance();
         }
-        let next = encoded.charAt(i + 1);
+        const next = encoded.charAt(i + 1);
         let decodedChar = '\0';
         switch (c) {
           case 'd':
@@ -302,7 +302,7 @@ goog.scope(function() {
    * @throws {!ChecksumException}
    */
   function checkChecksums(result){
-    var length = result.length;
+    const length = result.length;
     checkOneChecksum(result, length - 2, 20);
     checkOneChecksum(result, length - 1, 15);
   }
@@ -314,8 +314,8 @@ goog.scope(function() {
    * @throws {!ChecksumException}
    */
   function checkOneChecksum(result, checkPosition, weightMax) {
-    var weight = 1;
-    var total = 0;
+    let weight = 1;
+    let total = 0;
     for (let i = checkPosition - 1; i >= 0; i--) {
       total += weight * Code93Reader.ALPHABET_STRING.indexOf(result.charAt(i));
       if (++weight > weightMax) {

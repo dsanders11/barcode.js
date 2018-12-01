@@ -55,13 +55,13 @@ goog.scope(function() {
    */
   ResultPoint.orderBestPatterns = function(patterns) {
     // Find distances between pattern centers
-    var zeroOneDistance = ResultPoint.distance(patterns[0], patterns[1]);
-    var oneTwoDistance = ResultPoint.distance(patterns[1], patterns[2]);
-    var zeroTwoDistance = ResultPoint.distance(patterns[0], patterns[2]);
+    const zeroOneDistance = ResultPoint.distance(patterns[0], patterns[1]);
+    const oneTwoDistance = ResultPoint.distance(patterns[1], patterns[2]);
+    const zeroTwoDistance = ResultPoint.distance(patterns[0], patterns[2]);
 
-    var pointA;
-    var pointB;
-    var pointC;
+    let pointA;
+    let pointB;
+    let pointC;
     // Assume one closest to other two is B; A and C will just be guesses at first
     if (oneTwoDistance >= zeroOneDistance && oneTwoDistance >= zeroTwoDistance) {
       pointB = patterns[0];
@@ -82,7 +82,7 @@ goog.scope(function() {
     // we want for A, B, C. If it's negative, then we've got it flipped around and
     // should swap A and C.
     if (ResultPoint.crossProductZ(pointA, pointB, pointC) < 0.0) {
-      let temp = pointA;
+      const temp = pointA;
       pointA = pointC;
       pointC = temp;
     }
@@ -109,8 +109,8 @@ goog.scope(function() {
    * @return {number}
    */
   ResultPoint.crossProductZ = function(pointA, pointB, pointC) {
-    var bX = pointB.x;
-    var bY = pointB.y;
+    const bX = pointB.x;
+    const bY = pointB.y;
     return ((pointC.x - bX) * (pointA.y - bY)) - ((pointC.y - bY) * (pointA.x - bX));
   };
 

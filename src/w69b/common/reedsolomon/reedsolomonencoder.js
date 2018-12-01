@@ -50,12 +50,12 @@ goog.scope(function() {
    * @return {!GenericGFPoly} generator.
    */
   pro.buildGenerator_ = function(degree) {
-    var field = this.field_;
-    var cachedGenerators = this.cachedGenerators_;
+    const field = this.field_;
+    const cachedGenerators = this.cachedGenerators_;
     if (degree >= cachedGenerators.length) {
       let lastGenerator = cachedGenerators[cachedGenerators.length - 1];
       for (let d = cachedGenerators.length; d <= degree; d++) {
-        let nextGenerator = lastGenerator.multiply1(
+        const nextGenerator = lastGenerator.multiply1(
             new GenericGFPoly(field, Int32Array.of(1, field.exp(d - 1 + field.getGeneratorBase()))));
         cachedGenerators.push(nextGenerator);
         lastGenerator = nextGenerator;
@@ -73,17 +73,17 @@ goog.scope(function() {
     if (ecBytes === 0) {
       throw new IllegalArgumentException('No error correction bytes');
     }
-    var dataBytes = toEncode.length - ecBytes;
+    const dataBytes = toEncode.length - ecBytes;
     if (dataBytes <= 0) {
       throw new IllegalArgumentException('No data bytes provided');
     }
-    var generator = this.buildGenerator_(ecBytes);
-    var infoCoefficients = toEncode.slice(0, dataBytes);
-    var info = new GenericGFPoly(this.field_, infoCoefficients);
+    const generator = this.buildGenerator_(ecBytes);
+    const infoCoefficients = toEncode.slice(0, dataBytes);
+    let info = new GenericGFPoly(this.field_, infoCoefficients);
     info = info.multiplyByMonomial(ecBytes, 1);
-    var remainder = info.divide(generator)[1];
-    var coefficients = remainder.getCoefficients();
-    var numZeroCoefficients = ecBytes - coefficients.length;
+    const remainder = info.divide(generator)[1];
+    const coefficients = remainder.getCoefficients();
+    const numZeroCoefficients = ecBytes - coefficients.length;
     for (let i = 0; i < numZeroCoefficients; i++) {
       toEncode[dataBytes + i] = 0;
     }

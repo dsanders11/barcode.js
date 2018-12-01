@@ -114,10 +114,10 @@ goog.scope(function() {
    * @const {!Array<!Int32Array>}
    */
   UPCEANReader.L_AND_G_PATTERNS = function() {
-    var temp = UPCEANReader.L_PATTERNS.slice();
+    const temp = UPCEANReader.L_PATTERNS.slice();
     for (let i = 10; i < 20; i++) {
-      let widths = UPCEANReader.L_PATTERNS[i - 10];
-      let reversedWidths = new Int32Array(widths.length);
+      const widths = UPCEANReader.L_PATTERNS[i - 10];
+      const reversedWidths = new Int32Array(widths.length);
       for (let j = 0; j < widths.length; j++) {
         reversedWidths[j] = widths[widths.length - j - 1];
       }
@@ -132,19 +132,19 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   UPCEANReader.findStartGuardPattern = function(row) {
-    var foundStart = false;
-    var startRange = null;
-    var nextStart = 0;
-    var counters = new Int32Array(START_END_PATTERN.length);
+    let foundStart = false;
+    let startRange = null;
+    let nextStart = 0;
+    const counters = new Int32Array(START_END_PATTERN.length);
     while (!foundStart) {
       counters.fill(0);
       startRange = UPCEANReader.findGuardPattern_(row, nextStart, false, START_END_PATTERN, counters);
-      let start = startRange[0];
+      const start = startRange[0];
       nextStart = startRange[1];
       // Make sure there is a quiet zone at least as big as the start pattern before the barcode.
       // If this check would run off the left edge of the image, do not accept this barcode,
       // as it is very likely to be a false positive.
-      let quietStart = start - (nextStart - start);
+      const quietStart = start - (nextStart - start);
       if (quietStart >= 0) {
         foundStart = row.isRange(quietStart, start, false);
       }
@@ -175,7 +175,7 @@ goog.scope(function() {
    * @throws {!FormatException} if a potential barcode is found but format is invalid
    */
   pro.decodeRow2 = function(rowNumber, row, startGuardRange, hints) {
-    var resultPointCallback = /** @type {(!w69b.ResultPointCallback|null)} */ (!hints ? null :
+    let resultPointCallback = /** @type {(!w69b.ResultPointCallback|null)} */ (!hints ? null :
         hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
 
     if (!resultPointCallback) {
@@ -188,9 +188,9 @@ goog.scope(function() {
       ));
     }
 
-    var result = this.decodeRowStringBuffer_;
+    const result = this.decodeRowStringBuffer_;
     result.setLength(0);
-    var endStart = this.decodeMiddle(row, startGuardRange, result);
+    const endStart = this.decodeMiddle(row, startGuardRange, result);
 
     if (resultPointCallback !== null) {
       resultPointCallback(new ResultPoint(
@@ -198,7 +198,7 @@ goog.scope(function() {
       ));
     }
 
-    var endRange = this.decodeEnd(row, endStart);
+    const endRange = this.decodeEnd(row, endStart);
 
     if (resultPointCallback !== null) {
       resultPointCallback(new ResultPoint(
@@ -209,13 +209,13 @@ goog.scope(function() {
 
     // Make sure there is a quiet zone at least as big as the end pattern after the barcode. The
     // spec might want more whitespace, but in practice this is the maximum we can count on.
-    var end = endRange[1];
-    var quietEnd = end + (end - endRange[0]);
+    const end = endRange[1];
+    const quietEnd = end + (end - endRange[0]);
     if (quietEnd >= row.getSize() || !row.isRange(end, quietEnd, false)) {
       throw NotFoundException.getNotFoundInstance();
     }
 
-    var resultString = result.toString();
+    const resultString = result.toString();
     // UPC/EAN should never be less than 8 chars anyway
     if (resultString.length < 8) {
       throw FormatException.getFormatInstance();
@@ -224,18 +224,18 @@ goog.scope(function() {
       throw ChecksumException.getChecksumInstance();
     }
 
-    var left = (startGuardRange[1] + startGuardRange[0]) / 2.0;
-    var right = (endRange[1] + endRange[0]) / 2.0;
-    var format = this.getBarcodeFormat();
-    var decodeResult = new Result(resultString,
+    const left = (startGuardRange[1] + startGuardRange[0]) / 2.0;
+    const right = (endRange[1] + endRange[0]) / 2.0;
+    const format = this.getBarcodeFormat();
+    const decodeResult = new Result(resultString,
         null, // no natural byte representation for these barcodes
         [new ResultPoint(left, rowNumber), new ResultPoint(right, rowNumber)],
         format);
 
-    var extensionLength = 0;
+    let extensionLength = 0;
 
     try {
-      let extensionResult = this.extensionReader_.decodeRow(rowNumber, row, endRange[1]);
+      const extensionResult = this.extensionReader_.decodeRow(rowNumber, row, endRange[1]);
       decodeResult.putMetadata(ResultMetadataType.UPC_EAN_EXTENSION, extensionResult.getText());
       decodeResult.putAllMetadata(extensionResult.getResultMetadata());
       decodeResult.addResultPoints(extensionResult.getResultPoints());
@@ -244,14 +244,14 @@ goog.scope(function() {
       // continue
     }
 
-    var allowedExtensions = /** @type {!Int32Array} */ (
+    let allowedExtensions = /** @type {!Int32Array} */ (
         !hints ? null : hints[DecodeHintType.ALLOWED_EAN_EXTENSIONS]);
     if (!allowedExtensions) {
       allowedExtensions = null;
     }
     if (allowedExtensions !== null) {
       let valid = false;
-      for (let length of allowedExtensions) {
+      for (const length of allowedExtensions) {
         if (extensionLength === length) {
           valid = true;
           break;
@@ -263,7 +263,7 @@ goog.scope(function() {
     }
 
     if (format === BarcodeFormat.EAN_13 || format === BarcodeFormat.UPC_A) {
-      let countryID = this.eanManSupport_.lookupCountryIdentifier(resultString);
+      const countryID = this.eanManSupport_.lookupCountryIdentifier(resultString);
       if (countryID !== null) {
         decodeResult.putMetadata(ResultMetadataType.POSSIBLE_COUNTRY, countryID);
       }
@@ -290,11 +290,11 @@ goog.scope(function() {
    * @throws {!FormatException} if the string does not contain only digits
    */
   UPCEANReader.checkStandardUPCEANChecksum = function(s) {
-    var length = s.length;
+    const length = s.length;
     if (length === 0) {
       return false;
     }
-    var check = Integer.parseInt(s.charAt(length - 1));
+    const check = Integer.parseInt(s.charAt(length - 1));
     return UPCEANReader.getStandardUPCEANChecksum(s.slice(0, length - 1)) === check;
   };
 
@@ -304,10 +304,10 @@ goog.scope(function() {
    * @throws {!FormatException}
    */
   UPCEANReader.getStandardUPCEANChecksum = function(s) {
-    var length = s.length;
-    var sum = 0;
+    const length = s.length;
+    let sum = 0;
     for (let i = length - 1; i >= 0; i -= 2) {
-      let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
+      const digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
       if (digit < 0 || digit > 9) {
         throw FormatException.getFormatInstance();
       }
@@ -315,7 +315,7 @@ goog.scope(function() {
     }
     sum *= 3;
     for (let i = length - 2; i >= 0; i -= 2) {
-      let digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
+      const digit = s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
       if (digit < 0 || digit > 9) {
         throw FormatException.getFormatInstance();
       }
@@ -358,12 +358,12 @@ goog.scope(function() {
    * @throws {!NotFoundException} if pattern is not found
    */
   UPCEANReader.findGuardPattern_ = function(row, rowOffset, whiteFirst, pattern, counters) {
-    var width = row.getSize();
+    const width = row.getSize();
     rowOffset = whiteFirst ? row.getNextUnset(rowOffset) : row.getNextSet(rowOffset);
-    var counterPosition = 0;
-    var patternStart = rowOffset;
-    var patternLength = pattern.length;
-    var isWhite = whiteFirst;
+    let counterPosition = 0;
+    let patternStart = rowOffset;
+    const patternLength = pattern.length;
+    let isWhite = whiteFirst;
     for (let x = rowOffset; x < width; x++) {
       if (row.get(x) !== isWhite) {
         counters[counterPosition]++;
@@ -401,12 +401,12 @@ goog.scope(function() {
    */
   UPCEANReader.decodeDigit = function(row, counters, rowOffset, patterns) {
     recordPattern(row, rowOffset, counters);
-    var bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
-    var bestMatch = -1;
-    var max = patterns.length;
+    let bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
+    let bestMatch = -1;
+    const max = patterns.length;
     for (let i = 0; i < max; i++) {
-      let pattern = patterns[i];
-      let variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
+      const pattern = patterns[i];
+      const variance = patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
       if (variance < bestVariance) {
         bestVariance = variance;
         bestMatch = i;

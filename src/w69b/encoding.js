@@ -25,9 +25,9 @@ goog.scope(function() {
    * @export
    */
   w69b.encoding.drawOnCanvas = function(content, format, canvas, opt_hints) {
-    var bitMatrix = new w69b.MultiFormatWriter().encode(
+    const bitMatrix = new w69b.MultiFormatWriter().encode(
       content, format, canvas.width, canvas.height, opt_hints);
-    var drawable = new w69b.ui.CanvasDrawable(canvas);
+    const drawable = new w69b.ui.CanvasDrawable(canvas);
     w69b.imgtools.renderToDrawable(bitMatrix, drawable);
   };
 
@@ -43,9 +43,9 @@ goog.scope(function() {
    * @export
    */
   w69b.encoding.drawAsSVG = function(content, format, width, height, opt_hints) {
-    var bitMatrix = new w69b.MultiFormatWriter().encode(
+    const bitMatrix = new w69b.MultiFormatWriter().encode(
       content, format, width, height, opt_hints);
-    var drawable = new SvgDrawable();
+    const drawable = new SvgDrawable();
     w69b.imgtools.renderToDrawable(bitMatrix, drawable);
     return drawable.toString();
   };
@@ -62,9 +62,9 @@ goog.scope(function() {
    * @export
    */
   w69b.encoding.drawAsEPS = function(content, format, width, height, opt_hints) {
-    var bitMatrix = new w69b.MultiFormatWriter().encode(
+    const bitMatrix = new w69b.MultiFormatWriter().encode(
       content, format, width, height, opt_hints);
-    var drawable = new EpsDrawable();
+    const drawable = new EpsDrawable();
     w69b.imgtools.renderToDrawable(bitMatrix, drawable);
     return drawable.toString();
   };

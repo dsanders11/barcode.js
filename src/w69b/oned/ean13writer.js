@@ -103,11 +103,11 @@ goog.scope(function() {
     }
 
 
-    var firstDigit = Character.digit(contents.charAt(0), 10);
-    var parities = EAN13Reader.FIRST_DIGIT_ENCODINGS[firstDigit];
+    const firstDigit = Character.digit(contents.charAt(0), 10);
+    let parities = EAN13Reader.FIRST_DIGIT_ENCODINGS[firstDigit];
     /** @type {!Array.<boolean>} */
-    var result = new Array(CODE_WIDTH);
-    var pos = 0;
+    const result = new Array(CODE_WIDTH);
+    let pos = 0;
 
     pos += appendPattern(result, pos, UPCEANReader.START_END_PATTERN, true);
 
@@ -123,7 +123,7 @@ goog.scope(function() {
     pos += appendPattern(result, pos, UPCEANReader.MIDDLE_PATTERN, false);
 
     for (let i = 7; i <= 12; i++) {
-      let digit = Character.digit(contents.charAt(i), 10);
+      const digit = Character.digit(contents.charAt(i), 10);
       pos += appendPattern(result, pos, UPCEANReader.L_PATTERNS[digit], true);
     }
     appendPattern(result, pos, UPCEANReader.START_END_PATTERN, true);

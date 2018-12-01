@@ -84,7 +84,7 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     // Check length
     if (length < 1 || length > 80) {
       throw new IllegalArgumentException(
@@ -107,15 +107,15 @@ goog.scope(function() {
     }
 
     /** @type {!Array.<!Int32Array>} */
-    var patterns = []; // temporary storage for patterns
-    var checkSum = 0;
-    var checkWeight = 1;
-    var codeSet = 0; // selected code (CODE_CODE_B or CODE_CODE_C)
-    var position = 0; // position in contents
+    const patterns = []; // temporary storage for patterns
+    let checkSum = 0;
+    let checkWeight = 1;
+    let codeSet = 0; // selected code (CODE_CODE_B or CODE_CODE_C)
+    let position = 0; // position in contents
 
     while (position < length) {
       //Select code to use
-      let newCodeSet = chooseCode(contents, position, codeSet);
+      const newCodeSet = chooseCode(contents, position, codeSet);
 
       //Get the pattern index
       let patternIndex;
@@ -181,18 +181,18 @@ goog.scope(function() {
     patterns.push(Code128Reader.CODE_PATTERNS[CODE_STOP]);
 
     // Compute code width
-    var codeWidth = 0;
-    for (let pattern of patterns) {
-      for (let width of pattern) {
+    let codeWidth = 0;
+    for (const pattern of patterns) {
+      for (const width of pattern) {
         codeWidth += width;
       }
     }
 
     // Compute result
     /** @type {!Array.<boolean>} */
-    var result = new Array(codeWidth);
-    var pos = 0;
-    for (let pattern of patterns) {
+    const result = new Array(codeWidth);
+    let pos = 0;
+    for (const pattern of patterns) {
       pos += OneDimensionalCodeWriter.appendPattern(result, pos, pattern, true);
     }
 
@@ -206,11 +206,11 @@ goog.scope(function() {
    * @private
    */
   function findCType(value, start) {
-    var last = value.length;
+    const last = value.length;
     if (start >= last) {
       return CType.UNCODABLE;
     }
-    var c = value.charAt(start);
+    let c = value.charAt(start);
     if (c === ESCAPE_FNC_1) {
       return CType.FNC_1;
     }
@@ -235,7 +235,7 @@ goog.scope(function() {
    * @private
    */
   function chooseCode(value, start, oldCode) {
-    var lookahead = findCType(value, start);
+    let lookahead = findCType(value, start);
     if (lookahead === CType.UNCODABLE || lookahead === CType.ONE_DIGIT) {
       return CODE_CODE_B; // no choice
     }

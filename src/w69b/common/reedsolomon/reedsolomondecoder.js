@@ -76,11 +76,11 @@ goog.scope(function() {
    * @throws {!ReedSolomonException}
    */
   pro.decode = function(received, twoS) {
-    var poly = new GenericGFPoly(this.field_, received);
-    var syndromeCoefficients = new Int32Array(twoS);
-    var noError = true;
+    const poly = new GenericGFPoly(this.field_, received);
+    const syndromeCoefficients = new Int32Array(twoS);
+    let noError = true;
     for (let i = 0; i < twoS; i++) {
-      let eval_ = poly.evaluateAt(this.field_.exp(i + this.field_.getGeneratorBase()));
+      const eval_ = poly.evaluateAt(this.field_.exp(i + this.field_.getGeneratorBase()));
       syndromeCoefficients[syndromeCoefficients.length - 1 - i] = eval_;
       if (eval_ !== 0) {
         noError = false;
@@ -89,13 +89,13 @@ goog.scope(function() {
     if (noError) {
       return;
     }
-    var syndrome = new GenericGFPoly(this.field_, syndromeCoefficients);
-    var sigmaOmega = this.runEuclideanAlgorithm(this.field_.buildMonomial(twoS,
+    const syndrome = new GenericGFPoly(this.field_, syndromeCoefficients);
+    const sigmaOmega = this.runEuclideanAlgorithm(this.field_.buildMonomial(twoS,
       1), syndrome, twoS);
-    var sigma = sigmaOmega[0];
-    var omega = sigmaOmega[1];
-    var errorLocations = this.findErrorLocations(sigma);
-    var errorMagnitudes = this.findErrorMagnitudes(omega, errorLocations);
+    const sigma = sigmaOmega[0];
+    const omega = sigmaOmega[1];
+    const errorLocations = this.findErrorLocations(sigma);
+    const errorMagnitudes = this.findErrorMagnitudes(omega, errorLocations);
     for (let i = 0; i < errorLocations.length; i++) {
       let position = received.length - 1 - this.field_.log(errorLocations[i]);
       if (position < 0) {
@@ -115,20 +115,20 @@ goog.scope(function() {
   pro.runEuclideanAlgorithm = function(a, b, R) {
     // Assume a's degree is >= b's
     if (a.getDegree() < b.getDegree()) {
-      let temp = a;
+      const temp = a;
       a = b;
       b = temp;
     }
 
-    var rLast = a;
-    var r = b;
-    var tLast = this.field_.getZero();
-    var t = this.field_.getOne();
+    let rLast = a;
+    let r = b;
+    let tLast = this.field_.getZero();
+    let t = this.field_.getOne();
 
     // Run Euclidean algorithm until r's degree is less than R/2
     while (r.getDegree() >= R >> 1) {
-      let rLastLast = rLast;
-      let tLastLast = tLast;
+      const rLastLast = rLast;
+      const tLastLast = tLast;
       rLast = r;
       tLast = t;
 
@@ -139,11 +139,11 @@ goog.scope(function() {
       }
       r = rLastLast;
       let q = this.field_.getZero();
-      let denominatorLeadingTerm = rLast.getCoefficient(rLast.getDegree());
-      let dltInverse = this.field_.inverse(denominatorLeadingTerm);
+      const denominatorLeadingTerm = rLast.getCoefficient(rLast.getDegree());
+      const dltInverse = this.field_.inverse(denominatorLeadingTerm);
       while (r.getDegree() >= rLast.getDegree() && !r.isZero()) {
-        let degreeDiff = r.getDegree() - rLast.getDegree();
-        let scale = this.field_.multiply(r.getCoefficient(r.getDegree()), dltInverse);
+        const degreeDiff = r.getDegree() - rLast.getDegree();
+        const scale = this.field_.multiply(r.getCoefficient(r.getDegree()), dltInverse);
         q = q.addOrSubtract(this.field_.buildMonomial(degreeDiff, scale));
         r = r.addOrSubtract(rLast.multiplyByMonomial(degreeDiff, scale));
       }
@@ -155,14 +155,14 @@ goog.scope(function() {
       }
     }
 
-    var sigmaTildeAtZero = t.getCoefficient(0);
+    const sigmaTildeAtZero = t.getCoefficient(0);
     if (sigmaTildeAtZero === 0) {
       throw new ReedSolomonException('sigmaTilde(0) was zero');
     }
 
-    var inverse = this.field_.inverse(sigmaTildeAtZero);
-    var sigma = t.multiply2(inverse);
-    var omega = r.multiply2(inverse);
+    const inverse = this.field_.inverse(sigmaTildeAtZero);
+    const sigma = t.multiply2(inverse);
+    const omega = r.multiply2(inverse);
     return [sigma, omega];
   };
 
@@ -173,12 +173,12 @@ goog.scope(function() {
    */
   pro.findErrorLocations = function(errorLocator) {
     // This is a direct application of Chien's search
-    var numErrors = errorLocator.getDegree();
+    const numErrors = errorLocator.getDegree();
     if (numErrors === 1) { // shortcut
       return Int32Array.of(errorLocator.getCoefficient(1));
     }
-    var result = new Int32Array(numErrors);
-    var e = 0;
+    const result = new Int32Array(numErrors);
+    let e = 0;
     for (let i = 1; i < this.field_.getSize() && e < numErrors; i++) {
       if (errorLocator.evaluateAt(i) === 0) {
         result[e] = this.field_.inverse(i);
@@ -198,13 +198,13 @@ goog.scope(function() {
    * @return {!Int32Array}
    */
   pro.findErrorMagnitudes = function(errorEvaluator, errorLocations) {
-    var field = this.field_;
+    const field = this.field_;
 
     // This is directly applying Forney's Formula
-    var s = errorLocations.length;
-    var result = new Int32Array(s);
+    const s = errorLocations.length;
+    const result = new Int32Array(s);
     for (let i = 0; i < s; i++) {
-      let xiInverse = field.inverse(errorLocations[i]);
+      const xiInverse = field.inverse(errorLocations[i]);
       let denominator = 1;
       for (let j = 0; j < s; j++) {
         if (i !== j) {
@@ -212,8 +212,8 @@ goog.scope(function() {
           //    GenericGF.addOrSubtract(1, field.multiply(errorLocations[j], xiInverse)));
           // Above should work but fails on some Apple and Linux JDKs due to a Hotspot bug.
           // Below is a funny-looking workaround from Steven Parkes
-          let term = field.multiply(errorLocations[j], xiInverse);
-          let termPlus1 = (term & 0x1) === 0 ? term | 1 : term & ~1;
+          const term = field.multiply(errorLocations[j], xiInverse);
+          const termPlus1 = (term & 0x1) === 0 ? term | 1 : term & ~1;
           denominator = field.multiply(denominator, termPlus1);
         }
       }

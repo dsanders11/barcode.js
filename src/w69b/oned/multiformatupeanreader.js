@@ -51,9 +51,9 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.MultiFormatUPCEANReader = function(hints) {
-    var possibleFormats = /** @type {?Array.<!BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
+    const possibleFormats = /** @type {?Array.<!BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
     /** @type {!ArrayList<!OneDReader>} */
-    var readers = new ArrayList();
+    const readers = new ArrayList();
 
     if (possibleFormats !== null) {
       if (possibleFormats.includes(BarcodeFormat.EAN_13)) {
@@ -90,8 +90,8 @@ goog.scope(function() {
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     // Compute this location once and reuse it on multiple implementations
-    var startGuardPattern = UPCEANReader.findStartGuardPattern(row);
-    for (let reader of this.readers_) {
+    const startGuardPattern = UPCEANReader.findStartGuardPattern(row);
+    for (const reader of this.readers_) {
       let result;
       try {
         result = reader.decodeRow2(rowNumber, row, startGuardPattern, hints);
@@ -114,15 +114,15 @@ goog.scope(function() {
       // result if appropriate.
       //
       // But, don't return UPC-A if UPC-A was not a requested format!
-      let ean13MayBeUPCA =
+      const ean13MayBeUPCA =
           result.getBarcodeFormat() === BarcodeFormat.EAN_13 &&
               result.getText().charAt(0) === '0';
-      let possibleFormats = /** @type {?Array.<!BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
-      let canReturnUPCA = possibleFormats === null || possibleFormats.includes(BarcodeFormat.UPC_A);
+      const possibleFormats = /** @type {?Array.<!BarcodeFormat>} */ (hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null);
+      const canReturnUPCA = possibleFormats === null || possibleFormats.includes(BarcodeFormat.UPC_A);
 
       if (ean13MayBeUPCA && canReturnUPCA) {
         // Transfer the metdata across
-        let resultUPCA = new Result(result.getText().substring(1),
+        const resultUPCA = new Result(result.getText().substring(1),
                                     result.getRawBytes(),
                                     result.getResultPoints(),
                                     BarcodeFormat.UPC_A);
@@ -139,7 +139,7 @@ goog.scope(function() {
    * @override
    */
   pro.reset = function() {
-    for (let reader of this.readers_) {
+    for (const reader of this.readers_) {
       reader.reset();
     }
   };

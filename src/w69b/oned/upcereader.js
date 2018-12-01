@@ -92,20 +92,20 @@ goog.scope(function() {
    * @override
    */
   pro.decodeMiddle = function(row, startRange, result) {
-    var counters = this.decodeMiddleCounters_;
+    const counters = this.decodeMiddleCounters_;
     counters[0] = 0;
     counters[1] = 0;
     counters[2] = 0;
     counters[3] = 0;
-    var end = row.getSize();
-    var rowOffset = startRange[1];
+    const end = row.getSize();
+    let rowOffset = startRange[1];
 
-    var lgPatternFound = 0;
+    let lgPatternFound = 0;
 
     for (let x = 0; x < 6 && rowOffset < end; x++) {
       let bestMatch = decodeDigit(row, counters, rowOffset, L_AND_G_PATTERNS);
       result.append(String.fromCharCode((('0').charCodeAt(0) + bestMatch % 10)));
-      for (let counter of counters) {
+      for (const counter of counters) {
         rowOffset += counter;
       }
       if (bestMatch >= 10) {
@@ -165,10 +165,10 @@ goog.scope(function() {
    * @return {string} equivalent UPC-A code as string of digits
    */
   UPCEReader.convertUPCEtoUPCA = function(upce) {
-    var upceChars = upce.slice(1, 7);
-    var result = new StringBuilder();
+    const upceChars = upce.slice(1, 7);
+    const result = new StringBuilder();
     result.append(upce.charAt(0));
-    var lastChar = upceChars[5];
+    const lastChar = upceChars[5];
     switch (lastChar) {
       case '0':
       case '1':

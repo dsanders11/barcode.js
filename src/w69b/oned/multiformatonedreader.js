@@ -52,10 +52,10 @@ goog.scope(function() {
    */
   w69b.oned.MultiFormatOneDReader = function(hints) {
     /** @type {?Array.<!BarcodeFormat>} */
-    var possibleFormats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
-    var useCode39CheckDigit = Boolean(hints !== null && hints[DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT]);
+    const possibleFormats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
+    const useCode39CheckDigit = Boolean(hints !== null && hints[DecodeHintType.ASSUME_CODE_39_CHECK_DIGIT]);
     /** @type {!ArrayList<!OneDReader>} */
-    var readers = new ArrayList();
+    const readers = new ArrayList();
 
     if (possibleFormats !== null) {
       if (possibleFormats.includes(BarcodeFormat.EAN_13) ||
@@ -103,7 +103,7 @@ goog.scope(function() {
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    for (let reader of this.readers_) {
+    for (const reader of this.readers_) {
       try {
         return reader.decodeRow(rowNumber, row, hints);
       } catch (err) {
@@ -122,7 +122,7 @@ goog.scope(function() {
    * @override
    */
   pro.reset = function() {
-    for (let reader of this.readers_) {
+    for (const reader of this.readers_) {
       reader.reset();
     }
   };

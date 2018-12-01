@@ -60,14 +60,14 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.decodeRow = function(rowNumber, row, extensionStartRange) {
-    var result = this.decodeRowStringBuffer_;
+    const result = this.decodeRowStringBuffer_;
     result.setLength(0);
-    var end = this.decodeMiddle_(row, extensionStartRange, result);
+    const end = this.decodeMiddle_(row, extensionStartRange, result);
 
-    var resultString = result.toString();
-    var extensionData = parseExtensionString(resultString);
+    const resultString = result.toString();
+    const extensionData = parseExtensionString(resultString);
 
-    var extensionResult =
+    const extensionResult =
         new Result(resultString,
                    null,
                    [
@@ -89,20 +89,20 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.decodeMiddle_ = function(row, startRange, resultString) {
-    var counters = this.decodeMiddleCounters_;
+    const counters = this.decodeMiddleCounters_;
     counters[0] = 0;
     counters[1] = 0;
     counters[2] = 0;
     counters[3] = 0;
-    var end = row.getSize();
-    var rowOffset = startRange[1];
+    const end = row.getSize();
+    let rowOffset = startRange[1];
 
-    var checkParity = 0;
+    let checkParity = 0;
 
     for (let x = 0; x < 2 && rowOffset < end; x++) {
-      let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
+      const bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
       resultString.append(String.fromCharCode('0'.charCodeAt(0) + bestMatch % 10));
-      for (let counter of counters) {
+      for (const counter of counters) {
         rowOffset += counter;
       }
       if (bestMatch >= 10) {
@@ -135,7 +135,7 @@ goog.scope(function() {
     if (raw.length !== 2) {
       return null;
     }
-    var result = {};
+    const result = {};
     result[ResultMetadataType.ISSUE_NUMBER] = raw;
     return result;
   }

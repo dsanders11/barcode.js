@@ -111,9 +111,9 @@ goog.scope(function() {
    * @protected
    */
   OneDReader.patternMatchVariance = function(counters, pattern, maxIndividualVariance) {
-    var numCounters = counters.length;
-    var total = 0;
-    var patternLength = 0;
+    const numCounters = counters.length;
+    let total = 0;
+    let patternLength = 0;
     for (let i = 0; i < numCounters; i++) {
       total += counters[i];
       patternLength += pattern[i];
@@ -124,14 +124,14 @@ goog.scope(function() {
       return Number.POSITIVE_INFINITY;
     }
 
-    var unitBarWidth = total / patternLength;
+    const unitBarWidth = total / patternLength;
     maxIndividualVariance *= unitBarWidth;
 
-    var totalVariance = 0.0;
+    let totalVariance = 0.0;
     for (let x = 0; x < numCounters; x++) {
-      let counter = counters[x];
-      let scaledPattern = pattern[x] * unitBarWidth;
-      let variance = counter > scaledPattern ? counter - scaledPattern : scaledPattern - counter;
+      const counter = counters[x];
+      const scaledPattern = pattern[x] * unitBarWidth;
+      const variance = counter > scaledPattern ? counter - scaledPattern : scaledPattern - counter;
       if (variance > maxIndividualVariance) {
         return Number.POSITIVE_INFINITY;
       }
@@ -149,8 +149,8 @@ goog.scope(function() {
    */
   OneDReader.recordPatternInReverse = function(row, start, counters) {
     // This could be more efficient I guess
-    var numTransitionsLeft = counters.length;
-    var last = row.get(start);
+    let numTransitionsLeft = counters.length;
+    let last = row.get(start);
     while (start > 0 && numTransitionsLeft >= 0) {
       if (row.get(--start) !== last) {
         numTransitionsLeft--;
@@ -179,15 +179,15 @@ goog.scope(function() {
    * @protected
    */
   OneDReader.recordPattern = function(row, start, counters) {
-    var numCounters = counters.length;
+    const numCounters = counters.length;
     counters.fill(0);
-    var end = row.getSize();
+    const end = row.getSize();
     if (start >= end) {
       throw NotFoundException.getNotFoundInstance();
     }
-    var isWhite = !row.get(start);
-    var counterPosition = 0;
-    var i = start;
+    let isWhite = !row.get(start);
+    let counterPosition = 0;
+    let i = start;
     while (i < end) {
       if (row.get(i) ^ isWhite) { // that is, exactly one is true
         counters[counterPosition]++;
@@ -226,14 +226,14 @@ goog.scope(function() {
    * @private
    */
   pro.doDecode_ = function(image, hints) {
-    var width = image.getWidth();
-    var height = image.getHeight();
-    var row = new BitArray(width);
+    const width = image.getWidth();
+    const height = image.getHeight();
+    let row = new BitArray(width);
 
-    var middle = height >> 1;
-    var tryHarder = hints !== null && !!hints[DecodeHintType.TRY_HARDER];
-    var rowStep = Math.max(1, height >> (tryHarder ? 8 : 5));
-    var maxLines;
+    const middle = height >> 1;
+    const tryHarder = hints !== null && !!hints[DecodeHintType.TRY_HARDER];
+    const rowStep = Math.max(1, height >> (tryHarder ? 8 : 5));
+    let maxLines;
     if (tryHarder) {
       maxLines = height; // Look at the whole image, not just the center
     } else {
@@ -242,9 +242,9 @@ goog.scope(function() {
 
     for (let x = 0; x < maxLines; x++) {
       // Scanning from the middle out. Determine which row we're looking at next:
-      let rowStepsAboveOrBelow = (x + 1) >> 1;
-      let isAbove = (x & 0x01) === 0; // i.e. is x even?
-      let rowNumber = Math.floor(middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow));
+      const rowStepsAboveOrBelow = (x + 1) >> 1;
+      const isAbove = (x & 0x01) === 0; // i.e. is x even?
+      const rowNumber = Math.floor(middle + rowStep * (isAbove ? rowStepsAboveOrBelow : -rowStepsAboveOrBelow));
       if (rowNumber < 0 || rowNumber >= height) {
         // Oops, if we run off the top or bottom, stop
         break;
@@ -271,20 +271,20 @@ goog.scope(function() {
           // that start on the center line.
           if (hints !== null && !!hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]) {
             //Map<DecodeHintType,Object> newHints = new EnumMap<>(DecodeHintType.class);
-            let newHints = Object.assign({}, hints);
+            const newHints = Object.assign({}, hints);
             delete newHints[DecodeHintType.NEED_RESULT_POINT_CALLBACK];
             hints = newHints;
           }
         }
         try {
           // Look for a barcode
-          let result = this.decodeRow(rowNumber, row, hints);
+          const result = this.decodeRow(rowNumber, row, hints);
           // We found our barcode
           if (attempt === 1) {
             // But it was upside down, so note that
             result.putMetadata(ResultMetadataType.ORIENTATION, 180);
             // And remember to flip the result points horizontally.
-            let points = result.getResultPoints();
+            const points = result.getResultPoints();
             if (points !== null) {
               points[0] = new ResultPoint(width - points[0].getX() - 1, points[0].getY());
               points[1] = new ResultPoint(width - points[1].getX() - 1, points[1].getY());

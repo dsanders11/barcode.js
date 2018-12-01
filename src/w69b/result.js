@@ -129,7 +129,7 @@ goog.scope(function() {
    * @param {!Array.<!ResultPoint>} newPoints
    */
   pro.addResultPoints = function(newPoints) {
-    var oldPoints = this.resultPoints_;
+    const oldPoints = this.resultPoints_;
     if (oldPoints === null) {
       this.resultPoints_ = newPoints;
     } else if (newPoints !== null && newPoints.length > 0) {

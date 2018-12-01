@@ -93,14 +93,14 @@ goog.scope(function() {
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    var counters = this.counters_;
-    var decodeRowResult = this.decodeRowResult_;
+    const counters = this.counters_;
+    const decodeRowResult = this.decodeRowResult_;
     const counterLength = this.counterLength_;
 
     counters.fill(0);
     this.setCounters_(row);
-    var startOffset = this.findStartPattern_();
-    var nextStart = startOffset;
+    const startOffset = this.findStartPattern_();
+    let nextStart = startOffset;
 
     decodeRowResult.setLength(0);
     do {
@@ -121,8 +121,8 @@ goog.scope(function() {
     } while (nextStart < counterLength); // no fixed end pattern so keep on reading while data is available
 
     // Look for whitespace after pattern:
-    var trailingWhitespace = counters[nextStart - 1];
-    var lastPatternSize = 0;
+    const trailingWhitespace = counters[nextStart - 1];
+    let lastPatternSize = 0;
     for (let i = -8; i < -1; i++) {
       lastPatternSize += counters[nextStart + i];
     }
@@ -141,11 +141,11 @@ goog.scope(function() {
       decodeRowResult.setCharAt(i, CodaBarReader.ALPHABET[decodeRowResult.charAt(i).charCodeAt(0)]);
     }
     // Ensure a valid start and end character
-    var startchar = decodeRowResult.charAt(0);
+    const startchar = decodeRowResult.charAt(0);
     if (!STARTEND_ENCODING.includes(startchar)) {
       throw NotFoundException.getNotFoundInstance();
     }
-    var endchar = decodeRowResult.charAt(decodeRowResult.length() - 1);
+    const endchar = decodeRowResult.charAt(decodeRowResult.length() - 1);
     if (!STARTEND_ENCODING.includes(endchar)) {
       throw NotFoundException.getNotFoundInstance();
     }
@@ -161,15 +161,15 @@ goog.scope(function() {
       decodeRowResult.deleteCharAt(0);
     }
 
-    var runningCount = 0;
+    let runningCount = 0;
     for (let i = 0; i < startOffset; i++) {
       runningCount += counters[i];
     }
-    var left = runningCount;
+    const left = runningCount;
     for (let i = startOffset; i < nextStart - 1; i++) {
       runningCount += counters[i];
     }
-    var right = runningCount;
+    const right = runningCount;
     return new Result(
         decodeRowResult.toString(),
         null,
@@ -182,23 +182,23 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.validatePattern_ = function(start) {
-    var counters = this.counters_;
-    var decodeRowResult = this.decodeRowResult_;
+    const counters = this.counters_;
+    const decodeRowResult = this.decodeRowResult_;
 
     // First, sum up the total size of our four categories of stripe sizes;
-    var sizes = Int32Array.of(0, 0, 0, 0);
-    var counts = Int32Array.of(0, 0, 0, 0);
-    var end = decodeRowResult.length() - 1;
+    const sizes = Int32Array.of(0, 0, 0, 0);
+    const counts = Int32Array.of(0, 0, 0, 0);
+    const end = decodeRowResult.length() - 1;
 
     // We break out of this loop in the middle, in order to handle
     // inter-character spaces properly.
-    var pos = start;
+    let pos = start;
     for (let i = 0; true; i++) {
       let pattern = CodaBarReader.CHARACTER_ENCODINGS[decodeRowResult.charAt(i).charCodeAt(0)];
       for (let j = 6; j >= 0; j--) {
         // Even j = bars, while odd j = spaces. Categories 2 and 3 are for
         // long stripes, while 0 and 1 are for short stripes.
-        let category = (j & 1) + (pattern & 1) * 2;
+        const category = (j & 1) + (pattern & 1) * 2;
         sizes[category] += counters[pos + j];
         counts[category]++;
         pattern >>= 1;
@@ -211,8 +211,8 @@ goog.scope(function() {
     }
 
     // Calculate our allowable size thresholds using fixed-point math.
-    var maxes = new Float32Array(4);
-    var mins = new Float32Array(4);
+    const maxes = new Float32Array(4);
+    const mins = new Float32Array(4);
     // Define the threshold of acceptability to be the midpoint between the
     // average small stripe and the average large stripe. No stripe lengths
     // should be on the "wrong" side of that line.
@@ -230,8 +230,8 @@ goog.scope(function() {
       for (let j = 6; j >= 0; j--) {
         // Even j = bars, while odd j = spaces. Categories 2 and 3 are for
         // long stripes, while 0 and 1 are for short stripes.
-        let category = (j & 1) + (pattern & 1) * 2;
-        let size = counters[pos + j];
+        const category = (j & 1) + (pattern & 1) * 2;
+        const size = counters[pos + j];
         if (size < mins[category] || size > maxes[category]) {
           throw NotFoundException.getNotFoundInstance();
         }
@@ -254,13 +254,13 @@ goog.scope(function() {
   pro.setCounters_ = function(row) {
     this.counterLength_ = 0;
     // Start from the first white bit.
-    var i = row.getNextUnset(0);
-    var end = row.getSize();
+    let i = row.getNextUnset(0);
+    const end = row.getSize();
     if (i >= end) {
       throw NotFoundException.getNotFoundInstance();
     }
-    var isWhite = true;
-    var count = 0;
+    let isWhite = true;
+    let count = 0;
     while (i < end) {
       if (row.get(i) !== isWhite) {
         count++;
@@ -278,12 +278,12 @@ goog.scope(function() {
    * @param {number} e
    */
   pro.counterAppend_ = function(e) {
-    var counters = this.counters_;
+    const counters = this.counters_;
 
     counters[this.counterLength_] = e;
     this.counterLength_++;
     if (this.counterLength_ >= counters.length) {
-      let temp = new Int32Array(this.counterLength_ * 2);
+      const temp = new Int32Array(this.counterLength_ * 2);
       temp.set(counters);
       this.counters_ = temp;
     }
@@ -294,7 +294,7 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.findStartPattern_ = function() {
-    var counters = this.counters_;
+    const counters = this.counters_;
     const counterLength = this.counterLength_;
 
     for (let i = 1; i < counterLength; i += 2) {
@@ -320,18 +320,18 @@ goog.scope(function() {
    * @return {number}
    */
   pro.toNarrowWidePattern_ = function(position) {
-    var counters = this.counters_;
+    const counters = this.counters_;
     const counterLength = this.counterLength_;
 
-    var end = position + 7;
+    const end = position + 7;
     if (end >= counterLength) {
       return -1;
     }
 
-    var theCounters = counters;
+    const theCounters = counters;
 
-    var maxBar = 0;
-    var minBar = Integer.MAX_VALUE;
+    let maxBar = 0;
+    let minBar = Integer.MAX_VALUE;
     for (let j = position; j < end; j += 2) {
       let currentCounter = theCounters[j];
       if (currentCounter < minBar) {
@@ -341,10 +341,10 @@ goog.scope(function() {
         maxBar = currentCounter;
       }
     }
-    var thresholdBar = (minBar + maxBar) >> 1;
+    const thresholdBar = (minBar + maxBar) >> 1;
 
-    var maxSpace = 0;
-    var minSpace = Integer.MAX_VALUE;
+    let maxSpace = 0;
+    let minSpace = Integer.MAX_VALUE;
     for (let j = position + 1; j < end; j += 2) {
       let currentCounter = theCounters[j];
       if (currentCounter < minSpace) {
@@ -354,10 +354,10 @@ goog.scope(function() {
         maxSpace = currentCounter;
       }
     }
-    var thresholdSpace = (minSpace + maxSpace) >> 1;
+    const thresholdSpace = (minSpace + maxSpace) >> 1;
 
-    var bitmask = 1 << 7;
-    var pattern = 0;
+    let bitmask = 1 << 7;
+    let pattern = 0;
     for (let i = 0; i < 7; i++) {
       let threshold = (i & 1) === 0 ? thresholdBar : thresholdSpace;
       bitmask >>= 1;

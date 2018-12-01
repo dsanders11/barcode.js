@@ -70,7 +70,7 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     switch (length) {
       case 7:
         // No check digit present, calculate it and add it
@@ -104,16 +104,16 @@ goog.scope(function() {
             "Requested contents should be 8 digits long, but got " + length);
     }
 
-    var firstDigit = Character.digit(contents.charAt(0), 10);
+    const firstDigit = Character.digit(contents.charAt(0), 10);
     if (firstDigit !== 0 && firstDigit !== 1) {
       throw new IllegalArgumentException("Number system must be 0 or 1");
     }
 
-    var checkDigit = Character.digit(contents.charAt(7), 10);
-    var parities = UPCEReader.NUMSYS_AND_CHECK_DIGIT_PATTERNS[firstDigit][checkDigit];
+    const checkDigit = Character.digit(contents.charAt(7), 10);
+    const parities = UPCEReader.NUMSYS_AND_CHECK_DIGIT_PATTERNS[firstDigit][checkDigit];
     /** @type {!Array.<boolean>} */
-    var result = new Array(CODE_WIDTH);
-    var pos = 0;
+    const result = new Array(CODE_WIDTH);
+    let pos = 0;
 
     pos += appendPattern(result, pos, UPCEANReader.START_END_PATTERN, true);
 

@@ -68,8 +68,8 @@ goog.scope(function() {
       throw new IllegalArgumentException("Requested dimensions are too small: " + width + 'x' + height);
     }
 
-    var errorCorrectionLevel = ErrorCorrectionLevel.L;
-    var quietZone = QUIET_ZONE_SIZE;
+    let errorCorrectionLevel = ErrorCorrectionLevel.L;
+    let quietZone = QUIET_ZONE_SIZE;
     if (opt_hints) {
       if (!!opt_hints[EncodeHintType.ERROR_CORRECTION]) {
         errorCorrectionLevel = ErrorCorrectionLevel.getByName(opt_hints[EncodeHintType.ERROR_CORRECTION].toString());
@@ -79,7 +79,7 @@ goog.scope(function() {
       }
     }
 
-    var code = Encoder.encode(contents, errorCorrectionLevel, opt_hints);
+    const code = Encoder.encode(contents, errorCorrectionLevel, opt_hints);
     return renderResult(code, width, height, quietZone);
   };
 
@@ -94,27 +94,27 @@ goog.scope(function() {
    * @throws {!IllegalStateException}
    */
   function renderResult(code, width, height, quietZone) {
-    var input = code.getMatrix();
+    const input = code.getMatrix();
     if (input === null) {
       throw new IllegalStateException();
     }
-    var inputWidth = input.getWidth();
-    var inputHeight = input.getHeight();
-    var qrWidth = inputWidth + (quietZone << 1);
-    var qrHeight = inputHeight + (quietZone << 1);
-    var outputWidth = Math.max(width, qrWidth);
-    var outputHeight = Math.max(height, qrHeight);
+    const inputWidth = input.getWidth();
+    const inputHeight = input.getHeight();
+    const qrWidth = inputWidth + (quietZone << 1);
+    const qrHeight = inputHeight + (quietZone << 1);
+    const outputWidth = Math.max(width, qrWidth);
+    const outputHeight = Math.max(height, qrHeight);
 
-    var multiple = Math.floor(Math.min(outputWidth / qrWidth, outputHeight / qrHeight));
+    const multiple = Math.floor(Math.min(outputWidth / qrWidth, outputHeight / qrHeight));
     // Padding includes both the quiet zone and the extra white pixels to accommodate
     // the requested dimensions. For example, if input is 25x25 the QR will be
     // 33x33 including the quiet zone. If the requested size is 200x160, the
     // multiple will be 4, for a QR of 132x132. These will handle all the padding
     // from 100x100 (the actual QR) up to 200x160.
-    var leftPadding = (outputWidth - (inputWidth * multiple)) >> 1;
-    var topPadding = (outputHeight - (inputHeight * multiple)) >> 1;
+    const leftPadding = (outputWidth - (inputWidth * multiple)) >> 1;
+    const topPadding = (outputHeight - (inputHeight * multiple)) >> 1;
 
-    var output = new BitMatrix(outputWidth, outputHeight);
+    const output = new BitMatrix(outputWidth, outputHeight);
 
     for (let inputY = 0, outputY = topPadding; inputY < inputHeight; inputY++, outputY += multiple) {
       // Write the contents of this row of the barcode

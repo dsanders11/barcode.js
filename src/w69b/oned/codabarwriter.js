@@ -54,12 +54,12 @@ goog.scope(function() {
       contents = DEFAULT_GUARD + contents + DEFAULT_GUARD;
     } else {
       // Verify input and calculate decoded length.
-      let firstChar = contents.charAt(0).toUpperCase();
-      let lastChar = contents.charAt(contents.length - 1).toUpperCase();
-      let startsNormal = START_END_CHARS.includes(firstChar);
-      let endsNormal = START_END_CHARS.includes(lastChar);
-      let startsAlt = ALT_START_END_CHARS.includes(firstChar);
-      let endsAlt = ALT_START_END_CHARS.includes(lastChar);
+      const firstChar = contents.charAt(0).toUpperCase();
+      const lastChar = contents.charAt(contents.length - 1).toUpperCase();
+      const startsNormal = START_END_CHARS.includes(firstChar);
+      const endsNormal = START_END_CHARS.includes(lastChar);
+      const startsAlt = ALT_START_END_CHARS.includes(firstChar);
+      const endsAlt = ALT_START_END_CHARS.includes(lastChar);
       if (startsNormal) {
         if (!endsNormal) {
           throw new IllegalArgumentException("Invalid start/end guards: " + contents);
@@ -81,7 +81,7 @@ goog.scope(function() {
     }
 
     // The start character and the end character are decoded to 10 length each.
-    var resultLength = 20;
+    let resultLength = 20;
     for (let i = 1; i < contents.length - 1; i++) {
       if (isDigit(contents.charAt(i)) || contents.charAt(i) === '-' || contents.charAt(i) === '$') {
         resultLength += 9;
@@ -95,8 +95,8 @@ goog.scope(function() {
     resultLength += contents.length - 1;
 
     /** @type {!Array.<boolean>} */
-    var result = new Array(resultLength);
-    var position = 0;
+    const result = new Array(resultLength);
+    let position = 0;
     for (let index = 0; index < contents.length; index++) {
       let c = contents.charAt(index).toUpperCase();
       if (index === 0 || index === contents.length - 1) {

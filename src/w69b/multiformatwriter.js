@@ -62,7 +62,7 @@ goog.scope(function() {
    */
   pro.encode = function(contents, format, width, height, opt_hints) {
     /** @type {?Writer} */
-    var writer = null;
+    let writer = null;
 
     switch (format) {
       case BarcodeFormat.EAN_8:

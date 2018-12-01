@@ -116,16 +116,16 @@ goog.scope(function() {
    */
   pro.decodeRow = function(rowNumber, row, hints) {
     // Find out where the Middle section (payload) starts & ends
-    var startRange = this.decodeStart_(row);
-    var endRange = this.decodeEnd_(row);
+    const startRange = this.decodeStart_(row);
+    const endRange = this.decodeEnd_(row);
 
     /** @type {!Array.<string>} */
-    var result = [];
+    const result = [];
     ITFReader.decodeMiddle_(row, startRange[1], endRange[0], result);
-    var resultString = result.join('');
+    let resultString = result.join('');
 
     /** @type {?Int32Array} */
-    var allowedLengths = null;
+    let allowedLengths = null;
     if (hints !== null) {
       allowedLengths = /** @type {?Int32Array} */ (hints[DecodeHintType.ALLOWED_LENGTHS] || null);
 
@@ -136,10 +136,10 @@ goog.scope(function() {
 
     // To avoid false positives with 2D barcodes (and other patterns), make
     // an assumption that the decoded string must be a 'standard' length if it's short
-    var length = resultString.length;
-    var lengthOK = false;
-    var maxAllowedLength = 0;
-    for (let allowedLength of allowedLengths) {
+    const length = resultString.length;
+    let lengthOK = false;
+    let maxAllowedLength = 0;
+    for (const allowedLength of allowedLengths) {
       if (length === allowedLength) {
         lengthOK = true;
         break;
@@ -176,16 +176,16 @@ goog.scope(function() {
     // interleaved white lines for the second digit.
     // Therefore, need to scan 10 lines and then
     // split these into two arrays
-    var counterDigitPair = new Int32Array(10);
-    var counterBlack = new Int32Array(5);
-    var counterWhite = new Int32Array(5);
+    const counterDigitPair = new Int32Array(10);
+    const counterBlack = new Int32Array(5);
+    const counterWhite = new Int32Array(5);
 
     while (payloadStart < payloadEnd) {
       // Get 10 runs of black/white.
       OneDReader.recordPattern(row, payloadStart, counterDigitPair);
       // Split them into each array
       for (let k = 0; k < 5; k++) {
-        let twoK = 2 * k;
+        const twoK = 2 * k;
         counterBlack[k] = counterDigitPair[twoK];
         counterWhite[k] = counterDigitPair[twoK + 1];
       }
@@ -195,7 +195,7 @@ goog.scope(function() {
       bestMatch = ITFReader.decodeDigit_(counterWhite);
       resultString.push(String.fromCharCode('0'.charCodeAt(0) + bestMatch));
 
-      for (let counterDigit of counterDigitPair) {
+      for (const counterDigit of counterDigitPair) {
         payloadStart += counterDigit;
       }
     }
@@ -210,8 +210,8 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.decodeStart_ = function(row) {
-    var endStart = skipWhiteSpace_(row);
-    var startPattern = ITFReader.findGuardPattern_(row, endStart, START_PATTERN);
+    const endStart = skipWhiteSpace_(row);
+    const startPattern = ITFReader.findGuardPattern_(row, endStart, START_PATTERN);
 
     // Determine the width of a narrow line in pixels. We can do this by
     // getting the width of the start pattern and dividing by 4 because its
@@ -240,7 +240,7 @@ goog.scope(function() {
    */
   pro.validateQuietZone_ = function(row, startPattern) {
     // expect to find this many pixels of quiet zone
-    var quietCount = this.narrowLineWidth * 10;
+    let quietCount = this.narrowLineWidth * 10;
 
     // if there are not so many pixel at all let's try as many as possible
     quietCount = quietCount < startPattern ? quietCount : startPattern;
@@ -266,8 +266,8 @@ goog.scope(function() {
    *                              in the row
    */
   function skipWhiteSpace_(row) {
-    var width = row.getSize();
-    var endStart = row.getNextSet(0);
+    const width = row.getSize();
+    const endStart = row.getNextSet(0);
     if (endStart === width) {
       throw NotFoundException.getNotFoundInstance();
     }
@@ -287,8 +287,8 @@ goog.scope(function() {
     // search from 'the start' for the end block
     row.reverse();
     try {
-      let endStart = skipWhiteSpace_(row);
-      let endPattern = ITFReader.findGuardPattern_(row, endStart, END_PATTERN_REVERSED);
+      const endStart = skipWhiteSpace_(row);
+      const endPattern = ITFReader.findGuardPattern_(row, endStart, END_PATTERN_REVERSED);
 
       // The start & end patterns must be pre/post fixed by a quiet zone. This
       // zone must be at least 10 times the width of a narrow line.
@@ -298,7 +298,7 @@ goog.scope(function() {
       // Now recalculate the indices of where the 'endblock' starts & stops to
       // accommodate
       // the reversed nature of the search
-      let temp = endPattern[0];
+      const temp = endPattern[0];
       endPattern[0] = row.getSize() - endPattern[1];
       endPattern[1] = row.getSize() - temp;
 
@@ -319,13 +319,13 @@ goog.scope(function() {
    * @throws {!NotFoundException} if pattern is not found
    */
   ITFReader.findGuardPattern_ = function(row, rowOffset, pattern) {
-    var patternLength = pattern.length;
-    var counters = new Int32Array(patternLength);
-    var width = row.getSize();
-    var isWhite = false;
+    const patternLength = pattern.length;
+    const counters = new Int32Array(patternLength);
+    const width = row.getSize();
+    let isWhite = false;
 
-    var counterPosition = 0;
-    var patternStart = rowOffset;
+    let counterPosition = 0;
+    let patternStart = rowOffset;
     for (let x = rowOffset; x < width; x++) {
       if (row.get(x) !== isWhite) {
         counters[counterPosition]++;
@@ -360,12 +360,12 @@ goog.scope(function() {
    * @throws {!NotFoundException} if digit cannot be decoded
    */
   ITFReader.decodeDigit_ = function(counters) {
-    var bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
-    var bestMatch = -1;
-    var max = ITFReader.PATTERNS.length;
+    let bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
+    let bestMatch = -1;
+    const max = ITFReader.PATTERNS.length;
     for (let i = 0; i < max; i++) {
-      let pattern = ITFReader.PATTERNS[i];
-      let variance = OneDReader.patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
+      const pattern = ITFReader.PATTERNS[i];
+      const variance = OneDReader.patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
       if (variance < bestVariance) {
         bestVariance = variance;
         bestMatch = i;

@@ -106,12 +106,12 @@ goog.scope(function() {
    * @private
    */
   Code39Reader.toNarrowWidePattern_ = function(counters) {
-    var numCounters = counters.length;
-    var maxNarrowCounter = 0;
-    var wideCounters;
+    const numCounters = counters.length;
+    let maxNarrowCounter = 0;
+    let wideCounters;
     do {
       let minCounter = Integer.MAX_VALUE;
-      for (let counter of counters) {
+      for (const counter of counters) {
         if (counter < minCounter && counter > maxNarrowCounter) {
           minCounter = counter;
         }
@@ -121,7 +121,7 @@ goog.scope(function() {
       let totalWideCountersWidth = 0;
       let pattern = 0;
       for (let i = 0; i < numCounters; i++) {
-        let counter = counters[i];
+        const counter = counters[i];
         if (counter > maxNarrowCounter) {
           pattern |= 1 << (numCounters - 1 - i);
           wideCounters++;
@@ -133,7 +133,7 @@ goog.scope(function() {
         // We can perform a cheap, conservative check to see if any individual
         // counter is more than 1.5 times the average:
         for (let i = 0; i < numCounters && wideCounters > 0; i++) {
-          let counter = counters[i];
+          const counter = counters[i];
           if (counter > maxNarrowCounter) {
             wideCounters--;
             // totalWideCountersWidth = 3 * average, so this checks if counter >= 3/2 * average
@@ -152,19 +152,19 @@ goog.scope(function() {
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    var theCounters = this.counters_;
+    const theCounters = this.counters_;
     theCounters.fill(0);
-    var result = '';
+    let result = '';
     //StringBuilder result = decodeRowResult;
     //result.setLength(0);
 
-    var start = Code39Reader.findAsteriskPattern_(row, theCounters);
+    let start = Code39Reader.findAsteriskPattern_(row, theCounters);
     // Read off white space
-    var nextStart = row.getNextSet(start[1]);
-    var end = row.getSize();
+    let nextStart = row.getNextSet(start[1]);
+    let end = row.getSize();
 
-    var decodedChar;
-    var lastStart;
+    let decodedChar;
+    let lastStart;
     do {
       OneDReader.recordPattern(row, nextStart, theCounters);
       let pattern = Code39Reader.toNarrowWidePattern_(theCounters);
@@ -174,7 +174,7 @@ goog.scope(function() {
       decodedChar = Code39Reader.patternToChar_(pattern);
       result += decodedChar;
       lastStart = nextStart;
-      for (let counter of theCounters) {
+      for (const counter of theCounters) {
         nextStart += counter;
       }
       // Read off white space
@@ -183,11 +183,11 @@ goog.scope(function() {
     result = result.slice(0, -1); // remove asterisk
 
     // Look for whitespace after pattern:
-    var lastPatternSize = 0;
-    for (let counter of theCounters) {
+    let lastPatternSize = 0;
+    for (const counter of theCounters) {
       lastPatternSize += counter;
     }
-    var whiteSpaceAfterEnd = nextStart - lastStart - lastPatternSize;
+    const whiteSpaceAfterEnd = nextStart - lastStart - lastPatternSize;
     // If 50% of last pattern size, following last pattern, is not whitespace, fail
     // (but if it's whitespace to the very end of the image, that's OK)
     if (nextStart !== end && (whiteSpaceAfterEnd * 2) < lastPatternSize) {
@@ -211,15 +211,15 @@ goog.scope(function() {
       throw NotFoundException.getNotFoundInstance();
     }
 
-    var resultString;
+    let resultString;
     if (this.extendedMode_) {
       resultString = Code39Reader.decodeExtended_(result);
     } else {
       resultString = result;
     }
 
-    var left = (start[1] + start[0]) / 2.0;
-    var right = lastStart + lastPatternSize / 2.0;
+    const left = (start[1] + start[0]) / 2.0;
+    const right = lastStart + lastPatternSize / 2.0;
     return new Result(
         resultString,
         null,
@@ -235,13 +235,13 @@ goog.scope(function() {
    * @private
    */
   Code39Reader.findAsteriskPattern_ = function(row, counters) {
-    var width = row.getSize();
-    var rowOffset = row.getNextSet(0);
+    const width = row.getSize();
+    const rowOffset = row.getNextSet(0);
 
-    var counterPosition = 0;
-    var patternStart = rowOffset;
-    var isWhite = false;
-    var patternLength = counters.length;
+    let counterPosition = 0;
+    let patternStart = rowOffset;
+    let isWhite = false;
+    const patternLength = counters.length;
 
     for (let i = rowOffset; i < width; i++) {
       if (row.get(i) ^ isWhite) {
@@ -276,8 +276,8 @@ goog.scope(function() {
    * @private
    */
   Code39Reader.decodeExtended_ = function(encoded) {
-    var length = encoded.length;
-    var decoded = '';
+    const length = encoded.length;
+    let decoded = '';
     for (let i = 0; i < length; i++) {
       let c = encoded.charAt(i);
       if (c === '+' || c === '$' || c === '%' || c === '/') {

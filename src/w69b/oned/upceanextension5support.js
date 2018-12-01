@@ -64,14 +64,14 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.decodeRow = function(rowNumber, row, extensionStartRange) {
-    var result = this.decodeRowStringBuffer_;
+    const result = this.decodeRowStringBuffer_;
     result.setLength(0);
-    var end = this.decodeMiddle_(row, extensionStartRange, result);
+    const end = this.decodeMiddle_(row, extensionStartRange, result);
 
-    var resultString = result.toString();
-    var extensionData = parseExtensionString(resultString);
+    const resultString = result.toString();
+    const extensionData = parseExtensionString(resultString);
 
-    var extensionResult =
+    const extensionResult =
         new Result(resultString,
                    null,
                    [
@@ -93,20 +93,20 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.decodeMiddle_ = function(row, startRange, resultString) {
-    var counters = this.decodeMiddleCounters_;
+    const counters = this.decodeMiddleCounters_;
     counters[0] = 0;
     counters[1] = 0;
     counters[2] = 0;
     counters[3] = 0;
-    var end = row.getSize();
-    var rowOffset = startRange[1];
+    const end = row.getSize();
+    let rowOffset = startRange[1];
 
-    var lgPatternFound = 0;
+    let lgPatternFound = 0;
 
     for (let x = 0; x < 2 && rowOffset < end; x++) {
-      let bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
+      const bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
       resultString.append(String.fromCharCode('0'.charCodeAt(0) + bestMatch % 10));
-      for (let counter of counters) {
+      for (const counter of counters) {
         rowOffset += counter;
       }
       if (bestMatch >= 10) {
@@ -123,7 +123,7 @@ goog.scope(function() {
       throw NotFoundException.getNotFoundInstance();
     }
 
-    var checkDigit = determineCheckDigit(lgPatternFound);
+    const checkDigit = determineCheckDigit(lgPatternFound);
     if (extensionChecksum(resultString.toString()) !== checkDigit) {
       throw NotFoundException.getNotFoundInstance();
     }
@@ -136,8 +136,8 @@ goog.scope(function() {
    * @return {number}
    */
   function extensionChecksum(s) {
-    var length = s.length;
-    var sum = 0;
+    const length = s.length;
+    let sum = 0;
     for (let i = length - 2; i >= 0; i -= 2) {
       sum += s.charAt(i).charCodeAt(0) - '0'.charCodeAt(0);
     }
@@ -172,11 +172,11 @@ goog.scope(function() {
     if (raw.length !== 5) {
       return null;
     }
-    var value = parseExtension5String(raw);
+    const value = parseExtension5String(raw);
     if (value === null) {
       return null;
     }
-    var result = {};
+    const result = {};
     result[ResultMetadataType.SUGGESTED_PRICE] = value;
     return result;
   }
@@ -186,7 +186,7 @@ goog.scope(function() {
    * @return {?string}
    */
   function parseExtension5String(raw) {
-    var currency;
+    let currency;
     switch (raw.charAt(0)) {
       case '0':
         currency = "£";
@@ -214,10 +214,10 @@ goog.scope(function() {
         currency = "";
         break;
     }
-    var rawAmount = Integer.parseInt(raw.substring(1));
-    var unitsString = (rawAmount / 100).toString();
-    var hundredths = rawAmount % 100;
-    var hundredthsString = hundredths < 10 ? "0" + hundredths : (hundredths).toString();
+    const rawAmount = Integer.parseInt(raw.substring(1));
+    const unitsString = (rawAmount / 100).toString();
+    const hundredths = rawAmount % 100;
+    const hundredthsString = hundredths < 10 ? "0" + hundredths : (hundredths).toString();
     return currency + unitsString + '.' + hundredthsString;
   }
 });

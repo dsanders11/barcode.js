@@ -105,12 +105,12 @@ goog.scope(function() {
   pro.setHints = function(hints) {
     this.hints_ = hints;
 
-    var tryHarder = hints && !!hints[DecodeHintType.TRY_HARDER];
-    var formats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
+    const tryHarder = hints && !!hints[DecodeHintType.TRY_HARDER];
+    const formats = hints && !!hints[DecodeHintType.POSSIBLE_FORMATS] ? hints[DecodeHintType.POSSIBLE_FORMATS] : null;
     /** @type {!Array.<!Reader>} */
-    var readers = [];
+    const readers = [];
     if (formats !== null) {
-      let addOneDReader = Boolean(
+      const addOneDReader = Boolean(
           formats.includes(BarcodeFormat.UPC_A) ||
           formats.includes(BarcodeFormat.UPC_E) ||
           formats.includes(BarcodeFormat.EAN_13) ||
@@ -152,7 +152,7 @@ goog.scope(function() {
    */
   pro.reset = function() {
     if (this.readers_ !== null) {
-      for (let reader of this.readers_) {
+      for (const reader of this.readers_) {
         reader.reset();
       }
     }
@@ -166,7 +166,7 @@ goog.scope(function() {
    */
   pro.decodeInternal_ = function(image) {
     if (this.readers_ !== null) {
-      for (let reader of this.readers_) {
+      for (const reader of this.readers_) {
         try {
           return reader.decode(image, this.hints_ || undefined);
         } catch (err) {

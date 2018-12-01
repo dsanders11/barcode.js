@@ -44,15 +44,15 @@ goog.scope(function() {
    */
   pro.lookupCountryIdentifier = function(productCode) {
     this.initIfNeeded_();
-    var prefix = Integer.parseInt(productCode.substring(0, 3));
-    var max = this.ranges_.length;
+    const prefix = Integer.parseInt(productCode.substring(0, 3));
+    const max = this.ranges_.length;
     for (let i = 0; i < max; i++) {
-      let range = this.ranges_[i];
-      let start = range[0];
+      const range = this.ranges_[i];
+      const start = range[0];
       if (prefix < start) {
         return null;
       }
-      let end = range.length === 1 ? start : range[1];
+      const end = range.length === 1 ? start : range[1];
       if (prefix <= end) {
         return this.countryIdentifiers_[i];
       }

@@ -126,7 +126,7 @@ goog.scope(function() {
    * @return {!BinaryBitmap} A cropped version of this object.
    */
   pro.crop = function(left, top, width, height) {
-    var newSource = this.binarizer.getLuminanceSource().crop(left, top, width, height);
+    const newSource = this.binarizer.getLuminanceSource().crop(left, top, width, height);
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
   };
 
@@ -144,7 +144,7 @@ goog.scope(function() {
    * @return {!BinaryBitmap} A rotated version of this object.
    */
   pro.rotateCounterClockwise = function() {
-    var newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise();
+    const newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise();
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
   };
 
@@ -155,7 +155,7 @@ goog.scope(function() {
    * @return {!BinaryBitmap} A rotated version of this object.
    */
   pro.rotateCounterClockwise45 = function() {
-    var newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise45();
+    const newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise45();
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
   };
 

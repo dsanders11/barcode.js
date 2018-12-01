@@ -186,15 +186,15 @@ goog.scope(function() {
    * @override
    */
   pro.decodeRow = function(rowNumber, row, hints) {
-    var convertFNC1 = hints !== null && !!hints[DecodeHintType.ASSUME_GS1];
+    const convertFNC1 = hints !== null && !!hints[DecodeHintType.ASSUME_GS1];
 
-    var startPatternInfo = Code128Reader.findStartPattern_(row);
-    var startCode = startPatternInfo[2];
+    const startPatternInfo = Code128Reader.findStartPattern_(row);
+    const startCode = startPatternInfo[2];
 
-    var rawCodes = new Array(20);
+    const rawCodes = new Array(20);
     rawCodes.push(startCode);
 
-    var codeSet;
+    let codeSet;
     switch (startCode) {
       case CODE_START_A:
         codeSet = CODE_CODE_A;
@@ -209,23 +209,23 @@ goog.scope(function() {
         throw FormatException.getFormatInstance();
     }
 
-    var done = false;
-    var isNextShifted = false;
+    let done = false;
+    let isNextShifted = false;
 
     //StringBuilder result = new StringBuilder(20);
-    var result = '';
+    let result = '';
 
-    var lastStart = startPatternInfo[0];
-    var nextStart = startPatternInfo[1];
-    var counters = new Int32Array(6);
+    let lastStart = startPatternInfo[0];
+    let nextStart = startPatternInfo[1];
+    const counters = new Int32Array(6);
 
-    var lastCode = 0;
-    var code = 0;
-    var checksumTotal = startCode;
-    var multiplier = 0;
-    var lastCharacterWasPrintable = true;
-    var upperMode = false;
-    var shiftUpperMode = false;
+    let lastCode = 0;
+    let code = 0;
+    let checksumTotal = startCode;
+    let multiplier = 0;
+    let lastCharacterWasPrintable = true;
+    let upperMode = false;
+    let shiftUpperMode = false;
 
     while (!done) {
       let unshift = isNextShifted;
@@ -252,7 +252,7 @@ goog.scope(function() {
 
       // Advance to where the next code will to start
       lastStart = nextStart;
-      for (let counter of counters) {
+      for (const counter of counters) {
         nextStart += counter;
       }
 
@@ -429,7 +429,7 @@ goog.scope(function() {
       }
     }
 
-    var lastPatternSize = nextStart - lastStart;
+    let lastPatternSize = nextStart - lastStart;
 
     // Check for ample whitespace following pattern, but, to do this we first need to remember that
     // we fudged decoding CODE_STOP since it actually has 7 bars, not 6. There is a black bar left
@@ -449,7 +449,7 @@ goog.scope(function() {
     }
 
     // Need to pull out the check digits from string
-    var resultLength = result.length;
+    const resultLength = result.length;
     if (resultLength === 0) {
       // false positive
       throw NotFoundException.getNotFoundInstance();
@@ -467,11 +467,11 @@ goog.scope(function() {
       }
     }
 
-    var left = (startPatternInfo[1] + startPatternInfo[0]) / 2.0;
-    var right = lastStart + lastPatternSize / 2.0;
+    const left = (startPatternInfo[1] + startPatternInfo[0]) / 2.0;
+    const right = lastStart + lastPatternSize / 2.0;
 
-    var rawCodesSize = rawCodes.length;
-    var rawBytes = new Int8Array(rawCodesSize);
+    const rawCodesSize = rawCodes.length;
+    const rawBytes = new Int8Array(rawCodesSize);
     for (let i = 0; i < rawCodesSize; i++) {
       rawBytes[i] = rawCodes[i];
     }
@@ -494,11 +494,11 @@ goog.scope(function() {
    */
   Code128Reader.decodeCode_ = function(row, counters, rowOffset) {
     OneDReader.recordPattern(row, rowOffset, counters);
-    var bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
-    var bestMatch = -1;
+    let bestVariance = MAX_AVG_VARIANCE; // worst variance we'll accept
+    let bestMatch = -1;
     for (let d = 0; d < Code128Reader.CODE_PATTERNS.length; d++) {
-      let pattern = Code128Reader.CODE_PATTERNS[d];
-      let variance = OneDReader.patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
+      const pattern = Code128Reader.CODE_PATTERNS[d];
+      const variance = OneDReader.patternMatchVariance(counters, pattern, MAX_INDIVIDUAL_VARIANCE);
       if (variance < bestVariance) {
         bestVariance = variance;
         bestMatch = d;
@@ -520,14 +520,14 @@ goog.scope(function() {
    * @static
    */
   Code128Reader.findStartPattern_ = function(row) {
-    var width = row.getSize();
-    var rowOffset = row.getNextSet(0);
+    const width = row.getSize();
+    const rowOffset = row.getNextSet(0);
 
-    var counterPosition = 0;
-    var counters = new Int32Array(6);
-    var patternStart = rowOffset;
-    var isWhite = false;
-    var patternLength = counters.length;
+    let counterPosition = 0;
+    const counters = new Int32Array(6);
+    let patternStart = rowOffset;
+    let isWhite = false;
+    const patternLength = counters.length;
 
     for (let i = rowOffset; i < width; i++) {
       if (row.get(i) ^ isWhite) {
@@ -537,7 +537,7 @@ goog.scope(function() {
           let bestVariance = MAX_AVG_VARIANCE;
           let bestMatch = -1;
           for (let startCode = CODE_START_A; startCode <= CODE_START_C; startCode++) {
-            let variance = OneDReader.patternMatchVariance(counters, Code128Reader.CODE_PATTERNS[startCode],
+            const variance = OneDReader.patternMatchVariance(counters, Code128Reader.CODE_PATTERNS[startCode],
                 MAX_INDIVIDUAL_VARIANCE);
             if (variance < bestVariance) {
               bestVariance = variance;
