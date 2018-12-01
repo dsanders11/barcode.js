@@ -56,28 +56,28 @@ goog.scope(function() {
 
   /**
    * Canvas uses to call getImageData on.
-   * @type {HTMLCanvasElement}
+   * @type {?HTMLCanvasElement}
    * @private
    */
   pro.backCanvas_ = null;
 
   /**
    * Rendering context of back canvas.
-   * @type {CanvasRenderingContext2D}
+   * @type {?CanvasRenderingContext2D}
    * @private
    */
   pro.backContext_ = null;
 
   /**
    * Video element used to render the getUserMedia stream.
-   * @type {HTMLVideoElement}
+   * @type {?HTMLVideoElement}
    * @private
    */
   pro.mediaVideo_ = null;
 
   /**
    * Constraints to use when calling getUserMedia.
-   * @type {Object}
+   * @type {?Object}
    * @private
    */
   pro.constraints_ = null;
@@ -88,12 +88,12 @@ goog.scope(function() {
   pro.capturing_ = false;
 
   /**
-   * @type {MediaStream}
+   * @type {?MediaStream}
    */
   pro.stream_ = null;
 
   /**
-   * @return {HTMLVideoElement} video element.
+   * @return {?HTMLVideoElement} video element.
    * @export
    */
   pro.getVideo = function() {
@@ -151,7 +151,7 @@ goog.scope(function() {
   /**
    * Get blob of current frame from local video stream.
    * Image is scaled down to opt_maxSize if its width or height is larger.
-   * @param {Size} size desired size of image.
+   * @param {!Size} size desired size of image.
    * @param {string=} format format to capture
    * @return {!Promise} Resolves to the blob
    * @export
@@ -165,7 +165,6 @@ goog.scope(function() {
       }, format);
     });
   };
-
 
   /**
    * Get canvas with current frame from local video stream.

@@ -40,7 +40,7 @@ goog.scope(function() {
    *
    * @constructor
    * @extends {goog.ui.Component}
-   * @param {Object=} opt_options
+   * @param {!Object=} opt_options
    * @export
    */
   w69b.ui.ContinuousScanner = function(opt_options) {
@@ -119,21 +119,21 @@ goog.scope(function() {
 
   /**
    * Canvas element used for visualization.
-   * @type {HTMLCanvasElement}
+   * @type {?HTMLCanvasElement}
    * @private
    */
   pro.visualizationCanvas_ = null;
 
   /**
    * Rendering context of visualization canvas.
-   * @type {CanvasRenderingContext2D}
+   * @type {?CanvasRenderingContext2D}
    * @private
    */
   pro.visualizationContext_ = null;
 
   /**
    * Tuples of found pattern positions.
-   * @type {Array.<PatternPoint>}
+   * @type {?Array.<PatternPoint>}
    * @private
    */
   pro.foundPatterns_ = null;
@@ -443,7 +443,7 @@ goog.scope(function() {
   };
 
   /**
-   * @param {ResultPoint} pattern
+   * @param {!ResultPoint} pattern
    * @private
    */
   pro.addPattern_ = function(pattern) {

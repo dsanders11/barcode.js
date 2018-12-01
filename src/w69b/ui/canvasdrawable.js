@@ -5,7 +5,7 @@ goog.require('w69b.ui.Drawable');
 goog.scope(function() {
   /**
    * @constructor
-   * @param {HTMLCanvasElement} canvas to draw on.
+   * @param {!HTMLCanvasElement} canvas to draw on.
    * @implements {w69b.ui.Drawable}
    * @export
    */
