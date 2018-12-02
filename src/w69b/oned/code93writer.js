@@ -15,45 +15,46 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.oned.Code93Writer');
-goog.require('java.lang.IllegalArgumentException');
-goog.require('w69b.BarcodeFormat');
-goog.require('w69b.oned.Code93Reader');
-goog.require('w69b.oned.OneDimensionalCodeWriter');
+goog.module('w69b.oned.Code93Writer');
+goog.module.declareLegacyNamespace();
 
+const BarcodeFormat = goog.require('w69b.BarcodeFormat');
+const Code93Reader = goog.require('w69b.oned.Code93Reader');
+const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
+const OneDimensionalCodeWriter = goog.require('w69b.oned.OneDimensionalCodeWriter');
 
-goog.scope(function() {
-  const IllegalArgumentException = java.lang.IllegalArgumentException;
-  const BarcodeFormat = w69b.BarcodeFormat;
-  const Code93Reader = w69b.oned.Code93Reader;
-  const OneDimensionalCodeWriter = w69b.oned.OneDimensionalCodeWriter;
+/**
+ * @param {number} a
+ * @param {!Int32Array} toReturn
+ * @private
+ */
+function toIntArray(a, toReturn) {
+  for (let i = 0; i < 9; i++) {
+    const temp = a & (1 << (8 - i));
+    toReturn[i] = temp === 0 ? 0 : 1;
+  }
+}
 
-  /**
-   * This object renders a CODE93 code as a BitMatrix
-   * @constructor
-   * @extends {OneDimensionalCodeWriter}
-   * @final
-   */
-  w69b.oned.Code93Writer = function() { };
-  const Code93Writer = w69b.oned.Code93Writer;
-  goog.inherits(Code93Writer, OneDimensionalCodeWriter);
-  const pro = Code93Writer.prototype;
-
+/**
+ * This object renders a CODE93 code as a BitMatrix
+ * @final
+ */
+class Code93Writer extends OneDimensionalCodeWriter {
   /**
    * @override
    */
-  pro.encode = function(contents, format, width, height, opt_hints) {
+  encode(contents, format, width, height, opt_hints) {
     if (format !== BarcodeFormat.CODE_93) {
       throw new IllegalArgumentException("Can only encode CODE_93, but got " + format);
     }
 
-    return Code93Writer.base(this, 'encode', contents, format, width, height, opt_hints);
-  };
+    return super.encode(contents, format, width, height, opt_hints);
+  }
 
   /**
    * @override
    */
-  pro.encodeBoolean = function(contents) {
+  encodeBoolean(contents) {
     const length = contents.length;
     if (length > 80) {
       throw new IllegalArgumentException(
@@ -98,18 +99,6 @@ goog.scope(function() {
     result[pos] = true;
 
     return result;
-  };
-
-  /**
-   * @param {number} a
-   * @param {!Int32Array} toReturn
-   * @private
-   */
-  function toIntArray(a, toReturn) {
-    for (let i = 0; i < 9; i++) {
-      const temp = a & (1 << (8 - i));
-      toReturn[i] = temp === 0 ? 0 : 1;
-    }
   }
 
   /**
@@ -117,22 +106,22 @@ goog.scope(function() {
    * @param {number} pos start position
    * @param {!Int32Array} pattern pattern to append
    * @return {number}
-   * @private
+   * @protected
    */
-  Code93Writer.appendPattern = function(target, pos, pattern) {
+  static appendPattern(target, pos, pattern) {
     for (const bit of pattern) {
       target[pos++] = bit !== 0;
     }
     return 9;
-  };
+  }
 
   /**
    * @param {string} contents
    * @param {number} maxWeight
    * @return {number}
-   * @private
+   * @protected
    */
-  Code93Writer.computeChecksumIndex_ = function(contents, maxWeight) {
+  static computeChecksumIndex_(contents, maxWeight) {
     let weight = 1;
     let total = 0;
 
@@ -144,5 +133,7 @@ goog.scope(function() {
       }
     }
     return total % 47;
-  };
-});
+  }
+}
+
+exports = Code93Writer;
