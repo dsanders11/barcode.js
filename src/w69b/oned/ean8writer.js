@@ -60,7 +60,7 @@ goog.scope(function() {
           + format);
     }
 
-    return goog.base(this, 'encode', contents, format, width, height, opt_hints);
+    return EAN8Writer.base(this, 'encode', contents, format, width, height, opt_hints);
   };
 
   /**

@@ -28,7 +28,7 @@ goog.scope(function() {
    */
   w69b.qr.detector.FinderPattern = function(posX, posY, estimatedModuleSize,
                                    opt_count) {
-    goog.base(this, posX, posY);
+    FinderPattern.base(this, 'constructor', posX, posY);
     this.count = goog.isDef(opt_count) ? opt_count : 1;
     this.estimatedModuleSize = estimatedModuleSize;
   };

@@ -26,7 +26,7 @@ goog.scope(function() {
    * @extends {w69b.ReaderException}
    */
   w69b.ChecksumException = function() {
-    goog.base(this);
+    w69b.ChecksumException.base(this, 'constructor');
   };
   goog.inherits(w69b.ChecksumException, w69b.ReaderException);
 

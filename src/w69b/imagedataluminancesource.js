@@ -47,7 +47,7 @@ goog.scope(function() {
     const width = opt_width ? opt_width : image.width;
     const height = opt_height ? opt_height : image.height;
 
-    goog.base(this, width, height);
+    ImageDataLuminanceSource.base(this, 'constructor', width, height);
 
     if (left + width > sourceWidth || top + height > sourceHeight) {
       throw new IllegalArgumentException(
@@ -194,7 +194,7 @@ goog.scope(function() {
   pro.rotateCounterClockwise = function() {
     // TODO - Implement - Can't use a canvas because this needs to be able to
     // run on a Web worker which doesn't have access to a canvas context
-    return goog.base(this, 'rotateCounterClockwise');
+    return ImageDataLuminanceSource.base(this, 'rotateCounterClockwise');
   };
 
   /**
@@ -203,6 +203,6 @@ goog.scope(function() {
   pro.rotateCounterClockwise45 = function() {
     // TODO - Implement - Can't use a canvas because this needs to be able to
     // run on a Web worker which doesn't have access to a canvas context
-    return goog.base(this, 'rotateCounterClockwise45');
+    return ImageDataLuminanceSource.base(this, 'rotateCounterClockwise45');
   };
 });

@@ -69,7 +69,7 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.EAN13Reader = function() {
-    goog.base(this);
+    EAN13Reader.base(this, 'constructor');
     this.decodeMiddleCounters_ = new Int32Array(4);
   };
   const EAN13Reader = w69b.oned.EAN13Reader;

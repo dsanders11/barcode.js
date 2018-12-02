@@ -16,7 +16,7 @@ goog.scope(function() {
    * @extends {goog.debug.Error}
    */
   w69b.webgl.NotSupportedError = function() {
-    goog.base(this);
+    w69b.webgl.NotSupportedError.base(this, 'constructor');
   };
   goog.inherits(w69b.webgl.NotSupportedError, goog.debug.Error);
   /** @override */

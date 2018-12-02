@@ -15,7 +15,7 @@ goog.scope(function() {
    * @extends {goog.debug.Error}
    */
    java.lang.ArithmeticException = function(opt_msg) {
-    goog.base(this, opt_msg);
+    java.lang.ArithmeticException.base(this, 'constructor', opt_msg);
   };
   goog.inherits(java.lang.ArithmeticException, goog.debug.Error);
 });

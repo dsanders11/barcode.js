@@ -47,7 +47,7 @@ goog.scope(function() {
    * @extends {w69b.Binarizer}
    */
   w69b.common.GlobalHistogramBinarizer = function(source) {
-    goog.base(this, source);
+    w69b.common.GlobalHistogramBinarizer.base(this, 'constructor', source);
     /**
      * @type {!Int8Array}
      * @private

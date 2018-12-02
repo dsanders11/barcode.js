@@ -36,7 +36,7 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.EAN8Reader = function() {
-    goog.base(this);
+    EAN8Reader.base(this, 'constructor');
     this.decodeMiddleCounters_ = new Int32Array(4);
   };
   const EAN8Reader = w69b.oned.EAN8Reader;

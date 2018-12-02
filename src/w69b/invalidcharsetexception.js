@@ -8,7 +8,7 @@ goog.scope(function() {
    * @extends {goog.debug.Error}
    */
   w69b.InvalidCharsetException = function(opt_msg) {
-    goog.base(this, opt_msg || 'InvalidCharset');
+    w69b.InvalidCharsetException.base(this, 'constructor', opt_msg || 'InvalidCharset');
   };
   goog.inherits(w69b.InvalidCharsetException, goog.debug.Error);
 });

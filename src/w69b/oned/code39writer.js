@@ -47,7 +47,7 @@ goog.scope(function() {
       throw new IllegalArgumentException("Can only encode CODE_39, but got " + format);
     }
 
-    return goog.base(this, 'encode', contents, format, width, height, opt_hints);
+    return Code39Writer.base(this, 'encode', contents, format, width, height, opt_hints);
   };
 
   /**

@@ -63,7 +63,7 @@ goog.scope(function() {
       throw new IllegalArgumentException("Can only encode UPC_E, but got " + format);
     }
 
-    return goog.base(this, 'encode', contents, format, width, height, opt_hints);
+    return UPCEWriter.base(this, 'encode', contents, format, width, height, opt_hints);
   };
 
   /**

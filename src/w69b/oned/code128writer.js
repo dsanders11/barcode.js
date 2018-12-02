@@ -77,7 +77,7 @@ goog.scope(function() {
       throw new IllegalArgumentException("Can only encode CODE_128, but got " + format);
     }
 
-    return goog.base(this, 'encode', contents, format, width, height, opt_hints);
+    return Code128Writer.base(this, 'encode', contents, format, width, height, opt_hints);
   };
 
   /**

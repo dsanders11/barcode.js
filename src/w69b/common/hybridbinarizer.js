@@ -51,7 +51,7 @@ goog.scope(function() {
    * @extends {w69b.common.GlobalHistogramBinarizer}
    */
   w69b.common.HybridBinarizer = function(source) {
-    goog.base(this, source);
+    w69b.common.HybridBinarizer.base(this, 'constructor', source);
 
     /**
      * @type {?BitMatrix}
@@ -113,7 +113,7 @@ goog.scope(function() {
       this.matrix_ = newMatrix;
     } else {
       // If the image is too small, fall back to the global histogram approach.
-      this.matrix_ = goog.base(this, 'getBlackMatrix');
+      this.matrix_ = w69b.common.HybridBinarizer.base(this, 'getBlackMatrix');
     }
     return this.matrix_;
   };

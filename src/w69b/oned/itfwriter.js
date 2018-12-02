@@ -52,7 +52,7 @@ goog.scope(function() {
       throw new IllegalArgumentException("Can only encode ITF, but got " + format);
     }
 
-    return goog.base(this, 'encode', contents, format, width, height, opt_hints);
+    return ITFWriter.base(this, 'encode', contents, format, width, height, opt_hints);
   };
 
   /**

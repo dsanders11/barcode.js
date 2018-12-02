@@ -14,7 +14,7 @@ goog.scope(function() {
    * @extends {goog.debug.Error}
    */
   java.lang.UnsupportedOperationException = function(opt_msg) {
-    goog.base(this, opt_msg);
+    java.lang.UnsupportedOperationException.base(this, 'constructor', opt_msg);
   };
   goog.inherits(java.lang.UnsupportedOperationException, goog.debug.Error);
 });

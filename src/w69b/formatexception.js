@@ -27,7 +27,7 @@ goog.scope(function() {
    * @extends {w69b.ReaderException}
    */
   w69b.FormatException = function() {
-    goog.base(this);
+    w69b.FormatException.base(this, 'constructor');
   };
   goog.inherits(w69b.FormatException, w69b.ReaderException);
 

@@ -32,7 +32,7 @@ goog.scope(function() {
    * @extends {w69b.ResultPoint}
    */
   w69b.qr.detector.AlignmentPattern = function(posX, posY, estimatedModuleSize) {
-    goog.base(this, posX, posY);
+    AlignmentPattern.base(this, 'constructor', posX, posY);
     this.count = 1;
     this.estimatedModuleSize = estimatedModuleSize;
   };

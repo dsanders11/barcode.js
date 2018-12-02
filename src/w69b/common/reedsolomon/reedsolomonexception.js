@@ -27,7 +27,7 @@ goog.scope(function() {
    * @extends {w69b.ReaderException}
    */
   w69b.common.reedsolomon.ReedSolomonException = function(opt_msg) {
-    goog.base(this, opt_msg);
+    w69b.common.reedsolomon.ReedSolomonException.base(this, 'constructor', opt_msg);
   };
   goog.inherits(w69b.common.reedsolomon.ReedSolomonException, w69b.ReaderException);
 });

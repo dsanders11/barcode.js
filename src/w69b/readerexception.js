@@ -30,7 +30,7 @@ goog.scope(function() {
    * @abstract
    */
   w69b.ReaderException = function(opt_msg) {
-    goog.base(this, opt_msg);
+    w69b.ReaderException.base(this, 'constructor', opt_msg);
   };
   goog.inherits(w69b.ReaderException, goog.debug.Error);
 });

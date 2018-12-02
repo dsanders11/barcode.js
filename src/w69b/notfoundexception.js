@@ -26,7 +26,7 @@ goog.scope(function() {
    * @extends {w69b.ReaderException}
    */
   w69b.NotFoundException = function() {
-    goog.base(this);
+    w69b.NotFoundException.base(this, 'constructor');
   };
   goog.inherits(w69b.NotFoundException, w69b.ReaderException);
 

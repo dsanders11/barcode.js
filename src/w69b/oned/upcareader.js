@@ -38,7 +38,7 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.UPCAReader = function() {
-    goog.base(this);
+    UPCAReader.base(this, 'constructor');
     this.ean13Reader_ = new EAN13Reader();
   };
   const UPCAReader = w69b.oned.UPCAReader;

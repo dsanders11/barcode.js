@@ -61,7 +61,7 @@ goog.scope(function() {
       throw new IllegalArgumentException("Can only encode EAN_13, but got " + format);
     }
 
-    return goog.base(this, 'encode', contents, format, width, height, opt_hints);
+    return EAN13Writer.base(this, 'encode', contents, format, width, height, opt_hints);
   };
 
   /**

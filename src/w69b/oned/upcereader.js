@@ -40,7 +40,7 @@ goog.scope(function() {
    * @final
    */
   w69b.oned.UPCEReader = function() {
-    goog.base(this);
+    UPCEReader.base(this, 'constructor');
     this.decodeMiddleCounters_ = new Int32Array(4);
   };
   const UPCEReader = w69b.oned.UPCEReader;
@@ -130,7 +130,7 @@ goog.scope(function() {
    * @override
    */
   pro.checkChecksum = function(s) {
-    return goog.base(this, 'checkChecksum', UPCEReader.convertUPCEtoUPCA(s));
+    return UPCEReader.base(this, 'checkChecksum', UPCEReader.convertUPCEtoUPCA(s));
   };
 
   /**

@@ -21,7 +21,7 @@ goog.scope(function() {
       msg = opt_throwable_or_msg.toString();
     }
 
-    goog.base(this, msg);
+    java.lang.IllegalArgumentException.base(this, 'constructor', msg);
   };
   goog.inherits(java.lang.IllegalArgumentException, goog.debug.Error);
 });

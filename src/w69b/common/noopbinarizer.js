@@ -22,7 +22,7 @@ goog.scope(function() {
    * @extends {Binarizer}
    */
   w69b.common.NoOpBinarizer = function(source) {
-    goog.base(this, source);
+    NoOpBinarizer.base(this, 'constructor', source);
   };
   const NoOpBinarizer = w69b.common.NoOpBinarizer;
   goog.inherits(NoOpBinarizer, Binarizer);
