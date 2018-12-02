@@ -26,7 +26,7 @@ goog.scope(function() {
    */
   FileSaver.saveAs = function(blob, name) {
     /** @type {function(*, string=): boolean} */
-    var saveBlob = navigator['msSaveBlob'];
+    const saveBlob = navigator['msSaveBlob'];
     if (saveBlob) {
       saveBlob.call(navigator, blob, name);
     } else {
@@ -43,9 +43,9 @@ goog.scope(function() {
   */
   FileSaver.checkSupport_ = function() {
     if (!self.document) return false;
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     /** @type {?function(*, string=): boolean} */
-    var saveBlob = navigator['msSaveBlob'];
+    const saveBlob = navigator['msSaveBlob'];
     return Boolean(saveBlob || ('download' in a));
   };
   FileSaver.SUPPORTED_ = FileSaver.checkSupport_();
@@ -64,7 +64,7 @@ goog.scope(function() {
    * @return {boolean} false if event was cancelled
    */
   FileSaver.click = function(node) {
-    var event = /** @type {!MouseEvent} */ (document.createEvent('MouseEvents'));
+    const event = /** @type {!MouseEvent} */ (document.createEvent('MouseEvents'));
     event.initMouseEvent('click', true, true, window,
       0, 0, 0, 0, 0, false, false, false, false, 0, null);
     return node.dispatchEvent(event); // false if event was cancelled
@@ -75,7 +75,7 @@ goog.scope(function() {
    * @return {boolean} false if save was cancelled
    */
   pro.save = function() {
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     if (!('download' in a))
       return false;
 

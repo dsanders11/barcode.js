@@ -68,13 +68,13 @@ goog.scope(function() {
       // toBlob supported
       canvas['toBlob'](callback);
     } else if (canvas.toDataURL) {
-      var url = canvas.toDataURL();
-      var prefix = 'data:image/png;base64,';
+      const url = canvas.toDataURL();
+      const prefix = 'data:image/png;base64,';
       if (!goog.string.startsWith(url, prefix))
         throw new Error();
-      var data = url.substring(prefix.length);
+      let data = url.substring(prefix.length);
       data = new Uint8Array(base64.decodeStringToByteArray(data));
-      var blob = new Blob([data], {'type': 'image/png'});
+      const blob = new Blob([data], {'type': 'image/png'});
       callback(blob);
     } else {
       throw new Error();
@@ -91,7 +91,7 @@ goog.scope(function() {
    * @return {!ImageData} image data.
    */
   w69b.imgtools.getImageData = function(img, opt_maxSize) {
-    var size = new Size(
+    const size = new Size(
       /** @type {number} */ (img.width || img.videoWidth),
       /** @type {number} */ (img.height || img.videoHeight));
 
@@ -99,12 +99,12 @@ goog.scope(function() {
     if (opt_maxSize) {
       w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
     }
-    var [canvas, context] = getOrCreateCanvas_();
+    const [canvas, context] = getOrCreateCanvas_();
     canvas.width = size.width;
     canvas.height = size.height;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(img, 0, 0, canvas.width, canvas.height);
-    var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     if (context.filter) {
       imageData.grayscale_ = true;
     }
@@ -121,27 +121,27 @@ goog.scope(function() {
    * @export
    */
   w69b.imgtools.binarizeImage = function() {
-    var webGLBinarizer = null;
+    let webGLBinarizer = null;
 
     return function(image, useWebGL = false, opt_maxSize) {
       if (!(image instanceof ImageData)) {
         image.style['imageRendering'] = "pixelated";
       }
-      var imageData = image;
+      let imageData = image;
       if (useWebGL) {
         if (!WebGLBinarizer.isSupported()) {
           throw new Error("WebGL not supported");
         }
-        let width = /** @type {number} */ (image.width || image.videoWidth);
-        let height = /** @type {number} */ (image.height || image.videoHeight);
-        let size = new Size(width, height);
+        const width = /** @type {number} */ (image.width || image.videoWidth);
+        const height = /** @type {number} */ (image.height || image.videoHeight);
+        const size = new Size(width, height);
         if (opt_maxSize) {
           w69b.imgtools.scaleToMaxSize(size, opt_maxSize);
         }
         if (webGLBinarizer === null) {
           webGLBinarizer = new WebGLBinarizer();
         }
-        let binarizer = webGLBinarizer;
+        const binarizer = webGLBinarizer;
         binarizer.setup(size.width, size.height, width, height);
         binarizer.render(imageData);
         return binarizer.getImageData();
@@ -149,16 +149,16 @@ goog.scope(function() {
         if (!(imageData instanceof ImageData)) {
           imageData = w69b.imgtools.getImageData(imageData, opt_maxSize);
         }
-        let luminanceSource = new ImageDataLuminanceSource(imageData);
-        let binarizer = new w69b.common.HybridBinarizer(luminanceSource);
-        let matrix = binarizer.getBlackMatrix();
-        let width = matrix.getWidth();
-        let height = matrix.getHeight();
-        let data = new Uint8ClampedArray(width * height * 4);
+        const luminanceSource = new ImageDataLuminanceSource(imageData);
+        const binarizer = new w69b.common.HybridBinarizer(luminanceSource);
+        const matrix = binarizer.getBlackMatrix();
+        const width = matrix.getWidth();
+        const height = matrix.getHeight();
+        const data = new Uint8ClampedArray(width * height * 4);
         for (let y = 0; y < height; y++) {
           for (let x = 0; x < width; x++) {
-            let idx = (y * width + x) * 4;
-            let val = matrix.get(x, y) ? 0 : 255;
+            const idx = (y * width + x) * 4;
+            const val = matrix.get(x, y) ? 0 : 255;
             data[idx] = val;
             data[idx + 1] = val;
             data[idx + 2] = val;
@@ -176,8 +176,8 @@ goog.scope(function() {
    * @export
    */
   w69b.imgtools.renderToDrawable = function(matrix, drawable) {
-    var width = matrix.getWidth();
-    var height = matrix.getHeight();
+    const width = matrix.getWidth();
+    const height = matrix.getHeight();
     drawable.fillBackground(width, height);
     for (let x=0; x < width; x++) {
       for (let y=0; y < height; y++) {

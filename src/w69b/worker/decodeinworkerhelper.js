@@ -114,7 +114,7 @@ goog.scope(function() {
    */
   pro.init = function() {
     if (this.enableWorker_) {
-      var url = w69b.worker.DecodeInWorkerHelper.workerUrl_;
+      const url = w69b.worker.DecodeInWorkerHelper.workerUrl_;
       if (!url)
         throw new Error('missing worker url setup');
       this.worker_ = new Worker(url);
@@ -147,11 +147,11 @@ goog.scope(function() {
    */
   pro.shallUseWorker = function() {
     if (!this.enableWorker_) return false;
-    var buffer = new ArrayBuffer(1);
+    const buffer = new ArrayBuffer(1);
     this.worker_.postMessage(
       {'isfeaturedetect': true, 'buffer': buffer}, [buffer]);
     // When buffer is transfered and not copied, its length is set to zero.
-    return buffer.byteLength == 0;
+    return buffer.byteLength === 0;
   };
 
   /**
@@ -161,8 +161,8 @@ goog.scope(function() {
    */
   pro.onMessage_ = function(event) {
     if (this.callback_) {
-      var type = event.data[0];
-      var value = event.data[1];
+      const type = event.data[0];
+      let value = event.data[1];
       if (value) {
         value = window.JSON.parse(/** @type {string} */ (value));
       }
@@ -178,9 +178,9 @@ goog.scope(function() {
    * @param {function(string, ?=)} callback called with result..
    */
   pro.decode = function(imgdata, size, callback) {
-    var isBinary = false;
+    let isBinary = false;
     // TODO - Rename
-    var imgDataOrMatrix = imgdata;
+    let imgDataOrMatrix = imgdata;
     size.round();
     if (this.enableWebGl_) {
       // lazzily initialize binarizer
@@ -208,8 +208,8 @@ goog.scope(function() {
       imgDataOrMatrix = w69b.imgtools.getImageData(imgDataOrMatrix, size);
     }
     if (this.useWorker_) {
-      let buffer = (/** @type {!Uint8ClampedArray} */ (imgDataOrMatrix.data)).buffer;
-      let msg = {
+      const buffer = (/** @type {!Uint8ClampedArray} */ (imgDataOrMatrix.data)).buffer;
+      const msg = {
         'width': imgDataOrMatrix.width,
         'height': imgDataOrMatrix.height,
         'buffer': buffer,
@@ -242,11 +242,13 @@ goog.scope(function() {
    */
   pro.decodeLocalFallback_ = function(imgdata, isBinary, callback) {
     try {
-      var result = w69b.worker.DecodeWorker.decodeFromImageData(
+      const result = w69b.worker.DecodeWorker.decodeFromImageData(
         imgdata, isBinary, this.formats_, function(pattern) {
           callback(WorkerMessageType.PATTERN, pattern['toJSON']());
         }.bind(this)
       );
+
+      callback(WorkerMessageType.DECODED, result['toJSON']());
     } catch (err) {
       if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
         DecodeInWorkerHelper.iconvUrl_) {
@@ -271,7 +273,6 @@ goog.scope(function() {
         throw err;
       }
     }
-    callback(WorkerMessageType.DECODED, result['toJSON']());
 
     // hack to work arout memory leak in FF
     delete imgdata.data;

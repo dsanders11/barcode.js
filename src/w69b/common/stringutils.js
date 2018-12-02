@@ -31,8 +31,8 @@ goog.scope(function() {
    * @return {string} decoded string.
    */
   _.bytesToString = function(bytes, opt_charset) {
-    var charset = opt_charset || _.UTF8;
-    var str = null;
+    const charset = opt_charset || _.UTF8;
+    let str = null;
 
     // try native TextDecoder first
     if (self.TextDecoder && self.Uint8Array && self.Uint8Array['from']) {
@@ -73,9 +73,9 @@ goog.scope(function() {
    * @return {!Int8Array} bytes.
    */
   _.stringToBytes = function(str, opt_charset) {
-    var charset = opt_charset || _.UTF8;
+    const charset = opt_charset || _.UTF8;
     /** @type {?Int8Array} */
-    var bytes = null;
+    let bytes = null;
     if (charset === _.UTF8) {
       bytes = utf8.stringToUTF8Bytes(str);
       if (bytes === null) {
@@ -107,35 +107,35 @@ goog.scope(function() {
    */
   _.guessEncoding = function(bytes, opt_hints) {
     if (opt_hints && !!opt_hints[DecodeHintType.CHARACTER_SET]) {
-      var characterSet = opt_hints[DecodeHintType.CHARACTER_SET].toString();
+      const characterSet = opt_hints[DecodeHintType.CHARACTER_SET].toString();
       if (characterSet) {
         return characterSet;
       }
     }
     // For now, merely tries to distinguish ISO-8859-1, UTF-8 and Shift_JIS,
     // which should be by far the most common encodings.
-    var length = bytes.length;
-    var canBeISO88591 = true;
-    var canBeShiftJIS = true;
-    var canBeUTF8 = true;
-    var utf8BytesLeft = 0;
-    //var utf8LowChars = 0;
-    var utf2BytesChars = 0;
-    var utf3BytesChars = 0;
-    var utf4BytesChars = 0;
-    var sjisBytesLeft = 0;
-    //var sjisLowChars = 0;
-    var sjisKatakanaChars = 0;
-    //var sjisDoubleBytesChars = 0;
-    var sjisCurKatakanaWordLength = 0;
-    var sjisCurDoubleBytesWordLength = 0;
-    var sjisMaxKatakanaWordLength = 0;
-    var sjisMaxDoubleBytesWordLength = 0;
-    //var isoLowChars = 0;
-    //var isoHighChars = 0;
-    var isoHighOther = 0;
+    let length = bytes.length;
+    let canBeISO88591 = true;
+    let canBeShiftJIS = true;
+    let canBeUTF8 = true;
+    let utf8BytesLeft = 0;
+    //let utf8LowChars = 0;
+    let utf2BytesChars = 0;
+    let utf3BytesChars = 0;
+    let utf4BytesChars = 0;
+    let sjisBytesLeft = 0;
+    //let sjisLowChars = 0;
+    let sjisKatakanaChars = 0;
+    //let sjisDoubleBytesChars = 0;
+    let sjisCurKatakanaWordLength = 0;
+    let sjisCurDoubleBytesWordLength = 0;
+    let sjisMaxKatakanaWordLength = 0;
+    let sjisMaxDoubleBytesWordLength = 0;
+    //let isoLowChars = 0;
+    //let isoHighChars = 0;
+    let isoHighOther = 0;
 
-    var utf8bom = bytes.length > 3 &&
+    const utf8bom = bytes.length > 3 &&
       bytes[0] === 0xEF &&
       bytes[1] === 0xBB &&
       bytes[2] === 0xBF;
@@ -144,7 +144,7 @@ goog.scope(function() {
          i < length && (canBeISO88591 || canBeShiftJIS || canBeUTF8);
          i++) {
 
-      let value = bytes[i] & 0xFF;
+      const value = bytes[i] & 0xFF;
 
       // UTF-8 stuff
       if (canBeUTF8) {

@@ -13,10 +13,10 @@ goog.scope(function() {
    */
   w69b.webgl.WebGLProgram = function(gl, fragmentSource, opt_vertexSource) {
     this.context_ = gl;
-    var vertexShader = this.buildShader_(
+    const vertexShader = this.buildShader_(
       opt_vertexSource || w69b.webgl.shaders.rectVertex, true);
-    var fragmentShader = this.buildShader_(fragmentSource, false);
-    var shaderProgram = gl.createProgram();
+    const fragmentShader = this.buildShader_(fragmentSource, false);
+    const shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
@@ -43,11 +43,11 @@ goog.scope(function() {
    * Initialize common shader attributes.
    */
   pro.initCommonAttributes = function() {
-    var gl = this.context_;
-    var program = this.glProgram;
-    var positionLocation = gl.getAttribLocation(program, 'position');
-    var buffer = gl.createBuffer();
-    var vertices = [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1];
+    const gl = this.context_;
+    const program = this.glProgram;
+    const positionLocation = gl.getAttribLocation(program, 'position');
+    const buffer = gl.createBuffer();
+    const vertices = [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1];
 
     //set position attribute data
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -67,7 +67,7 @@ goog.scope(function() {
    * Draws rectangele. InitCommonAttributes needs to have been called first.
    */
   pro.drawRect = function() {
-    var gl = this.context_;
+    const gl = this.context_;
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   };
 
@@ -76,7 +76,7 @@ goog.scope(function() {
    * @param {number} value float value.
    */
   pro.setUniform1f = function(name, value) {
-    var location = this.context_.getUniformLocation(this.glProgram, name);
+    const location = this.context_.getUniformLocation(this.glProgram, name);
     this.context_.uniform1f(location, value);
   };
 
@@ -87,7 +87,7 @@ goog.scope(function() {
    * @param {number} y float value.
    */
   pro.setUniform2f = function(name, x, y) {
-    var location = this.context_.getUniformLocation(this.glProgram, name);
+    const location = this.context_.getUniformLocation(this.glProgram, name);
     this.context_.uniform2f(location, x, y);
   };
 
@@ -96,7 +96,7 @@ goog.scope(function() {
    * @param {(!Array.<number>|!Float32Array)} value float value.
    */
   pro.setUniform1fv = function(name, value) {
-    var location = this.context_.getUniformLocation(this.glProgram, name);
+    const location = this.context_.getUniformLocation(this.glProgram, name);
     this.context_.uniform1fv(location, value);
   };
 
@@ -105,7 +105,7 @@ goog.scope(function() {
    * @param {number} value int value.
    */
   pro.setUniform1i = function(name, value) {
-    var location = this.context_.getUniformLocation(this.glProgram, name);
+    const location = this.context_.getUniformLocation(this.glProgram, name);
     this.context_.uniform1i(location, value);
   };
 
@@ -134,8 +134,8 @@ goog.scope(function() {
    * @return {!WebGLShader} shader.
    */
   pro.buildShader_ = function(source, isVertex) {
-    var gl = this.context_;
-    var shader = gl.createShader(
+    const gl = this.context_;
+    const shader = gl.createShader(
       isVertex ? gl.VERTEX_SHADER : gl.FRAGMENT_SHADER);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);

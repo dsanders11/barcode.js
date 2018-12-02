@@ -32,7 +32,7 @@ goog.require('goog.object');
 
 
 goog.scope(function() {
-  var _ = w69b.iconvlite;
+  const _ = w69b.iconvlite;
 
   /** @type {!Object<string, string>} */
   _.SINGLEBYTES = {
@@ -67,7 +67,7 @@ goog.scope(function() {
    * @return {string} decoded string.
    */
   _.toString = function(bytes, charset) {
-    var chars = _.ASCII + _.SINGLEBYTES[charset];
+    const chars = _.ASCII + _.SINGLEBYTES[charset];
     if (!chars) throw new Error();
     return bytes.map(function(b) {
       return chars[b];
@@ -89,10 +89,10 @@ goog.scope(function() {
    * @return {?Int8Array} bytes.
    */
   _.toBytes = function(string, charset) {
-    var map = _.getReverseMap_(charset);
-    var bytes = [];
+    const map = _.getReverseMap_(charset);
+    const bytes = [];
     for (let i = 0; i < string.length; ++i) {
-      let b = map[string[i]];
+      const b = map[string[i]];
       if (b === undefined) return null;
       bytes.push(b);
     }
@@ -105,10 +105,10 @@ goog.scope(function() {
    * @private
    */
   _.getReverseMap_ = function(charset) {
-    var map = _.REVERSE_MAPS_[charset];
+    let map = _.REVERSE_MAPS_[charset];
     if (!map) {
       map = {};
-      let chars = _.ASCII + _.SINGLEBYTES[charset];
+      const chars = _.ASCII + _.SINGLEBYTES[charset];
       if (!chars)
         throw new Error();
       for (let i = 0; i < chars.length; ++i) {

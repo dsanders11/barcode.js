@@ -15,7 +15,7 @@ goog.require('w69b.worker.WorkerMessageType');
 
 
 // Hack to work arround closure warnings.
-var host = self;
+const host = self;
 
 goog.scope(function() {
   const WorkerMessageType = w69b.worker.WorkerMessageType;
@@ -25,7 +25,7 @@ goog.scope(function() {
   const _ = w69b.worker.DecodeWorker;
   _.iconvPath = 'iconv.js';
 
-  var multiFormatReader = null;
+  let multiFormatReader = null;
 
   /**
    * @param {string} msgType messsage type.
@@ -35,7 +35,7 @@ goog.scope(function() {
   _.send = function(msgType, result, returnBuffer = false) {
     // As a work around to a memory leak in Firefox and Chrome, always transfer
     // the buffer back to the main thread once we are done using it
-    var buffer = _.buffer_;
+    const buffer = _.buffer_;
     host.postMessage([msgType, host['JSON'].stringify(result)],
       returnBuffer && buffer ? [buffer] : undefined);
     _.buffer = null;
@@ -49,7 +49,7 @@ goog.scope(function() {
    *                                     true, do not try to load iconv. decode.
    */
   _.decode = function(imgdata, isBinary, opt_formats, opt_failOnCharset) {
-    var result;
+    let result;
     try {
       result = _.decodeFromImageData(imgdata, isBinary, opt_formats, _.onPatternFound);
     } catch (err) {
@@ -83,7 +83,7 @@ goog.scope(function() {
     if (multiFormatReader === null) {
       multiFormatReader = new w69b.MultiFormatReader();
 
-      var opt_hints = (opt_formats || opt_callback) ? {} : undefined;
+      const opt_hints = (opt_formats || opt_callback) ? {} : undefined;
 
       if (opt_callback) {
         opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK] = opt_callback;
@@ -98,14 +98,14 @@ goog.scope(function() {
       }
     }
 
-    var luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
-    var binarizer;
+    const luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
+    let binarizer;
     if (isBinary) {
       binarizer = new w69b.common.NoOpBinarizer(luminanceSource);
     } else {
       binarizer = new w69b.common.HybridBinarizer(luminanceSource);
     }
-    var bitmap = new w69b.BinaryBitmap(binarizer);
+    const bitmap = new w69b.BinaryBitmap(binarizer);
 
     try {
       return multiFormatReader.decodeWithState(bitmap);
@@ -127,7 +127,7 @@ goog.scope(function() {
    * @param {!MessageEvent} event
    */
   self.onmessage = function(event) {
-    var data = event.data;
+    const data = event.data;
     // Message only sent for feature detection of transferable objects.
     if (data['isfeaturedetect']) {
       // do nothing.
@@ -135,16 +135,16 @@ goog.scope(function() {
       _.iconvPath = data['setIconvUrl'];
     } else {
       // decode
-      let width = data['width'];
-      let height = data['height'];
-      let buffer = data['buffer'];
-      let formats = data['formats'];
-      let isBinary = data['isBinary'] || false;
-      let isGrayscale = data['isGrayscale'];
+      const width = data['width'];
+      const height = data['height'];
+      const buffer = data['buffer'];
+      const formats = data['formats'];
+      const isBinary = data['isBinary'] || false;
+      const isGrayscale = data['isGrayscale'];
       if (!buffer.byteLength) {
         throw new Error('worker commmunication failed');
       }
-      let imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
+      const imageData = new ImageData(new Uint8ClampedArray(buffer), width, height);
       imageData.grayscale_ = isGrayscale;
       _.buffer_ = buffer;
       _.decode(imageData, isBinary, formats);

@@ -105,7 +105,7 @@ goog.scope(function() {
    * Unbind framebuffer.
    */
   pro.unbindFramebuffer = function() {
-    var gl = this.context_;
+    const gl = this.context_;
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   };
 
@@ -129,12 +129,12 @@ goog.scope(function() {
    * @param {number} num
    */
   pro.createTextures = function(num) {
-    var gl = this.context_;
-    var width = this.getWidth();
-    var height = this.getHeight();
+    const gl = this.context_;
+    const width = this.getWidth();
+    const height = this.getHeight();
 
     // Delete current textures first
-    for (let texture of this.textures) {
+    for (const texture of this.textures) {
       gl.deleteTexture(texture);
     }
 
@@ -148,7 +148,7 @@ goog.scope(function() {
    * @param {number} id texture id.
    */
   pro.setTextureFlipped = function(id) {
-    var gl = this.context_;
+    const gl = this.context_;
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.textures[id]);
     // flipped coordinates
@@ -165,8 +165,8 @@ goog.scope(function() {
    * @return {!WebGLTexture} texture.
    */
   pro.createTexture = function(id, opt_width, opt_height) {
-    var gl = this.context_;
-    var texture = gl.createTexture();
+    const gl = this.context_;
+    const texture = gl.createTexture();
     gl.activeTexture(gl.TEXTURE0 + id);
     //set properties for the texture
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -190,8 +190,8 @@ goog.scope(function() {
    * @param {!WebGLFramebuffer=} opt_framebuffer defaults to this.framebuffer.
    */
   pro.attachTextureToFB = function(textureId, opt_framebuffer) {
-    var gl = this.context_;
-    var texture = this.textures[textureId];
+    const gl = this.context_;
+    const texture = this.textures[textureId];
     gl.bindFramebuffer(gl.FRAMEBUFFER, opt_framebuffer || this.framebuffer_);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0,
       gl.TEXTURE_2D, texture, 0);
@@ -210,10 +210,10 @@ goog.scope(function() {
    * @return {!ImageData} image data.
    */
   pro.getImageData = function() {
-    var gl = this.context_;
-    var width = this.getWidth();
-    var height = this.getHeight();
-    var imgdata = new Uint8ClampedArray(4 * width * height);
+    const gl = this.context_;
+    const width = this.getWidth();
+    const height = this.getHeight();
+    const imgdata = new Uint8ClampedArray(4 * width * height);
     gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(imgdata.buffer));
     // TODO - This appears to be upside down, try flipping it over
     return new ImageData(imgdata, width, height);
@@ -227,19 +227,19 @@ goog.scope(function() {
   _.testFragCoordOffset = function() {
     if (_.fragCoordOffset_)
       return;
-    var canvas = /** @type {!HTMLCanvasElement} */ (document.createElement('canvas'));
-    var gl = /** @type {!WebGLRenderingContext} */ (
+    const canvas = /** @type {!HTMLCanvasElement} */ (document.createElement('canvas'));
+    const gl = /** @type {!WebGLRenderingContext} */ (
       canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
     canvas.width = 20;
     canvas.height = 20;
     canvas.imageSmoothingEnabled = false;
-    var program = new WebGLProgram(gl, w69b.webgl.shaders.fragCoordTest);
+    const program = new WebGLProgram(gl, w69b.webgl.shaders.fragCoordTest);
 
     program.use();
     program.initCommonAttributes();
 
     program.drawRect();
-    var imgdata = new Uint8Array(4 * canvas.width * canvas.height);
+    const imgdata = new Uint8Array(4 * canvas.width * canvas.height);
     gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA,
       gl.UNSIGNED_BYTE, imgdata);
 
@@ -251,8 +251,8 @@ goog.scope(function() {
       return Math.round(100 * val / 255) / 10;
     }
 
-    var xOffset = imgdata[0];
-    var yOffset = imgdata[1];
+    let xOffset = imgdata[0];
+    let yOffset = imgdata[1];
     // assume 0.1 steps.
     xOffset = round(xOffset);
     yOffset = round(yOffset);

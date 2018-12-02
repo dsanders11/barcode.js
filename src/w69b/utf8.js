@@ -15,8 +15,8 @@ goog.provide('w69b.utf8');
    * License: MIT
    */
   function fixedCharCodeAt(str, idx) {
-      var code = str.charCodeAt(idx);
-      var hi, low;
+      const code = str.charCodeAt(idx);
+      let hi, low;
       // High surrogate (could change last hex to 0xDB7F to treat high private
       // surrogates as single characters)
       if (0xD800 <= code && code <= 0xDBFF) {
@@ -46,7 +46,7 @@ goog.provide('w69b.utf8');
    * MIT License
    */
   function fixedFromCodePoint(codePoints) {
-    var chars = [], point, offset, units, i;
+    let chars = [], point, offset, units, i;
     for (i = 0; i < codePoints.length; ++i) {
       point = codePoints[i];
       offset = point - 0x10000;
@@ -64,9 +64,9 @@ goog.provide('w69b.utf8');
    */
   function stringToUTF8Bytes(str) {
     /** @type {!Array.<number>} */
-    var bytes = [];
+    const bytes = [];
     for (let i = 0; i < str.length; ++i) {
-      let codePoint = fixedCharCodeAt(str, i);
+      const codePoint = fixedCharCodeAt(str, i);
       // already handeled
       if (!codePoint) continue;
       if (codePoint <= 0x7F) {
@@ -107,22 +107,22 @@ goog.provide('w69b.utf8');
    * @return {?string} result string or null on error (invalid input).
    */
   function UTF8BytesToString(bytes) {
-    var length = bytes.length;
+    const length = bytes.length;
 
     /**
      * @param {number} idx
      * @return {number}
      */
-    var getContinuation = function(idx) {
+    const getContinuation = function(idx) {
       if (idx > length) throw new Error();
-      var b = bytes[idx];
+      const b = bytes[idx];
       if ((b & 0xC0) !== 0x80) throw new Error();
       return b & 0x3F;
     };
-    var codePoints = [];
+    const codePoints = [];
     try {
       for (let i = 0; i < length; ++i) {
-        let b = bytes[i];
+        const b = bytes[i];
         if (b > 0xFF) return null;
         let code;
         if ((b & 0x80) === 0x00) {
@@ -174,7 +174,7 @@ goog.provide('w69b.utf8');
   }
 
   // Public API.
-  var exports = {
+  const exports = {
     stringToUTF8Bytes: stringToUTF8Bytes,
     UTF8BytesToString: UTF8BytesToString
   };

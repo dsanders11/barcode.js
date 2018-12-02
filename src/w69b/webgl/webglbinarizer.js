@@ -134,17 +134,17 @@ goog.scope(function() {
    * @return {!WebGLPipeline}
    */
   pro.createPipeline = function() {
-    var width = this.filter_.getWidth();
-    var height = this.filter_.getHeight();
-    var inSize = this.inSize_;
+    const width = this.filter_.getWidth();
+    const height = this.filter_.getHeight();
+    const inSize = this.inSize_;
 
-    var pipeline = new WebGLPipeline(this.filter_);
+    const pipeline = new WebGLPipeline(this.filter_);
     // Some shaders that are useful for debugging.
-    // var grayscale = new WebGLProgram(gl, w69b.webgl.shaders.grayscale);
-    // var dummy = this.getProgram(w69b.webgl.shaders.dummy);
-    // var extractChannel = this.getProgram(w69b.webgl.shaders.extractChannel);
-    // var debug = new WebGLProgram(gl, w69b.webgl.shaders.debug);
-    var baseParams = new WebGLParams(
+    // const grayscale = new WebGLProgram(gl, w69b.webgl.shaders.grayscale);
+    // const dummy = this.getProgram(w69b.webgl.shaders.dummy);
+    // const extractChannel = this.getProgram(w69b.webgl.shaders.extractChannel);
+    // const debug = new WebGLProgram(gl, w69b.webgl.shaders.debug);
+    const baseParams = new WebGLParams(
       {
         'width': width,
         'height': height,
@@ -156,10 +156,10 @@ goog.scope(function() {
         'outOffset': [0, 0],
         'fragCoordOffset': this.filter_.getFragCoordOffset()
       });
-    var downScalePower = 3;
-    var scaledWith = Math.max(1, width >> downScalePower);
-    var scaledHeight = Math.max(1, height >> downScalePower);
-    var smallImgParams = baseParams.clone().set({
+    const downScalePower = 3;
+    const scaledWith = Math.max(1, width >> downScalePower);
+    const scaledHeight = Math.max(1, height >> downScalePower);
+    const smallImgParams = baseParams.clone().set({
       'width': scaledWith,
       'height': scaledHeight,
       'inwidth': scaledWith,
@@ -253,7 +253,7 @@ goog.scope(function() {
     if (!this.setupCalled_) {
       throw new Error();
     }
-    var gl = this.filter_.getContext();
+    const gl = this.filter_.getContext();
     // bind input image to texture 0.
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.filter_.getTexture(0));
@@ -276,12 +276,12 @@ goog.scope(function() {
    * @return {!ImageData} test image.
    */
   _.createSupportCheckImage = function(width, height) {
-    var imgdata = new Uint8ClampedArray(4 * width * height);
+    const imgdata = new Uint8ClampedArray(4 * width * height);
     // build gradient
     for (let y = 0; y < height; ++y) {
       for (let x = 0; x < width; ++x) {
-        let pos = 4 * (width * y + x);
-        let gray = x;
+        const pos = 4 * (width * y + x);
+        const gray = x;
         imgdata[pos] = gray;
         imgdata[pos + 1] = gray;
         imgdata[pos + 2] = gray;
@@ -316,10 +316,10 @@ goog.scope(function() {
       }
       let binary = binarizer.getImageData();
       // Check some black and white values.
-      _.isSupported_ = (getPixel(binary, 30, 4)[0] == 0 &&
-      getPixel(binary, 90, 4)[0] == 0 &&
-      getPixel(binary, 31, 4)[0] == 255 &&
-      getPixel(binary, 29, 4)[0] == 255);
+      _.isSupported_ = (getPixel(binary, 30, 4)[0] === 0 &&
+      getPixel(binary, 90, 4)[0] === 0 &&
+      getPixel(binary, 31, 4)[0] === 255 &&
+      getPixel(binary, 29, 4)[0] === 255);
     }
     return _.isSupported_;
   };
@@ -331,8 +331,8 @@ goog.scope(function() {
    * @param {number} gray
    */
   function setPixelGray(imageData, x, y, gray) {
-    var data = imageData.data;
-    var pos = 4 * (y * imageData.width + x);
+    const data = imageData.data;
+    const pos = 4 * (y * imageData.width + x);
     data[pos] = gray;
     data[pos + 1] = gray;
     data[pos + 2] = gray;
@@ -346,8 +346,8 @@ goog.scope(function() {
    * @return {!Array.<number>} [red, green, blue, alpha] values.
    */
   function getPixel(imageData, x, y) {
-    var data = imageData.data;
-    var pos = 4 * (y * imageData.width + x);
+    const data = imageData.data;
+    const pos = 4 * (y * imageData.width + x);
     return [data[pos], data[pos + 1], data[pos + 2], data[pos + 3]];
   }
 });

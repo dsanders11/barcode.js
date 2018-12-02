@@ -40,12 +40,12 @@ goog.scope(function() {
    */
   w69b.ImageDataLuminanceSource = function(
       image, opt_left, opt_top, opt_width, opt_height) {
-    var sourceWidth = image.width;
-    var sourceHeight = image.height;
-    var left = opt_left ? opt_left : 0;
-    var top = opt_top ? opt_top: 0;
-    var width = opt_width ? opt_width : image.width;
-    var height = opt_height ? opt_height : image.height;
+    const sourceWidth = image.width;
+    const sourceHeight = image.height;
+    const left = opt_left ? opt_left : 0;
+    const top = opt_top ? opt_top: 0;
+    const width = opt_width ? opt_width : image.width;
+    const height = opt_height ? opt_height : image.height;
 
     goog.base(this, width, height);
 
@@ -63,14 +63,14 @@ goog.scope(function() {
       // ImageData may have already been made grayscale using WebGL
       if (image.grayscale_) {
         // Move the RGBA data to a single-byte representation
-        let data = image.data;
-        let luminances = this.luminances_;
+        const data = image.data;
+        const luminances = this.luminances_;
         for (let i = 0, dlength = data.length; i < dlength; i += 4) {
           luminances[i/4] = data[i];
         }
       } else {
-        let data = image.data;
-        let luminances = this.luminances_;
+        const data = image.data;
+        const luminances = this.luminances_;
         for (let i = 0, dlength = data.length; i < dlength; i += 4) {
           // Average RGB data to convert to greyscale, favoring green channel
           // NOTE - This entirely disregards the alpha channel
@@ -105,9 +105,9 @@ goog.scope(function() {
         "Requested row is outside the image: " + y);
     }
 
-    var width = this.getWidth();
-    var offset = (y + this.top_) * this.dataWidth_ + this.left_;
-    var slice = this.luminances_.slice(offset, offset + width);
+    const width = this.getWidth();
+    const offset = (y + this.top_) * this.dataWidth_ + this.left_;
+    const slice = this.luminances_.slice(offset, offset + width);
 
     if (row === null || row.length < width) {
       // We've already created our new array with the slice operation, so
@@ -125,8 +125,8 @@ goog.scope(function() {
    * @override
    */
   pro.getMatrix = function() {
-    var width = this.getWidth();
-    var height = this.getHeight();
+    const width = this.getWidth();
+    const height = this.getHeight();
 
     // If the caller asks for the entire underlying image, save the copy and
     // give them the original data. The docs specifically warn that
@@ -135,9 +135,9 @@ goog.scope(function() {
       return this.luminances_;
     }
 
-    var area = width * height;
-    var matrix = new Int8Array(area);
-    var inputOffset = this.top_ * this.dataWidth_ + this.left_;
+    const area = width * height;
+    const matrix = new Int8Array(area);
+    let inputOffset = this.top_ * this.dataWidth_ + this.left_;
 
     // If the width matches the full width of the underlying data,
     // perform a single copy.
@@ -148,8 +148,8 @@ goog.scope(function() {
 
     // Otherwise copy one cropped row at a time.
     for (let y = 0; y < height; y++) {
-      let outputOffset = y * width;
-      let slice = this.luminances_.slice(inputOffset, inputOffset + width);
+      const outputOffset = y * width;
+      const slice = this.luminances_.slice(inputOffset, inputOffset + width);
       matrix.set(slice, outputOffset);
       inputOffset += this.dataWidth_;
     }
@@ -173,7 +173,7 @@ goog.scope(function() {
     goog.asserts.assert(Number.isInteger(width));
     goog.asserts.assert(Number.isInteger(height));
 
-    var luminances = this.luminances_;
+    const luminances = this.luminances_;
     luminances.width = this.dataWidth_;
     luminances.height = this.dataWidth_;
 

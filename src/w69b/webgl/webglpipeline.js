@@ -50,24 +50,24 @@ goog.scope(function() {
    */
   pro.render = function(inTextureId, outTextureId, workTextureId,
                         opt_resultOnScreen) {
-    var prevProgarm = null;
-    var filter = this.filter_;
-    var numPasses = this.passes_.length;
+    let prevProgarm = null;
+    const filter = this.filter_;
+    const numPasses = this.passes_.length;
     /** @type {?Array.<number>} */
-    var pingPongTextureIds;
+    let pingPongTextureIds;
     // Ensures last pass goes on outTextureId.
-    if (numPasses % 2 == 0) {
+    if (numPasses % 2 === 0) {
       pingPongTextureIds = [workTextureId, outTextureId];
     } else {
       pingPongTextureIds = [outTextureId, workTextureId];
     }
 
-    var prevTextureId = inTextureId;
+    let prevTextureId = inTextureId;
     for (let i = 0; i < numPasses; ++i) {
-      let pass = this.passes_[i];
+      const pass = this.passes_[i];
       if (pass.length) {
-        let program = /** @type {!WebGLProgram} */ (pass[0]);
-        let params = /** @type {!WebGLParams} */ (pass[1]);
+        const program = /** @type {!WebGLProgram} */ (pass[0]);
+        const params = /** @type {!WebGLParams} */ (pass[1]);
         if (program != prevProgarm) {
           program.use();
           program.initCommonAttributes();
@@ -78,11 +78,11 @@ goog.scope(function() {
         if (i == numPasses - 1 && opt_resultOnScreen) {
           filter.unbindFramebuffer();
         } else {
-          let texId = pingPongTextureIds[i % 2];
+          const texId = pingPongTextureIds[i % 2];
           filter.attachTextureToFB(texId);
           prevTextureId = texId;
         }
-        let offset = params.getValue('outOffset');
+        const offset = params.getValue('outOffset');
         filter.setViewport(
           offset ? offset[0] : 0,
           offset ? offset[1] : 0,
@@ -91,8 +91,8 @@ goog.scope(function() {
         program.drawRect();
       } else {
         // custom pass
-        let outTex = pingPongTextureIds[i % 2];
-        let workTex = pingPongTextureIds[(i + 1) % 2];
+        const outTex = pingPongTextureIds[i % 2];
+        const workTex = pingPongTextureIds[(i + 1) % 2];
         pass(prevTextureId, outTex, workTex);
         prevTextureId = outTex;
       }

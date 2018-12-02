@@ -20,7 +20,7 @@ goog.scope(function() {
    * @return {!w69b.webgl.WebGLParams} params object.
    */
   pro.clone = function() {
-    var params = new w69b.webgl.WebGLParams();
+    const params = new w69b.webgl.WebGLParams();
     params.data_ = goog.object.clone(this.data_);
     return params;
   };
@@ -68,7 +68,7 @@ goog.scope(function() {
    * @return {!w69b.webgl.WebGLParams} this for chaining.
    */
   pro.setInt = function(name, value) {
-    var len = value.length || 1;
+    const len = value.length || 1;
     this.setInternal_(name, len + 'i', value);
     return this;
   };
@@ -79,7 +79,7 @@ goog.scope(function() {
    * @return {!w69b.webgl.WebGLParams} this for chaining.
    */
   pro.setFloat = function(name, value) {
-    var len = value.length || 1;
+    const len = value.length || 1;
     this.setInternal_(name, len + 'f', value);
     return this;
   };
@@ -89,7 +89,7 @@ goog.scope(function() {
    * @return {?number} value or null.
    */
   pro.getValue = function(name) {
-    var tuple = this.data_[name];
+    const tuple = this.data_[name];
     if (tuple)
       return tuple[1];
     else
@@ -102,15 +102,15 @@ goog.scope(function() {
    * @param {!w69b.webgl.WebGLProgram} program webgl program.
    */
   pro.apply = function(program) {
-    var setters = program.getNamedSetterFunctions();
+    const setters = program.getNamedSetterFunctions();
     goog.object.forEach(this.data_,
       /**
        * @param {(string|!Array.<(string|number)>)} value
        * @param {string} name
        */
       function(value, name) {
-        var type = /** @type {string} */ (value[0]);
-        var valueArgs = /** @type {!Array.<(string|number)>} */ (value[1]);
+        const type = /** @type {string} */ (value[0]);
+        const valueArgs = /** @type {!Array.<(string|number)>} */ (value[1]);
         setters[type].apply(program, [name].concat(valueArgs));
       }, this);
   };
