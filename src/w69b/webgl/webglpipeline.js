@@ -75,7 +75,7 @@ goog.scope(function() {
         }
         program.setUniform1i('imageIn', prevTextureId);
         params.apply(program);
-        if (i == numPasses - 1 && opt_resultOnScreen) {
+        if (i === numPasses - 1 && opt_resultOnScreen) {
           filter.unbindFramebuffer();
         } else {
           const texId = pingPongTextureIds[i % 2];

@@ -278,7 +278,7 @@ goog.scope(function() {
   pro.setStopped = function(stopped) {
     stopped = !!stopped;
     const wasStopped = this.stopped_;
-    if (stopped == wasStopped)
+    if (stopped === wasStopped)
       return;
     this.stopped_ = stopped;
     if (!stopped) {

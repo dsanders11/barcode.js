@@ -48,7 +48,7 @@ goog.scope(function() {
    * @override
    */
   pro.fillBackground = function(width, height) {
-    goog.asserts.assert(this.buffer_.length == 0);
+    goog.asserts.assert(this.buffer_.length === 0);
     this.writeHeader(width, height);
     this.writeRect_(0, 0, width, height, this.bgStyle_);
   };

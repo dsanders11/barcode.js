@@ -44,7 +44,7 @@ goog.scope(function() {
        * @param {string} key
        */
       function(value, key) {
-        if (value.length > 0 && value[0] == 'i')
+        if (value.length > 0 && value[0] === 'i')
           this.setInt(key, value.slice(1));
         else
           this.setFloat(key, value);

@@ -179,11 +179,11 @@ goog.provide('w69b.utf8');
     UTF8BytesToString: UTF8BytesToString
   };
 
-  if (typeof(goog) == 'object' && goog.provide) {
+  if (typeof(goog) === 'object' && goog.provide) {
     // Google Closure Tools compatibility hook.
     w69b.utf8.stringToUTF8Bytes = stringToUTF8Bytes;
     w69b.utf8.UTF8BytesToString = UTF8BytesToString;
-  } else if (typeof(global.define) == 'function') {
+  } else if (typeof(global.define) === 'function') {
     // require js compatibility hook.
     global.define(exports);
   } else {
