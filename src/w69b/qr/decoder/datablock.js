@@ -63,11 +63,11 @@ goog.scope(function() {
 
     // Figure out the number and size of data blocks used by this version and
     // error correction level
-    var ecBlocks = version.getECBlocksForLevel(ecLevel);
+    const ecBlocks = version.getECBlocksForLevel(ecLevel);
 
     // First count the total number of data blocks
-    var totalBlocks = 0;
-    var ecBlockArray = ecBlocks.getECBlocks();
+    let totalBlocks = 0;
+    const ecBlockArray = ecBlocks.getECBlocks();
     for (let i = 0; i < ecBlockArray.length; i++) {
       totalBlocks += ecBlockArray[i].getCount();
     }
@@ -75,13 +75,13 @@ goog.scope(function() {
     // Now establish DataBlocks of the appropriate size and number of data
     // codewords
     /** @type {!Array.<!DataBlock>} */
-    var result = new Array(totalBlocks);
-    var numResultBlocks = 0;
+    const result = new Array(totalBlocks);
+    let numResultBlocks = 0;
     for (let j = 0; j < ecBlockArray.length; j++) {
-      let ecBlock = ecBlockArray[j];
+      const ecBlock = ecBlockArray[j];
       for (let i = 0; i < ecBlock.getCount(); i++) {
-        let numDataCodewords = ecBlock.getDataCodewords();
-        let numBlockCodewords = ecBlocks.ecCodewordsPerBlock + numDataCodewords;
+        const numDataCodewords = ecBlock.getDataCodewords();
+        const numBlockCodewords = ecBlocks.ecCodewordsPerBlock + numDataCodewords;
         result[numResultBlocks++] = new DataBlock(numDataCodewords,
           new Int8Array(numBlockCodewords));
       }
@@ -89,10 +89,10 @@ goog.scope(function() {
 
     // All blocks have the same amount of data, except that the last n
     // (where n may be 0) have 1 more byte. Figure out where these start.
-    var shorterBlocksTotalCodewords = result[0].codewords.length;
-    var longerBlocksStartAt = result.length - 1;
+    const shorterBlocksTotalCodewords = result[0].codewords.length;
+    let longerBlocksStartAt = result.length - 1;
     while (longerBlocksStartAt >= 0) {
-      let numCodewords = result[longerBlocksStartAt].codewords.length;
+      const numCodewords = result[longerBlocksStartAt].codewords.length;
       if (numCodewords === shorterBlocksTotalCodewords) {
         break;
       }
@@ -100,11 +100,11 @@ goog.scope(function() {
     }
     longerBlocksStartAt++;
 
-    var shorterBlocksNumDataCodewords = shorterBlocksTotalCodewords -
+    const shorterBlocksNumDataCodewords = shorterBlocksTotalCodewords -
       ecBlocks.ecCodewordsPerBlock;
     // The last elements of result may be 1 element longer;
     // first fill out as many elements as all of them have
-    var rawCodewordsOffset = 0;
+    let rawCodewordsOffset = 0;
     for (let i = 0; i < shorterBlocksNumDataCodewords; i++) {
       for (let j = 0; j < numResultBlocks; j++) {
         result[j].codewords[i] = rawCodewords[rawCodewordsOffset++];
@@ -116,10 +116,10 @@ goog.scope(function() {
         rawCodewords[rawCodewordsOffset++];
     }
     // Now add in error correction blocks
-    var max = result[0].codewords.length;
+    let max = result[0].codewords.length;
     for (let i = shorterBlocksNumDataCodewords; i < max; i++) {
       for (let j = 0; j < numResultBlocks; j++) {
-        let iOffset = j < longerBlocksStartAt ? i : i + 1;
+        const iOffset = j < longerBlocksStartAt ? i : i + 1;
         result[j].codewords[iOffset] = rawCodewords[rawCodewordsOffset++];
       }
     }

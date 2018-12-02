@@ -39,7 +39,7 @@ goog.scope(function() {
    * @return {!Array.<!T>}
    */
   pro.toArray = function(opt_a) {
-    var length = this.array_.length;
+    const length = this.array_.length;
 
     if (opt_a && opt_a.length >= length) {
       opt_a.splice(0, length, ...this.array_);
@@ -55,8 +55,8 @@ goog.scope(function() {
   };
 
   pro[Symbol.iterator] = function() {
-    var array = this.array_;
-    var nextIndex = 0;
+    const array = this.array_;
+    let nextIndex = 0;
 
     return {
       next: function() {

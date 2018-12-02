@@ -80,15 +80,15 @@ goog.scope(function() {
    */
   pro.decode = function(image, opt_hints) {
     /** @type {?DecoderResult} */
-    var decoderResult;
+    let decoderResult;
     /** @type {?Array.<!ResultPoint>} */
-    var points;
+    let points;
     if (opt_hints && !!opt_hints[DecodeHintType.PURE_BARCODE]) {
-      let bits = extractPureBits_(image.getBlackMatrix());
+      const bits = extractPureBits_(image.getBlackMatrix());
       decoderResult = decoder.decode(bits, opt_hints);
       points = NO_POINTS;
     } else {
-      let detectorResult = new Detector(image.getBlackMatrix()).detect(opt_hints);
+      const detectorResult = new Detector(image.getBlackMatrix()).detect(opt_hints);
       decoderResult = decoder.decode(detectorResult.getBits(), opt_hints);
       points = detectorResult.getPoints();
     }
@@ -99,12 +99,12 @@ goog.scope(function() {
       decoderResult.getOther().applyMirroredCorrection(points);
     }
 
-    var result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.QR_CODE);
-    var byteSegments = decoderResult.getByteSegments();
+    const result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), points, BarcodeFormat.QR_CODE);
+    const byteSegments = decoderResult.getByteSegments();
     if (byteSegments !== null) {
       result.putMetadata(ResultMetadataType.BYTE_SEGMENTS, byteSegments);
     }
-    var ecLevel = decoderResult.getECLevel();
+    const ecLevel = decoderResult.getECLevel();
     if (ecLevel !== null) {
       result.putMetadata(ResultMetadataType.ERROR_CORRECTION_LEVEL, ecLevel);
     }
@@ -137,18 +137,18 @@ goog.scope(function() {
    * @private
    */
   function extractPureBits_(image) {
-    var leftTopBlack = image.getTopLeftOnBit();
-    var rightBottomBlack = image.getBottomRightOnBit();
+    const leftTopBlack = image.getTopLeftOnBit();
+    const rightBottomBlack = image.getBottomRightOnBit();
     if (leftTopBlack === null || rightBottomBlack === null) {
       throw NotFoundException.getNotFoundInstance();
     }
 
-    var moduleSize = moduleSize_(leftTopBlack, image);
+    const moduleSize = moduleSize_(leftTopBlack, image);
 
-    var top = leftTopBlack[1];
-    var bottom = rightBottomBlack[1];
-    var left = leftTopBlack[0];
-    var right = rightBottomBlack[0];
+    let top = leftTopBlack[1];
+    let bottom = rightBottomBlack[1];
+    let left = leftTopBlack[0];
+    let right = rightBottomBlack[0];
 
     // Sanity check!
     if (left >= right || top >= bottom) {
@@ -166,8 +166,8 @@ goog.scope(function() {
       }
     }
 
-    var matrixWidth = Math.round((right - left + 1) / moduleSize);
-    var matrixHeight = Math.round((bottom - top + 1) / moduleSize);
+    const matrixWidth = Math.round((right - left + 1) / moduleSize);
+    const matrixHeight = Math.round((bottom - top + 1) / moduleSize);
     if (matrixWidth <= 0 || matrixHeight <= 0) {
       throw NotFoundException.getNotFoundInstance();
     }
@@ -179,14 +179,14 @@ goog.scope(function() {
     // Push in the "border" by half the module width so that we start
     // sampling in the middle of the module. Just in case the image is a
     // little off, this will help recover.
-    var nudge = moduleSize >> 1;
+    const nudge = moduleSize >> 1;
     top += nudge;
     left += nudge;
 
     // But careful that this does not sample off the edge
     // "right" is the farthest-right valid pixel location -- right+1 is not necessarily
     // This is positive by how much the inner x loop below would be too large
-    var nudgedTooFarRight = left + Math.floor((matrixWidth - 1) * moduleSize) - right;
+    const nudgedTooFarRight = left + Math.floor((matrixWidth - 1) * moduleSize) - right;
     if (nudgedTooFarRight > 0) {
       if (nudgedTooFarRight > nudge) {
         // Neither way fits; abort
@@ -195,7 +195,7 @@ goog.scope(function() {
       left -= nudgedTooFarRight;
     }
     // See logic above
-    var nudgedTooFarDown = top + Math.floor((matrixHeight - 1) * moduleSize) - bottom;
+    const nudgedTooFarDown = top + Math.floor((matrixHeight - 1) * moduleSize) - bottom;
     if (nudgedTooFarDown > 0) {
       if (nudgedTooFarDown > nudge) {
         // Neither way fits; abort
@@ -205,9 +205,9 @@ goog.scope(function() {
     }
 
     // Now just read off the bits
-    var bits = new BitMatrix(matrixWidth, matrixHeight);
+    const bits = new BitMatrix(matrixWidth, matrixHeight);
     for (let y = 0; y < matrixHeight; y++) {
-      let iOffset = top + Math.floor(y * moduleSize);
+      const iOffset = top + Math.floor(y * moduleSize);
       for (let x = 0; x < matrixWidth; x++) {
         if (image.get(left + Math.floor(x * moduleSize), iOffset)) {
           bits.set(x, y);
@@ -225,12 +225,12 @@ goog.scope(function() {
    * @private
    */
   function moduleSize_(leftTopBlack, image){
-    var height = image.getHeight();
-    var width = image.getWidth();
-    var x = leftTopBlack[0];
-    var y = leftTopBlack[1];
-    var inBlack = true;
-    var transitions = 0;
+    const height = image.getHeight();
+    const width = image.getWidth();
+    let x = leftTopBlack[0];
+    let y = leftTopBlack[1];
+    let inBlack = true;
+    let transitions = 0;
     while (x < width && y < height) {
       if (inBlack !== image.get(x, y)) {
         if (++transitions === 5) {

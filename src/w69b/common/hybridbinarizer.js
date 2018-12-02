@@ -143,7 +143,7 @@ goog.scope(function() {
     const maxYOffset = height - BLOCK_SIZE;
     const maxXOffset = width - BLOCK_SIZE;
     for (let y = 0; y < subHeight; y++) {
-      let top = _.cap(y, 2, subHeight - 3);
+      const top = _.cap(y, 2, subHeight - 3);
       let yoffset = y << BLOCK_SIZE_POWER;
       if (yoffset > maxYOffset) {
         yoffset = maxYOffset;
@@ -153,14 +153,14 @@ goog.scope(function() {
         if (xoffset > maxXOffset) {
           xoffset = maxXOffset;
         }
-        let left = _.cap(x, 2, subWidth - 3);
+        const left = _.cap(x, 2, subWidth - 3);
         let sum = 0;
         for (let z = -2; z <= 2; z++) {
-          let blackRow = blackPoints[top + z];
+          const blackRow = blackPoints[top + z];
           sum += blackRow[left - 2] + blackRow[left - 1] +
             blackRow[left] + blackRow[left + 1] + blackRow[left + 2];
         }
-        let average = Math.floor(sum / 25);
+        const average = Math.floor(sum / 25);
         _.thresholdBlock(luminances, xoffset, yoffset, average, width, matrix);
       }
     }
@@ -189,7 +189,7 @@ goog.scope(function() {
                               matrix) {
     for (let y = 0, offset = yoffset * stride + xoffset; y < BLOCK_SIZE;
          y++, offset += stride) {
-      let yCoord = yoffset + y;
+      const yCoord = yoffset + y;
       for (let x = 0; x < BLOCK_SIZE; x++) {
         // Comparison needs to be <= so that black == 0 pixels are
         // black even if the threshold is 0.

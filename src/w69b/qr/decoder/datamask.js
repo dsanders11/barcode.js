@@ -235,7 +235,7 @@ goog.scope(function() {
    * @override
    */
   _.DataMask110.prototype.isMasked = function(i, j) {
-    var temp = i * j;
+    const temp = i * j;
     return ((temp + (temp % 3)) & 0x01) === 0;
   };
 

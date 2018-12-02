@@ -87,7 +87,7 @@ goog.scope(function() {
   pro.sizeOfBlackWhiteBlackRun = function(fromX, fromY, toX, toY) {
     // Mild variant of Bresenham's algorithm;
     // see http://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-    var steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
+    const steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
     if (steep) {
       let temp = fromX;
       fromX = fromY;
@@ -97,19 +97,19 @@ goog.scope(function() {
       toY = temp;
     }
 
-    var dx = Math.abs(toX - fromX);
-    var dy = Math.abs(toY - fromY);
-    var error = -dx >> 1;
-    var xstep = fromX < toX ? 1 : -1;
-    var ystep = fromY < toY ? 1 : -1;
+    const dx = Math.abs(toX - fromX);
+    const dy = Math.abs(toY - fromY);
+    let error = -dx >> 1;
+    const xstep = fromX < toX ? 1 : -1;
+    const ystep = fromY < toY ? 1 : -1;
 
     // In black pixels, looking for white, first or second time.
-    var state = 0;
+    let state = 0;
     // Loop up until x === toX, but not beyond
-    var xLimit = toX + xstep;
+    const xLimit = toX + xstep;
     for (let x = fromX, y = fromY; x !== xLimit; x += xstep) {
-      let realX = steep ? y : x;
-      let realY = steep ? x : y;
+      const realX = steep ? y : x;
+      const realY = steep ? x : y;
 
       // Does current pixel mean we have moved white to black or vice versa?
       // Scanning black in state 0,2 and white in state 1, so if we find
@@ -161,11 +161,11 @@ goog.scope(function() {
    * @return {number}
    */
   pro.sizeOfBlackWhiteBlackRunBothWays = function(fromX, fromY, toX, toY) {
-    var result = this.sizeOfBlackWhiteBlackRun(fromX, fromY, toX, toY);
+    let result = this.sizeOfBlackWhiteBlackRun(fromX, fromY, toX, toY);
 
     // Now count other way -- don't run off image though of course
-    var scale = 1.0;
-    var otherToX = fromX - (toX - fromX);
+    let scale = 1.0;
+    let otherToX = fromX - (toX - fromX);
     if (otherToX < 0) {
       scale = fromX / (fromX - otherToX);
       otherToX = 0;
@@ -173,7 +173,7 @@ goog.scope(function() {
       scale = (this.image.getWidth() - 1 - fromX) / (otherToX - fromX);
       otherToX = this.image.getWidth() - 1;
     }
-    var otherToY = Math.floor(fromY - (toY - fromY) * scale);
+    let otherToY = Math.floor(fromY - (toY - fromY) * scale);
 
     scale = 1.0;
     if (otherToY < 0) {
@@ -200,11 +200,11 @@ goog.scope(function() {
    * @final
    */
   pro.calculateModuleSizeOneWay = function(pattern, otherPattern) {
-    var moduleSizeEst1 = this.sizeOfBlackWhiteBlackRunBothWays(
+    const moduleSizeEst1 = this.sizeOfBlackWhiteBlackRunBothWays(
       Math.floor(pattern.x),
       Math.floor(pattern.y), Math.floor(otherPattern.x),
       Math.floor(otherPattern.y));
-    var moduleSizeEst2 = this.sizeOfBlackWhiteBlackRunBothWays(
+    const moduleSizeEst2 = this.sizeOfBlackWhiteBlackRunBothWays(
       Math.floor(otherPattern.x),
       Math.floor(otherPattern.y), Math.floor(pattern.x),
       Math.floor(pattern.y));
@@ -246,11 +246,11 @@ goog.scope(function() {
    * @return {number} computed dimension
    */
   pro.computeDimension = function(topLeft, topRight, bottomLeft, moduleSize) {
-    var tltrCentersDimension = ResultPoint.distance(topLeft,
+    const tltrCentersDimension = ResultPoint.distance(topLeft,
       topRight) / moduleSize;
-    var tlblCentersDimension = ResultPoint.distance(topLeft,
+    const tlblCentersDimension = ResultPoint.distance(topLeft,
       bottomLeft) / moduleSize;
-    var dimension = ((
+    let dimension = ((
       tltrCentersDimension + tlblCentersDimension) >> 1) + 7;
     switch (dimension % 4) {
       // mod 4
@@ -290,20 +290,20 @@ goog.scope(function() {
                                        estAlignmentY, allowanceFactor) {
     // Look for an alignment pattern (3 modules in size) around where it
     // should be
-    var allowance = Math.floor(allowanceFactor * overallEstModuleSize);
-    var alignmentAreaLeftX = Math.max(0, estAlignmentX - allowance);
-    var alignmentAreaRightX = Math.min(this.image.getWidth() - 1,
+    const allowance = Math.floor(allowanceFactor * overallEstModuleSize);
+    const alignmentAreaLeftX = Math.max(0, estAlignmentX - allowance);
+    const alignmentAreaRightX = Math.min(this.image.getWidth() - 1,
       estAlignmentX + allowance);
     if (alignmentAreaRightX - alignmentAreaLeftX <
       overallEstModuleSize * 3) {
       throw NotFoundException.getNotFoundInstance();
     }
 
-    var alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
-    var alignmentAreaBottomY = Math.min(this.image.getHeight() - 1,
+    const alignmentAreaTopY = Math.max(0, estAlignmentY - allowance);
+    const alignmentAreaBottomY = Math.min(this.image.getHeight() - 1,
       estAlignmentY + allowance);
 
-    var alignmentFinder = new w69b.qr.detector.AlignmentPatternFinder(this.image,
+    const alignmentFinder = new w69b.qr.detector.AlignmentPatternFinder(this.image,
       alignmentAreaLeftX, alignmentAreaTopY,
       alignmentAreaRightX - alignmentAreaLeftX,
       alignmentAreaBottomY - alignmentAreaTopY, overallEstModuleSize,
@@ -321,11 +321,11 @@ goog.scope(function() {
    */
   pro.createTransform = function(topLeft, topRight, bottomLeft,
                                  alignmentPattern, dimension) {
-    var dimMinusThree = dimension - 3.5;
-    var bottomRightX;
-    var bottomRightY;
-    var sourceBottomRightX;
-    var sourceBottomRightY;
+    const dimMinusThree = dimension - 3.5;
+    let bottomRightX;
+    let bottomRightY;
+    let sourceBottomRightX;
+    let sourceBottomRightY;
     if (alignmentPattern !== null) {
       bottomRightX = alignmentPattern.x;
       bottomRightY = alignmentPattern.y;
@@ -337,7 +337,7 @@ goog.scope(function() {
       sourceBottomRightX = sourceBottomRightY = dimMinusThree;
     }
 
-    var transform = PerspectiveTransform.quadrilateralToQuadrilateral(3.5,
+    const transform = PerspectiveTransform.quadrilateralToQuadrilateral(3.5,
       3.5,
       dimMinusThree, 3.5, sourceBottomRightX, sourceBottomRightY, 3.5,
       dimMinusThree, topLeft.x, topLeft.y, topRight.x, topRight.y,
@@ -354,7 +354,7 @@ goog.scope(function() {
    * @return {!BitMatrix}
    */
   pro.sampleGrid = function(image, transform, dimension) {
-    var sampler = GridSampler.getInstance();
+    const sampler = GridSampler.getInstance();
     return sampler.sampleGridTransform(image, dimension, dimension, transform);
   };
 
@@ -365,36 +365,35 @@ goog.scope(function() {
    * @throws {!NotFoundException}
    */
   pro.processFinderPatternInfo = function(info) {
+    const topLeft = info.topLeft;
+    const topRight = info.topRight;
+    const bottomLeft = info.bottomLeft;
 
-    var topLeft = info.topLeft;
-    var topRight = info.topRight;
-    var bottomLeft = info.bottomLeft;
-
-    var moduleSize = this.calculateModuleSize(topLeft, topRight, bottomLeft);
+    const moduleSize = this.calculateModuleSize(topLeft, topRight, bottomLeft);
     if (moduleSize < 1.0) {
       throw NotFoundException.getNotFoundInstance();
     }
-    var dimension = this.computeDimension(topLeft, topRight, bottomLeft,
+    const dimension = this.computeDimension(topLeft, topRight, bottomLeft,
       moduleSize);
-    var provisionalVersion = Version.getProvisionalVersionForDimension(
+    const provisionalVersion = Version.getProvisionalVersionForDimension(
       dimension);
-    var modulesBetweenFPCenters =
+    const modulesBetweenFPCenters =
       provisionalVersion.getDimensionForVersion() - 7;
 
-    var alignmentPattern = null;
+    let alignmentPattern = null;
     // Anything above version 1 has an alignment pattern
     if (provisionalVersion.alignmentPatternCenters.length > 0) {
 
       // Guess where a "bottom right" finder pattern would have been
-      let bottomRightX = topRight.x - topLeft.x + bottomLeft.x;
-      let bottomRightY = topRight.y - topLeft.y + bottomLeft.y;
+      const bottomRightX = topRight.x - topLeft.x + bottomLeft.x;
+      const bottomRightY = topRight.y - topLeft.y + bottomLeft.y;
 
       // Estimate that alignment pattern is closer by 3 modules
       // from "bottom right" to known top left location
-      let correctionToTopLeft = 1.0 - 3.0 / modulesBetweenFPCenters;
-      let estAlignmentX = Math.floor(topLeft.x +
+      const correctionToTopLeft = 1.0 - 3.0 / modulesBetweenFPCenters;
+      const estAlignmentX = Math.floor(topLeft.x +
         correctionToTopLeft * (bottomRightX - topLeft.x));
-      let estAlignmentY = Math.floor(topLeft.y +
+      const estAlignmentY = Math.floor(topLeft.y +
         correctionToTopLeft * (bottomRightY - topLeft.y));
 
       // Kind of arbitrary -- expand search radius before giving up
@@ -414,12 +413,12 @@ goog.scope(function() {
       // If we didn't find alignment pattern... well try anyway without it
     }
 
-    var transform = this.createTransform(topLeft, topRight, bottomLeft,
+    const transform = this.createTransform(topLeft, topRight, bottomLeft,
       alignmentPattern, dimension);
 
-    var bits = this.sampleGrid(this.image, transform, dimension);
+    const bits = this.sampleGrid(this.image, transform, dimension);
 
-    var points;
+    let points;
     if (alignmentPattern === null) {
       points = [bottomLeft, topLeft, topRight];
     } else {
@@ -437,14 +436,14 @@ goog.scope(function() {
    * @throws {!FormatException} if a QR Code cannot be decoded
    */
   pro.detect = function(opt_hints) {
-    var callback = null;
+    let callback = null;
     if (opt_hints && !!opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]) {
       callback = /** @type {(!w69b.ResultPointCallback|undefined)} */ (opt_hints[DecodeHintType.NEED_RESULT_POINT_CALLBACK]);
     }
     this.resultPointCallback = callback;
 
-    var finder = new w69b.qr.detector.FinderPatternFinder(this.image, callback ? callback : undefined);
-    var info = finder.find(opt_hints);
+    const finder = new w69b.qr.detector.FinderPatternFinder(this.image, callback ? callback : undefined);
+    const info = finder.find(opt_hints);
     return this.processFinderPatternInfo(info);
   };
 });

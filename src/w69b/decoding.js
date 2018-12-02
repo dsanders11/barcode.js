@@ -58,14 +58,14 @@ goog.scope(function() {
    * @export
    */
   _.Decoder = function(opt_options) {
-    var opt = {
+    const opt = {
       'worker': true,
       'webgl': true,
       'maxSize': 700,
       'formats': null
     };
     object.extend(opt, opt_options || {});
-    var worker = new DecodeInWorkerHelper();
+    const worker = new DecodeInWorkerHelper();
     worker.enableWebGl(opt['webgl']);
     worker.enableWorker(opt['worker']);
     worker.init();
@@ -96,11 +96,10 @@ goog.scope(function() {
       throw new Error('Decoder is still busy');
     }
     this.busy_ = true;
-    var that = this;
-    var opt = this.options_;
-    var worker = this.worker_;
+    const opt = this.options_;
+    const worker = this.worker_;
     // Size of down-scaled image used for decoding internally.
-    var size = new goog.math.Size(
+    let size = new goog.math.Size(
       /** @type {number} */ (img.width || img.videoWidth),
       /** @type {number} */ (img.height || img.videoHeight));
     if (opt['maxSize']) {
@@ -133,14 +132,14 @@ goog.scope(function() {
           }
         }
       );
-    }).then(function(value) {
+    }).then(value => {
       // fulfillment
-      that.busy_ = false;
+      this.busy_ = false;
 
       return value;
-    }, function(reason) {
+    }).catch(reason => {
       // rejection
-      that.busy_ = false;
+      this.busy_ = false;
 
       throw reason;
     });

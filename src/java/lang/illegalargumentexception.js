@@ -15,7 +15,7 @@ goog.scope(function() {
    * @extends {goog.debug.Error}
    */
   java.lang.IllegalArgumentException = function(opt_throwable_or_msg) {
-    var msg = opt_throwable_or_msg;
+    let msg = opt_throwable_or_msg;
 
     if (opt_throwable_or_msg instanceof goog.debug.Error) {
       msg = opt_throwable_or_msg.toString();

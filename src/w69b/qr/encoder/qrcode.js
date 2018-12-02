@@ -113,7 +113,7 @@ goog.scope(function() {
    * @override
    */
   pro.toString = function() {
-    var result = [];
+    const result = [];
     result.push('<<\n');
     result.push(' mode: ');
     result.push(this.mode_.toString());

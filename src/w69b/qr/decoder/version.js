@@ -103,7 +103,7 @@ goog.scope(function() {
    */
   ECBlocks.prototype.getNumBlocks = function() {
     /** @type {number} */
-    var total = 0;
+    let total = 0;
     for (let i = 0; i < this.ecBlocks.length; i++) {
       total += this.ecBlocks[i].getCount();
     }
@@ -128,9 +128,9 @@ goog.scope(function() {
     this.alignmentPatternCenters = alignmentPatternCenters;
     this.ecBlocks = new Array(ecBlocks1, ecBlocks2, ecBlocks3, ecBlocks4);
 
-    var total = 0;
-    var ecCodewords = ecBlocks1.ecCodewordsPerBlock;
-    var ecbArray = ecBlocks1.getECBlocks();
+    let total = 0;
+    const ecCodewords = ecBlocks1.ecCodewordsPerBlock;
+    const ecbArray = ecBlocks1.getECBlocks();
     for (let i = 0; i < ecbArray.length; i++) {
       let ecBlock = ecbArray[i];
       total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
@@ -172,8 +172,8 @@ goog.scope(function() {
    * @return {!BitMatrix}
    */
   pro.buildFunctionPattern = function() {
-    var dimension = this.getDimensionForVersion();
-    var bitMatrix = new BitMatrix(dimension);
+    const dimension = this.getDimensionForVersion();
+    const bitMatrix = new BitMatrix(dimension);
 
     // Top left finder pattern + separator + format
     bitMatrix.setRegion(0, 0, 9, 9);
@@ -183,9 +183,9 @@ goog.scope(function() {
     bitMatrix.setRegion(0, dimension - 8, 9, 8);
 
     // Alignment patterns
-    var max = this.alignmentPatternCenters.length;
+    const max = this.alignmentPatternCenters.length;
     for (let x = 0; x < max; x++) {
-      let i = this.alignmentPatternCenters[x] - 2;
+      const i = this.alignmentPatternCenters[x] - 2;
       for (let y = 0; y < max; y++) {
         if ((x === 0 && (y === 0 || y === max - 1)) || (x === max - 1 && y === 0)) {
           // No alignment patterns near the three finder paterns
@@ -451,17 +451,17 @@ goog.scope(function() {
    * @return {?Version}
    */
   Version.decodeVersionInformation = function(versionBits) {
-    var bestDifference = Integer.MAX_VALUE;
-    var bestVersion = 0;
+    let bestDifference = Integer.MAX_VALUE;
+    let bestVersion = 0;
     for (let i = 0; i < Version.VERSION_DECODE_INFO.length; i++) {
-      let targetVersion = Version.VERSION_DECODE_INFO[i];
+      const targetVersion = Version.VERSION_DECODE_INFO[i];
       // Do the version info bits match exactly? done.
       if (targetVersion === versionBits) {
         return Version.getVersionForNumber(i + 7);
       }
       // Otherwise see if this is the closest to a real version info bit string
       // we have seen so far
-      let bitsDifference = w69b.qr.decoder.FormatInformation.numBitsDiffering(
+      const bitsDifference = w69b.qr.decoder.FormatInformation.numBitsDiffering(
         versionBits, targetVersion);
       if (bitsDifference < bestDifference) {
         bestVersion = i + 7;

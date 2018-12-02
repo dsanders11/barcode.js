@@ -69,8 +69,8 @@ goog.scope(function() {
    * encode the count of characters that will follow encoded in this Mode.
    */
   pro.getCharacterCountBits = function(version) {
-    var number = version.versionNumber;
-    var offset;
+    const number = version.versionNumber;
+    let offset;
     if (number <= 9) {
       offset = 0;
     } else if (number <= 26) {

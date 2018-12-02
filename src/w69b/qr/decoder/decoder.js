@@ -63,9 +63,9 @@ goog.scope(function() {
    * @private
    */
   pro.correctErrors_ = function(codewordBytes, numDataCodewords) {
-    var numCodewords = codewordBytes.length;
+    const numCodewords = codewordBytes.length;
     // First read into an array of ints
-    var codewordsInts = new Int32Array(numCodewords);
+    const codewordsInts = new Int32Array(numCodewords);
     for (let i = 0; i < numCodewords; i++) {
       codewordsInts[i] = codewordBytes[i] & 0xFF;
     }
@@ -94,9 +94,9 @@ goog.scope(function() {
    */
   pro.decode = function(bits, opt_hints) {
     // Construct a parser and read version, error-correction level
-    var parser = new BitMatrixParser(bits);
-    var fe = null;
-    var ce = null;
+    const parser = new BitMatrixParser(bits);
+    let fe = null;
+    let ce = null;
     try {
       return this.decodeParser_(parser, opt_hints ? opt_hints : undefined);
     } catch (err) {
@@ -130,7 +130,7 @@ goog.scope(function() {
       // Prepare for a mirrored reading.
       parser.mirror();
 
-      let result = this.decodeParser_(parser, opt_hints ? opt_hints : undefined);
+      const result = this.decodeParser_(parser, opt_hints ? opt_hints : undefined);
 
       // Success! Notify the caller that the code was mirrored.
       result.setOther(new QRCodeDecoderMetaData(true));
@@ -159,26 +159,26 @@ goog.scope(function() {
    * @private
    */
   pro.decodeParser_ = function(parser, opt_hints) {
-    var version = parser.readVersion();
-    var ecLevel = parser.readFormatInformation().getErrorCorrectionLevel();
+    const version = parser.readVersion();
+    const ecLevel = parser.readFormatInformation().getErrorCorrectionLevel();
 
     // Read codewords
-    var codewords = parser.readCodewords();
+    const codewords = parser.readCodewords();
     // Separate into data blocks
-    var dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
+    const dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
 
     // Count total number of data bytes
-    var totalBytes = 0;
-    for (let dataBlock of dataBlocks) {
+    let totalBytes = 0;
+    for (const dataBlock of dataBlocks) {
       totalBytes += dataBlock.getNumDataCodewords();
     }
-    var resultBytes = new Int8Array(totalBytes);
-    var resultOffset = 0;
+    const resultBytes = new Int8Array(totalBytes);
+    let resultOffset = 0;
 
     // Error-correct and copy data blocks together into a stream of bytes
-    for (let dataBlock of dataBlocks) {
-      let codewordBytes = dataBlock.getCodewords();
-      let numDataCodewords = dataBlock.getNumDataCodewords();
+    for (const dataBlock of dataBlocks) {
+      const codewordBytes = dataBlock.getCodewords();
+      const numDataCodewords = dataBlock.getNumDataCodewords();
       this.correctErrors_(codewordBytes, numDataCodewords);
       for (let i = 0; i < numDataCodewords; i++) {
         resultBytes[resultOffset++] = codewordBytes[i];

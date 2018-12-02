@@ -68,7 +68,7 @@ goog.scope(function() {
    * @override
    */
   pro.encodeBoolean = function(contents) {
-    var length = contents.length;
+    const length = contents.length;
     switch (length) {
       case 12:
         // No check digit present, calculate it and add it

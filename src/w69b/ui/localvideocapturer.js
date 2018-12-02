@@ -158,7 +158,7 @@ goog.scope(function() {
    */
   pro.getBlob = function(size, format = "image/jpeg") {
     this.drawAndGetCanvas(size);
-    var backCanvas = this.backCanvas_;
+    const backCanvas = this.backCanvas_;
     return new Promise(function(resolve, reject) {
       backCanvas.toBlob(function(blob) {
         resolve(blob);
@@ -174,8 +174,8 @@ goog.scope(function() {
    * @export
    */
   pro.drawAndGetCanvas = function(size) {
-    var video = this.mediaVideo_;
-    var canvas = this.backCanvas_;
+    const video = this.mediaVideo_;
+    const canvas = this.backCanvas_;
     goog.asserts.assert(video.videoWidth > 0 && video.videoWidth > 0);
 
     // Rescale canvas if needed.
@@ -183,7 +183,7 @@ goog.scope(function() {
       canvas.width = size.width;
       canvas.height = size.height;
     }
-    var context = this.backContext_;
+    const context = this.backContext_;
     this.drawOnCanvas(canvas, context);
     return canvas;
   };
@@ -195,12 +195,12 @@ goog.scope(function() {
    * @export
    */
   pro.drawOnCanvas = function(canvas, context) {
-    var video = this.getVideo();
-    var width = canvas.width;
-    var height = canvas.height;
+    const video = this.getVideo();
+    const width = canvas.width;
+    const height = canvas.height;
 
     // Smallest scale that scales video to desired size.
-    var scale = Math.max(height / video.videoHeight, width / video.videoWidth);
+    const scale = Math.max(height / video.videoHeight, width / video.videoWidth);
     // draw image cropping what does not fit on the right/bottom edges.
     context.imageSmoothingEnabled = false;
     context.drawImage(video, 0, 0,
@@ -237,7 +237,7 @@ goog.scope(function() {
    * @protected
    */
   pro.getUserMedia = function() {
-    var self = this;
+    const self = this;
     LocalVideoCapturer.getMedia({'video': self.constraints_},
       self.onGetMediaSuccess.bind(self),
       self.onGetMediaError.bind(self));

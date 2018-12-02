@@ -45,7 +45,7 @@ goog.scope(function() {
    */
   w69b.ui.ContinuousScanner = function(opt_options) {
     goog.base(this);
-    var opt = {
+    const opt = {
       'webgl': true,
       'maxFPS': 25,
     };
@@ -100,8 +100,8 @@ goog.scope(function() {
     // capabilities, so sniff versions and blacklist some.
     // It is supported for Chrome >= 21, Opera => 12, FF >= 20, FFOS 1.4
     // (FF mobile 30)
-    var ua = goog.userAgent.getUserAgentString() || '';
-    var match = /Chrome\/(\d+)/.exec(ua);
+    const ua = goog.userAgent.getUserAgentString() || '';
+    let match = /Chrome\/(\d+)/.exec(ua);
     if (match && match[1] < 21)
       return false;
     match = /Firefox\/(\d+)/.exec(ua);
@@ -234,10 +234,10 @@ goog.scope(function() {
    * @export
    */
   pro.updateSizeFromClient = function() {
-    var ratio = self.devicePixelRatio || 1;
+    let ratio = self.devicePixelRatio || 1;
     // dont do this for performance reasons for now.
     ratio = 1;
-    var el = this.getElement();
+    const el = this.getElement();
     this.size_.width = el.clientWidth * ratio;
     this.size_.height = el.clientHeight * ratio;
     this.decodeSize_ = this.size_.clone();
@@ -277,7 +277,7 @@ goog.scope(function() {
    */
   pro.setStopped = function(stopped) {
     stopped = !!stopped;
-    var wasStopped = this.stopped_;
+    const wasStopped = this.stopped_;
     if (stopped == wasStopped)
       return;
     this.stopped_ = stopped;
@@ -291,7 +291,7 @@ goog.scope(function() {
    * @override
    */
   pro.createDom = function() {
-    var dom = this.getDomHelper();
+    const dom = this.getDomHelper();
     this.visualizationCanvas_ = /** @type {HTMLCanvasElement} */ (
       dom.createDom('canvas'));
     goog.style.setStyle(this.visualizationCanvas_, {'width': '100%', 'height': '100%'});
@@ -339,30 +339,30 @@ goog.scope(function() {
    * @private
    */
   pro.drawVisualization_ = function() {
-    var size = this.size_;
-    var canvas = this.visualizationCanvas_;
+    const size = this.size_;
+    const canvas = this.visualizationCanvas_;
     // Rescale canvas if needed.
     if (canvas.width != size.width || canvas.height != size.height) {
       canvas.width = size.width;
       canvas.height = size.height;
     }
 
-    var context = this.visualizationContext_;
+    const context = this.visualizationContext_;
     this.capturer_.drawOnCanvas(canvas, context);
     // context.fillStyle = 'rgb(200,0,0)';
     // context.fillText(this.lastResult_, 10, 10);
-    var scale = this.size_.width / this.decodeSize_.width;
-    var maxAge = this.maxPatternAge_;
-    var now = Date.now();
+    const scale = this.size_.width / this.decodeSize_.width;
+    const maxAge = this.maxPatternAge_;
+    const now = Date.now();
     for (let i = 0; i < this.foundPatterns_.length; ++i) {
-      let pattern = this.foundPatterns_[i];
-      let age = now - pattern.birthTime;
+      const pattern = this.foundPatterns_[i];
+      const age = now - pattern.birthTime;
       if (age >= maxAge)
         continue;
-      let alpha = (maxAge - age) / maxAge;
-      let x = pattern.x * scale;
-      let y = pattern.y * scale;
-      let radius = pattern.size * scale * alpha;
+      const alpha = (maxAge - age) / maxAge;
+      const x = pattern.x * scale;
+      const y = pattern.y * scale;
+      const radius = pattern.size * scale * alpha;
       context.fillStyle = 'rgba(200,255,50,' + alpha + ')';
       context.beginPath();
       context.arc(x, y, radius, 0, 2 * Math.PI, false);
@@ -374,20 +374,19 @@ goog.scope(function() {
    * Request animation frame.
    */
   pro.scheduleNextFrame = function() {
-    var animFrame = (window.requestAnimationFrame ||
+    const animFrame = (window.requestAnimationFrame ||
       window.mozRequestAnimationFrame || window.oRequestAnimationFrame);
-    var timeSinceLastFrame = Date.now() - this.lastFrameTime_;
-    var waitTime = 0;
+    const timeSinceLastFrame = Date.now() - this.lastFrameTime_;
+    let waitTime = 0;
     // Draw at capped FPS
     if (timeSinceLastFrame < this.timeBetweenFrames_) {
       waitTime = this.timeBetweenFrames_ - timeSinceLastFrame;
     }
-    var updateFunc = null;
-    var that = this;
+    let updateFunc = null;
     if (animFrame) {
-      updateFunc = function() {
-        that.animFrameRequestId_ = animFrame.call(
-          window, that.onAnimationFrame.bind(that));
+      updateFunc = () => {
+        this.animFrameRequestId_ = animFrame.call(
+          window, this.onAnimationFrame.bind(this));
       };
     } else {
       updateFunc = this.onAnimationFrame.bind(this);
@@ -449,7 +448,7 @@ goog.scope(function() {
   pro.addPattern_ = function(pattern) {
     this.foundPatterns_.unshift(new PatternPoint(pattern['x'], pattern['y'],
       pattern['size']));
-    var max = 10;
+    const max = 10;
     this.foundPatterns_.splice(max - 1, this.foundPatterns_.length - max);
   };
 

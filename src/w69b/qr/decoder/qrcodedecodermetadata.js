@@ -46,7 +46,7 @@ goog.scope(function() {
     if (!this.mirrored || points === null || points.length < 3) {
       return;
     }
-    var bottomLeft = points[0];
+    const bottomLeft = points[0];
     points[0] = points[2];
     points[2] = bottomLeft;
     // No need to 'fix' top-left and alignment pattern.

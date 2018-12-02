@@ -58,7 +58,7 @@ goog.scope(function() {
    * @throws {!IllegalArgumentException} if name is invalid
    */
   ErrorCorrectionLevel.getByName = function(name) {
-    var map = {'L': ErrorCorrectionLevel.L,
+    const map = {'L': ErrorCorrectionLevel.L,
       'M': ErrorCorrectionLevel.M,
       'Q': ErrorCorrectionLevel.Q,
       'H': ErrorCorrectionLevel.H};

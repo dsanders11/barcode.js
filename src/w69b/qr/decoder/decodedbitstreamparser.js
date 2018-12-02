@@ -72,14 +72,14 @@ goog.scope(function() {
    * @return {!DecoderResult} decoded string.
    */
   _.decode = function(bytes, version, ecLevel, opt_hints) {
-    var bits = new BitSource(bytes);
-    var result = new StringBuffer();
+    const bits = new BitSource(bytes);
+    const result = new StringBuffer();
     /**
      * @type {!Array.<!Int8Array>}
      */
-    var byteSegments = [];
-    var symbolSequence = -1;
-    var parityData = -1;
+    const byteSegments = [];
+    let symbolSequence = -1;
+    let parityData = -1;
 
     try {
       let currentCharacterSet = null;
@@ -119,8 +119,8 @@ goog.scope(function() {
             if (mode === ModeEnum.HANZI) {
               //chinese mode contains a sub set indicator right after mode
               //indicator
-              let subset = bits.readBits(4);
-              let countHanzi = bits.readBits(
+              const subset = bits.readBits(4);
+              const countHanzi = bits.readBits(
                 mode.getCharacterCountBits(version));
               if (subset === GB2312_SUBSET) {
                 _.decodeHanziSegment(bits, result, countHanzi);
@@ -128,7 +128,7 @@ goog.scope(function() {
             } else {
               // "Normal" QR code modes:
               // How many characters will follow, encoded in this mode?
-              let count = bits.readBits(mode.getCharacterCountBits(version));
+              const count = bits.readBits(mode.getCharacterCountBits(version));
               if (mode === ModeEnum.NUMERIC) {
                 _.decodeNumericSegment(bits, result, count);
               } else if (mode === ModeEnum.ALPHANUMERIC) {
@@ -175,11 +175,11 @@ goog.scope(function() {
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
     // and decode as GB2312 afterwards
-    var buffer = new Int8Array(2 * count);
-    var offset = 0;
+    const buffer = new Int8Array(2 * count);
+    let offset = 0;
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
-      let twoBytes = bits.readBits(13);
+      const twoBytes = bits.readBits(13);
       let assembledTwoBytes = ((twoBytes / 0x060) << 8) | (twoBytes % 0x060);
       if (assembledTwoBytes < 0x003BF) {
         // In the 0xA1A1 to 0xAAFE range
@@ -212,11 +212,11 @@ goog.scope(function() {
 
     // Each character will require 2 bytes. Read the characters as 2-byte pairs
     // and decode as Shift_JIS afterwards
-    var buffer = new Int8Array(2 * count);
-    var offset = 0;
+    const buffer = new Int8Array(2 * count);
+    let offset = 0;
     while (count > 0) {
       // Each 13 bits encodes a 2-byte character
-      let twoBytes = bits.readBits(13);
+      const twoBytes = bits.readBits(13);
       let assembledTwoBytes = ((twoBytes / 0x0C0) << 8) | (twoBytes % 0x0C0);
       if (assembledTwoBytes < 0x01F00) {
         // In the 0x8140 to 0x9FFC range
@@ -250,13 +250,13 @@ goog.scope(function() {
       throw FormatException.getFormatInstance();
     }
 
-    var readBytes = new Int8Array(count);
+    const readBytes = new Int8Array(count);
     for (let i = 0; i < count; i++) {
       readBytes[i] = bits.readBits(8);
     }
-    // var encoding = stringutils.guessEncoding(readBytes);
+    // let encoding = stringutils.guessEncoding(readBytes);
     // TODO: We cannot decode non-unicode strings yet.
-    var encoding;
+    let encoding;
     if (!currentCharacterSetECI) {
       // The spec isn't clear on this mode; see
       // section 6.4.5: t does not say which encoding to assuming
@@ -293,12 +293,12 @@ goog.scope(function() {
    */
   _.decodeAlphanumericSegment = function(bits, result, count, fc1InEffect) {
     // Read two characters at a time
-    // var start = result.getLength();
+    // const start = result.getLength();
     while (count > 1) {
       if (bits.available() < 11) {
         throw FormatException.getFormatInstance();
       }
-      let nextTwoCharsBits = bits.readBits(11);
+      const nextTwoCharsBits = bits.readBits(11);
       result.append(_.toAlphaNumericChar(Math.floor(nextTwoCharsBits / 45)));
       result.append(_.toAlphaNumericChar(nextTwoCharsBits % 45));
       count -= 2;
@@ -341,7 +341,7 @@ goog.scope(function() {
       if (bits.available() < 10) {
         throw FormatException.getFormatInstance();
       }
-      let threeDigitsBits = bits.readBits(10);
+      const threeDigitsBits = bits.readBits(10);
       if (threeDigitsBits >= 1000) {
         throw FormatException.getFormatInstance();
       }
@@ -355,7 +355,7 @@ goog.scope(function() {
       if (bits.available() < 7) {
         throw FormatException.getFormatInstance();
       }
-      let twoDigitsBits = bits.readBits(7);
+      const twoDigitsBits = bits.readBits(7);
       if (twoDigitsBits >= 100) {
         throw FormatException.getFormatInstance();
       }
@@ -366,7 +366,7 @@ goog.scope(function() {
       if (bits.available() < 4) {
         throw FormatException.getFormatInstance();
       }
-      let digitBits = bits.readBits(4);
+      const digitBits = bits.readBits(4);
       if (digitBits >= 10) {
         throw FormatException.getFormatInstance();
       }
@@ -380,19 +380,19 @@ goog.scope(function() {
    * @throws {!FormatException}
    */
   _.parseECIValue = function(bits) {
-    var firstByte = bits.readBits(8);
+    const firstByte = bits.readBits(8);
     if ((firstByte & 0x80) === 0) {
       // just one byte
       return firstByte & 0x7F;
     }
     if ((firstByte & 0xC0) === 0x80) {
       // two bytes
-      let secondByte = bits.readBits(8);
+      const secondByte = bits.readBits(8);
       return ((firstByte & 0x3F) << 8) | secondByte;
     }
     if ((firstByte & 0xE0) === 0xC0) {
       // three bytes
-      let secondThirdBytes = bits.readBits(16);
+      const secondThirdBytes = bits.readBits(16);
       return ((firstByte & 0x1F) << 16) | secondThirdBytes;
     }
     throw FormatException.getFormatInstance();

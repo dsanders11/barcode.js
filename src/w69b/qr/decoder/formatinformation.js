@@ -122,7 +122,7 @@ goog.scope(function() {
    * @return {?FormatInformation}
    */
   FormatInformation.decodeFormatInformation = function(maskedFormatInfo) {
-    var formatInfo = FormatInformation.doDecodeFormatInformation(
+    const formatInfo = FormatInformation.doDecodeFormatInformation(
       maskedFormatInfo);
     if (formatInfo !== null) {
       return formatInfo;
@@ -140,17 +140,17 @@ goog.scope(function() {
    */
   FormatInformation.doDecodeFormatInformation = function(maskedFormatInfo) {
     // Find the int in FORMAT_INFO_DECODE_LOOKUP with fewest bits differing
-    var bestDifference = Integer.MAX_VALUE;
-    var bestFormatInfo = 0;
+    let bestDifference = Integer.MAX_VALUE;
+    let bestFormatInfo = 0;
     for (let i = 0; i < FormatInformation.FORMAT_INFO_DECODE_LOOKUP.length;
          i++) {
-      let decodeInfo = FormatInformation.FORMAT_INFO_DECODE_LOOKUP[i];
-      let targetInfo = decodeInfo[0];
+      const decodeInfo = FormatInformation.FORMAT_INFO_DECODE_LOOKUP[i];
+      const targetInfo = decodeInfo[0];
       if (targetInfo === maskedFormatInfo) {
         // Found an exact match
         return new FormatInformation(decodeInfo[1]);
       }
-      let bitsDifference = FormatInformation.numBitsDiffering(
+      const bitsDifference = FormatInformation.numBitsDiffering(
         maskedFormatInfo, targetInfo);
       if (bitsDifference < bestDifference) {
         bestFormatInfo = decodeInfo[1];

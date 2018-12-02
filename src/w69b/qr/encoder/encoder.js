@@ -116,8 +116,8 @@ goog.scope(function() {
   _.encode = function(content, ecLevel, opt_hints) {
     // Determine what character encoding has been specified by the caller, if
     // any
-    var encoding = opt_hints ? opt_hints[EncodeHintType.CHARACTER_SET] : null;
-    var forceECI = opt_hints ? opt_hints[EncodeHintType.FORCE_ADD_ECI] : false;
+    let encoding = opt_hints ? opt_hints[EncodeHintType.CHARACTER_SET] : null;
+    const forceECI = opt_hints ? opt_hints[EncodeHintType.FORCE_ADD_ECI] : false;
     if (encoding === null) {
       encoding = DEFAULT_BYTE_MODE_ENCODING;
     }
@@ -125,17 +125,17 @@ goog.scope(function() {
     // Pick an encoding mode appropriate for the content. Note that this will
     // not attempt to use multiple modes / segments even if that were more
     // efficient. Twould be nice.
-    var mode = _.chooseMode(content, encoding);
+    const mode = _.chooseMode(content, encoding);
 
     // This will store the header information, like mode and
     // length, as well as "header" segments like an ECI segment.
-    var headerBits = new BitArray();
+    const headerBits = new BitArray();
 
     // Append ECI segment if applicable
     // Disabled in compat mode as some scanners seem to have problems with it.
     if (forceECI ||
       (mode === ModeEnum.BYTE && DEFAULT_BYTE_MODE_ENCODING !== encoding)) {
-      let eci = CharacterSetECI.getCharacterSetECIByName(encoding);
+      const eci = CharacterSetECI.getCharacterSetECIByName(encoding);
       if (eci) {
         _.appendECI(eci, headerBits);
       }
@@ -146,58 +146,58 @@ goog.scope(function() {
 
     // Collect data within the main segment, separately, to count its size if
     // needed. Don't add it to main payload yet.
-    var dataBits = new BitArray();
+    const dataBits = new BitArray();
     _.appendBytes(content, mode, dataBits, encoding);
 
     // Hard part: need to know version to know how many bits length takes. But
     // need to know how many bits it takes to know version. First we take a
     // guess at version by assuming version will be the minimum, 1:
 
-    var provisionalBitsNeeded = headerBits.getSize() +
+    const provisionalBitsNeeded = headerBits.getSize() +
       mode.getCharacterCountBits(Version.getVersionForNumber(1)) +
       dataBits.getSize();
-    var provisionalVersion = _.chooseVersion(provisionalBitsNeeded, ecLevel);
+    const provisionalVersion = _.chooseVersion(provisionalBitsNeeded, ecLevel);
 
     // Use that guess to calculate the right version. I am still not sure this
     // works in 100% of cases.
 
-    var bitsNeeded = headerBits.getSize() +
+    const bitsNeeded = headerBits.getSize() +
       mode.getCharacterCountBits(provisionalVersion) +
       dataBits.getSize();
-    var version = _.chooseVersion(bitsNeeded, ecLevel);
+    const version = _.chooseVersion(bitsNeeded, ecLevel);
 
-    var headerAndDataBits = new BitArray();
+    const headerAndDataBits = new BitArray();
     headerAndDataBits.appendBitArray(headerBits);
     // Find "length" of main segment and write it
-    var numLetters =
+    const numLetters =
       (mode === ModeEnum.BYTE ? dataBits.getSizeInBytes() : content.length);
     _.appendLengthInfo(numLetters, version, mode, headerAndDataBits);
     // Put data together into the overall payload
     headerAndDataBits.appendBitArray(dataBits);
 
-    var ecBlocks = version.getECBlocksForLevel(ecLevel);
-    var numDataBytes = version.getTotalCodewords() -
+    const ecBlocks = version.getECBlocksForLevel(ecLevel);
+    const numDataBytes = version.getTotalCodewords() -
       ecBlocks.getTotalECCodewords();
 
     // Terminate the bits properly.
     _.terminateBits(numDataBytes, headerAndDataBits);
 
     // Interleave data bits with error correction code.
-    var finalBits = _.interleaveWithECBytes(headerAndDataBits,
+    const finalBits = _.interleaveWithECBytes(headerAndDataBits,
       version.getTotalCodewords(),
       numDataBytes,
       ecBlocks.getNumBlocks());
 
-    var qrCode = new QRCode();
+    const qrCode = new QRCode();
 
     qrCode.setECLevel(ecLevel);
     qrCode.setMode(mode);
     qrCode.setVersion(version);
 
     //  Choose the mask pattern and set to "qrCode".
-    var dimension = version.getDimensionForVersion();
-    var matrix = new ByteMatrix(dimension, dimension);
-    var maskPattern = _.chooseMaskPattern(finalBits, ecLevel, version, matrix);
+    const dimension = version.getDimensionForVersion();
+    const matrix = new ByteMatrix(dimension, dimension);
+    const maskPattern = _.chooseMaskPattern(finalBits, ecLevel, version, matrix);
     qrCode.setMaskPattern(maskPattern);
 
     // Build the matrix and set it to "qrCode".
@@ -235,12 +235,12 @@ goog.scope(function() {
       // Choose Kanji mode if all input are double-byte characters
       return _.isOnlyDoubleByteKanji(content) ? ModeEnum.KANJI : ModeEnum.BYTE;
     }
-    var hasNumeric = false;
-    var hasAlphanumeric = false;
-    var zeroChar = '0'.charCodeAt(0);
-    var nineChar = '9'.charCodeAt(0);
+    let hasNumeric = false;
+    let hasAlphanumeric = false;
+    const zeroChar = '0'.charCodeAt(0);
+    const nineChar = '9'.charCodeAt(0);
     for (let i = 0; i < content.length; ++i) {
-      let c = content.charCodeAt(i);
+      const c = content.charCodeAt(i);
       if (c >= zeroChar && c <= nineChar) {
         hasNumeric = true;
       } else if (_.getAlphanumericCode(c) !== -1) {
@@ -263,18 +263,18 @@ goog.scope(function() {
    * @return {boolean}
    */
   _.isOnlyDoubleByteKanji = function(content) {
-    var bytes = [];
+    let bytes = [];
     try {
       bytes = stringutils.stringToBytes(content, 'Shift_JIS');
     } catch (uee) {
       return false;
     }
-    var length = bytes.length;
+    const length = bytes.length;
     if (length % 2 !== 0) {
       return false;
     }
     for (let i = 0; i < length; i += 2) {
-      let byte1 = bytes[i] & 0xFF;
+      const byte1 = bytes[i] & 0xFF;
       if ((byte1 < 0x81 || byte1 > 0x9F) && (byte1 < 0xE0 || byte1 > 0xEB)) {
         return false;
       }
@@ -290,9 +290,8 @@ goog.scope(function() {
    * @return {number}
    */
   _.chooseMaskPattern = function(bits, ecLevel, version, matrix) {
-
-    var minPenalty = Integer.MAX_VALUE;  // Lower penalty is better.
-    var bestMaskPattern = -1;
+    let minPenalty = Integer.MAX_VALUE;  // Lower penalty is better.
+    let bestMaskPattern = -1;
     // We try all mask patterns to choose the best one.
     for (let maskPattern = 0; maskPattern < QRCode.NUM_MASK_PATTERNS;
          maskPattern++) {

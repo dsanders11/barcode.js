@@ -34,7 +34,7 @@ goog.scope(function() {
    * @constructor
    */
   w69b.qr.decoder.BitMatrixParser = function(bitMatrix) {
-    var dimension = bitMatrix.getHeight();
+    const dimension = bitMatrix.getHeight();
     if (dimension < 21 || (dimension & 0x03) !== 1) {
       throw FormatException.getFormatInstance();
     }
@@ -59,7 +59,7 @@ goog.scope(function() {
    * @return {number}
    */
   pro.copyBit = function(i, j, versionBits) {
-    var bit = this.mirror_ ? this.bitMatrix.get(j, i) : this.bitMatrix.get(i, j);
+    const bit = this.mirror_ ? this.bitMatrix.get(j, i) : this.bitMatrix.get(i, j);
     return bit ? (versionBits << 1) | 0x1 : versionBits << 1;
   };
 
@@ -72,7 +72,7 @@ goog.scope(function() {
     }
 
     // Read top-left format info bits
-    var formatInfoBits = 0;
+    let formatInfoBits = 0;
     for (let i = 0; i < 6; i++) {
       formatInfoBits = this.copyBit(i, 8, formatInfoBits);
     }
@@ -92,9 +92,9 @@ goog.scope(function() {
     }
 
     // Hmm, failed. Try the top-right/bottom-left pattern
-    var dimension = this.bitMatrix.getHeight();
+    const dimension = this.bitMatrix.getHeight();
     formatInfoBits = 0;
-    var iMin = dimension - 8;
+    const iMin = dimension - 8;
     for (let i = dimension - 1; i >= iMin; i--) {
       formatInfoBits = this.copyBit(i, 8, formatInfoBits);
     }
@@ -118,16 +118,16 @@ goog.scope(function() {
       return this.parsedVersion;
     }
 
-    var dimension = this.bitMatrix.getHeight();
+    const dimension = this.bitMatrix.getHeight();
 
-    var provisionalVersion = (dimension - 17) >> 2;
+    const provisionalVersion = (dimension - 17) >> 2;
     if (provisionalVersion <= 6) {
       return Version.getVersionForNumber(provisionalVersion);
     }
 
     // Read top-right version info: 3 wide by 6 tall
-    var versionBits = 0;
-    var ijMin = dimension - 11;
+    let versionBits = 0;
+    const ijMin = dimension - 11;
     for (let j = 5; j >= 0; j--) {
       for (let i = dimension - 9; i >= ijMin; i--) {
         versionBits = this.copyBit(i, j, versionBits);
@@ -160,22 +160,22 @@ goog.scope(function() {
    * @return {!Int8Array} bytes encoded within the QR Code
    */
   pro.readCodewords = function() {
-    var formatInfo = this.readFormatInformation();
-    var version = this.readVersion();
+    const formatInfo = this.readFormatInformation();
+    const version = this.readVersion();
 
     // Get the data mask for the format used in this QR Code. This will exclude
     // some bits from reading as we wind through the bit matrix.
-    var dataMask = DataMask.forReference(formatInfo.getDataMask());
-    var dimension = this.bitMatrix.getHeight();
+    const dataMask = DataMask.forReference(formatInfo.getDataMask());
+    const dimension = this.bitMatrix.getHeight();
     dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
 
-    var functionPattern = version.buildFunctionPattern();
+    const functionPattern = version.buildFunctionPattern();
 
-    var readingUp = true;
-    var result = new Int8Array(version.totalCodewords);
-    var resultOffset = 0;
-    var currentByte = 0;
-    var bitsRead = 0;
+    let readingUp = true;
+    const result = new Int8Array(version.totalCodewords);
+    let resultOffset = 0;
+    let currentByte = 0;
+    let bitsRead = 0;
     // Read columns in pairs, from right to left
     for (let j = dimension - 1; j > 0; j -= 2) {
       if (j === 6) {
@@ -185,7 +185,7 @@ goog.scope(function() {
       }
       // Read alternatingly from bottom to top then top to bottom
       for (let count = 0; count < dimension; count++) {
-        let i = readingUp ? dimension - 1 - count : count;
+        const i = readingUp ? dimension - 1 - count : count;
         for (let col = 0; col < 2; col++) {
           // Ignore bits covered by the function pattern
           if (!functionPattern.get(j - col, i)) {
@@ -221,8 +221,8 @@ goog.scope(function() {
     if (this.parsedFormatInfo === null) {
       return; // We have no format information, and have no data mask
     }
-    var dataMask = DataMask.forReference(this.parsedFormatInfo.getDataMask());
-    var dimension = this.bitMatrix.getHeight();
+    const dataMask = DataMask.forReference(this.parsedFormatInfo.getDataMask());
+    const dimension = this.bitMatrix.getHeight();
     dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
   };
 
@@ -243,7 +243,7 @@ goog.scope(function() {
 
   /** Mirror the bit matrix in order to attempt a second reading. */
   pro.mirror = function() {
-    var bitMatrix = this.bitMatrix;
+    const bitMatrix = this.bitMatrix;
     for (let x = 0; x < bitMatrix.getWidth(); x++) {
       for (let y = x + 1; y < bitMatrix.getHeight(); y++) {
         if (bitMatrix.get(x, y) !== bitMatrix.get(y, x)) {
