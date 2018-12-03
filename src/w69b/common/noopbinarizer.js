@@ -6,7 +6,6 @@ goog.module.declareLegacyNamespace();
 const Binarizer = goog.require('w69b.Binarizer');
 const BitArray = goog.require('w69b.common.BitArray');
 const BitMatrix = goog.require('w69b.common.BitMatrix');
-const LuminanceSource = goog.require('w69b.LuminanceSource');
 
 /**
  * Binarizer implementation that simply passes through the LuminanceSource
@@ -14,7 +13,7 @@ const LuminanceSource = goog.require('w69b.LuminanceSource');
  */
 class NoOpBinarizer extends Binarizer {
   /**
-   * @param {!LuminanceSource} source binary luminance source
+   * @param {!w69b.LuminanceSource} source binary luminance source
    */
   constructor(source) {
     super(source);

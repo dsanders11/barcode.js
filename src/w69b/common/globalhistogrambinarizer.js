@@ -21,7 +21,6 @@ goog.module.declareLegacyNamespace();
 const Binarizer = goog.require('w69b.Binarizer');
 const BitArray = goog.require('w69b.common.BitArray');
 const BitMatrix = goog.require('w69b.common.BitMatrix');
-const LuminanceSource = goog.require('w69b.LuminanceSource');
 const NotFoundException = goog.require('w69b.NotFoundException');
 
 const LUMINANCE_BITS = 5;
@@ -44,7 +43,7 @@ const LUMINANCE_BUCKETS = 1 << LUMINANCE_BITS;
  */
 class GlobalHistogramBinarizer extends Binarizer {
   /**
-   * @param {!LuminanceSource} source gray values.
+   * @param {!w69b.LuminanceSource} source gray values.
    */
   constructor(source) {
     super(source);

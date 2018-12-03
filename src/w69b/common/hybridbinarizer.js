@@ -20,7 +20,6 @@ goog.module.declareLegacyNamespace();
 
 const BitMatrix = goog.require('w69b.common.BitMatrix');
 const GlobalHistogramBinarizer = goog.require('w69b.common.GlobalHistogramBinarizer');
-const LuminanceSource = goog.require('w69b.LuminanceSource');
 
 // This class uses 5x5 blocks to compute local luminance, where each block is
 // 8x8 pixels. So this is the smallest dimension in each axis we can accept.
@@ -53,7 +52,7 @@ const MIN_DYNAMIC_RANGE = 24;
  */
 class HybridBinarizer extends GlobalHistogramBinarizer {
   /**
-   * @param {!LuminanceSource} source gray values.
+   * @param {!w69b.LuminanceSource} source gray values.
    */
   constructor(source) {
     super(source);
