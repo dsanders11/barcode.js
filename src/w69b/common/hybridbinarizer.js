@@ -15,68 +15,55 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.common.HybridBinarizer');
-goog.require('w69b.LuminanceSource');
-goog.require('w69b.common.BitMatrix');
-goog.require('w69b.common.GlobalHistogramBinarizer');
+goog.module('w69b.common.HybridBinarizer');
+goog.module.declareLegacyNamespace();
 
+const BitMatrix = goog.require('w69b.common.BitMatrix');
+const GlobalHistogramBinarizer = goog.require('w69b.common.GlobalHistogramBinarizer');
+const LuminanceSource = goog.require('w69b.LuminanceSource');
 
-goog.scope(function() {
-  const LuminanceSource = w69b.LuminanceSource;
-  const BitMatrix = w69b.common.BitMatrix;
+// This class uses 5x5 blocks to compute local luminance, where each block is
+// 8x8 pixels. So this is the smallest dimension in each axis we can accept.
+const BLOCK_SIZE_POWER = 3;
+const BLOCK_SIZE = 1 << BLOCK_SIZE_POWER; // ...0100...00
+const BLOCK_SIZE_MASK = BLOCK_SIZE - 1;   // ...0011...11
+const MINIMUM_DIMENSION = BLOCK_SIZE * 5;
+const MIN_DYNAMIC_RANGE = 24;
 
+/**
+ * This class implements a local thresholding algorithm, which while slower
+ * than the GlobalHistogramBinarizer, is fairly efficient for what it does.
+ * It is designed for high frequency images of barcodes with black data on
+ * white backgrounds. For this application, it does a much better job than a
+ * global blackpoint with severe shadows and gradients.  However it tends to
+ * produce artifacts on lower frequency images and is therefore not a good
+ * general purpose binarizer for uses outside ZXing.
+ *
+ * This class extends GlobalHistogramBinarizer, using the older histogram
+ * approach for 1D readers, and the newer local approach for 2D readers. 1D
+ * decoding using a per-row histogram is already inherently local, and only
+ * fails for horizontal gradients. We can revisit that problem later, but for
+ * now it was not a win to use local blocks for 1D.
+ *
+ * This Binarizer is the default for the unit tests and the recommended class
+ * for library users.
+ *
+ * @author dswitkin@google.com (Daniel Switkin)
+ * ported to js by Manuel Braun
+ */
+class HybridBinarizer extends GlobalHistogramBinarizer {
   /**
-   * This class implements a local thresholding algorithm, which while slower
-   * than the GlobalHistogramBinarizer, is fairly efficient for what it does.
-   * It is designed for high frequency images of barcodes with black data on
-   * white backgrounds. For this application, it does a much better job than a
-   * global blackpoint with severe shadows and gradients.  However it tends to
-   * produce artifacts on lower frequency images and is therefore not a good
-   * general purpose binarizer for uses outside ZXing.
-   *
-   * This class extends GlobalHistogramBinarizer, using the older histogram
-   * approach for 1D readers, and the newer local approach for 2D readers. 1D
-   * decoding using a per-row histogram is already inherently local, and only
-   * fails for horizontal gradients. We can revisit that problem later, but for
-   * now it was not a win to use local blocks for 1D.
-   *
-   * This Binarizer is the default for the unit tests and the recommended class
-   * for library users.
-   *
-   * @author dswitkin@google.com (Daniel Switkin)
-   * ported to js by Manuel Braun
-   *
    * @param {!LuminanceSource} source gray values.
-   * @constructor
-   * @extends {w69b.common.GlobalHistogramBinarizer}
    */
-  w69b.common.HybridBinarizer = function(source) {
-    w69b.common.HybridBinarizer.base(this, 'constructor', source);
+  constructor(source) {
+    super(source);
 
     /**
-     * @type {?BitMatrix}
      * @private
+     * @type {?BitMatrix}
      */
     this.matrix_ = null;
-  };
-  goog.inherits(w69b.common.HybridBinarizer, w69b.common.GlobalHistogramBinarizer);
-  const _ = w69b.common.HybridBinarizer;
-  const pro = _.prototype;
-
-  /**
-   * @private
-   * @type {?BitMatrix}
-   */
-  pro.matrix_;
-
-  // This class uses 5x5 blocks to compute local luminance, where each block is
-  // 8x8 pixels. So this is the smallest dimension in each axis we can accept.
-  const BLOCK_SIZE_POWER = 3;
-  const BLOCK_SIZE = 1 << BLOCK_SIZE_POWER; // ...0100...00
-  const BLOCK_SIZE_MASK = BLOCK_SIZE - 1;   // ...0011...11
-  const MINIMUM_DIMENSION = BLOCK_SIZE * 5;
-  const MIN_DYNAMIC_RANGE = 24;
-
+  }
 
   /**
    * Calculates the final BitMatrix once for all requests. This could be called
@@ -85,7 +72,7 @@ goog.scope(function() {
    * when callers don't expect it.
    * @override
    */
-  pro.getBlackMatrix = function() {
+  getBlackMatrix() {
     if (this.matrix_ !== null) {
       return this.matrix_;
     }
@@ -104,26 +91,26 @@ goog.scope(function() {
       if ((height & BLOCK_SIZE_MASK) !== 0) {
         subHeight++;
       }
-      const blackPoints = _.calculateBlackPoints(luminances, subWidth,
-        subHeight, width, height);
+      const blackPoints = HybridBinarizer.calculateBlackPoints(
+        luminances, subWidth, subHeight, width, height);
 
       const newMatrix = new BitMatrix(width, height);
-      _.calculateThresholdForBlock(luminances, subWidth, subHeight,
+      HybridBinarizer.calculateThresholdForBlock(luminances, subWidth, subHeight,
         width, height, blackPoints, newMatrix);
       this.matrix_ = newMatrix;
     } else {
       // If the image is too small, fall back to the global histogram approach.
-      this.matrix_ = w69b.common.HybridBinarizer.base(this, 'getBlackMatrix');
+      this.matrix_ = super.getBlackMatrix();
     }
     return this.matrix_;
-  };
+  }
 
   /**
    * @override
    */
-  pro.createBinarizer = function(source) {
-    return new _(source);
-  };
+  createBinarizer(source) {
+    return new this.constructor(source);
+  }
 
   /**
    * For each block in the image, calculate the average black point using a 5x5
@@ -138,12 +125,12 @@ goog.scope(function() {
    * @param {!Array.<!Int32Array>} blackPoints
    * @param {!BitMatrix} matrix
    */
-  _.calculateThresholdForBlock = function(luminances, subWidth, subHeight,
-                                          width, height, blackPoints, matrix) {
+  static calculateThresholdForBlock(luminances, subWidth, subHeight,
+                                    width, height, blackPoints, matrix) {
     const maxYOffset = height - BLOCK_SIZE;
     const maxXOffset = width - BLOCK_SIZE;
     for (let y = 0; y < subHeight; y++) {
-      const top = _.cap(y, 2, subHeight - 3);
+      const top = HybridBinarizer.cap(y, 2, subHeight - 3);
       let yoffset = y << BLOCK_SIZE_POWER;
       if (yoffset > maxYOffset) {
         yoffset = maxYOffset;
@@ -153,7 +140,7 @@ goog.scope(function() {
         if (xoffset > maxXOffset) {
           xoffset = maxXOffset;
         }
-        const left = _.cap(x, 2, subWidth - 3);
+        const left = HybridBinarizer.cap(x, 2, subWidth - 3);
         let sum = 0;
         for (let z = -2; z <= 2; z++) {
           const blackRow = blackPoints[top + z];
@@ -161,10 +148,11 @@ goog.scope(function() {
             blackRow[left] + blackRow[left + 1] + blackRow[left + 2];
         }
         const average = Math.floor(sum / 25);
-        _.thresholdBlock(luminances, xoffset, yoffset, average, width, matrix);
+        HybridBinarizer.thresholdBlock(
+          luminances, xoffset, yoffset, average, width, matrix);
       }
     }
-  };
+  }
 
   /**
    * @param {number} value value.
@@ -172,9 +160,9 @@ goog.scope(function() {
    * @param {number} max max.
    * @return {number} capped value.
    */
-  _.cap = function(value, min, max) {
+  static cap(value, min, max) {
     return value < min ? min : value > max ? max : value;
-  };
+  }
 
   /**
    * Applies a single threshold to a block of pixels.
@@ -185,8 +173,7 @@ goog.scope(function() {
    * @param {number} stride
    * @param {!BitMatrix} matrix
    */
-  _.thresholdBlock = function(luminances, xoffset, yoffset, threshold, stride,
-                              matrix) {
+  static thresholdBlock(luminances, xoffset, yoffset, threshold, stride, matrix) {
     for (let y = 0, offset = yoffset * stride + xoffset; y < BLOCK_SIZE;
          y++, offset += stride) {
       const yCoord = yoffset + y;
@@ -198,7 +185,7 @@ goog.scope(function() {
         }
       }
     }
-  };
+  }
 
   /**
    * Calculates a single black point for each block of pixels and saves it away.
@@ -211,8 +198,7 @@ goog.scope(function() {
    * @param {number} height
    * @return !{Array.<!Int32Array>} the black points
    */
-  _.calculateBlackPoints = function(luminances, subWidth, subHeight, width,
-                                    height) {
+  static calculateBlackPoints(luminances, subWidth, subHeight, width, height) {
     /** @type {!Array.<!Int32Array>} */
     const blackPoints = Array.from({length: subHeight}, x => new Int32Array(subWidth));
     const maxXOffset = width - BLOCK_SIZE;
@@ -290,5 +276,7 @@ goog.scope(function() {
       }
     }
     return blackPoints;
-  };
-});
+  }
+}
+
+exports = HybridBinarizer;
