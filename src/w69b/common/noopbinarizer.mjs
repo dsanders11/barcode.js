@@ -1,11 +1,10 @@
 // (c) 2017 David Sanders (dsanders11@ucsbalum.com)
 
 import { Binarizer } from '/w69b/binarizer.mjs';
-import { BitMatrix } from '/w69b/common/bitmatrix.mjs';
+import { BitArray } from './bitarray.mjs';
+import { BitMatrix } from './bitmatrix.mjs';
 
 goog.declareModuleId('es6.w69b.common.NoOpBinarizer');
-
-const BitArray = goog.require('w69b.common.BitArray');
 
 /**
  * Binarizer implementation that simply passes through the LuminanceSource

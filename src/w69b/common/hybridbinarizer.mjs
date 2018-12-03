@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import { BitMatrix } from '/w69b/common/bitmatrix.mjs';
-import { GlobalHistogramBinarizer } from '/w69b/common/globalhistogrambinarizer.mjs';
+import { BitMatrix } from './bitmatrix.mjs';
+import { GlobalHistogramBinarizer } from './globalhistogrambinarizer.mjs';
 
 goog.declareModuleId('es6.w69b.common.HybridBinarizer');
 

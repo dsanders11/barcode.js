@@ -16,11 +16,11 @@
  */
 
 import { Binarizer } from '/w69b/binarizer.mjs';
-import { BitMatrix } from '/w69b/common/bitmatrix.mjs';
+import { BitArray } from './bitarray.mjs';
+import { BitMatrix } from './bitmatrix.mjs';
 
 goog.declareModuleId('es6.w69b.common.GlobalHistogramBinarizer');
 
-const BitArray = goog.require('w69b.common.BitArray');
 const NotFoundException = goog.require('w69b.NotFoundException');
 
 const LUMINANCE_BITS = 5;

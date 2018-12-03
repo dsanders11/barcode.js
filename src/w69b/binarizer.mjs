@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-goog.declareModuleId('es6.w69b.Binarizer');
-
 /**
  * This class hierarchy provides a set of methods to convert luminance data to
  * 1 bit data. It allows the algorithm to vary polymorphically, for example
@@ -91,7 +89,7 @@ export class Binarizer {
    * @abstract
    * @param {!w69b.LuminanceSource} source The LuminanceSource this Binarizer
    * will operate on.
-   * @return {!w69b.Binarizer} A new concrete Binarizer implementation
+   * @return {!Binarizer} A new concrete Binarizer implementation
    * object.
    */
   createBinarizer(source) { }

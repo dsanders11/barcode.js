@@ -1,11 +1,11 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 
+import { BinaryBitmap } from '/w69b/binarybitmap.mjs';
 import { HybridBinarizer } from '/w69b/common/hybridbinarizer.mjs';
 import { NoOpBinarizer } from '/w69b/common/noopbinarizer.mjs';
 
 goog.declareModuleId('es6.w69b.worker.DecodeWorker');
 
-const BinaryBitmap = goog.require('w69b.BinaryBitmap');
 const DecodeHintType = goog.require('w69b.DecodeHintType');
 const ImageDataLuminanceSource = goog.require('w69b.ImageDataLuminanceSource');
 const InvalidCharsetException = goog.require('w69b.InvalidCharsetException');

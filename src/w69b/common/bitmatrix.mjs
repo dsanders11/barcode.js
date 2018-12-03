@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
+import { BitArray } from './bitarray.mjs';
+
 goog.declareModuleId('es6.w69b.common.BitMatrix');
 
-const BitArray = goog.require('w69b.common.BitArray');
 const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
 const { assert } = goog.require('goog.asserts');
 
