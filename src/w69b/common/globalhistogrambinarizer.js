@@ -15,39 +15,40 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.common.GlobalHistogramBinarizer');
-goog.require('w69b.Binarizer');
-goog.require('w69b.LuminanceSource');
-goog.require('w69b.NotFoundException');
-goog.require('w69b.common.BitArray');
-goog.require('w69b.common.BitMatrix');
+goog.module('w69b.common.GlobalHistogramBinarizer');
+goog.module.declareLegacyNamespace();
 
+const Binarizer = goog.require('w69b.Binarizer');
+const BitArray = goog.require('w69b.common.BitArray');
+const BitMatrix = goog.require('w69b.common.BitMatrix');
+const LuminanceSource = goog.require('w69b.LuminanceSource');
+const NotFoundException = goog.require('w69b.NotFoundException');
 
-goog.scope(function() {
-  const LuminanceSource = w69b.LuminanceSource;
-  const BitMatrix = w69b.common.BitMatrix;
-  const BitArray = w69b.common.BitArray;
-  const NotFoundException = w69b.NotFoundException;
+const LUMINANCE_BITS = 5;
+const LUMINANCE_SHIFT = 8 - LUMINANCE_BITS;
+const LUMINANCE_BUCKETS = 1 << LUMINANCE_BITS;
+
+/**
+ * This Binarizer implementation uses the old ZXing global histogram
+ * approach. It is suitable for low-end mobile devices which don't have
+ * enough CPU or memory to use a local thresholding algorithm. However,
+ * because it picks a global black point, it cannot handle difficult shadows
+ * and gradients.
+ *
+ * Faster mobile devices and all desktop applications should probably use
+ * HybridBinarizer instead.
+ *
+ * @author dswitkin@google.com (Daniel Switkin)
+ * @author Sean Owen
+ * Ported to js by Manuel Braun
+ */
+class GlobalHistogramBinarizer extends Binarizer {
   /**
-   * This Binarizer implementation uses the old ZXing global histogram
-   * approach. It is suitable for low-end mobile devices which don't have
-   * enough CPU or memory to use a local thresholding algorithm. However,
-   * because it picks a global black point, it cannot handle difficult shadows
-   * and gradients.
-   *
-   * Faster mobile devices and all desktop applications should probably use
-   * HybridBinarizer instead.
-   *
-   * @author dswitkin@google.com (Daniel Switkin)
-   * @author Sean Owen
-   * Ported to js by Manuel Braun
-   *
    * @param {!LuminanceSource} source gray values.
-   * @constructor
-   * @extends {w69b.Binarizer}
    */
-  w69b.common.GlobalHistogramBinarizer = function(source) {
-    w69b.common.GlobalHistogramBinarizer.base(this, 'constructor', source);
+  constructor(source) {
+    super(source);
+
     /**
      * @type {!Int8Array}
      * @private
@@ -58,21 +59,14 @@ goog.scope(function() {
      * @private
      */
     this.buckets_ = new Uint8Array(LUMINANCE_BUCKETS);
-  };
-  const _ = w69b.common.GlobalHistogramBinarizer;
-  goog.inherits(_, w69b.Binarizer);
-  const pro = _.prototype;
-
-  const LUMINANCE_BITS = 5;
-  const LUMINANCE_SHIFT = 8 - LUMINANCE_BITS;
-  const LUMINANCE_BUCKETS = 1 << LUMINANCE_BITS;
+  }
 
   /**
    * Applies simple sharpening to the row data to improve performance of the 1D
    * Readers.
    * @override
    */
-  pro.getBlackRow = function(y, row) {
+  getBlackRow(y, row) {
     const source = this.getLuminanceSource();
     const width = source.getWidth();
     if (row === null || row.getSize() < width) {
@@ -85,17 +79,17 @@ goog.scope(function() {
     const localLuminances = source.getRow(y, this.luminances_);
     const localBuckets = this.buckets_;
     for (let x = 0; x < width; x++) {
-      let pixel = localLuminances[x] & 0xff;
+      const pixel = localLuminances[x] & 0xff;
       localBuckets[pixel >> LUMINANCE_SHIFT]++;
     }
-    const blackPoint = _.estimateBlackPoint(localBuckets);
+    const blackPoint = GlobalHistogramBinarizer.estimateBlackPoint(localBuckets);
 
     let left = localLuminances[0] & 0xff;
     let center = localLuminances[1] & 0xff;
     for (let x = 1; x < width - 1; x++) {
-      let right = localLuminances[x + 1] & 0xff;
+      const right = localLuminances[x + 1] & 0xff;
       // A simple -1 4 -1 box filter with a weight of 2.
-      let luminance = ((center << 2) - left - right) >> 1;
+      const luminance = ((center << 2) - left - right) >> 1;
       if (luminance < blackPoint) {
         row.set(x);
       }
@@ -103,14 +97,14 @@ goog.scope(function() {
       center = right;
     }
     return row;
-  };
+  }
 
   /**
    * Does not sharpen the data, as this call is intended to only be used by
    * 2D Readers.
    * @override
    */
-  pro.getBlackMatrix = function() {
+  getBlackMatrix() {
     const source = this.getLuminanceSource();
     const width = source.getWidth();
     const height = source.getHeight();
@@ -130,7 +124,7 @@ goog.scope(function() {
         localBuckets[pixel >> LUMINANCE_SHIFT]++;
       }
     }
-    const blackPoint = _.estimateBlackPoint(localBuckets);
+    const blackPoint = GlobalHistogramBinarizer.estimateBlackPoint(localBuckets);
 
     // We delay reading the entire image luminance until the black point
     // estimation succeeds.  Although we end up reading four rows twice, it
@@ -148,30 +142,30 @@ goog.scope(function() {
     }
 
     return matrix;
-  };
+  }
 
   /**
    * @override
    */
-  pro.createBinarizer = function(source) {
-    return new _(source);
-  };
+  createBinarizer(source) {
+    return new GlobalHistogramBinarizer(source);
+  }
 
   /**
    * @param {number} luminanceSize
    */
-  pro.initArrays = function(luminanceSize) {
+  initArrays(luminanceSize) {
     if (this.luminances_.length < luminanceSize) {
       this.luminances_ = new Int8Array(luminanceSize);
     }
     this.buckets_.fill(0);
-  };
+  }
 
   /**
    * @param {!Uint8Array} buckets
    * @return {number}
    */
-  _.estimateBlackPoint = function(buckets) {
+  static estimateBlackPoint(buckets) {
     // Find the tallest peak in the histogram.
     const numBuckets = buckets.length;
     let maxBucketCount = 0;
@@ -230,5 +224,7 @@ goog.scope(function() {
     }
 
     return bestValley << LUMINANCE_SHIFT;
-  };
-});
+  }
+}
+
+exports = GlobalHistogramBinarizer;

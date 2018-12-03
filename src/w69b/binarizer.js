@@ -16,42 +16,41 @@
  *
  */
 
-goog.provide('w69b.Binarizer');
-goog.require('w69b.LuminanceSource');
+goog.module('w69b.Binarizer');
+goog.module.declareLegacyNamespace();
 
+const LuminanceSource = goog.require('w69b.LuminanceSource');
 
-goog.scope(function() {
-  const LuminanceSource = w69b.LuminanceSource;
-
+/**
+ * This class hierarchy provides a set of methods to convert luminance data to
+ * 1 bit data. It allows the algorithm to vary polymorphically, for example
+ * allowing a very expensive thresholding technique for servers and a fast one
+ * for mobile. It also permits the implementation to vary, e.g. a JNI version
+ * for Android and a Java fallback version for other platforms.
+ *
+ * @author dswitkin@google.com (Daniel Switkin)
+ * Ported to js by Manuel Braun
+ *
+ * @abstract
+ */
+class Binarizer {
   /**
-   * This class hierarchy provides a set of methods to convert luminance data to
-   * 1 bit data. It allows the algorithm to vary polymorphically, for example
-   * allowing a very expensive thresholding technique for servers and a fast one
-   * for mobile. It also permits the implementation to vary, e.g. a JNI version
-   * for Android and a Java fallback version for other platforms.
-   *
-   * @author dswitkin@google.com (Daniel Switkin)
-   * Ported to js by Manuel Braun
-   *
-   * @constructor
    * @param {!LuminanceSource} source gray values
-   * @abstract
    */
-  w69b.Binarizer = function(source) {
+  constructor(source) {
     /**
      * @protected
      * @type {!LuminanceSource}
      */
     this.source = source;
-  };
-  const Binarizer = w69b.Binarizer;
+  }
 
   /**
    * @return {!LuminanceSource} image.
    */
-  Binarizer.prototype.getLuminanceSource = function() {
+  getLuminanceSource() {
     return this.source;
-  };
+  }
 
   /**
    * Converts one row of luminance data to 1 bit data. May actually do the
@@ -72,7 +71,7 @@ goog.scope(function() {
    * @return {!w69b.common.BitArray} The array of bits for this row (true means
    *                                 black).
    */
-  Binarizer.prototype.getBlackRow = function(y, opt_row) { };
+  getBlackRow(y, opt_row) { }
 
   /**
    * Converts a 2D array of luminance data to 1 bit data. As above, assume this
@@ -85,7 +84,7 @@ goog.scope(function() {
    * @return {!w69b.common.BitMatrix} The 2D array of bits for the image
    * (true means black).
    */
-  Binarizer.prototype.getBlackMatrix = function() { };
+  getBlackMatrix() { }
 
   /**
    * Creates a new object with the same type as this Binarizer implementation,
@@ -99,19 +98,21 @@ goog.scope(function() {
    * @return {!w69b.Binarizer} A new concrete Binarizer implementation
    * object.
    */
-  Binarizer.prototype.createBinarizer = function(source) { };
+  createBinarizer(source) { }
 
   /**
    * @return {number} width.
    */
-  Binarizer.prototype.getWidth = function() {
+  getWidth() {
     return this.source.getWidth();
-  };
+  }
 
   /**
    * @return {number} height.
    */
-  Binarizer.prototype.getHeight = function() {
+  getHeight() {
     return this.source.getHeight();
-  };
-});
+  }
+}
+
+exports = Binarizer;

@@ -109,7 +109,7 @@ class HybridBinarizer extends GlobalHistogramBinarizer {
    * @override
    */
   createBinarizer(source) {
-    return new this.constructor(source);
+    return new HybridBinarizer(source);
   }
 
   /**

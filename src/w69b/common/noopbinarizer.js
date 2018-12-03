@@ -1,37 +1,29 @@
 // (c) 2017 David Sanders (dsanders11@ucsbalum.com)
 
-goog.provide('w69b.common.NoOpBinarizer');
-goog.require('w69b.Binarizer');
-goog.require('w69b.LuminanceSource');
-goog.require('w69b.common.BitArray');
-goog.require('w69b.common.BitMatrix');
+goog.module('w69b.common.NoOpBinarizer');
+goog.module.declareLegacyNamespace();
 
+const Binarizer = goog.require('w69b.Binarizer');
+const BitArray = goog.require('w69b.common.BitArray');
+const BitMatrix = goog.require('w69b.common.BitMatrix');
+const LuminanceSource = goog.require('w69b.LuminanceSource');
 
-goog.scope(function() {
-  const Binarizer = w69b.Binarizer;
-  const LuminanceSource = w69b.LuminanceSource;
-  const BitMatrix = w69b.common.BitMatrix;
-  const BitArray = w69b.common.BitArray;
-
+/**
+ * Binarizer implementation that simply passes through the LuminanceSource
+ * data unchanged. Useful for when the LuminanceSource is already binary.
+ */
+class NoOpBinarizer extends Binarizer {
   /**
-   * Binarizer implementation that simply passes through the LuminanceSource
-   * data unchanged. Useful for when the LuminanceSource is already binary.
-   *
    * @param {!LuminanceSource} source binary luminance source
-   * @constructor
-   * @extends {Binarizer}
    */
-  w69b.common.NoOpBinarizer = function(source) {
-    NoOpBinarizer.base(this, 'constructor', source);
-  };
-  const NoOpBinarizer = w69b.common.NoOpBinarizer;
-  goog.inherits(NoOpBinarizer, Binarizer);
-  const pro = NoOpBinarizer.prototype;
+  constructor(source) {
+    super(source);
+  }
 
   /**
    * @override
    */
-  pro.getBlackRow = function(y, row) {
+  getBlackRow(y, row) {
     const source = this.getLuminanceSource();
     const width = source.getWidth();
 
@@ -48,12 +40,12 @@ goog.scope(function() {
     });
 
     return row;
-  };
+  }
 
   /**
    * @override
    */
-  pro.getBlackMatrix = function() {
+  getBlackMatrix() {
     const source = this.getLuminanceSource();
     const width = source.getWidth();
     const height = source.getHeight();
@@ -71,12 +63,14 @@ goog.scope(function() {
     }
 
     return matrix;
-  };
+  }
 
   /**
    * @override
    */
-  pro.createBinarizer = function(source) {
+  createBinarizer(source) {
     return new NoOpBinarizer(source);
-  };
-});
+  }
+}
+
+exports = NoOpBinarizer;
