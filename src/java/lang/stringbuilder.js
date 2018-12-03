@@ -93,7 +93,7 @@ class StringBuilder {
    * @param {string} char
    */
   setCharAt(index, char) {
-    goog.asserts.assert(char.length === 1);
+    assert(char.length === 1);
 
     this.string_ = this.string_.slice(0, index) + char + this.string_.slice(index + 1);
   }
