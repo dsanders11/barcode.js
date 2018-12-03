@@ -26,6 +26,7 @@ goog.scope(function() {
   _.iconvPath = 'iconv.js';
 
   let multiFormatReader = null;
+  let grayscaleArray = null;
 
   /**
    * @param {string} msgType messsage type.
@@ -98,7 +99,18 @@ goog.scope(function() {
       }
     }
 
-    const luminanceSource = new w69b.ImageDataLuminanceSource(imgdata);
+    // Reuse the array for luminance source whenever possible
+    if (grayscaleArray === null) {
+      grayscaleArray = new Int8Array(imgdata.width * imgdata.height);
+    } else {
+      if (grayscaleArray.length !== imgdata.width * imgdata.height) {
+        grayscaleArray = new Int8Array(imgdata.width * imgdata.height);
+      }
+    }
+
+    const luminanceSource = new w69b.ImageDataLuminanceSource(
+      imgdata, grayscaleArray);
+
     let binarizer;
     if (isBinary) {
       binarizer = new w69b.common.NoOpBinarizer(luminanceSource);

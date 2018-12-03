@@ -31,6 +31,7 @@ goog.scope(function() {
    *
    * @constructor
    * @param {!ImageData|!Int8Array} image
+   * @param {?Int8Array=} opt_array
    * @param {number=} opt_left
    * @param {number=} opt_top
    * @param {number=} opt_width
@@ -39,7 +40,7 @@ goog.scope(function() {
    * @final
    */
   w69b.ImageDataLuminanceSource = function(
-      image, opt_left, opt_top, opt_width, opt_height) {
+      image, opt_array, opt_left, opt_top, opt_width, opt_height) {
     const sourceWidth = image.width;
     const sourceHeight = image.height;
     const left = opt_left ? opt_left : 0;
@@ -58,7 +59,15 @@ goog.scope(function() {
       // IMPORTANT NOTE - We get an automatic conversion from unsigned to
       // signed here because ImageData.data is a Uint8ClampedArray (unsigned)
       // and row is an Int8Array (signed) and simply assigning converts it
-      this.luminances_ = new Int8Array(sourceWidth*sourceHeight);
+      if (!opt_array) {
+        this.luminances_ = new Int8Array(sourceWidth*sourceHeight);
+      } else {
+        if (opt_array.length !== sourceWidth*sourceHeight) {
+          throw new IllegalArgumentException("Provided array is wrong size.");
+        }
+
+        this.luminances_ = opt_array;
+      }
 
       // ImageData may have already been made grayscale using WebGL
       if (image.grayscale_) {
@@ -178,7 +187,7 @@ goog.scope(function() {
     luminances.height = this.dataWidth_;
 
     return new ImageDataLuminanceSource(
-      luminances, this.left_ + left, this.top_ + top, width, height);
+      luminances, null, this.left_ + left, this.top_ + top, width, height);
   };
 
   /**
