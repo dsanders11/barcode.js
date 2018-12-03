@@ -18,7 +18,6 @@
 goog.module('w69b.BinaryBitmap');
 goog.module.declareLegacyNamespace();
 
-const Binarizer = goog.require('w69b.Binarizer');
 const BitArray = goog.require('w69b.common.BitArray');
 const BitMatrix = goog.require('w69b.common.BitMatrix');
 const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
@@ -32,7 +31,7 @@ const NotFoundException = goog.require('w69b.NotFoundException');
  */
 class BinaryBitmap {
   /**
-  * @param {!Binarizer} binarizer
+  * @param {!w69b.Binarizer} binarizer
   */
   constructor(binarizer) {
     if (binarizer === null) {

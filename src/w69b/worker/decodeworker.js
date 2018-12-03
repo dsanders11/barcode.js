@@ -1,13 +1,11 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 goog.provide('w69b.worker.DecodeWorker');
-goog.require('w69b.BarcodeFormat');
 goog.require('w69b.BinaryBitmap');
 goog.require('w69b.DecodeHintType');
 goog.require('w69b.ImageDataLuminanceSource');
 goog.require('w69b.InvalidCharsetException');
 goog.require('w69b.MultiFormatReader');
 goog.require('w69b.NotFoundException');
-goog.require('w69b.Result');
 goog.require('w69b.ResultPoint');
 goog.require('w69b.common.HybridBinarizer');
 goog.require('w69b.common.NoOpBinarizer');
