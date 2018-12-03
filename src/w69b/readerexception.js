@@ -15,22 +15,25 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.ReaderException');
-goog.require('goog.debug.Error');
+goog.module('w69b.ReaderException');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
+const GoogDebugError = goog.require('goog.debug.Error');
+
+/**
+ * The general exception class throw when something goes wrong during
+ * decoding of a barcode. This includes, but is not limited to, failing
+ * checksums / error correction algorithms, being unable to locate finder
+ * timing patterns, and so on.
+ * @abstract
+ */
+class ReaderException extends GoogDebugError {
   /**
-   * The general exception class throw when something goes wrong during
-   * decoding of a barcode. This includes, but is not limited to, failing
-   * checksums / error correction algorithms, being unable to locate finder
-   * timing patterns, and so on.
-   * @constructor
    * @param {string=} opt_msg message.
-   * @extends {goog.debug.Error}
-   * @abstract
    */
-  w69b.ReaderException = function(opt_msg) {
-    w69b.ReaderException.base(this, 'constructor', opt_msg);
-  };
-  goog.inherits(w69b.ReaderException, goog.debug.Error);
-});
+  constructor(opt_msg) {
+    super(opt_msg);
+  }
+}
+
+exports = ReaderException;

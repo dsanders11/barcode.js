@@ -17,7 +17,6 @@
 
 goog.provide('w69b.BarcodeFormat');
 
-
 /**
  * Enumerates barcode formats known to this package. Please keep alphabetized.
  * @enum {number}

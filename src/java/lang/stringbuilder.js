@@ -1,27 +1,20 @@
+goog.module('java.lang.StringBuilder');
+goog.module.declareLegacyNamespace();
+
+const { assert } = goog.require('goog.asserts');
+
 /**
- * @fileoverview
- * @suppress {duplicate}
+ * Partial implementation of Java's StringBuilder class in JavaScript.
  */
-
-goog.provide('java.lang.StringBuilder');
-goog.require('goog.asserts');
-
-
-goog.scope(function() {
-  /**
-   * Partial implementation of Java's StringBuilder class in JavaScript.
-   * @constructor
-   */
-  java.lang.StringBuilder = function() {
+class StringBuilder {
+  constructor() {
     this.string_ = '';
-  };
-  const StringBuilder = java.lang.StringBuilder;
-  const pro = StringBuilder.prototype;
+  }
 
   /**
    * @param {number} newLength new length of the string
    */
-  pro.setLength = function(newLength) {
+  setLength(newLength) {
     if (this.string_.length > newLength) {
       this.string_ = this.string_.slice(0, newLength);
     } else {
@@ -29,16 +22,16 @@ goog.scope(function() {
         this.string_ += '\u0000';
       }
     }
-  };
+  }
 
   /**
    * @param {(string|number)} value value to append
    * @return {!StringBuilder}
    */
-  pro.append = function(value) {
+  append(value) {
     this.string_ += value;
     return this;
-  };
+  }
 
   /**
    * @param {string} str
@@ -46,69 +39,71 @@ goog.scope(function() {
    * @param {number} len
    * @return {!StringBuilder}
    */
-  pro.append2 = function(str, offset, len) {
+  append2(str, offset, len) {
     this.string_ += str.slice(offset, offset + len);
     return this;
-  };
+  }
 
   /**
    * @param {number} index
    * @param {string} str
    * @return {!StringBuilder}
    */
-  pro.insert = function(index, str) {
+  insert(index, str) {
     this.string_ = this.string_.slice(0, index) + str + this.string_.slice(index);
 
     return this;
-  };
+  }
 
   /**
    * @param {number} index
    * @return {string}
    */
-  pro.charAt = function(index) {
+  charAt(index) {
     return this.string_.charAt(index);
-  };
+  }
 
   /**
    * @param {number} index
    * @return {number}
    */
-  pro.codePointAt = function(index) {
+  codePointAt(index) {
     return this.string_.codePointAt(index);
-  };
+  }
 
   /**
    * @param {number} index
    * @return {!StringBuilder}
    */
-  pro.deleteCharAt = function(index) {
+  deleteCharAt(index) {
     this.string_ = this.string_.slice(0, index) + this.string_.slice(index + 1);
 
     return this;
-  };
+  }
 
   /**
    * @return {number}
    */
-  pro.length = function() {
+  length() {
     return this.string_.length;
-  };
+  }
 
   /**
    * @param {number} index
    * @param {string} char
    */
-  pro.setCharAt = function(index, char) {
+  setCharAt(index, char) {
     goog.asserts.assert(char.length === 1);
 
     this.string_ = this.string_.slice(0, index) + char + this.string_.slice(index + 1);
-  };
+  }
 
   /**
    * @override
    */
-  pro.toString = function() {
+  toString() {
     return this.string_;
-  };
-});
+  }
+}
+
+exports = StringBuilder;

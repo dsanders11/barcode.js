@@ -15,19 +15,22 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.common.reedsolomon.ReedSolomonException');
-goog.require('w69b.ReaderException');
+goog.module('w69b.common.reedsolomon.ReedSolomonException');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
+const ReaderException = goog.require('w69b.ReaderException');
+
+/**
+ * Thrown when an exception occurs during Reed-Solomon decoding, such as when
+ * there are too many errors to correct.
+ */
+class ReedSolomonException extends ReaderException {
   /**
-   * Thrown when an exception occurs during Reed-Solomon decoding, such as when
-   * there are too many errors to correct.
-   * @constructor
    * @param {string=} opt_msg message.
-   * @extends {w69b.ReaderException}
    */
-  w69b.common.reedsolomon.ReedSolomonException = function(opt_msg) {
-    w69b.common.reedsolomon.ReedSolomonException.base(this, 'constructor', opt_msg);
-  };
-  goog.inherits(w69b.common.reedsolomon.ReedSolomonException, w69b.ReaderException);
-});
+  constructor(opt_msg) {
+    super(opt_msg);
+  }
+}
+
+exports = ReedSolomonException;

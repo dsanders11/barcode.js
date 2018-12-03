@@ -1,20 +1,18 @@
+goog.module('java.lang.IllegalStateException');
+goog.module.declareLegacyNamespace();
+
+const GoogDebugError = goog.require('goog.debug.Error');
+
 /**
- * @fileoverview
- * @suppress {duplicate}
+ * Signals that a method has been invoked at an illegal or inappropriate time.
  */
-
-goog.provide('java.lang.IllegalStateException');
-goog.require('goog.debug.Error');
-
-goog.scope(function() {
+class IllegalStateException extends GoogDebugError {
   /**
-   * Signals that a method has been invoked at an illegal or inappropriate time.
-   * @constructor
    * @param {string=} opt_msg message.
-   * @extends {goog.debug.Error}
    */
-  java.lang.IllegalStateException = function(opt_msg) {
-    java.lang.IllegalStateException.base(this, 'constructor', opt_msg);
-  };
-  goog.inherits(java.lang.IllegalStateException, goog.debug.Error);
-});
+  constructor(opt_msg) {
+    super(opt_msg);
+  }
+}
+
+exports = IllegalStateException;

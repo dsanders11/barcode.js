@@ -15,32 +15,24 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.ChecksumException');
-goog.require('w69b.ReaderException');
+goog.module('w69b.ChecksumException');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
+const ReaderException = goog.require('w69b.ReaderException');
+
+/**
+ * Thrown when a barcode was successfully detected and decoded, but
+ * was not returned because its checksum feature failed.
+ */
+class ChecksumException extends ReaderException {
   /**
-   * Thrown when a barcode was successfully detected and decoded, but
-   * was not returned because its checksum feature failed.
-   * @constructor
-   * @extends {w69b.ReaderException}
+   * @returns {!ChecksumException}
    */
-  w69b.ChecksumException = function() {
-    w69b.ChecksumException.base(this, 'constructor');
-  };
-  goog.inherits(w69b.ChecksumException, w69b.ReaderException);
-
-  const _ = w69b.ChecksumException;
-
-  /**
-   * @type {!w69b.ChecksumException}
-   */
-  const INSTANCE = new w69b.ChecksumException();
-
-  /**
-   * @returns {!w69b.ChecksumException}
-   */
-  _.getChecksumInstance = function() {
+  static getChecksumInstance() {
     return INSTANCE;
-  };
-});
+  }
+}
+
+const INSTANCE = new ChecksumException();
+
+exports = ChecksumException;

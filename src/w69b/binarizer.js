@@ -13,12 +13,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 goog.module('w69b.Binarizer');
 goog.module.declareLegacyNamespace();
-
 
 /**
  * This class hierarchy provides a set of methods to convert luminance data to

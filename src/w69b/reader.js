@@ -15,51 +15,37 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.Reader');
-goog.require('w69b.BinaryBitmap');
-goog.require('w69b.ChecksumException');
-goog.require('w69b.DecodeHintType');
-goog.require('w69b.FormatException');
-goog.require('w69b.NotFoundException');
-goog.require('w69b.Result');
+goog.module('w69b.Reader');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
-  const BinaryBitmap = w69b.BinaryBitmap;
-  const ChecksumException = w69b.ChecksumException;
-  const DecodeHintType = w69b.DecodeHintType;
-  const FormatException = w69b.FormatException;
-  const NotFoundException = w69b.NotFoundException;
-  const Result = w69b.Result;
-
-  /**
-   * Implementations of this interface can decode an image of a barcode in some
-   * format into the String it encodes. For example, QRCodeReader can decode a
-   * QR code. The decoder may optionally receive hints from the caller which may
-   * help it decode more quickly or accurately.
-   *
-   * See {@link MultiFormatReader}, which attempts to determine what barcode
-   * format is present within the image as well, and then decodes it accordingly.
-   * @interface
-   */
-  w69b.Reader = function() { };
-  const pro = w69b.Reader.prototype;
-
+/**
+ * Implementations of this interface can decode an image of a barcode in some
+ * format into the String it encodes. For example, QRCodeReader can decode a
+ * QR code. The decoder may optionally receive hints from the caller which may
+ * help it decode more quickly or accurately.
+ *
+ * See {@link MultiFormatReader}, which attempts to determine what barcode
+ * format is present within the image as well, and then decodes it accordingly.
+ * @interface
+ */
+class Reader {
   /**
    * Locates and decodes a barcode in some format within an image.
    *
-   * @param {!BinaryBitmap} image image of barcode to decode
-   * @param {!Object<!DecodeHintType,*>=} opt_hints the meaning of the data depends upon the hint type.
-   * @return {!Result} which the barcode encodes
-   * @throws {!NotFoundException} if no potential barcode is found
-   * @throws {!ChecksumException} if a potential barcode is found but does not pass its checksum
-   * @throws {!FormatException} if a potential barcode is found but format is invalid
+   * @param {!w69b.BinaryBitmap} image image of barcode to decode
+   * @param {!Object<!w69b.DecodeHintType,*>=} opt_hints the meaning of the data depends upon the hint type.
+   * @return {!w69b.Result} which the barcode encodes
+   * @throws {!w69b.NotFoundException} if no potential barcode is found
+   * @throws {!w69b.ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {!w69b.FormatException} if a potential barcode is found but format is invalid
    */
-  pro.decode;
+  decode(image, opt_hints) { }
 
   /**
    * Resets any internal state the implementation has after a decode, to prepare
    * it for reuse.
-   * @type {function()}
    */
-  pro.reset;
-});
+  reset() { }
+}
+
+exports = Reader;

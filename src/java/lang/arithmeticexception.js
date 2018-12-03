@@ -1,8 +1,3 @@
-/**
- * @fileoverview
- * @suppress {duplicate}
- */
-
 goog.module('java.lang.ArithmeticException');
 goog.module.declareLegacyNamespace();
 

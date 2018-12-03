@@ -3,42 +3,41 @@
  * @suppress {duplicate}
  */
 
-goog.provide('java.util.ArrayList');
+goog.module('java.util.ArrayList');
+goog.module.declareLegacyNamespace();
 
-
-goog.scope(function() {
+/**
+ * @implements {Iterable<!T>}
+ * @template T
+ */
+class ArrayList {
   /**
-   * @constructor
    * @param {number=} opt_ignored
-   * @implements {Iterable<!T>}
-   * @template T
    */
-  java.util.ArrayList = function(opt_ignored) {
+  constructor(opt_ignored) {
     /** @type {!Array.<!T>} */
     this.array_ = [];
-  };
-  const ArrayList = java.util.ArrayList;
-  const pro = ArrayList.prototype;
+  }
 
   /**
    * @param {!T} e
    */
-  pro.add = function(e) {
+  add(e) {
     this.array_.push(e);
-  };
+  }
 
   /**
    * @return {boolean}
    */
-  pro.isEmpty = function() {
+  isEmpty() {
     return this.array_.length === 0;
-  };
+  }
 
   /**
    * @param {!Array.<!T>=} opt_a
    * @return {!Array.<!T>}
    */
-  pro.toArray = function(opt_a) {
+  toArray(opt_a) {
     const length = this.array_.length;
 
     if (opt_a && opt_a.length >= length) {
@@ -52,9 +51,9 @@ goog.scope(function() {
     }
 
     return this.array_.slice();
-  };
+  }
 
-  pro[Symbol.iterator] = function() {
+  [Symbol.iterator]() {
     const array = this.array_;
     let nextIndex = 0;
 
@@ -65,5 +64,7 @@ goog.scope(function() {
           {done: true};
       }
     };
-  };
-});
+  }
+}
+
+exports = ArrayList;

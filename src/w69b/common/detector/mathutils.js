@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-goog.provide('w69b.common.detector.MathUtils');
 
-goog.scope(function() {
-  const _ = w69b.common.detector.MathUtils;
+goog.module('w69b.common.detector.MathUtils');
+goog.module.declareLegacyNamespace();
 
+class MathUtils {
   /**
    * Ends up being a bit faster than {@link Math#round(float)}. This merely
    * rounds its argument to the nearest int, where x.5 rounds up to x+1.
@@ -29,9 +29,9 @@ goog.scope(function() {
    * @param {number} d real value to round
    * @return {number} nearest {@code int}
    */
-  _.round = function(d) {
+  static round(d) {
     return Math.round(d + (d < 0.0 ? -0.5 : 0.5));
-  };
+  }
 
   /**
    * Euclidean distance.
@@ -41,9 +41,11 @@ goog.scope(function() {
    * @param {number} bY
    * @return {number} Euclidean distance between points A and B
    */
-  _.distance = function(aX, aY, bX, bY) {
+  static distance(aX, aY, bX, bY) {
     const xDiff = aX - bX;
     const yDiff = aY - bY;
     return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-  };
-});
+  }
+}
+
+exports = MathUtils;

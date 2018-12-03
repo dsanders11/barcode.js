@@ -15,23 +15,21 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.common.reedsolomon.ReedSolomonEncoder');
-goog.require('java.lang.IllegalArgumentException');
-goog.require('w69b.common.reedsolomon.GenericGF');
-goog.require('w69b.common.reedsolomon.GenericGFPoly');
+goog.module('w69b.common.reedsolomon.ReedSolomonEncoder');
+goog.module.declareLegacyNamespace();
 
+const GenericGF = goog.require('w69b.common.reedsolomon.GenericGF');
+const GenericGFPoly = goog.require('w69b.common.reedsolomon.GenericGFPoly');
+const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
 
-goog.scope(function() {
-  const IllegalArgumentException = java.lang.IllegalArgumentException;
-  const GenericGF = w69b.common.reedsolomon.GenericGF;
-  const GenericGFPoly = w69b.common.reedsolomon.GenericGFPoly;
-
+/**
+ * Implements Reed-Solomon enbcoding, as the name implies.
+ */
+class ReedSolomonEncoder {
   /**
-   * Implements Reed-Solomon enbcoding, as the name implies.
    * @param {!GenericGF} field to use.
-   * @constructor
    */
-  w69b.common.reedsolomon.ReedSolomonEncoder = function(field) {
+  constructor(field) {
     /**
      * @private
      * @type {!GenericGF}
@@ -42,14 +40,13 @@ goog.scope(function() {
      * @type {!Array.<!GenericGFPoly>}
      */
     this.cachedGenerators_ = [new GenericGFPoly(field, Int32Array.of(1))];
-  };
-  const pro = w69b.common.reedsolomon.ReedSolomonEncoder.prototype;
+  }
 
   /**
    * @param {number} degree degree.
    * @return {!GenericGFPoly} generator.
    */
-  pro.buildGenerator_ = function(degree) {
+  buildGenerator_(degree) {
     const field = this.field_;
     const cachedGenerators = this.cachedGenerators_;
     if (degree >= cachedGenerators.length) {
@@ -62,14 +59,14 @@ goog.scope(function() {
       }
     }
     return cachedGenerators[degree];
-  };
+  }
 
   /**
    * @param {!Int32Array} toEncode data to encode, including pre-allocated
    * space for ecc bytes.
    * @param {number} ecBytes number of ec bytes.
    */
-  pro.encode = function(toEncode, ecBytes) {
+  encode(toEncode, ecBytes) {
     if (ecBytes === 0) {
       throw new IllegalArgumentException('No error correction bytes');
     }
@@ -88,5 +85,7 @@ goog.scope(function() {
       toEncode[dataBytes + i] = 0;
     }
     toEncode.set(coefficients, dataBytes + numZeroCoefficients);
-  };
-});
+  }
+}
+
+exports = ReedSolomonEncoder;

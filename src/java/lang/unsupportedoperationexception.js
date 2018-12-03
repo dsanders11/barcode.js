@@ -1,20 +1,18 @@
+goog.module('java.lang.UnsupportedOperationException');
+goog.module.declareLegacyNamespace();
+
+const GoogDebugError = goog.require('goog.debug.Error');
+
 /**
- * @fileoverview
- * @suppress {duplicate}
+ * Thrown to indicate that the requested operation is not supported.
  */
-
-goog.provide('java.lang.UnsupportedOperationException');
-goog.require('goog.debug.Error');
-
-goog.scope(function() {
+class UnsupportedOperationException extends GoogDebugError {
   /**
-   * Thrown to indicate that the requested operation is not supported.
-   * @constructor
    * @param {string=} opt_msg message.
-   * @extends {goog.debug.Error}
    */
-  java.lang.UnsupportedOperationException = function(opt_msg) {
-    java.lang.UnsupportedOperationException.base(this, 'constructor', opt_msg);
-  };
-  goog.inherits(java.lang.UnsupportedOperationException, goog.debug.Error);
-});
+  constructor(opt_msg) {
+    super(opt_msg);
+  }
+}
+
+exports = UnsupportedOperationException;

@@ -1,14 +1,15 @@
-goog.provide('w69b.InvalidCharsetException');
-goog.require('goog.debug.Error');
+goog.module('w69b.InvalidCharsetException');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
+const GoogDebugError = goog.require('goog.debug.Error');
+
+class InvalidCharsetException extends GoogDebugError {
   /**
-   * @constructor
    * @param {string=} opt_msg message.
-   * @extends {goog.debug.Error}
    */
-  w69b.InvalidCharsetException = function(opt_msg) {
-    w69b.InvalidCharsetException.base(this, 'constructor', opt_msg || 'InvalidCharset');
-  };
-  goog.inherits(w69b.InvalidCharsetException, goog.debug.Error);
-});
+  constructor(opt_msg) {
+    super(opt_msg || 'InvalidCharset');
+  }
+}
+
+exports = InvalidCharsetException;

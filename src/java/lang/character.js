@@ -1,35 +1,31 @@
-/**
- * @fileoverview
- * @suppress {duplicate}
- */
+goog.module('java.lang.Character');
+goog.module.declareLegacyNamespace();
 
-goog.provide('java.lang.Character');
-goog.require('goog.asserts');
+const { assert } = goog.require('goog.asserts');
 
-
-goog.scope(function() {
+class Character {
   /**
-   * @constructor
    * @param {string} value
    */
-  java.lang.Character = function(value) {
+  constructor(value) {
     this.value_ = value;
-  };
-  const Character = java.lang.Character;
-
-  /** @const {number} */
-  Character.MAX_RADIX = 36;
-  /** @const {number} */
-  Character.MIN_RADIX = 2;
+  }
 
   /**
    * @param {string} ch
    * @param {number} radix
    * @return {number}
    */
-  Character.digit = function(ch, radix) {
-    goog.asserts.assert(ch.length === 1);
+  static digit(ch, radix) {
+    assert(ch.length === 1);
 
     return parseInt(ch, radix);
-  };
-});
+  }
+}
+
+/** @const {number} */
+Character.MAX_RADIX = 36;
+/** @const {number} */
+Character.MIN_RADIX = 2;
+
+exports = Character;

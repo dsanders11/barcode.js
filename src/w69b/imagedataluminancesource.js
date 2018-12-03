@@ -15,32 +15,29 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.ImageDataLuminanceSource');
-goog.require('goog.asserts');
-goog.require('java.lang.IllegalArgumentException');
-goog.require('w69b.LuminanceSource');
+goog.module('w69b.ImageDataLuminanceSource');
+goog.module.declareLegacyNamespace();
 
+const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
+const LuminanceSource = goog.require('w69b.LuminanceSource');
+const { assert } = goog.require('goog.asserts');
 
-goog.scope(function() {
-  const IllegalArgumentException = java.lang.IllegalArgumentException;
-  const LuminanceSource = w69b.LuminanceSource;
-
+/**
+ * Implementation of LuminanceSource for interacting with ImageData from a
+ * canvas. Based on RGBLuminanceSource in ZXing.
+ *
+ * @final
+ */
+class ImageDataLuminanceSource extends LuminanceSource {
   /**
-   * Implementation of LuminanceSource for interacting with ImageData from a
-   * canvas. Based on RGBLuminanceSource in ZXing.
-   *
-   * @constructor
    * @param {!ImageData|!Int8Array} image
    * @param {?Int8Array=} opt_array
    * @param {number=} opt_left
    * @param {number=} opt_top
    * @param {number=} opt_width
    * @param {number=} opt_height
-   * @extends {LuminanceSource}
-   * @final
    */
-  w69b.ImageDataLuminanceSource = function(
-      image, opt_array, opt_left, opt_top, opt_width, opt_height) {
+  constructor(image, opt_array, opt_left, opt_top, opt_width, opt_height) {
     const sourceWidth = image.width;
     const sourceHeight = image.height;
     const left = opt_left ? opt_left : 0;
@@ -48,7 +45,7 @@ goog.scope(function() {
     const width = opt_width ? opt_width : image.width;
     const height = opt_height ? opt_height : image.height;
 
-    ImageDataLuminanceSource.base(this, 'constructor', width, height);
+    super(width, height);
 
     if (left + width > sourceWidth || top + height > sourceHeight) {
       throw new IllegalArgumentException(
@@ -98,16 +95,13 @@ goog.scope(function() {
     this.dataHeight_ = sourceHeight;
     this.left_ = left;
     this.top_ = top;
-  };
-  const ImageDataLuminanceSource = w69b.ImageDataLuminanceSource;
-  goog.inherits(ImageDataLuminanceSource, LuminanceSource);
-  const pro = ImageDataLuminanceSource.prototype;
+  }
 
   /**
    * @override
    */
-  pro.getRow = function(y, row) {
-    goog.asserts.assert(Number.isInteger(y));
+  getRow(y, row) {
+    assert(Number.isInteger(y));
 
     if (y < 0 || y >= this.getHeight()) {
       throw new IllegalArgumentException(
@@ -128,12 +122,12 @@ goog.scope(function() {
     row.set(slice);
 
     return row;
-  };
+  }
 
   /**
    * @override
    */
-  pro.getMatrix = function() {
+  getMatrix() {
     const width = this.getWidth();
     const height = this.getHeight();
 
@@ -164,23 +158,23 @@ goog.scope(function() {
     }
 
     return matrix;
-  };
+  }
 
   /**
    * @override
    */
-  pro.isCropSupported = function() {
+  isCropSupported() {
     return true;
-  };
+  }
 
   /**
    * @override
    */
-  pro.crop = function(left, top, width, height) {
-    goog.asserts.assert(Number.isInteger(left));
-    goog.asserts.assert(Number.isInteger(top));
-    goog.asserts.assert(Number.isInteger(width));
-    goog.asserts.assert(Number.isInteger(height));
+  crop(left, top, width, height) {
+    assert(Number.isInteger(left));
+    assert(Number.isInteger(top));
+    assert(Number.isInteger(width));
+    assert(Number.isInteger(height));
 
     const luminances = this.luminances_;
     luminances.width = this.dataWidth_;
@@ -188,30 +182,32 @@ goog.scope(function() {
 
     return new ImageDataLuminanceSource(
       luminances, null, this.left_ + left, this.top_ + top, width, height);
-  };
+  }
 
   /**
    * @override
    */
-  pro.isRotateSupported = function() {
+  isRotateSupported() {
     return false;  // TODO - Return true if ever implemented
-  };
+  }
 
   /**
    * @override
    */
-  pro.rotateCounterClockwise = function() {
+  rotateCounterClockwise() {
     // TODO - Implement - Can't use a canvas because this needs to be able to
     // run on a Web worker which doesn't have access to a canvas context
-    return ImageDataLuminanceSource.base(this, 'rotateCounterClockwise');
-  };
+    return super.rotateCounterClockwise();
+  }
 
   /**
    * @override
    */
-  pro.rotateCounterClockwise45 = function() {
+  rotateCounterClockwise45() {
     // TODO - Implement - Can't use a canvas because this needs to be able to
     // run on a Web worker which doesn't have access to a canvas context
-    return ImageDataLuminanceSource.base(this, 'rotateCounterClockwise45');
-  };
-});
+    return super.rotateCounterClockwise45();
+  }
+}
+
+exports = ImageDataLuminanceSource;

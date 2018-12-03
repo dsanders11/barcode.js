@@ -15,51 +15,40 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.MultiFormatReader');
-goog.require('w69b.BarcodeFormat');
-goog.require('w69b.BinaryBitmap');
-goog.require('w69b.DecodeHintType');
-goog.require('w69b.NotFoundException');
-goog.require('w69b.Reader');
-goog.require('w69b.ReaderException');
-goog.require('w69b.Result');
-goog.require('w69b.oned.MultiFormatOneDReader');
-goog.require('w69b.qr.QRCodeReader');
+goog.module('w69b.MultiFormatReader');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
-  const BarcodeFormat = w69b.BarcodeFormat;
-  const BinaryBitmap = w69b.BinaryBitmap;
-  const DecodeHintType = w69b.DecodeHintType;
-  const NotFoundException = w69b.NotFoundException;
-  const Reader = w69b.Reader;
-  const ReaderException = w69b.ReaderException;
-  const Result = w69b.Result;
-  const MultiFormatOneDReader = w69b.oned.MultiFormatOneDReader;
-  const QRCodeReader = w69b.qr.QRCodeReader;
+const BarcodeFormat = goog.require('w69b.BarcodeFormat');
+const DecodeHintType = goog.require('w69b.DecodeHintType');
+const MultiFormatOneDReader = goog.require('w69b.oned.MultiFormatOneDReader');
+const NotFoundException = goog.require('w69b.NotFoundException');
+const QRCodeReader = goog.require('w69b.qr.QRCodeReader');
+const Reader = goog.require('w69b.Reader');
+const ReaderException = goog.require('w69b.ReaderException');
 
-  /**
-   * MultiFormatReader is a convenience class and the main entry point into the
-   * library for most uses. By default it attempts to decode all barcode
-   * formats that the library supports. Optionally, you can provide a hints
-   * object to request different behavior, for example only decoding QR codes.
-   * @constructor
-   * @implements {Reader}
-   * @final
-   */
-  w69b.MultiFormatReader = function() { };
-  const pro = w69b.MultiFormatReader.prototype;
+/**
+ * MultiFormatReader is a convenience class and the main entry point into the
+ * library for most uses. By default it attempts to decode all barcode
+ * formats that the library supports. Optionally, you can provide a hints
+ * object to request different behavior, for example only decoding QR codes.
+ *
+ * @implements {Reader}
+ * @final
+ */
+class MultiFormatReader {
+  constructor() {
+    /**
+     * @private
+     * @type {?Object<!DecodeHintType,*>}
+     */
+    this.hints_ = null;
 
-  /**
-   * @private
-   * @type {?Object<!DecodeHintType,*>}
-   */
-  pro.hints_ = null;
-
-  /**
-   * @private
-   * @type {?Array.<!Reader>}
-   */
-  pro.readers_ = null;
+    /**
+     * @private
+     * @type {?Array.<!Reader>}
+     */
+    this.readers_ = null;
+  }
 
   /**
    * This version of decode honors the intent of Reader.decode(BinaryBitmap) in
@@ -71,27 +60,27 @@ goog.scope(function() {
    *
    * @override
    */
-  pro.decode = function(image, opt_hints) {
+  decode(image, opt_hints) {
     this.setHints(opt_hints ? opt_hints : null);
     return this.decodeInternal_(image);
-  };
+  }
 
   /**
    * Decode an image using the state set up by calling setHints() previously.
    * Continuous scan clients will get a <b>large</b> speed increase by using
    * this instead of decode().
    *
-   * @param {!BinaryBitmap} image The pixel data to decode
-   * @return {!Result} The contents of the image
+   * @param {!w69b.BinaryBitmap} image The pixel data to decode
+   * @return {!w69b.Result} The contents of the image
    * @throws {!NotFoundException} Any errors which occurred
    */
-  pro.decodeWithState = function(image) {
+  decodeWithState(image) {
     // Make sure to set up the default state so we don't crash
     if (this.readers_ === null) {
       this.setHints(null);
     }
     return this.decodeInternal_(image);
-  };
+  }
 
   /**
    * This method adds state to the MultiFormatReader. By setting the hints once,
@@ -102,7 +91,7 @@ goog.scope(function() {
    * @param {?Object<!DecodeHintType,*>} hints The set of hints to use for
    *                                           subsequent calls to decode(image)
    */
-  pro.setHints = function(hints) {
+  setHints(hints) {
     this.hints_ = hints;
 
     const tryHarder = hints && !!hints[DecodeHintType.TRY_HARDER];
@@ -145,26 +134,26 @@ goog.scope(function() {
       }
     }
     this.readers_ = readers;
-  };
+  }
 
   /**
    * @override
    */
-  pro.reset = function() {
+  reset() {
     if (this.readers_ !== null) {
       for (const reader of this.readers_) {
         reader.reset();
       }
     }
-  };
+  }
 
   /**
    * @private
-   * @param {!BinaryBitmap} image
-   * @return {!Result}
+   * @param {!w69b.BinaryBitmap} image
+   * @return {!w69b.Result}
    * @throws {!NotFoundException}
    */
-  pro.decodeInternal_ = function(image) {
+  decodeInternal_(image) {
     if (this.readers_ !== null) {
       for (const reader of this.readers_) {
         try {
@@ -179,5 +168,7 @@ goog.scope(function() {
       }
     }
     throw NotFoundException.getNotFoundInstance();
-  };
-});
+  }
+}
+
+exports = MultiFormatReader;

@@ -1,40 +1,28 @@
-/**
- * @fileoverview
- * @suppress {duplicate}
- */
+goog.module('java.lang.Integer');
+goog.module.declareLegacyNamespace();
 
-goog.provide('java.lang.Integer');
-
-
-goog.scope(function() {
+class Integer {
   /**
-   * @constructor
    * @param {string} value
    */
-  java.lang.Integer = function(value) {
+  constructor(value) {
     this.value_ = parseInt(value, 10);
-  };
-  const Integer = java.lang.Integer;
-
-  /** @const {number} */
-  Integer.MAX_VALUE = Number.MAX_SAFE_INTEGER;
-  /** @const {number} */
-  Integer.MIN_VALUE = Number.MIN_SAFE_INTEGER;
+  }
 
   /**
    * @param {string} value
    * @param {number=} radix
    * @return {number}
    */
-  Integer.parseInt = function(value, radix = 10) {
+  static parseInt(value, radix = 10) {
     return Number.parseInt(value, radix);
-  };
+  }
 
   /**
    * @param {number} i
    * @return {number}
    */
-  Integer.bitCount = function(i) {
+  static bitCount(i) {
     // Copyright: https://github.com/micro-js/popcount
     i -= i >> 1 & 0x55555555;
     i = (i & 0x33333333) + (i >> 2 & 0x33333333);
@@ -43,21 +31,21 @@ goog.scope(function() {
     i += i >> 16;
 
     return i & 0x7f;
-  };
+  }
 
   /**
    * @param {number} i
    * @return {string}
    */
-  Integer.toHexString = function(i) {
+  static toHexString(i) {
     return i.toString(16);
-  };
+  }
 
   /**
    * @param {number} i
    * @return {number}
    */
-  Integer.numberOfTrailingZeros = function(i) {
+  static numberOfTrailingZeros(i) {
     let y;
     if (i === 0) {
       return 32;
@@ -68,5 +56,12 @@ goog.scope(function() {
     y = i << 4; if (y !== 0) { n = n - 4; i = y; }
     y = i << 2; if (y !== 0) { n = n - 2; i = y; }
     return n - ((i << 1) >>> 31);
-  };
-});
+  }
+}
+
+/** @const {number} */
+Integer.MAX_VALUE = Number.MAX_SAFE_INTEGER;
+/** @const {number} */
+Integer.MIN_VALUE = Number.MIN_SAFE_INTEGER;
+
+exports = Integer;

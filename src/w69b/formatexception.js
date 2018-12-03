@@ -15,33 +15,25 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.FormatException');
-goog.require('w69b.ReaderException');
+goog.module('w69b.FormatException');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
+const ReaderException = goog.require('w69b.ReaderException');
+
+/**
+ * Thrown when a barcode was successfully detected, but some aspect of
+ * the content did not conform to the barcode's format rules. This could have
+ * been due to a mis-detection.
+ */
+class FormatException extends ReaderException {
   /**
-   * Thrown when a barcode was successfully detected, but some aspect of
-   * the content did not conform to the barcode's format rules. This could have
-   * been due to a mis-detection.
-   * @constructor
-   * @extends {w69b.ReaderException}
+   * @returns {!FormatException}
    */
-  w69b.FormatException = function() {
-    w69b.FormatException.base(this, 'constructor');
-  };
-  goog.inherits(w69b.FormatException, w69b.ReaderException);
-
-  const _ = w69b.FormatException;
-
-  /**
-   * @type {!w69b.FormatException}
-   */
-  const INSTANCE = new w69b.FormatException();
-
-  /**
-   * @returns {!w69b.FormatException}
-   */
-  _.getFormatInstance = function() {
+  static getFormatInstance() {
     return INSTANCE;
-  };
-});
+  }
+}
+
+const INSTANCE = new FormatException();
+
+exports = FormatException;

@@ -15,32 +15,24 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.NotFoundException');
-goog.require('w69b.ReaderException');
+goog.module('w69b.NotFoundException');
+goog.module.declareLegacyNamespace();
 
-goog.scope(function() {
+const ReaderException = goog.require('w69b.ReaderException');
+
+/**
+ * Thrown when a barcode was not found in the image. It might have been
+ * partially detected but could not be confirmed.
+ */
+class NotFoundException extends ReaderException {
   /**
-   * Thrown when a barcode was not found in the image. It might have been
-   * partially detected but could not be confirmed.
-   * @constructor
-   * @extends {w69b.ReaderException}
+   * @returns {!NotFoundException}
    */
-  w69b.NotFoundException = function() {
-    w69b.NotFoundException.base(this, 'constructor');
-  };
-  goog.inherits(w69b.NotFoundException, w69b.ReaderException);
-
-  const _ = w69b.NotFoundException;
-
-  /**
-   * @type {!w69b.NotFoundException}
-   */
-  const INSTANCE = new w69b.NotFoundException();
-
-  /**
-   * @returns {!w69b.NotFoundException}
-   */
-  _.getNotFoundInstance = function() {
+  static getNotFoundInstance() {
     return INSTANCE;
-  };
-});
+  }
+}
+
+const INSTANCE = new NotFoundException();
+
+exports = NotFoundException;

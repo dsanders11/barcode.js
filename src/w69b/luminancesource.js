@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.LuminanceSource');
-goog.require('java.lang.UnsupportedOperationException');
+goog.module('w69b.LuminanceSource');
+goog.module.declareLegacyNamespace();
 
+const UnsupportedOperationException = goog.require('java.lang.UnsupportedOperationException');
 
-goog.scope(function() {
-  const UnsupportedOperationException = java.lang.UnsupportedOperationException;
-
+/**
+ * The purpose of this class hierarchy is to abstract different bitmap
+ * implementations across platforms into a standard interface for requesting
+ * greyscale luminance values. The interface only provides immutable methods;
+ * therefore crop and rotation create copies. This is to ensure that one
+ * Reader does not modify the original luminance source and leave it in an
+ * unknown state for other Readers in the chain.
+ *
+ * @abstract
+ */
+class LuminanceSource {
   /**
-   * The purpose of this class hierarchy is to abstract different bitmap
-   * implementations across platforms into a standard interface for requesting
-   * greyscale luminance values. The interface only provides immutable methods;
-   * therefore crop and rotation create copies. This is to ensure that one
-   * Reader does not modify the original luminance source and leave it in an
-   * unknown state for other Readers in the chain.
-   *
-   * @constructor
    * @param {number} width
    * @param {number} height
-   * @abstract
    */
-  w69b.LuminanceSource = function(width, height) {
+  constructor(width, height) {
     /**
      * @private
      * @const {number}
@@ -47,8 +47,7 @@ goog.scope(function() {
      * @const {number}
      */
     this.height_ = height;
-  };
-  const LuminanceSource = w69b.LuminanceSource;
+  }
 
   /**
    * Fetches one row of luminance data from the underlying platform's bitmap.
@@ -65,7 +64,7 @@ goog.scope(function() {
    * @return {!Int8Array} An array containing the luminance data.
    * @abstract
    */
-  LuminanceSource.prototype.getRow = function(y, row) { };
+  getRow(y, row) { }
 
   /**
    * Fetches luminance data for the underlying bitmap. Values should be fetched
@@ -77,30 +76,30 @@ goog.scope(function() {
    *                      the result.
    * @abstract
    */
-  LuminanceSource.prototype.getMatrix = function() { };
+  getMatrix() { }
 
   /**
    * @return {number} The width of the bitmap.
    * @final
    */
-  LuminanceSource.prototype.getWidth = function() {
+  getWidth() {
     return this.width_;
-  };
+  }
 
   /**
    * @return {number} The height of the bitmap.
    * @final
    */
-  LuminanceSource.prototype.getHeight = function() {
+  getHeight() {
     return this.height_;
-  };
+  }
 
   /**
    * @return {boolean} Whether this subclass supports cropping.
    */
-  LuminanceSource.prototype.isCropSupported = function() {
+  isCropSupported() {
     return false;
-  };
+  }
 
   /**
    * Returns a new object with cropped image data. Implementations may keep a
@@ -113,17 +112,17 @@ goog.scope(function() {
    * @param {number} height The height of the rectangle to crop.
    * @return {!LuminanceSource} A cropped version of this object.
    */
-  LuminanceSource.prototype.crop = function(left, top, width, height) {
+  crop(left, top, width, height) {
     throw new UnsupportedOperationException(
       "This luminance source does not support cropping.");
-  };
+  }
 
   /**
    * @return {boolean} Whether this subclass supports counter-clockwise rotation
    */
-  LuminanceSource.prototype.isRotateSupported = function() {
+  isRotateSupported() {
     return false;
-  };
+  }
 
   /**
    * Returns a new object with rotated image data by 90 degrees
@@ -131,10 +130,10 @@ goog.scope(function() {
    *
    * @return {!LuminanceSource} A rotated version of this object.
    */
-  LuminanceSource.prototype.rotateCounterClockwise = function() {
+  rotateCounterClockwise() {
     throw new UnsupportedOperationException(
       "This luminance source does not support rotation by 90 degrees.");
-  };
+  }
 
   /**
    * Returns a new object with rotated image data by 45 degrees
@@ -142,16 +141,16 @@ goog.scope(function() {
    *
    * @return {!LuminanceSource} A rotated version of this object.
    */
-  LuminanceSource.prototype.rotateCounterClockwise45 = function() {
+  rotateCounterClockwise45() {
     throw new UnsupportedOperationException(
       "This luminance source does not support rotation by 45 degrees.");
-  };
+  }
 
   /**
    * @override
    * @final
    */
-  LuminanceSource.prototype.toString = function() {
+  toString() {
     let row = new Int8Array(this.width_);
     let result = '';
     for (let y = 0; y < this.height_; y++) {
@@ -173,5 +172,7 @@ goog.scope(function() {
       result += '\n';
     }
     return result;
-  };
-});
+  }
+}
+
+exports = LuminanceSource;

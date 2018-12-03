@@ -15,29 +15,26 @@
  * limitations under the License.
  */
 
-goog.provide('w69b.BinaryBitmap');
-goog.require('java.lang.IllegalArgumentException');
-goog.require('w69b.Binarizer');
-goog.require('w69b.NotFoundException');
-goog.require('w69b.common.BitArray');
-goog.require('w69b.common.BitMatrix');
+goog.module('w69b.BinaryBitmap');
+goog.module.declareLegacyNamespace();
 
+const Binarizer = goog.require('w69b.Binarizer');
+const BitArray = goog.require('w69b.common.BitArray');
+const BitMatrix = goog.require('w69b.common.BitMatrix');
+const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
+const NotFoundException = goog.require('w69b.NotFoundException');
 
-goog.scope(function() {
-  const IllegalArgumentException = java.lang.IllegalArgumentException;
-  const NotFoundException = w69b.NotFoundException;
-  const BitArray = w69b.common.BitArray;
-  const BitMatrix = w69b.common.BitMatrix;
-
+/**
+ * This class is the core bitmap class used by ZXing to represent 1 bit data.
+ * Reader objects accept a BinaryBitmap and attempt to decode it.
+ *
+ * @final
+ */
+class BinaryBitmap {
   /**
-   * This class is the core bitmap class used by ZXing to represent 1 bit data.
-   * Reader objects accept a BinaryBitmap and attempt to decode it.
-   *
-   * @constructor
-   * @param {!w69b.Binarizer} binarizer
-   * @final
-   */
-  w69b.BinaryBitmap = function(binarizer) {
+  * @param {!Binarizer} binarizer
+  */
+  constructor(binarizer) {
     if (binarizer === null) {
       throw new IllegalArgumentException('Binarizer must be non-null.');
     }
@@ -48,23 +45,21 @@ goog.scope(function() {
      * @private
      */
     this.matrix = null;
-  };
-  const BinaryBitmap = w69b.BinaryBitmap;
-  const pro = w69b.BinaryBitmap.prototype;
+  }
 
   /**
    * @return {number} width the width of the bitmap
    */
-  pro.getWidth = function() {
+  getWidth() {
     return this.binarizer.getWidth();
-  };
+  }
 
   /**
    * @return {number} height the height of the bitmap
    */
-  pro.getHeight = function() {
+  getHeight() {
     return this.binarizer.getHeight();
-  };
+  }
 
   /**
    * Converts one row of luminance data to 1 bit data. May actually do the
@@ -80,9 +75,9 @@ goog.scope(function() {
    * @return {!BitArray} The array of bits for this row (true means black).
    * @throws {!NotFoundException} if row can't be binarized
    */
-  pro.getBlackRow = function(y, opt_row) {
+  getBlackRow(y, opt_row) {
     return this.binarizer.getBlackRow(y, opt_row);
-  };
+  }
 
   /**
    * Converts a 2D array of luminance data to 1 bit. As above, assume this
@@ -94,7 +89,7 @@ goog.scope(function() {
    * @return {!BitMatrix} The 2D array of bits for the image (true means black).
    * @throws {!NotFoundException} if image can't be binarized to make a matrix
    */
-  pro.getBlackMatrix = function() {
+  getBlackMatrix() {
     // The matrix is created on demand the first time it is requested, then
     // cached. There are two reasons for this:
     // 1. This work will never be done if the caller only installs 1D Reader
@@ -105,14 +100,14 @@ goog.scope(function() {
       this.matrix = this.binarizer.getBlackMatrix();
     }
     return this.matrix;
-  };
+  }
 
   /**
    * @return {boolean} Whether this bitmap can be cropped.
    */
-  pro.isCropSupported = function() {
+  isCropSupported() {
     return this.binarizer.getLuminanceSource().isCropSupported();
-  };
+  }
 
   /**
    * Returns a new object with cropped image data. Implementations may keep a
@@ -125,17 +120,17 @@ goog.scope(function() {
    * @param {number} height The height of the rectangle to crop.
    * @return {!BinaryBitmap} A cropped version of this object.
    */
-  pro.crop = function(left, top, width, height) {
+  crop(left, top, width, height) {
     const newSource = this.binarizer.getLuminanceSource().crop(left, top, width, height);
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
-  };
+  }
 
   /**
    * @return {boolean} Whether this bitmap supports counter-clockwise rotation.
    */
-  pro.isRotateSupported = function() {
+  isRotateSupported() {
     return this.binarizer.getLuminanceSource().isRotateSupported();
-  };
+  }
 
   /**
    * Returns a new object with rotated image data by 90 degrees counterclockwise.
@@ -143,10 +138,10 @@ goog.scope(function() {
    *
    * @return {!BinaryBitmap} A rotated version of this object.
    */
-  pro.rotateCounterClockwise = function() {
+  rotateCounterClockwise() {
     const newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise();
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
-  };
+  }
 
   /**
    * Returns a new object with rotated image data by 45 degrees counterclockwise.
@@ -154,15 +149,15 @@ goog.scope(function() {
    *
    * @return {!BinaryBitmap} A rotated version of this object.
    */
-  pro.rotateCounterClockwise45 = function() {
+  rotateCounterClockwise45() {
     const newSource = this.binarizer.getLuminanceSource().rotateCounterClockwise45();
     return new BinaryBitmap(this.binarizer.createBinarizer(newSource));
-  };
+  }
 
   /**
    * @override
    */
-  pro.toString = function() {
+  toString() {
     try {
       return this.getBlackMatrix().toString();
     } catch (err) {
@@ -171,5 +166,7 @@ goog.scope(function() {
       }
       throw err;
     }
-  };
-});
+  }
+}
+
+exports = BinaryBitmap;
