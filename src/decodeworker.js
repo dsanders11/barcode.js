@@ -3,6 +3,7 @@
  * @fileoverview
  * @suppress {extraRequire}
  */
-goog.provide('worker');
+
+import { DecodeWorker } from '/w69b/worker/decodeworker.mjs';
+
 goog.require('w69b.licenses');
-goog.require('w69b.worker.DecodeWorker');

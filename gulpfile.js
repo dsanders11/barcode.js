@@ -28,7 +28,8 @@ var PATHS = {
       '!node_modules/google-closure-library/closure/goog/**/*_test.js',
       'node_modules/google-closure-library/third_party/**/*.js',
       '!node_modules/google-closure-library/third_party/**/*_test.js',
-      'src/**/*.js'
+      'src/**/*.js',
+      'src/**/*.mjs'
     ],
   },
   dst: {
@@ -186,7 +187,7 @@ gulp.task('buildDebug:main', ['shader2js'], function() {
 gulp.task('buildDebug:worker', ['shader2js'], function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
   config['js_output_file'] = 'w69b.barcode.decodeworker.js';
-  config['entry_point'] = 'worker';
+  config['entry_point'] = 'decodeworker';
 
   return gulp.src(PATHS.src.closure)
     .pipe(sourcemaps.init())
@@ -210,7 +211,7 @@ gulp.task('compile:main', function() {
 gulp.task('compile:worker', function() {
   var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
   config['js_output_file'] = 'w69b.barcode.decodeworker.min.js';
-  config['entry_point'] = 'worker';
+  config['entry_point'] = 'decodeworker';
 
   return gulp.src(PATHS.src.closure)
     .pipe(closureCompiler(config))
