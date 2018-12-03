@@ -19,7 +19,6 @@
 goog.module('w69b.Binarizer');
 goog.module.declareLegacyNamespace();
 
-const LuminanceSource = goog.require('w69b.LuminanceSource');
 
 /**
  * This class hierarchy provides a set of methods to convert luminance data to
@@ -35,18 +34,18 @@ const LuminanceSource = goog.require('w69b.LuminanceSource');
  */
 class Binarizer {
   /**
-   * @param {!LuminanceSource} source gray values
+   * @param {!w69b.LuminanceSource} source gray values
    */
   constructor(source) {
     /**
      * @protected
-     * @type {!LuminanceSource}
+     * @type {!w69b.LuminanceSource}
      */
     this.source = source;
   }
 
   /**
-   * @return {!LuminanceSource} image.
+   * @return {!w69b.LuminanceSource} image.
    */
   getLuminanceSource() {
     return this.source;
@@ -93,7 +92,7 @@ class Binarizer {
    * for why we can't use Java's clone() method.
    *
    * @abstract
-   * @param {!LuminanceSource} source The LuminanceSource this Binarizer
+   * @param {!w69b.LuminanceSource} source The LuminanceSource this Binarizer
    * will operate on.
    * @return {!w69b.Binarizer} A new concrete Binarizer implementation
    * object.
