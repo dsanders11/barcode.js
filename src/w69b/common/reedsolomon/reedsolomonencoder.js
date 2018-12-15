@@ -18,7 +18,6 @@
 goog.module('w69b.common.reedsolomon.ReedSolomonEncoder');
 goog.module.declareLegacyNamespace();
 
-const GenericGF = goog.require('w69b.common.reedsolomon.GenericGF');
 const GenericGFPoly = goog.require('w69b.common.reedsolomon.GenericGFPoly');
 const IllegalArgumentException = goog.require('java.lang.IllegalArgumentException');
 
@@ -27,12 +26,12 @@ const IllegalArgumentException = goog.require('java.lang.IllegalArgumentExceptio
  */
 class ReedSolomonEncoder {
   /**
-   * @param {!GenericGF} field to use.
+   * @param {!w69b.common.reedsolomon.GenericGF} field to use.
    */
   constructor(field) {
     /**
      * @private
-     * @type {!GenericGF}
+     * @type {!w69b.common.reedsolomon.GenericGF}
      */
     this.field_ = field;
     /**

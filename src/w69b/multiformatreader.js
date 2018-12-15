@@ -31,12 +31,12 @@ const ReaderException = goog.require('w69b.ReaderException');
  * library for most uses. By default it attempts to decode all barcode
  * formats that the library supports. Optionally, you can provide a hints
  * object to request different behavior, for example only decoding QR codes.
- *
- * @implements {Reader}
  * @final
  */
-class MultiFormatReader {
+class MultiFormatReader extends Reader {
   constructor() {
+    super();
+
     /**
      * @private
      * @type {?Object<!DecodeHintType,*>}
