@@ -44,7 +44,7 @@ var CLOSURE_CONFIG = {
   ],
   generate_exports: true,
   compilation_level: 'ADVANCED_OPTIMIZATIONS',
-  language_in: 'ECMASCRIPT6_STRICT',
+  language_in: 'ECMASCRIPT_2018',
   language_out: 'ECMASCRIPT5_STRICT',
   dependency_mode: 'STRICT',
   hide_warnings_for: [
