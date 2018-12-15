@@ -25,13 +25,12 @@ goog.require('w69b.oned.EAN13Writer');
 goog.scope(function() {
   const IllegalArgumentException = java.lang.IllegalArgumentException;
   const BarcodeFormat = w69b.BarcodeFormat;
-  const Writer = w69b.Writer;
   const EAN13Writer = w69b.oned.EAN13Writer;
 
   /**
    * This object renders a UPC-A code as a {@link BitMatrix}.
    * @constructor
-   * @implements {Writer}
+   * @implements {w69b.Writer}
    * @final
    */
   w69b.oned.UPCAWriter = function() {

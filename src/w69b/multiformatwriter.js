@@ -18,7 +18,6 @@
 goog.provide('w69b.MultiFormatWriter');
 goog.require('java.lang.IllegalArgumentException');
 goog.require('w69b.BarcodeFormat');
-goog.require('w69b.NotFoundException');
 goog.require('w69b.Writer');
 goog.require('w69b.oned.CodaBarWriter');
 goog.require('w69b.oned.Code128Writer');
@@ -34,7 +33,6 @@ goog.require('w69b.qr.QRCodeWriter');
 goog.scope(function() {
   const IllegalArgumentException = java.lang.IllegalArgumentException;
   const BarcodeFormat = w69b.BarcodeFormat;
-  const NotFoundException = w69b.NotFoundException;
   const Writer = w69b.Writer;
   const CodaBarWriter = w69b.oned.CodaBarWriter;
   const Code39Writer = w69b.oned.Code39Writer;

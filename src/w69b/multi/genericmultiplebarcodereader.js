@@ -36,7 +36,6 @@ goog.scope(function() {
   const ReaderException = w69b.ReaderException;
   const Result = w69b.Result;
   const ResultPoint = w69b.ResultPoint;
-  const MultipleBarcodeReader = w69b.multi.MultipleBarcodeReader;
 
   /**
    * Attempts to locate multiple barcodes in an image by repeatedly decoding portion of the image.
@@ -51,7 +50,7 @@ goog.scope(function() {
    * {@code new ByQuadrantReader(reader)}.
    * @constructor
    * @param {!Reader} delegate
-   * @implements {MultipleBarcodeReader}
+   * @implements {w69b.multi.MultipleBarcodeReader}
    * @final
    */
   w69b.multi.GenericMultipleBarcodeReader = function(delegate) {

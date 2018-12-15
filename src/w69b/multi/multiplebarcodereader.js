@@ -24,9 +24,6 @@ goog.require('w69b.Result');
 
 goog.scope(function() {
   const BinaryBitmap = w69b.BinaryBitmap;
-  const DecodeHintType = w69b.DecodeHintType;
-  const NotFoundException = w69b.NotFoundException;
-  const Result = w69b.Result;
 
   /**
    * Implementation of this interface attempt to read several barcodes from one image.
@@ -37,9 +34,9 @@ goog.scope(function() {
 
   /**
    * @param {!BinaryBitmap} image
-   * @param {!Object<!DecodeHintType,*>=} opt_hints
-   * @return {!Array.<!Result>}
-   * @throws {NotFoundException}
+   * @param {!Object<!w69b.DecodeHintType,*>=} opt_hints
+   * @return {!Array.<!w69b.Result>}
+   * @throws {w69b.NotFoundException}
    */
   pro.decodeMultiple;
 });

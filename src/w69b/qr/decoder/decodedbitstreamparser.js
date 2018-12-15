@@ -36,7 +36,6 @@ goog.scope(function() {
   const ModeEnum = w69b.qr.decoder.ModeEnum;
   const StringBuffer = goog.string.StringBuffer;
   const stringutils = w69b.common.stringutils;
-  const DecodeHintType = w69b.DecodeHintType;
   const FormatException = w69b.FormatException;
   const CharacterSetECI = w69b.common.CharacterSetECI;
   const DecoderResult = w69b.common.DecoderResult;
@@ -68,7 +67,7 @@ goog.scope(function() {
    * @param {!Int8Array} bytes byte blocks.
    * @param {!w69b.qr.decoder.Version} version qr code version.
    * @param {!w69b.qr.decoder.ErrorCorrectionLevel} ecLevel error correction level.
-   * @param {!Object<!DecodeHintType,*>=} opt_hints
+   * @param {!Object<!w69b.DecodeHintType,*>=} opt_hints
    * @return {!DecoderResult} decoded string.
    */
   _.decode = function(bytes, version, ecLevel, opt_hints) {
@@ -240,7 +239,7 @@ goog.scope(function() {
    * @param {number} count bytes to decode.
    * @param {?CharacterSetECI} currentCharacterSetECI character set eci name.
    * @param {!Array.<!Int8Array>} byteSegments raw bytes.
-   * @param {!Object<!DecodeHintType,*>=} opt_hints
+   * @param {!Object<!w69b.DecodeHintType,*>=} opt_hints
    * @throws {!FormatException}
    */
   _.decodeByteSegment = function(bits, result, count, currentCharacterSetECI,

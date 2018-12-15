@@ -27,14 +27,13 @@ goog.scope(function() {
   const IllegalArgumentException = java.lang.IllegalArgumentException;
   const Integer = java.lang.Integer;
   const EncodeHintType = w69b.EncodeHintType;
-  const Writer = w69b.Writer;
   const BitMatrix = w69b.common.BitMatrix;
 
   /**
    * Encapsulates functionality and implementation that is common to
    * one-dimensional barcodes.
    * @constructor
-   * @implements {Writer}
+   * @implements {w69b.Writer}
    * @abstract
    */
   w69b.oned.OneDimensionalCodeWriter = function() { };

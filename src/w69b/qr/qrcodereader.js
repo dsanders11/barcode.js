@@ -34,7 +34,6 @@ goog.scope(function() {
   const BarcodeFormat = w69b.BarcodeFormat;
   const DecodeHintType = w69b.DecodeHintType;
   const NotFoundException = w69b.NotFoundException;
-  const Reader = w69b.Reader;
   const Result = w69b.Result;
   const ResultMetadataType = w69b.ResultMetadataType;
   const ResultPoint = w69b.ResultPoint;
@@ -47,7 +46,7 @@ goog.scope(function() {
   /**
    * This implementation can detect and decode QR Codes in an image.
    * @constructor
-   * @implements {Reader}
+   * @implements {w69b.Reader}
    * @final
    */
   w69b.qr.QRCodeReader = function() { };

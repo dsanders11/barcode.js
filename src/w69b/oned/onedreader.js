@@ -17,9 +17,7 @@
 
 goog.provide('w69b.oned.OneDReader');
 goog.require('w69b.BinaryBitmap');
-goog.require('w69b.ChecksumException');
 goog.require('w69b.DecodeHintType');
-goog.require('w69b.FormatException');
 goog.require('w69b.NotFoundException');
 goog.require('w69b.Reader');
 goog.require('w69b.ReaderException');
@@ -31,11 +29,8 @@ goog.require('w69b.common.BitArray');
 
 goog.scope(function() {
   const BinaryBitmap = w69b.BinaryBitmap;
-  const ChecksumException = w69b.ChecksumException;
   const DecodeHintType = w69b.DecodeHintType;
-  const FormatException = w69b.FormatException;
   const NotFoundException = w69b.NotFoundException;
-  const Reader = w69b.Reader;
   const ReaderException = w69b.ReaderException;
   const Result = w69b.Result;
   const ResultMetadataType = w69b.ResultMetadataType;
@@ -46,7 +41,7 @@ goog.scope(function() {
    * Encapsulates functionality and implementation that is common to all families
    * of one-dimensional barcodes.
    * @constructor
-   * @implements {Reader}
+   * @implements {w69b.Reader}
    * @abstract
    */
   w69b.oned.OneDReader = function() { };
@@ -313,8 +308,8 @@ goog.scope(function() {
    * @param {?Object<!DecodeHintType,*>} hints decode hints
    * @return {!Result} containing encoded string and start/end of barcode
    * @throws {!NotFoundException} if no potential barcode is found
-   * @throws {!ChecksumException} if a potential barcode is found but does not pass its checksum
-   * @throws {!FormatException} if a potential barcode is found but format is invalid
+   * @throws {!w69b.ChecksumException} if a potential barcode is found but does not pass its checksum
+   * @throws {!w69b.FormatException} if a potential barcode is found but format is invalid
    * @abstract
    */
   OneDReader.prototype.decodeRow = function(rowNumber, row, hints) { };

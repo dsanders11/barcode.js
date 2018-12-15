@@ -34,7 +34,6 @@ goog.scope(function() {
   const IllegalStateException = java.lang.IllegalStateException;
   const BarcodeFormat = w69b.BarcodeFormat;
   const EncodeHintType = w69b.EncodeHintType;
-  const Writer = w69b.Writer;
   const BitMatrix = w69b.common.BitMatrix;
   const ErrorCorrectionLevel = w69b.qr.decoder.ErrorCorrectionLevel;
   const Encoder = w69b.qr.encoder.Encoder;
@@ -43,7 +42,7 @@ goog.scope(function() {
   /**
    * This object renders a QR Code as a BitMatrix 2D array of greyscale values.
    * @constructor
-   * @implements {Writer}
+   * @implements {w69b.Writer}
    * @final
    */
   w69b.qr.QRCodeWriter = function() { };

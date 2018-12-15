@@ -17,16 +17,12 @@
 
 goog.provide('w69b.oned.UPCEANExtensionSupport');
 goog.require('w69b.NotFoundException');
-goog.require('w69b.ReaderException');
-goog.require('w69b.Result');
 goog.require('w69b.common.BitArray');
 goog.require('w69b.oned.UPCEANExtension2Support');
 goog.require('w69b.oned.UPCEANExtension5Support');
 
 
 goog.scope(function() {
-  const NotFoundException = w69b.NotFoundException;
-  const ReaderException = w69b.ReaderException;
   const Result = w69b.Result;
   const BitArray = w69b.common.BitArray;
   const UPCEANExtension2Support = w69b.oned.UPCEANExtension2Support;
@@ -50,13 +46,13 @@ goog.scope(function() {
    * @param {!BitArray} row
    * @param {number} rowOffset
    * @return {!Result}
-   * @throws {!NotFoundException}
+   * @throws {!w69b.NotFoundException}
    */
   pro.decodeRow = function(rowNumber, row, rowOffset) {
     const extensionStartRange = w69b.oned.UPCEANReader.findGuardPattern(row, rowOffset, false, EXTENSION_START_PATTERN);
     try {
       return this.fiveSupport_.decodeRow(rowNumber, row, extensionStartRange);
-    } catch (/*ReaderException*/ ignored) {
+    } catch (/*w69b.ReaderException*/ ignored) {
       return this.twoSupport_.decodeRow(rowNumber, row, extensionStartRange);
     }
   };
