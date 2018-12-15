@@ -4,6 +4,6 @@
  * @suppress {extraRequire}
  */
 
-import { DecodeWorker } from '/w69b/worker/decodeworker.mjs';
-
 goog.require('w69b.licenses');
+
+export { DecodeWorker } from '/w69b/worker/decodeworker.mjs';
