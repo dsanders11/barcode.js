@@ -1,57 +1,49 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.ui.ContinuousScanner');
-goog.provide('w69b.ui.PatternPoint');
-goog.require('goog.math.Size');
-goog.require('goog.object');
-goog.require('goog.string');
-goog.require('goog.style');
-goog.require('goog.ui.Component');
-goog.require('goog.userAgent');
-goog.require('w69b.BarcodeFormat');
-goog.require('w69b.ResultPoint');
-goog.require('w69b.imgtools');
-goog.require('w69b.ui.LocalVideoCapturer');
-goog.require('w69b.worker.DecodeInWorkerHelper');
-goog.require('w69b.worker.WorkerMessageType');
 
-goog.scope(function() {
-  const imgtools = w69b.imgtools;
-  const Size = goog.math.Size;
-  const WorkerMessageType = w69b.worker.WorkerMessageType;
-  const ResultPoint = w69b.ResultPoint;
-  const object = goog.object;
+import { DecodeInWorkerHelper } from '/w69b/worker/decodeinworkerhelper.js'
+import { LocalVideoCapturer } from './localvideocapturer.js'
+import * as imgtools from '/w69b/imgtools.js';
 
+const Component = goog.require('goog.ui.Component');
+const Size = goog.require('goog.math.Size');
+const WorkerMessageType = goog.require('w69b.worker.WorkerMessageType');
+const events = goog.require('goog.events');
+const string = goog.require('goog.string');
+const style = goog.require('goog.style');
+const userAgent = goog.require('goog.userAgent');
+
+export class PatternPoint {
   /**
    * @param {number} x x pos.
    * @param {number} y y pos.
    * @param {number} size pattern size.
-   * @constructor
    */
-  w69b.ui.PatternPoint = function(x, y, size) {
+  constructor(x, y, size) {
     this.x = x;
     this.y = y;
     this.size = size || 4;
     this.birthTime = Date.now();
-  };
-  const PatternPoint = w69b.ui.PatternPoint;
+  }
+}
 
+/**
+ * Component that shows visualization of continuous scanning.
+ */
+export class ContinuousScanner extends Component {
   /**
-   * Component that shows visualization of continuous scanning.
-   *
-   * @constructor
-   * @extends {goog.ui.Component}
    * @param {!Object=} opt_options
-   * @export
    */
-  w69b.ui.ContinuousScanner = function(opt_options) {
-    goog.base(this);
+  constructor(opt_options) {
+    super();
+
     const opt = {
       'webgl': true,
       'maxFPS': 25,
+      ...opt_options
     };
-    object.extend(opt, opt_options || {});
-    this.capturer_ = new w69b.ui.LocalVideoCapturer(opt['videoConstraints']);
-    this.worker_ = new w69b.worker.DecodeInWorkerHelper(opt['formats']);
+
+    this.capturer_ = new LocalVideoCapturer(opt['videoConstraints']);
+    this.worker_ = new DecodeInWorkerHelper(opt['formats']);
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();
     this.foundPatterns_ = [];
@@ -72,7 +64,7 @@ goog.scope(function() {
     this.decodeSize_ = new Size(200, 200);
 
     /**
-     * We use a simple callback instead of events to be independend of
+     * We use a simple callback instead of events to be independent of
      * closure.
      * @private
      */
@@ -82,158 +74,151 @@ goog.scope(function() {
      * @private
      */
     this.notFoundCallback_ = goog.nullFunction;
-  };
-  const ContinuousScanner = w69b.ui.ContinuousScanner;
-  goog.inherits(ContinuousScanner, goog.ui.Component);
-  const pro = ContinuousScanner.prototype;
+
+    /**
+     * Canvas element used for visualization.
+     * @type {?HTMLCanvasElement}
+     * @private
+     */
+    this.visualizationCanvas_ = null;
+
+    /**
+     * Rendering context of visualization canvas.
+     * @type {?CanvasRenderingContext2D}
+     * @private
+     */
+    this.visualizationContext_ = null;
+
+    /**
+     * Tuples of found pattern positions.
+     * @type {?Array.<PatternPoint>}
+     * @private
+     */
+    this.foundPatterns_ = null;
+
+    /**
+     * Whether decoder is currently decoding.
+     * @type {boolean}
+     * @private
+     */
+    this.isDecoding_ = false;
+
+    /**
+     * Max resolution (max dimension) used for visualization. Allows to reduce
+     * resolution to hopefully get a higher performance. If set to 0, the full
+     * element size is used.
+     * @private
+     * @type {number}
+     */
+    this.maxVisualizationResolution_ = 0;
+
+    /**
+     * Maximal resolution used for decoding. If set to 0, visualization
+     * resolution is used.
+     * @type {number}
+     * @private
+     */
+    this.maxDecodeResolution_ = 500;
+
+    /**
+     * Maximal age (in ms) of pattern visualization dots.
+     * resolution is used.
+     * @type {number}
+     * @private
+     */
+    this.maxPatternAge_ = 500;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.animFrameRequestId_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.timerRequestId_ = 0;
+
+    /**
+     *
+     * @type {boolean}
+     * @private
+     */
+    this.stopped_ = false;
+  }
 
   /**
-   * @return {boolean} if getUserMedia (and so contiuous scanning)
+   * @return {boolean} if getUserMedia (and so continuous scanning)
    * is supported.
-   * @export
    */
-  ContinuousScanner.isSupported = function() {
-    // If api is not pressent it's clearly not supported.
-    if (!w69b.ui.LocalVideoCapturer.isSupported())
+  static isSupported() {
+    // If api is not present it's clearly not supported.
+    if (!LocalVideoCapturer.isSupported()) {
       return false;
+    }
     // But feature detection does not work as browsers lie about their
     // capabilities, so sniff versions and blacklist some.
     // It is supported for Chrome >= 21, Opera => 12, FF >= 20, FFOS 1.4
     // (FF mobile 30)
-    const ua = goog.userAgent.getUserAgentString() || '';
+    const ua = userAgent.getUserAgentString() || '';
     let match = /Chrome\/(\d+)/.exec(ua);
-    if (match && match[1] < 21)
+    if (match && match[1] < 21) {
       return false;
+    }
     match = /Firefox\/(\d+)/.exec(ua);
     if (match && (match[1] < 20 ||
       (match[1] < 29 && (
-        goog.string.contains(ua, 'Mobile') ||
-        goog.string.contains(ua, 'Android') ||
-        goog.string.contains(ua, 'iPhone') ||
-        goog.string.contains(ua, 'iPad')
+        string.contains(ua, 'Mobile') ||
+        string.contains(ua, 'Android') ||
+        string.contains(ua, 'iPhone') ||
+        string.contains(ua, 'iPad')
       )))) {
       return false;
     }
     return true;
-  };
-
-  /**
-   * Canvas element used for visualization.
-   * @type {?HTMLCanvasElement}
-   * @private
-   */
-  pro.visualizationCanvas_ = null;
-
-  /**
-   * Rendering context of visualization canvas.
-   * @type {?CanvasRenderingContext2D}
-   * @private
-   */
-  pro.visualizationContext_ = null;
-
-  /**
-   * Tuples of found pattern positions.
-   * @type {?Array.<PatternPoint>}
-   * @private
-   */
-  pro.foundPatterns_ = null;
-
-  /**
-   * Whether decoder is currently decoding.
-   * @type {boolean}
-   * @private
-   */
-  pro.isDecoding_ = false;
-
-  /**
-   * Max resolution (max dimension) used for visualization. Allows to reduce
-   * resolution to hopefully get a higher performance. If set to 0, the full
-   * element size is used.
-   * @private
-   * @type {number}
-   */
-  pro.maxVisualizationResolution_ = 0;
-
-  /**
-   * Maximal resolution used for decoding. If set to 0, visualization
-   * resolution is used.
-   * @type {number}
-   * @private
-   */
-  pro.maxDecodeResolution_ = 500;
-
-  /**
-   * Maximal age (in ms) of pattern visualization dots.
-   * resolution is used.
-   * @type {number}
-   * @private
-   */
-  pro.maxPatternAge_ = 500;
-
-  /**
-   * @type {number}
-   * @private
-   */
-  pro.animFrameRequestId_ = 0;
-
-  /**
-   * @type {number}
-   * @private
-   */
-  pro.timerRequestId_ = 0;
-
-  /**
-   *
-   * @type {boolean}
-   * @private
-   */
-  pro.stopped_ = false;
+  }
 
   /**
    * Is the scanner currently capturing video
    * @return {boolean}
-   * @export
    */
-  pro.isCapturing = function() {
+  isCapturing() {
     return this.capturer_.isCapturing();
-  };
+  }
 
   /**
    * Set callback that is called when a text was decoded.
    * @param {function(string, w69b.BarcodeFormat)} callback function that takes the decoded
    * string as argument.
-   * @export
    */
-  pro.setDecodedCallback = function(callback) {
+  setDecodedCallback(callback) {
     this.decodedCallback_ = callback;
-  };
+  }
 
   /**
    * Set callback that is called when no barcode was found
    * @param {function()} callback function
-   * @export
    */
-  pro.setNotFoundCallback = function(callback) {
+  setNotFoundCallback(callback) {
     this.notFoundCallback_ = callback;
-  };
+  }
 
   /**
    * @param {number} width visualization width.
    * @param {number} height visualization height.
-   * @export
    */
-  pro.setSize = function(width, height) {
+  setSize(width, height) {
     this.size_.width = width;
     this.size_.height = height;
     this.decodeSize_ = this.size_.clone();
     this.ensureMaxResolutions_();
-  };
+  }
 
   /**
    * Set size from clientWidth/Height.
-   * @export
    */
-  pro.updateSizeFromClient = function() {
+  updateSizeFromClient() {
     let ratio = self.devicePixelRatio || 1;
     // dont do this for performance reasons for now.
     ratio = 1;
@@ -242,30 +227,28 @@ goog.scope(function() {
     this.size_.height = el.clientHeight * ratio;
     this.decodeSize_ = this.size_.clone();
     this.ensureMaxResolutions_();
-  };
+  }
 
   /**
    * Max resolution (max dimension) used for visualization. Allows to reduce
    * resolution to hopefully get a higher performance. If set to 0, the full
    * element size is used.
    * @param {number} pixel resolution.
-   * @export
    */
-  pro.setMaxVisualizationResolution = function(pixel) {
+  setMaxVisualizationResolution(pixel) {
     this.maxVisualizationResolution_ = pixel;
     this.ensureMaxResolutions_();
-  };
+  }
 
   /**
    * Maximal resolution used for decoding. If set to 0, visualization
    * resolution is used.
    * @param {number} pixel resolution.
-   * @export
    */
-  pro.setMaxDecodingResolution = function(pixel) {
+  setMaxDecodingResolution(pixel) {
     this.maxDecodeResolution_ = pixel;
     this.ensureMaxResolutions_();
-  };
+  }
 
   /**
    * When component is stopped no more screen updates are drawn and no more
@@ -273,9 +256,8 @@ goog.scope(function() {
    * It does not stop the video stream (use dispose() for that). So you can use this for
    * pausing/resuming scanning.
    * @param {boolean} stopped state.
-   * @export
    */
-  pro.setStopped = function(stopped) {
+  setStopped(stopped) {
     stopped = !!stopped;
     const wasStopped = this.stopped_;
     if (stopped === wasStopped)
@@ -285,24 +267,24 @@ goog.scope(function() {
       this.scheduleNextFrame();
     } else {
     }
-  };
+  }
 
   /**
    * @override
    */
-  pro.createDom = function() {
+  createDom() {
     const dom = this.getDomHelper();
-    this.visualizationCanvas_ = /** @type {HTMLCanvasElement} */ (
+    this.visualizationCanvas_ = /** @type {!HTMLCanvasElement} */ (
       dom.createDom('canvas'));
-    goog.style.setStyle(this.visualizationCanvas_, {'width': '100%', 'height': '100%'});
-    this.visualizationContext_ = /** @type {CanvasRenderingContext2D} */ (
+    style.setStyle(this.visualizationCanvas_, {'width': '100%', 'height': '100%'});
+    this.visualizationContext_ = /** @type {!CanvasRenderingContext2D} */ (
       this.visualizationCanvas_.getContext('2d'));
     // We currently just render the canvas.
     this.setElementInternal(this.visualizationCanvas_);
     this.capturer_.start(this.onAnimationFrame.bind(this));
-  };
+  }
 
-  pro.onAnimationFrame = function() {
+  onAnimationFrame() {
     if (this.stopped_)
       return;
     this.drawVisualization_();
@@ -319,26 +301,26 @@ goog.scope(function() {
       this.isDecoding_ = true;
     }
     this.scheduleNextFrame();
-  };
+  }
 
   /**
    * Scales size if larger than max resolution.
    * @private
    */
-  pro.ensureMaxResolutions_ = function() {
+  ensureMaxResolutions_() {
     if (this.maxVisualizationResolution_) {
       imgtools.scaleToMaxSize(this.size_, this.maxVisualizationResolution_);
     }
     if (this.maxDecodeResolution_) {
       imgtools.scaleToMaxSize(this.decodeSize_, this.maxDecodeResolution_);
     }
-  };
+  }
 
   /**
    * Draws visualization of scanning to canvas.
    * @private
    */
-  pro.drawVisualization_ = function() {
+  drawVisualization_() {
     const size = this.size_;
     const canvas = this.visualizationCanvas_;
     // Rescale canvas if needed.
@@ -368,12 +350,12 @@ goog.scope(function() {
       context.arc(x, y, radius, 0, 2 * Math.PI, false);
       context.fill();
     }
-  };
+  }
 
   /**
    * Request animation frame.
    */
-  pro.scheduleNextFrame = function() {
+  scheduleNextFrame() {
     const animFrame = (window.requestAnimationFrame ||
       window.mozRequestAnimationFrame || window.oRequestAnimationFrame);
     const timeSinceLastFrame = Date.now() - this.lastFrameTime_;
@@ -391,8 +373,8 @@ goog.scope(function() {
     } else {
       updateFunc = this.onAnimationFrame.bind(this);
     }
-    this.timerRequestId_ = window.setTimeout(updateFunc, waitTime);
-  };
+    this.timerRequestId_ = setTimeout(updateFunc, waitTime);
+  }
 
   /**
    * Decoded message from worker.
@@ -400,7 +382,7 @@ goog.scope(function() {
    * @param {string} type from worker.
    * @param {*=} opt_value from worker.
    */
-  pro.onDecodeMessage_ = function(type, opt_value) {
+  onDecodeMessage_(type, opt_value) {
     if (this.stopped_) {
       // don't dispatch pending decoding events when stopped.
       this.isDecoding_ = false;
@@ -420,7 +402,7 @@ goog.scope(function() {
         this.addPattern_(/** @type {ResultPoint} */ (opt_value));
         break;
     }
-  };
+  }
 
   /**
    * Found and decoded barcode.
@@ -428,47 +410,47 @@ goog.scope(function() {
    * @param {!w69b.BarcodeFormat} format barcode format detected.
    * @param {!Array.<!ResultPoint>} result points
    */
-  pro.onDecoded = function(text, format, points) {
+  onDecoded(text, format, points) {
     this.decodedCallback_(text, format, points);
-  };
+  }
 
   /**
    * No barcode found.
    */
-  pro.onNotFound = function() {
+  onNotFound() {
     if (!this.stopped_) {
       this.notFoundCallback_();
     }
-  };
+  }
 
   /**
    * @param {!ResultPoint} pattern
    * @private
    */
-  pro.addPattern_ = function(pattern) {
+  addPattern_(pattern) {
     this.foundPatterns_.unshift(new PatternPoint(pattern['x'], pattern['y'],
       pattern['size']));
     const max = 10;
     this.foundPatterns_.splice(max - 1, this.foundPatterns_.length - max);
-  };
+  }
 
   /**
    * @override
    */
-  pro.enterDocument = function() {
-    goog.base(this, 'enterDocument');
+  enterDocument() {
+    super.enterDocument();
     this.updateSizeFromClient();
-    this.getHandler().listen(window, goog.events.EventType.RESIZE,
+    this.getHandler().listen(window, events.EventType.RESIZE,
       this.updateSizeFromClient);
     this.getHandler().listen(window, 'orientationchange',
       this.updateSizeFromClient);
-  };
+  }
 
   /**
    * @override
    */
-  pro.disposeInternal = function() {
-    goog.base(this, 'disposeInternal');
+  disposeInternal() {
+    super.disposeInternal();
     this.stopped_ = true;
     this.capturer_.dispose();
     this.worker_.dispose();
@@ -480,11 +462,20 @@ goog.scope(function() {
         cancel.call(window, this.animFrameRequestId_);
     }
     if (this.timerRequestId_) {
-      window.clearTimeout(this.timerRequestId_);
+      clearTimeout(this.timerRequestId_);
     }
-  };
+  }
+}
 
-  // exports
-  goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.render', pro.render);
-  goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.dispose', pro.dispose);
-});
+goog.exportSymbol('w69b.ui.ContinuousScanner', ContinuousScanner);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.isSupported', ContinuousScanner.prototype.isSupported);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.isCapturing', ContinuousScanner.prototype.isCapturing);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.setDecodedCallback', ContinuousScanner.prototype.setDecodedCallback);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.setNotFoundCallback', ContinuousScanner.prototype.setNotFoundCallback);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.setSize', ContinuousScanner.prototype.setSize);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.updateSizeFromClient', ContinuousScanner.prototype.updateSizeFromClient);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.setMaxDecodingResolution', ContinuousScanner.prototype.setMaxDecodingResolution);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.setMaxVisualizationResolution', ContinuousScanner.prototype.setMaxVisualizationResolution);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.setStopped', ContinuousScanner.prototype.setStopped);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.render', ContinuousScanner.prototype.render);
+goog.exportSymbol('w69b.ui.ContinuousScanner.prototype.dispose', ContinuousScanner.prototype.dispose);

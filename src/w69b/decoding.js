@@ -1,70 +1,60 @@
 // Copyright 2015 Manuel Braun (mb@w69b.com). All Rights Reserved.
 
-// Public API exports
-goog.provide('w69b.decoding');
-goog.require('goog.math.Size');
-goog.require('goog.object');
-goog.require('w69b.webgl.WebGLBinarizer');
-goog.require('w69b.worker.DecodeInWorkerHelper');
+import { DecodeInWorkerHelper } from '/w69b/worker/decodeinworkerhelper.js';
 
+const Size = goog.require('goog.math.Size');
+const WebGLBinarizer = goog.require('w69b.webgl.WebGLBinarizer');
+const WorkerMessageType = goog.require('w69b.worker.WorkerMessageType');
 
 /**
  * Public high-level decoding API exports.
- * @author mb@w69b.com (Manuel Braun)
  */
-goog.scope(function() {
-  const WorkerMessageType = w69b.worker.WorkerMessageType;
-  const DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
-  const object = goog.object;
-  const _ = w69b.decoding;
 
-  /**
-   * Set this according to your setup before creating an instance.
-   * @param {string} url of worker js file.
-   * @export
-   */
-  _.setWorkerUrl = function(url) {
-    DecodeInWorkerHelper.setWorkerUrl(url);
-  };
+/**
+ * Set this according to your setup before creating an instance.
+ * @param {string} url of worker js file.
+ */
+export function setWorkerUrl(url) {
+  DecodeInWorkerHelper.setWorkerUrl(url);
+}
 
-  /**
-   * Set this if you want to use iconv when needed. Relative paths are
-   * relative to the worker url.
-   * @param {string} url of iconv.js file.
-   * @export
-   */
-  _.setIconvUrl = function(url) {
-    DecodeInWorkerHelper.setIconvUrl(url);
-  };
+/**
+ * Set this if you want to use iconv when needed. Relative paths are
+ * relative to the worker url.
+ * @param {string} url of iconv.js file.
+ */
+export function setIconvUrl(url) {
+  DecodeInWorkerHelper.setIconvUrl(url);
+}
 
-  /**
-   * Check WebGl image processing support.
-   * @return {boolean} whether WebGL binarizer can be used.
-   * @export
-   */
-  _.isWebGlSupported = function() {
-    return w69b.webgl.WebGLBinarizer.isSupported();
-  };
+/**
+ * Check WebGl image processing support.
+ * @return {boolean} whether WebGL binarizer can be used.
+ */
+export function isWebGlSupported() {
+  return WebGLBinarizer.isSupported();
+}
 
+/**
+ * Class to decode barcode images. Loads a worker at initialization, if enabled,
+ * so make sure to re-use instances whenever possible.
+ */
+export class Decoder {
   /**
-   * Class to decode barcode images. Loads a worker at initialization, if enabled,
-   * so make sure to re-use instances whenever possible.
    * @param {!Object<string,*>=} opt_options options with the following properties:
    * - {boolean} worker: use web worker, if supported, defaults to true
    * - {boolean} webgl: use webgl binarizer, if supported, defaults to true
    * - {number} maxSize: scale down image if large than this value in any dimension.
    *  Defaults to 700px.
-   * @constructor
-   * @export
    */
-  _.Decoder = function(opt_options) {
+  constructor(opt_options) {
     const opt = {
       'worker': true,
       'webgl': true,
       'maxSize': 700,
-      'formats': null
+      'formats': null,
+      ...opt_options
     };
-    object.extend(opt, opt_options || {});
     const worker = new DecodeInWorkerHelper();
     worker.enableWebGl(opt['webgl']);
     worker.enableWorker(opt['worker']);
@@ -72,15 +62,14 @@ goog.scope(function() {
     this.options_ = opt;
     this.worker_ = worker;
     this.busy_ = false;
-  };
+  }
 
   /**
    * Release resources.
-   * @export
    */
-  _.Decoder.prototype.dispose = function() {
+  dispose() {
     this.worker_.dispose();
-  };
+  }
 
   /**
    * Decode image that contains a barcode. It can handle image/video and imagedata objects.
@@ -89,9 +78,8 @@ goog.scope(function() {
    * @return {!Promise} result. Resolves to an object
    * with a text property that contains the decoded string on success.
    * Rejects if no barcode could be found or decoding failed.
-   * @export
    */
-  _.Decoder.prototype.decode = function(img) {
+  async decode(img) {
     if (this.busy_) {
       throw new Error('Decoder is still busy');
     }
@@ -99,17 +87,18 @@ goog.scope(function() {
     const opt = this.options_;
     const worker = this.worker_;
     // Size of down-scaled image used for decoding internally.
-    let size = new goog.math.Size(
+    let size = new Size(
       /** @type {number} */ (img.width || img.videoWidth),
       /** @type {number} */ (img.height || img.videoHeight));
     if (opt['maxSize']) {
-      let maxSize = new goog.math.Size(opt['maxSize'], opt['maxSize']);
+      const maxSize = new Size(opt['maxSize'], opt['maxSize']);
       if (!size.fitsInside(maxSize)) {
         size = size.scaleToFit(maxSize);
         size.floor();
       }
     }
-    return new Promise(function(resolve, reject) {
+    
+    const promise = new Promise((resolve, reject) => {
       worker.decode(img, size,
         /**
          * @param {string} type
@@ -132,16 +121,17 @@ goog.scope(function() {
           }
         }
       );
-    }).then(value => {
-      // fulfillment
-      this.busy_ = false;
-
-      return value;
-    }).catch(reason => {
-      // rejection
-      this.busy_ = false;
-
-      throw reason;
     });
-  };
-});
+
+    try {
+      return await promise;
+    } finally {
+      this.busy_ = false;
+    }
+  }
+}
+
+goog.exportSymbol('w69b.decoding.setWorkerUrl', setWorkerUrl);
+goog.exportSymbol('w69b.decoding.setIconvUrl', setIconvUrl);
+goog.exportSymbol('w69b.decoding.isWebGlSupported', isWebGlSupported);
+goog.exportSymbol('w69b.decoding.Decoder', Decoder);

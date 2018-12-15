@@ -3,11 +3,20 @@
  * @fileoverview
  * @suppress {extraRequire}
  */
-goog.provide('main');
-goog.require('w69b.FileSaver');
-goog.require('w69b.decoding');
-goog.require('w69b.encoding');
+
+import * as decoding from '/w69b/decoding.js';
+import * as encoding from '/w69b/encoding.js';
+
+import { ContinuousScanner } from '/w69b/ui/continuousscanner.js';
+import { FileSaver } from '/w69b/filesaver.js';
+import { LocalVideoCapturer } from '/w69b/ui/localvideocapturer.js';
+
 goog.require('w69b.licenses');
-goog.require('w69b.ui.ContinuousScanner');
-goog.require('w69b.ui.LocalVideoCapturer');
-goog.require('w69b.webgl.WebGLBinarizer');  // no compiled exports, debug only
+
+export {
+  decoding,
+  encoding,
+  ContinuousScanner,
+  FileSaver,
+  LocalVideoCapturer
+};

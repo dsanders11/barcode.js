@@ -1,152 +1,126 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.ui.LocalVideoCapturer');
-goog.require('goog.Disposable');
-goog.require('goog.asserts');
-goog.require('goog.events');
-goog.require('goog.math.Size');
 
-goog.scope(function() {
-  const Size = goog.math.Size;
-  const imgtools = w69b.imgtools;
-  /**
-   * TODO: add start/stop methods and ready/error events.
-   * @constructor
-   * @extends {goog.Disposable}
-   * @export
-   */
-  w69b.ui.LocalVideoCapturer = function(constraints) {
-    goog.base(this);
-    this.backCanvas_ = /** @type {HTMLCanvasElement} */ (
-      document.createElement('canvas'));
+const Disposable = goog.require('goog.Disposable');
+const { assert } = goog.require('goog.asserts');
+const Size = goog.require('goog.math.Size');
+
+async function sleep (ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
+}
+
+export class LocalVideoCapturer extends Disposable {
+  constructor(constraints) {
+    super();
+
+    /**
+     * Canvas uses to call getImageData on.
+     * @type {HTMLCanvasElement}
+     * @private
+     */
+    this.backCanvas_ = document.createElement('canvas');
     this.backCanvas_.style['imageRendering'] = "pixelated";
-    this.mediaVideo_ = /** @type {HTMLVideoElement} */ (
-      document.createElement('video'));
+
+    /**
+     * Rendering context of back canvas.
+     * @type {CanvasRenderingContext2D}
+     * @private
+     */
+    this.backContext_ = this.backCanvas_.getContext('2d');
+
+    /**
+     * Video element used to render the getUserMedia stream.
+     * @type {HTMLVideoElement}
+     * @private
+     */
+    this.mediaVideo_ = document.createElement('video');
     this.mediaVideo_.style['imageRendering'] = "pixelated";
     this.mediaVideo_.setAttribute('autoplay', 'true');
-    this.backContext_ = /** @type {CanvasRenderingContext2D} */ (
-      this.backCanvas_.getContext('2d'));
+
+    /**
+     * Constraints to use when calling getUserMedia.
+     * @type {Object}
+     * @private
+     */
     this.constraints_ = constraints || { 'facingMode': 'environment' };
-  };
-  const LocalVideoCapturer = w69b.ui.LocalVideoCapturer;
-  goog.inherits(LocalVideoCapturer, goog.Disposable);
-  const pro = LocalVideoCapturer.prototype;
 
-  /**
-   * Alias to getUserMedia functions.
-   * @type {Function}
-   */
-  LocalVideoCapturer.getMedia = (
-    navigator['getUserMedia'] ||
-      navigator['webkitGetUserMedia'] ||
-      navigator['mozGetUserMedia'] ||
-      navigator['msGetUserMedia']);
+    /**
+     * @type {boolean}
+     */
+    this.capturing_ = false;
 
-  if (LocalVideoCapturer.getMedia) {
-    LocalVideoCapturer.getMedia =
-      LocalVideoCapturer.getMedia.bind(navigator);
+    /**
+     * @type {?MediaStream}
+     */
+    this.stream_ = null;
   }
 
   /**
    * @return {boolean} if getUserMedia is supported.
-   * @export
    */
-  LocalVideoCapturer.isSupported = function() {
-    return Boolean(LocalVideoCapturer.getMedia);
-  };
+  static isSupported() {
+    return Boolean(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  }
 
   /**
-   * Canvas uses to call getImageData on.
-   * @type {?HTMLCanvasElement}
-   * @private
+   * @return {HTMLVideoElement} video element.
    */
-  pro.backCanvas_ = null;
-
-  /**
-   * Rendering context of back canvas.
-   * @type {?CanvasRenderingContext2D}
-   * @private
-   */
-  pro.backContext_ = null;
-
-  /**
-   * Video element used to render the getUserMedia stream.
-   * @type {?HTMLVideoElement}
-   * @private
-   */
-  pro.mediaVideo_ = null;
-
-  /**
-   * Constraints to use when calling getUserMedia.
-   * @type {?Object}
-   * @private
-   */
-  pro.constraints_ = null;
-
-  /**
-   * @type {boolean}
-   */
-  pro.capturing_ = false;
-
-  /**
-   * @type {?MediaStream}
-   */
-  pro.stream_ = null;
-
-  /**
-   * @return {?HTMLVideoElement} video element.
-   * @export
-   */
-  pro.getVideo = function() {
+  getVideo() {
     return this.mediaVideo_;
-  };
+  }
 
   /**
    * Start capturing video.
-   * @param {function()} ready
-   * @export
+   * @return {!Promise} Resolves to undefined
    */
-  pro.start = function(ready) {
-    goog.events.listenOnce(this.mediaVideo_, 'canplay', function() {
-      this.waitForVideoSize_(ready);
-    }, false, this);
-    this.getUserMedia();
-  };
+  async start() {
+    return new Promise(resolve => {
+      this.getVideo().addEventListener('canplay', async () => {
+        await this.waitForVideoSize_();
+        resolve();
+      }, { once: true })
+      this.getUserMedia();
+    });
+  }
 
   /**
    * Is video being captured
    * @return {boolean}
-   * @export
    */
-  pro.isCapturing = function() {
+  isCapturing() {
     return this.capturing_;
-  };
+  }
 
   /**
-   * Calls ready when videoSize gets greater than 0.
+   * Promise that waits for videoSize to be greater than 0.
    * Sometimes the video size is 0 in FireFox even after canplay has been
    * triggered. This works arround this by polling the video with.
-   * @param {function()} ready
+   * @return {!Promise} Resolves to undefined
    * @private
    */
-  pro.waitForVideoSize_ = function(ready) {
-    if (this.mediaVideo_.videoWidth > 0 && this.mediaVideo_.videoHeight > 0) {
-      ready();
-    } else {
-      window.setTimeout(this.waitForVideoSize_.bind(this, ready), 100);
-    }
-  };
+  async waitForVideoSize_() {
+    return new Promise(resolve => {
+      const video = this.getVideo();
+
+      while (video.videoWidth === 0 || video.videoHeight === 0) {
+        sleep(100);
+      }
+
+      resolve();
+    })
+  }
 
   /**
    * Get Image data of current frame from local video stream.
    * Image is scaled down to opt_maxSize if its width or height is larger.
    * @param {!Size} size desired size of image.
    * @return {!ImageData} image data.
-   * @export
    */
-  pro.getImageData = function(size) {
+  getImageData(size) {
     this.drawAndGetCanvas(size);
     return this.backContext_.getImageData(0, 0, size.width, size.height);
-  };
+  }
 
   /**
    * Get blob of current frame from local video stream.
@@ -154,29 +128,26 @@ goog.scope(function() {
    * @param {!Size} size desired size of image.
    * @param {string=} format format to capture
    * @return {!Promise} Resolves to the blob
-   * @export
    */
-  pro.getBlob = function(size, format = "image/jpeg") {
+  getBlob(size, format = "image/jpeg") {
     this.drawAndGetCanvas(size);
-    const backCanvas = this.backCanvas_;
-    return new Promise(function(resolve, reject) {
-      backCanvas.toBlob(function(blob) {
+    return new Promise(resolve => {
+      this.backCanvas_.toBlob(blob => {
         resolve(blob);
       }, format);
     });
-  };
+  }
 
   /**
    * Get canvas with current frame from local video stream.
    * Image is scaled down to opt_maxSize if its width or height is larger.
-   * @param {Size} size desired size of image.
-   * @return {HTMLCanvasElement} canvas.
-   * @export
+   * @param {!Size} size desired size of image.
+   * @return {!HTMLCanvasElement} canvas.
    */
-  pro.drawAndGetCanvas = function(size) {
-    const video = this.mediaVideo_;
+  drawAndGetCanvas(size) {
+    const video = this.getVideo();
     const canvas = this.backCanvas_;
-    goog.asserts.assert(video.videoWidth > 0 && video.videoWidth > 0);
+    assert(video.videoWidth > 0 && video.videoWidth > 0);
 
     // Rescale canvas if needed.
     if (canvas.width != size.width || canvas.height != size.height) {
@@ -186,15 +157,14 @@ goog.scope(function() {
     const context = this.backContext_;
     this.drawOnCanvas(canvas, context);
     return canvas;
-  };
+  }
 
   /**
    * Draws video on canvas, scaling to to fit into canvas.
    * @param {!HTMLCanvasElement} canvas canvas to draw on.
    * @param {!CanvasRenderingContext2D} context context of canvas.
-   * @export
    */
-  pro.drawOnCanvas = function(canvas, context) {
+  drawOnCanvas(canvas, context) {
     const video = this.getVideo();
     const width = canvas.width;
     const height = canvas.height;
@@ -205,68 +175,54 @@ goog.scope(function() {
     context.imageSmoothingEnabled = false;
     context.drawImage(video, 0, 0,
       video.videoWidth * scale, video.videoHeight * scale);
-  };
-
-  /**
-   * video stream.
-   * @param {!MediaStream} stream
-   * @protected
-   */
-  pro.onGetMediaSuccess = function(stream) {
-    // If disposed since, dont do anything.
-    if (this.mediaVideo_ === null) {
-      return;
-    }
-    this.mediaVideo_.srcObject = stream;
-    this.mediaVideo_.play();
-    this.stream_ = stream;
-    this.capturing_ = true;
-  };
-
-  /**
-   * @param {number} code error code
-   * @protected
-   */
-  pro.onGetMediaError = function(code) {
-    window.console.log('error code:');
-    window.console.log(code);
-  };
+  }
 
   /**
    * Starts get user media.
    * @protected
    */
-  pro.getUserMedia = function() {
-    const self = this;
-    LocalVideoCapturer.getMedia({'video': self.constraints_},
-      self.onGetMediaSuccess.bind(self),
-      self.onGetMediaError.bind(self));
-  };
+  async getUserMedia() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(
+        {'video': self.constraints_});
+      // If disposed since, dont do anything.
+      if (this.mediaVideo_ === null) {
+        return;
+      }
+      this.mediaVideo_.srcObject = stream;
+      this.mediaVideo_.play();
+      this.stream_ = stream;
+      this.capturing_ = true;
+    } catch(err) {
+      console.error('error:', err);
+    }
+  }
 
   /**
    * @override
    * @suppress {deprecated}
    */
-  pro.disposeInternal = function() {
+  disposeInternal() {
     this.mediaVideo_.pause();
     this.mediaVideo_.srcObject = null;
     this.capturing_ = false;
     this.mediaVideo_ = null;
     if (this.stream_) {
-      if (this.stream_['stop']) {
+      if (this.stream_.stop) {
         this.stream_.stop();
       }
-      if (this.stream_['getTracks']) {
-        this.stream_['getTracks']().forEach(
-          /** @param {MediaStreamTrack} track */
-          function(track) {
-            track.stop();
-          }
-        );
+      if (this.stream_.getTracks) {
+        for (const track of this.stream_.getTracks()) {
+          track.stop();
+        }
       }
     }
-  };
+  }
+}
 
-  // exports
-  goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.dispose', pro.dispose);
-});
+goog.exportSymbol('w69b.ui.LocalVideoCapturer', LocalVideoCapturer);
+goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.start', LocalVideoCapturer.prototype.start);
+goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.isCapturing', LocalVideoCapturer.prototype.isCapturing);
+goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.drawAndGetCanvas', LocalVideoCapturer.prototype.drawAndGetCanvas);
+goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.drawOnCanvas', LocalVideoCapturer.prototype.drawOnCanvas);
+goog.exportSymbol('w69b.ui.LocalVideoCapturer.prototype.dispose', LocalVideoCapturer.prototype.dispose);

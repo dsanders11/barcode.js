@@ -1,174 +1,157 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
-goog.provide('w69b.worker.DecodeInWorkerHelper');
-goog.require('goog.html.legacyconversions');
-goog.require('goog.math.Size');
-goog.require('goog.net.jsloader');
-goog.require('goog.string');
-goog.require('goog.string.path');
-goog.require('w69b.BarcodeFormat');
-goog.require('w69b.InvalidCharsetException');
-goog.require('w69b.NotFoundException');
-goog.require('w69b.imgtools');
-goog.require('w69b.webgl.WebGLBinarizer');
-goog.require('w69b.worker.DecodeWorker');
-goog.require('w69b.worker.WorkerMessageType');
 
+import { DecodeWorker } from './decodeworker.mjs';
+import * as imgtools from '/w69b/imgtools.js';
 
-goog.scope(function() {
-  const jsloader = goog.net.jsloader;
-  const WorkerMessageType = w69b.worker.WorkerMessageType;
-  const WebGLBinarizer = w69b.webgl.WebGLBinarizer;
+const GoogString = goog.require('goog.string');
+const InvalidCharsetException = goog.require('w69b.InvalidCharsetException');
+const NotFoundException = goog.require('w69b.NotFoundException');
+const Size = goog.require('goog.math.Size');
+const WebGLBinarizer = goog.require('w69b.webgl.WebGLBinarizer');
+const WorkerMessageType = goog.require('w69b.worker.WorkerMessageType');
+const jsloader = goog.require('goog.net.jsloader');
+const legacyconversions = goog.require('goog.html.legacyconversions');
+const path = goog.require('goog.string.path');
 
+/**
+ * Helper class that decodes in worker if available and reasonable
+ * and falls back to main thread decoding if not.
+ */
+export class DecodeInWorkerHelper {
   /**
-   * Helper class that decodes in worker if available and reasonable
-   * and falls back to main thread decoding if not.
-   * @constructor
    * @param {!Array.<!w69b.BarcodeFormat>=} opt_formats Formats to decode for
    */
-  w69b.worker.DecodeInWorkerHelper = function(opt_formats) {
+  constructor(opt_formats) {
     this.callback_ = null;
     this.formats_ = opt_formats;
-  };
-  const DecodeInWorkerHelper = w69b.worker.DecodeInWorkerHelper;
-  const pro = DecodeInWorkerHelper.prototype;
 
-  /**
-   * @type {boolean}
-   * @private
-   */
-  pro.enableWebGl_ = true;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.enableWebGl_ = true;
 
-  /**
-   * @type {boolean}
-   * @private
-   */
-  pro.enableWorker_ = true;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.enableWorker_ = true;
 
-  /**
-   * Initialized with binarizer if supported.
-   * @type {?WebGLBinarizer}
-   * @private
-   */
-  pro.webGLBinarizer_ = null;
+    /**
+     * Initialized with binarizer if supported.
+     * @type {?WebGLBinarizer}
+     * @private
+     */
+    this.webGLBinarizer_ = null;
 
-  /**
-   * @type {boolean}
-   * @private
-   */
-  pro.useWorker_ = false;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.useWorker_ = false;
 
-  /**
-   * @type {?Worker}
-   * @private
-   */
-  pro.worker_ = null;
-
-  /**
-   * @private
-   * Set this according to your setup.
-   * @type {string} url of worker js file.
-   */
-  DecodeInWorkerHelper.workerUrl_ = '';
-  /**
-   * @private
-   * Set this if you want to use iconv when needed.
-   * @type {?string} url of iconv.js file.
-   */
-  DecodeInWorkerHelper.iconvUrl_ = null;
+    /**
+     * @type {?Worker}
+     * @private
+     */
+    this.worker_ = null;
+  }
 
   /**
    * Set this according to your setup before creating an instance.
    * @param {string} url of worker js file.
    */
-  DecodeInWorkerHelper.setWorkerUrl = function(url) {
+  static setWorkerUrl(url) {
     DecodeInWorkerHelper.workerUrl_ = url;
-  };
+  }
 
   /**
    * Set this if you want to use iconv when needed. Relative paths are
    * relative to the worker url.
    * @param {string} url of iconv.js file.
    */
-  DecodeInWorkerHelper.setIconvUrl = function(url) {
+  static setIconvUrl(url) {
     DecodeInWorkerHelper.iconvUrl_ = url;
-  };
+  }
 
   /**
    * Enable or disable WebGl binarizer.
    * @param {boolean} enable WebGL.
    */
-  pro.enableWebGl = function(enable) {
+  enableWebGl(enable) {
     this.enableWebGl_ = enable;
-  };
+  }
 
   /**
    * Enable or disable decoding in web worker.
    * @param {boolean} enable worker.
    */
-  pro.enableWorker = function(enable) {
+  enableWorker(enable) {
     this.enableWorker_ = enable;
-  };
+  }
 
   /**
    * Initialize class. You must call this before using it.
    */
-  pro.init = function() {
+  init() {
     if (this.enableWorker_) {
-      const url = w69b.worker.DecodeInWorkerHelper.workerUrl_;
+      const url = DecodeInWorkerHelper.workerUrl_;
       if (!url)
         throw new Error('missing worker url setup');
       this.worker_ = new Worker(url);
       this.useWorker_ = this.shallUseWorker();
       if (this.useWorker_) {
         // hack for invalid extern.
-        this.worker_['addEventListener']('message', this.onMessage_.bind(this));
-        if (w69b.worker.DecodeInWorkerHelper.iconvUrl_) {
+        this.worker_.addEventListener('message', event => {
+          this.onMessage_(/** @type {!MessageEvent} */ (event));
+        });
+        if (DecodeInWorkerHelper.iconvUrl_) {
           this.worker_.postMessage(
-            {'setIconvUrl': w69b.worker.DecodeInWorkerHelper.iconvUrl_});
+            {'setIconvUrl': DecodeInWorkerHelper.iconvUrl_});
         }
       } else {
         this.worker_.terminate();
         this.worker_ = null;
       }
     }
-  };
+  }
 
   /**
    * Check if WebGl is used.
    * @return {boolean} true if webGl is enabled and supported
    */
-  pro.isWebGlEnabledAndSupported = function() {
+  isWebGlEnabledAndSupported() {
     return this.enableWebGl_ && WebGLBinarizer.isSupported();
-  };
+  }
 
   /**
    * Only use workers in browsers that support transferable objects.
    * @return {boolean} true if should use worker
    */
-  pro.shallUseWorker = function() {
+  shallUseWorker() {
     if (!this.enableWorker_) return false;
     const buffer = new ArrayBuffer(1);
     this.worker_.postMessage(
       {'isfeaturedetect': true, 'buffer': buffer}, [buffer]);
     // When buffer is transfered and not copied, its length is set to zero.
     return buffer.byteLength === 0;
-  };
+  }
 
   /**
    * Message form worker received
    * @param {!MessageEvent} event
    * @private
    */
-  pro.onMessage_ = function(event) {
+  onMessage_(event) {
     if (this.callback_) {
       const type = event.data[0];
       let value = event.data[1];
       if (value) {
-        value = window.JSON.parse(/** @type {string} */ (value));
+        value = JSON.parse(/** @type {string} */ (value));
       }
       this.callback_(type, value);
     }
-  };
+  }
 
   /**
    * @param {!CanvasImageSource|!ImageData} imgdata frame to process.
@@ -177,7 +160,7 @@ goog.scope(function() {
    * top-left rectange of the input image that covers the desired size.
    * @param {function(string, ?=)} callback called with result..
    */
-  pro.decode = function(imgdata, size, callback) {
+  decode(imgdata, size, callback) {
     let isBinary = false;
     // TODO - Rename
     let imgDataOrMatrix = imgdata;
@@ -189,7 +172,7 @@ goog.scope(function() {
       }
       // binarize
       if (this.webGLBinarizer_) {
-        let coverSize = new goog.math.Size(
+        let coverSize = new Size(
           /** @type {number} */ (imgdata.width || imgdata.videoWidth),
           /** @type {number} */ (imgdata.height || imgdata.videoHeight));
         if (coverSize.fitsInside(size)) {
@@ -205,7 +188,7 @@ goog.scope(function() {
       }
     }
     if (!(imgDataOrMatrix instanceof ImageData)) {
-      imgDataOrMatrix = w69b.imgtools.getImageData(imgDataOrMatrix, size);
+      imgDataOrMatrix = imgtools.getImageData(imgDataOrMatrix, size);
     }
     if (this.useWorker_) {
       const buffer = (/** @type {!Uint8ClampedArray} */ (imgDataOrMatrix.data)).buffer;
@@ -224,15 +207,16 @@ goog.scope(function() {
       // local fallback
       this.decodeLocalFallback_(imgDataOrMatrix, isBinary, callback);
     }
-  };
+  }
 
   /**
    * Dispose helper
    */
-  pro.dispose = function() {
-    if (this.worker_)
+  dispose() {
+    if (this.worker_) {
       this.worker_.terminate();
-  };
+    }
+  }
 
   /**
    * @private
@@ -240,9 +224,9 @@ goog.scope(function() {
    * @param {boolean} isBinary
    * @param {function(string, ?=)} callback called with result..
    */
-  pro.decodeLocalFallback_ = function(imgdata, isBinary, callback) {
+  decodeLocalFallback_(imgdata, isBinary, callback) {
     try {
-      const result = w69b.worker.DecodeWorker.decodeFromImageData(
+      const result = DecodeWorker.decodeFromImageData(
         imgdata, isBinary, this.formats_, function(pattern) {
           callback(WorkerMessageType.PATTERN, pattern['toJSON']());
         }.bind(this)
@@ -250,23 +234,22 @@ goog.scope(function() {
 
       callback(WorkerMessageType.DECODED, result['toJSON']());
     } catch (err) {
-      if (err instanceof w69b.InvalidCharsetException && !self.iconv &&
+      if (err instanceof InvalidCharsetException && !self.iconv &&
         DecodeInWorkerHelper.iconvUrl_) {
         // load iconv. importScripts(_.iconvPath);
         let url = DecodeInWorkerHelper.iconvUrl_;
-        if (!goog.string.startsWith(url,
-            'http://') && !goog.string.startsWith(url, 'https://')) {
+        if (!GoogString.startsWith(url,
+            'http://') && !GoogString.startsWith(url, 'https://')) {
           // path is relative to worker, so resolve it first.
-          url = goog.string.path.dirname(DecodeInWorkerHelper.workerUrl_) +
-            '/' + url;
+          url = path.dirname(DecodeInWorkerHelper.workerUrl_) + '/' + url;
         }
         // And try again when loaded.
-        const trustedUrl = goog.html.legacyconversions.trustedResourceUrlFromString(url);
+        const trustedUrl = legacyconversions.trustedResourceUrlFromString(url);
         jsloader.safeLoad(trustedUrl).addCallback(function() {
           this.decodeLocalFallback_(imgdata, isBinary, callback);
         }, this);
         return;
-      } else if (err instanceof w69b.NotFoundException) {
+      } else if (err instanceof NotFoundException) {
         callback(WorkerMessageType.NOTFOUND, err && err.message);
         return;
       } else {
@@ -276,5 +259,19 @@ goog.scope(function() {
 
     // hack to work arout memory leak in FF
     delete imgdata.data;
-  };
-});
+  }
+}
+
+/**
+ * @private
+ * Set this according to your setup.
+ * @type {string} url of worker js file.
+ */
+DecodeInWorkerHelper.workerUrl_ = '';
+
+/**
+ * @private
+ * Set this if you want to use iconv when needed.
+ * @type {?string} url of iconv.js file.
+ */
+DecodeInWorkerHelper.iconvUrl_ = null;
