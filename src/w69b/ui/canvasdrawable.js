@@ -10,7 +10,7 @@ export class CanvasDrawable extends Drawable {
     super();
 
     this.canvas_ = canvas;
-    this.context_ = /** @type {CanvasRenderingContext2D} */ (canvas.getContext('2d'));
+    this.context_ = /** @type {!CanvasRenderingContext2D} */ (canvas.getContext('2d'));
     this.bgStyle_ = 'rgb(255, 255, 255)';
     this.fgStyle_ = 'rgb(0, 0, 0)';
   }

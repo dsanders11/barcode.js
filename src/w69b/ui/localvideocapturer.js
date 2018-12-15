@@ -16,7 +16,7 @@ export class LocalVideoCapturer extends Disposable {
 
     /**
      * Canvas uses to call getImageData on.
-     * @type {HTMLCanvasElement}
+     * @type {!HTMLCanvasElement}
      * @private
      */
     this.backCanvas_ = document.createElement('canvas');
@@ -24,14 +24,14 @@ export class LocalVideoCapturer extends Disposable {
 
     /**
      * Rendering context of back canvas.
-     * @type {CanvasRenderingContext2D}
+     * @type {!CanvasRenderingContext2D}
      * @private
      */
     this.backContext_ = this.backCanvas_.getContext('2d');
 
     /**
      * Video element used to render the getUserMedia stream.
-     * @type {HTMLVideoElement}
+     * @type {!HTMLVideoElement}
      * @private
      */
     this.mediaVideo_ = document.createElement('video');
@@ -64,7 +64,7 @@ export class LocalVideoCapturer extends Disposable {
   }
 
   /**
-   * @return {HTMLVideoElement} video element.
+   * @return {!HTMLVideoElement} video element.
    */
   getVideo() {
     return this.mediaVideo_;
