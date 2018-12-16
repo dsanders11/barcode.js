@@ -1,23 +1,19 @@
 // (c) 2013 Manuel Braun (mb@w69b.com)
 'use strict';
-var gulp = require('gulp');
-var runSequence = require('run-sequence');
-var del = require('del');
-var format = require('gulp-clang-format');
-var karma = require('karma');
-var concat = require('gulp-concat');
-var sort = require('gulp-sort');
-var shader2js = require('./tasks/shader2js');
-var sourcemaps = require('gulp-sourcemaps');
-var webserver = require('gulp-webserver');
-var closureCompiler = require('google-closure-compiler').gulp(
+const gulp = require('gulp');
+const del = require('del');
+const format = require('gulp-clang-format');
+const karma = require('karma');
+const concat = require('gulp-concat');
+const sort = require('gulp-sort');
+const shader2js = require('./tasks/shader2js');
+const sourcemaps = require('gulp-sourcemaps');
+const webserver = require('gulp-webserver');
+const closureCompiler = require('google-closure-compiler').gulp(
   {extraArguments: ['-XX:+TieredCompilation']});
-// Adds gulp tag, and gulp bump tasks,
-// see https://github.com/lfender6445/gulp-release-tasks
-require('gulp-release-tasks')(gulp);
 
 
-var PATHS = {
+const PATHS = {
   src: {
     checkFormat: [
       'src/**/*.js'
@@ -37,7 +33,7 @@ var PATHS = {
   }
 };
 
-var CLOSURE_CONFIG = {
+const CLOSURE_CONFIG = {
   assume_function_wrapper: true,
   externs: [
     'externs/iconv.js'
@@ -110,7 +106,7 @@ var CLOSURE_CONFIG = {
   ]
 };
 
-var CLOSURE_DEBUG_CONFIG = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
+const CLOSURE_DEBUG_CONFIG = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
 delete CLOSURE_DEBUG_CONFIG['isolation_mode'];
 CLOSURE_DEBUG_CONFIG['compilation_level'] = 'WHITESPACE_ONLY';
 CLOSURE_DEBUG_CONFIG['force_inject_library'] = ['es6_runtime'];
@@ -135,7 +131,58 @@ gulp.task('format', function() {
       .pipe(gulp.dest('.'));
 });
 
-gulp.task('coverage', ['buildDebug'], function(done) {
+gulp.task('shader2js', function() {
+  return gulp.src(PATHS.src.shaders, {base: 'src'})
+    .pipe(sort())
+    .pipe(shader2js())
+    .pipe(concat('compiled.js'))
+    .pipe(gulp.dest(PATHS.dst.shaders))
+});
+
+gulp.task('buildDebug:main', gulp.series('shader2js', function() {
+  const config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
+  config['js_output_file'] = 'w69b.barcode.js';
+  config['entry_point'] = 'main';
+
+  return gulp.src(PATHS.src.closure)
+    .pipe(sourcemaps.init())
+    .pipe(closureCompiler(config))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist'));
+}));
+
+gulp.task('buildDebug:worker', gulp.series('shader2js', function() {
+  const config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
+  config['js_output_file'] = 'w69b.barcode.decodeworker.js';
+  config['entry_point'] = 'decodeworker';
+
+  return gulp.src(PATHS.src.closure)
+    .pipe(sourcemaps.init())
+    .pipe(closureCompiler(config))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist'));
+}));
+
+gulp.task('buildDebug', gulp.parallel('buildDebug:main', 'buildDebug:worker'));
+
+gulp.task('test', gulp.series('buildDebug', function(done) {
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+}));
+
+gulp.task('watch', gulp.series('buildDebug', function() {
+  gulp.watch(PATHS.src.shaders.concat(PATHS.src.closure), ['buildDebug']);
+  gulp.src('.')
+    .pipe(webserver({
+      host: '0.0.0.0',
+      livereload: false,
+      directoryListing: true
+    }));
+}));
+
+gulp.task('coverage', gulp.series('buildDebug', function(done) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true,
@@ -145,61 +192,10 @@ gulp.task('coverage', ['buildDebug'], function(done) {
     },
     reporters: ['progress', 'coverage', 'karma-remap-istanbul']
   }, done).start();
-});
-
-gulp.task('test', ['buildDebug'], function(done) {
-  new karma.Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true
-  }, done).start();
-});
-
-gulp.task('shader2js', function() {
-  return gulp.src(PATHS.src.shaders, {base: 'src'})
-    .pipe(sort())
-    .pipe(shader2js())
-    .pipe(concat('compiled.js'))
-    .pipe(gulp.dest(PATHS.dst.shaders))
-});
-
-gulp.task('watch', ['buildDebug'], function() {
-  gulp.watch(PATHS.src.shaders.concat(PATHS.src.closure), ['buildDebug']);
-  gulp.src('.')
-    .pipe(webserver({
-      host: '0.0.0.0',
-      livereload: false,
-      directoryListing: true
-    }));
-});
-
-gulp.task('buildDebug:main', ['shader2js'], function() {
-  var config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
-  config['js_output_file'] = 'w69b.barcode.js';
-  config['entry_point'] = 'main';
-
-  return gulp.src(PATHS.src.closure)
-    .pipe(sourcemaps.init())
-    .pipe(closureCompiler(config))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('buildDebug:worker', ['shader2js'], function() {
-  var config = JSON.parse(JSON.stringify(CLOSURE_DEBUG_CONFIG));
-  config['js_output_file'] = 'w69b.barcode.decodeworker.js';
-  config['entry_point'] = 'decodeworker';
-
-  return gulp.src(PATHS.src.closure)
-    .pipe(sourcemaps.init())
-    .pipe(closureCompiler(config))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('buildDebug', ['buildDebug:main', 'buildDebug:worker']);
+}));
 
 gulp.task('compile:main', function() {
-  var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
+  const config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
   config['js_output_file'] = 'w69b.barcode.min.js';
   config['entry_point'] = 'main';
 
@@ -209,7 +205,7 @@ gulp.task('compile:main', function() {
 });
 
 gulp.task('compile:worker', function() {
-  var config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
+  const config = JSON.parse(JSON.stringify(CLOSURE_CONFIG));
   config['js_output_file'] = 'w69b.barcode.decodeworker.min.js';
   config['entry_point'] = 'decodeworker';
 
@@ -218,12 +214,8 @@ gulp.task('compile:worker', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('compile', ['compile:main', 'compile:worker']);
+gulp.task('compile', gulp.parallel('compile:main', 'compile:worker'));
 
-gulp.task('all', function(cb) {
-  runSequence('shader2js', 'compile', 'test', cb);
-});
+gulp.task('all', gulp.series('shader2js', 'compile', 'test'));
 
-gulp.task('default', function(cb) {
-  runSequence('clean', 'all', cb);
-});
+gulp.task('default', gulp.series('clean', 'all'));
