@@ -39,10 +39,16 @@ export class ContinuousScanner extends Component {
     const opt = {
       'webgl': true,
       'maxFPS': 25,
+      'capturer': undefined,
       ...opt_options
     };
 
-    this.capturer_ = new LocalVideoCapturer(opt['videoConstraints']);
+    if (opt['capturer'] !== undefined) {
+      this.capturer_ = opt['capturer']
+    } else {
+      this.capturer_ = new LocalVideoCapturer(opt['videoConstraints']);
+    }
+
     this.worker_ = new DecodeInWorkerHelper(opt['formats']);
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();
