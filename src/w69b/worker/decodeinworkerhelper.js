@@ -227,9 +227,9 @@ export class DecodeInWorkerHelper {
   decodeLocalFallback_(imgdata, isBinary, callback) {
     try {
       const result = DecodeWorker.decodeFromImageData(
-        imgdata, isBinary, this.formats_, function(pattern) {
+        imgdata, isBinary, this.formats_, pattern => {
           callback(WorkerMessageType.PATTERN, pattern['toJSON']());
-        }.bind(this)
+        }
       );
 
       callback(WorkerMessageType.DECODED, result['toJSON']());

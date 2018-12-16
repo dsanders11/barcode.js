@@ -46,9 +46,9 @@ export class ContinuousScanner extends Component {
     this.worker_ = new DecodeInWorkerHelper(opt['formats']);
     this.worker_.enableWebGl(opt['webgl']);
     this.worker_.init();
-    this.foundPatterns_ = [];
     this.lastFrameTime_ = null;
     this.timeBetweenFrames_ = 1000/opt['maxFPS'];
+
     /**
      * Size of visualization.
      * @type {!Size}
@@ -91,10 +91,10 @@ export class ContinuousScanner extends Component {
 
     /**
      * Tuples of found pattern positions.
-     * @type {?Array.<PatternPoint>}
+     * @type {!Array.<!PatternPoint>}
      * @private
      */
-    this.foundPatterns_ = null;
+    this.foundPatterns_ = [];
 
     /**
      * Whether decoder is currently decoding.
@@ -281,12 +281,15 @@ export class ContinuousScanner extends Component {
       this.visualizationCanvas_.getContext('2d'));
     // We currently just render the canvas.
     this.setElementInternal(this.visualizationCanvas_);
-    this.capturer_.start(this.onAnimationFrame.bind(this));
+    this.capturer_.start().then(() => {
+      this.onAnimationFrame()
+    })
   }
 
   onAnimationFrame() {
-    if (this.stopped_)
+    if (this.stopped_) {
       return;
+    }
     this.drawVisualization_();
     this.lastFrameTime_ = Date.now();
     // This draws the result of the last frame on the current frame which
@@ -294,10 +297,9 @@ export class ContinuousScanner extends Component {
     // cannot draw it anymore without copying (at least in FF).
 
     if (!this.isDecoding_) {
-      this.worker_.decode(
-        /** @type {!HTMLVideoElement} */ (this.capturer_.getVideo()),
-        /** @type {!goog.math.Size} */ (this.decodeSize_),
-        this.onDecodeMessage_.bind(this));
+      this.worker_.decode(this.capturer_.getVideo(), this.decodeSize_, (type, opt_value) => {
+        this.onDecodeMessage_(type, opt_value)
+      });
       this.isDecoding_ = true;
     }
     this.scheduleNextFrame();
@@ -339,8 +341,9 @@ export class ContinuousScanner extends Component {
     for (let i = 0; i < this.foundPatterns_.length; ++i) {
       const pattern = this.foundPatterns_[i];
       const age = now - pattern.birthTime;
-      if (age >= maxAge)
+      if (age >= maxAge) {
         continue;
+      }
       const alpha = (maxAge - age) / maxAge;
       const x = pattern.x * scale;
       const y = pattern.y * scale;
@@ -368,10 +371,10 @@ export class ContinuousScanner extends Component {
     if (animFrame) {
       updateFunc = () => {
         this.animFrameRequestId_ = animFrame.call(
-          window, this.onAnimationFrame.bind(this));
+          window, () => { this.onAnimationFrame() });
       };
     } else {
-      updateFunc = this.onAnimationFrame.bind(this);
+      updateFunc = () => { this.onAnimationFrame() };
     }
     this.timerRequestId_ = setTimeout(updateFunc, waitTime);
   }
